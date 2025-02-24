@@ -1,0 +1,197 @@
+Name,Description,Classes,Associations
+Online Project Management System (OPMS),"A company is comprised of two to eight departments. Each department has an ID and email. A department hires employees for certain projects. Employees working on projects can be temporary employees or permanent employees. Each employee is identified by a name, email, employee ID, employee number. Projects can be of types - production projects, research projects, education projects, and community projects. All projects have a title, description, budget amount, and deadline. In addition , each education project and community project are associated with one funding group. The funding group can be of types - private group, government group, or mixed group. The production projects are characterized by a site code.","Enumerations:
+GroupType(private, group, mixed)
+EmployeeType(temporary, permanent)
+
+Classes:
+Company()
+Department(Integer id, String email)
+Employee(String email, String name, String employeeID, String employeeNumber, EmployeeType type)
+Project(String title, String description, Float budget, Date deadline)
+ProductionProject(String siteCode)
+EducationProject()
+ResearchProject()
+CommunityProject()
+FundingGroup(GroupType type)","Relationships:
+1 Company contain 2..8 Department
+
+1 Department associate 0..* Employee
+1 Department associate  0..* Project
+0..1 FundingGroup associate  0..* EducationProject
+0..1 FundingGroup associate  0..* CommunityProject
+0..* Project associate 0..* Employee
+
+ProductionProject inherit Project 
+ResearchProject inherit Project 
+EducationProject inherit Project 
+CommunityProject inherit Project "
+Online Food Delivery System (OFDS),"Online Food Delivery System (OFDS) is used by many companies for delivering food at the doorstep. Each company has a name. In addition, companies hire employees for food delivery. The type of an employee can be a part-time employees or a full-time employees. Each employee has a name. The system also allows the company to manage multiple vehicles. Each vehicle has a registration number. Also, the type of a vehicle can be an owned vehicle or a rented vehicle. Employees drive these vehicles for food delivery.","Enumerations:
+VehicleType(ownedVehicle, rentedVehicle)
+EmployeeType(full-time, part-time)
+
+Classes:
+Company(String name)
+Employee(EmployeeType type, String name)
+Vehicle(String registrationNumber, VehicleType type)","Relationships:
+1 Company associate 0..* Employee
+1 Employee associate 0..* Vehicle
+0..* Vehicle associate 0..* Company"
+Map Information System (MIS),"A system used by map makers at the Government of Ootumlia contains information about various maps. Each map has a scale, and name. Each map also has information that defines the latitude and longitude of the top left corner of the map, and the height and width of the map in meters. A map includes several features where each feature has a name. Also, a feature can be curve feature, point feature, or region feature.","Classes:
+Map()
+Feature(String name)
+FeatureType()
+CurveFeature()
+PointFeature()
+RegionFeature()","Relationships:
+1 Map contain 0..* Feature
+1 Feature associate 1 FeatureType
+RegionFeature inherit Feature
+PointFeature inherit Feature
+PointFeature inherit Feature"
+Event Management System (EMS),"An event is organized in a venue. An event can be a CONCERT event or a THEATRICAL event. A venue can be an OPEN venue or a CLOSED venue. Each venue is comprised of multiple seats. These seats have different types of sections. A section can be of types - parquet center, balcony center ... Each seat has a number. The events are organized for different shows every 9 pm. Each show has a date.","Enumerations:
+EventType(concert, theatrical)
+VenueType(open, closed)
+SectionType(balconyCenter, parquetCenter)
+
+Classes:
+Event(EventType type)
+Showing(Date date)
+Venue(VenueType venue)
+Seat(Int number, SectionType section)","Relationships:
+1 Event associate 0..* Showing
+1 Event associate 0..* Venue
+1 Venue  associate  0..* Seat
+0..*  Showing associate  0..* Seat"
+Online Paper Review System (OPRS),"To help the program chair, we are planning to develop a computer-assisted review system. The system will be available to users who can be authors, reviewers, and co-chairs. Each user has a name. Papers are known by the title and whether they are research papers or experience report papers. The paper is reviewed by at least three reviewers. On the other side, the authors can submit as many papers as they want. When a reviewer logs in, she can consult the list of papers that have been assigned to her for review, and submit reviews for each of those papers.   Each review has feedback as well as grade that can be Accept or Reject. A final decision is made by the chair for each paper.","Enumerations:
+PaperType(experienceReport, research)
+DecisionKind(accept, reject, undecided)
+
+Classes:
+Person(String name)
+Role(Boolean chair)
+Reviewer()
+Author()
+Chair()
+Paper(DecisionKind decision, String title, PaperType type)
+Review(DecisionKind grade, String feedback)","Relationships:
+1 Person associate  0..2 Role
+1 Reviewer  associate  3..* Paper
+1 Paper  associate  0..* Review
+0..* Author  associate  0..* Paper
+Author inherit Role
+Reviewer  inherit Role
+Chair  inherit Role"
+Online Library Reservation System (OLRS),"Online Library System (OLS) provides easy access to customers to order different library items. A customer can place multiple orders. The status of an order can be pending or completed. Furthermore, each order is composed of multiple item lines. Each item line has a quantity. An item line is associated with a library item. The library item can be a book item or a digital item. Each library item has a status. The status can be available, hold, or loan. The book item can be of types - eBook format or print format. On the other side, the digital item can be an audio item or a video item. In addition, a digital item also has two options - downloadable and disc.","Enumerations:
+Status(pending, completed)
+ItemStatus(Hold, Loan, available)
+BookFormat(eBook, print)
+DigitalType(downloadable, disc)
+DigitalItemType(Audio, Video)
+
+Classes:
+Customer()
+Order(Status status)
+ItemLine(Int quantity)
+LibraryItem(ItemStatus status)
+Book(BookFormat format)
+Digital(DigitalType type)","Relationships:
+1 Order contain 0..* ItemLine
+
+1 Customer associate 0..* Order
+0..* ItemLine associate  1 LibraryItem
+Book inherite LibraryItem 
+Digital  inherite LibraryItem "
+University Enrollment System (UES),"University admits many students every year. Each student has a name and ID. A student can be of types part-time or full-time. After admission, students can attend up to five courses in a semester. The courses can be of types - research-based and project-based. University also allows students to drop the courses in the first two weeks. If a student drops the course within the first two weeks then no penalty is imposed by the university.","Enumerations:
+Type(research-based, project-based)
+Status(part-time, full-time)
+
+Classes:
+University()
+Students(String name, Status status, Integer id)
+Course(Type type)
+","Relationships:
+1 University associate 0..* Students
+0..* Students  associate 0..* Course"
+Online Rideshare System (ORS),"Online Rideshare System (ORS) allows users to manage road trips that are organized on a sharing basis. The users can be drivers or customers. Each user has a unique ID, email, and phone number. The system allows a driver to post trips. The trips can be direct trips or indirect trips (multiple stops). Each trip has a departure station, arrival station, number of seats, departure date, departure time, arrival time, and price. The customers can book seats until 2 hours before the departure time. The users can register for a membership package that includes rewards. These rewards can be in the form of cashback, discounts, or points.","Enumerations:
+TripType(direct, indirect)
+RewardType(cashback, discounts, points)
+
+Classes:
+User(Integer id, Integer phoneNumber, String email)
+Membership()
+Reward(RewardType type)
+Role()
+Driver()
+Customer()
+Trip(String departureStation, String arrivalStation, Integer numberOfSeats, Date departureDate, Time departureTime, Time arrivalTime, Float price, TripType tripType)
+","Relationships:
+Membership contain 0..1 Reward
+Driver inherit User
+Driver inherit User
+1 User associate 0..1 Membership
+1 User associate  0..2 Role 
+1 Driver associate 0..*  Trip
+0..* Customer associate 0..* Trip"
+Bank Management System (BMS),"This system provides basic services to manage bank accounts at various banks. Banks can be of types - public and private. Also, each bank has a service category. The service category can be national or international. Each bank is composed of multiple branches. Each branch has multiple addresses such as temporary addresses and permanent addresses. In addition, a branch can be the main branch or an express branch. A user can be a customer or an employee. Each user has a name. A customer opens accounts at a branch. The customer can be a general customer or a VIP customer. Each account is uniquely identified by an account number across the bank. Furthermore, the account can be a checking account or savings account. It is possible to have a joint account (e.g. for a husband and wife). Each customer is assigned a particular employee as his or her 'personal banker'. An employee can be a teller, manager, or loan officer at a bank. Employees may work for multiple branches in a bank.","Enumerations:
+AddressType(temporary, permanent)
+BranchType(main, express)
+BankType(public, private)
+ServiceCategory(national, international)
+AccountType(chequing, savings)
+CustomerCategory(general, vip)
+EmpPosition(teller, manager, loanOfficer)
+
+Classes:
+Address(String address, AddressType type)
+Branch(BranchType type)
+Bank(BankType type, ServiceCategory category)
+Account(AccountType type, String number)
+Person(String name)
+Role()
+Customer(CustomerCategory category)
+Employee(EmpPosition position)","Relationships:
+1 Bank contain 1..* Branch  
+
+Customer inherit Role
+Employee inherit Role
+
+0..* Address associate 0..1 Branch
+0..1 Branch associate 0..* Account
+0..* Account associate 1..2  Customer 
+0..* Branch associate 0..*  Employee 
+0..* Customer associate 1 Employee 
+0..2 Role associate 1 Person"
+Library System(LS),"An automated library book borrowing system maintains a collection of books. Each book has title, barcode, ISBN, and number of pages. In addition, the system allows users to have either a MEMBER User or a GUEST User. Each user (member/guest) has a name, email, address, and ID. A user can checkout a book on loan which has the start date and end date.","Classes:
+User(String name, String email, Integer id)
+Book(Integer numberOfPages, String title, String authorName, String isbn)
+BookCopy(String barcode)
+Loan(Date startDate, Date endDate)
+Guest()
+Member()","Relationships:
+1 User associate  0..1 Loan
+1 Loan associate  0..* BookCopy
+1 Book associate 0..* BookCopy
+Member inherit User
+Guest inherit User"
+Online Art Gallery System (OAGS),"Online Art Gallery System allows artists to put their artwork on auction. Each artist has a name, phone number, id, email, address and gender. To place artwork in an auction, each artist need a membership which can be of types -- individual membership, agency membership, and agency affiliate memberships. Each membership has an ID, start date, end date, and reward points. An artist can have multiple artworks where each artwork has a title, description, category (painting, sculpture, and architecture), and price. ","Enumerations:
+Category(painting, sculpture, architectural)
+MembershipType(individual, agency, agency-affiliate)
+
+Classes:
+Artist(String name, String address, String email, String contactNo, String gender)
+Membership(Date startDate, Date endDate, Integer ID, Integer rewardPoints, MembershipType type)
+Artwork(String description, String title, Category category, Float price)","Relationships:
+1 Artist associate 0..* Artwork
+1 Artist associate 1 Membership
+"
+Project Management System (PMS),"A project management system assigns one or multiple projects to students. A student can be an undergraduate student or a graduate student. Each student has a name, email and student id.  Furthermore, each project has a title, description, start date, deadline, and grade. These projects can be classified as research projects or course-based projects. ","Enumerations:
+ProjectType(Research, CourseBased)
+
+Classes:
+Student(String name, Integer id, String email)
+Project(Date startDate, Date deadline, String title, String description, String grade)
+UndergraduateStudent() 
+GraduateStudent()","Relationships:
+1..* Student associate 0..* Project
+GraduateStudent Inherit  Student
+UndergraduateStudent Inherit  Student"

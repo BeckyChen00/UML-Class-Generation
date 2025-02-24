@@ -1,0 +1,1056 @@
+Name,Description,Classes,Associations
+BTMS,"A city is using the Bus Transportation Management System (BTMS) to simplify the day-to-day activities related to the city's public bus system.
+
+The BTMS keeps track of a driver's name and automatically assigns a unique ID to each driver. A bus route is identified by a unique number that is determined by city staff, while a bus is identified by its unique licence plate. The highest possible number for a bus route is 9999, while a licence plate number may be up to 10 characters long, inclusive. For up to a year in advance, city staff assigns buses to routes. Several buses may be assigned to a route per day. Each bus serves at the most one route per day but may be assigned to different routes on different days. Similarly, for up to a year in advance, city staff posts the schedule for its bus drivers. For each route, there is a morning shift, an afternoon shift, and a night shift. A driver is assigned by city staff to a shift for a particular bus on a particular day. The BTMS offers city staff great flexibility, i.e., there are no restrictions in terms of how many shifts a bus driver has per day. It is even possible to assign a bus driver to two shifts at the same time.
+
+The current version of BTMS does not support the information of bus drivers or buses to be updated-only adding and deleting is supported. However, BTMS does support indicating whether a bus driver is on sick leave and whether a bus is in the repair shop. If that is the case, the driver cannot be scheduled or the bus cannot be assigned to a route. For a given day, an overview shows-for each route number-the licence plate number of each assigned bus, the entered shifts and the IDs and names of the assigned drivers. If a driver is currently sick or a bus is in the repair shop, the driver or bus, respectively, is highlighted in the overview.","Enumeration: 
+Shift(morning, afternoon, night)
+Classes: 
+BTMS()
+BusVehicle(string licencePlate, boolean inRepairShop)
+Route(int number)
+RouteAssignment(Date date)
+Driver(string name, string id, boolean onSickLeave)
+DriverSchedule(Shift shift)","1 BTMS contain * BusVehicle 
+1 BTMS contain * Route
+1 BTMS contain * RouteAssignment
+1 BTMS contain * Drivers
+1 BTMS contain * DriverSchedule
+
+* RouteAssignment associate 1 BusVehicle
+* RouteAssignment associate 1 Route
+
+* DriverSchedule associate 1 Driver
+* DriverSchedule associate 1 RouteAssignment"
+Team Sports Scouting (TSS),"The Team Sports Scouting System is used by various employees of the club, including the head coach, the director of the club and the scouts. It is the role of the head coach to identify designated player profiles for future signings, which includes designated target positions for a player (e.g. GK for goalkeeper, LB for left back, etc.), and other player attributes (identified by a name and a value).
+
+Scouts may note players a long list who seem to match a designated target profile at any time. This long list is periodically evaluated by the head scout when setting up scouting assignments for his team to investigate a specific player more thoroughly. As the completion of a scouting assignment, the scout submits a scouting report about the player, which includes the pros and cons of the player as well as a recommendation (e.g. key player, first team player, reserve team player, prospective player, not a good signing). 
+
+After comparing first scouting results for a designated player profile, the head coach and the head scout decide upon which players to move to the short list. Several other rounds of scouting can be carried out for each short-listed player as part of scouting assignments-some of which is carried out by the head scout himself. If a player is finally recommended for signing by the head scout, the director makes an official offer for the player.","Enumeration:
+Position(GK, LB)
+Recommendation(KEY_PLAYER, FIRST_TEAM_PLAYER, RESERVE_TEAM_PLAYER, PROSPECTIVE_PLAYER, NOT_RECOMMENDED)
+ScoutingStatus(LONG_LISTED, SHORT_LISTED, RECOMMENDED_FOR_SIGNING, OFFER_MADE)
+ScoutKind(REGULAR_SCOUNT, HEAD_SCOUT)
+
+Classes:
+TSS()
+Person(string firstName, string lastName)
+Player(ScoutingStatus status)
+HeadCoach()
+Director() 
+Scout(ScoutKind scoutKind)
+Club()
+Offer(int value)
+ScoutingAssignment()
+ScoutReport(string pro, string con, Recommendation recommendation)
+PlayerProfile(Position position)
+PlayerAttribute(string name, int value)","1 TSS contain * Person
+1 TSS contain * ScoutingAssignment
+1 TSS contain * PlayerProfile
+1 TSS contain * Club
+1 Director contain * Offer
+1 Club contain 0..1 Director
+1 Club contain 0..1 HeadCoach
+1 Club contain * Player
+1 Club contain * Scout
+1 Scout contain * ScoutingAssignment
+1 ScoutingAssignment contain 0..1 report
+1 HeadCoach contain * PlayerProfile
+1 PlayerProfile contain * PlayerAttribute
+
+Player inherit Person
+HeadCoach inherit Person
+Director inherit Person
+Scout inherit Person
+
+* Offer associate 0..1 Player
+0..1 Player associate 0..1 PlayerProfile
+1 player associate * ScoutingAssignment
+1 ScoutReport associate 1 ScoutReport"
+Smart home automation system (SHAS),"A smart home automation system (SHAS) offers various users to automatically manage smart home automation tasks. A smart home (located at a physical address) consists of several rooms, each of which may contain sensor devices and actuator (controller) devices of different types (e.g. temperature sensor, movement sensor, light controller, lock controller). Each sensor and actuator have a unique device identifier. Once a new sensor or actuator is activated or deactivated, SHAS will recognize the change and update its infrastructure map.
+
+When SHAS is operational, a sensor device periodically provides sensor readings (recording the measured value and the timestamp). Similarly, a predefined set of control commands (e.g. lockDoor, turnOnHeating) can be sent to the actuator devices with the timestamp and the status of the command (e.g. requested, completed, failed, etc.). All sensor readings and control commands for a smart home are recorded by SHAS in an activity log.
+Relevant alerts in a smart home can be set up and managed by its owner by setting up automation rules. An automation rule has a precondition and an action. The precondition is a Boolean expression constructed from relational terms connected by basic Boolean operators (AND, OR, NOT). Atomic relational terms may refer to rooms, sensors, actuators, sensor readings and control commands. The action is a sequence of control commands. For example, a sample rule could specify:
+when actualTemperature by Device #1244 in Living Room < 18 and window is closed 
+then turnOnHeating in Living Room
+Automation rules can be created, edited, activated and deactivated by owners. Only deactivated rules can be edited. Rules can also depend on or conflict with other rules, thus a complex rule hierarchy can be designed. SHAS records whenever an active rule was triggered using a timestamp.","Enumeration:
+DeviceStatus(Activated, Deactivated)
+CommandType (lockDoor, turnOnHeating)
+CommandStatus (Requested, Completed, Failed)
+RuleStatus (created, edited, activated, deactivated )
+BinaryOp (AND, OR )
+Classes:
+SHAS()
+SmartHome()
+User(string name)
+Address(string city, string postalCode, string street, string aptNumber)
+Room()
+Device(DeviceStatus deviceStatus, int deviceID)
+SensorDevice()
+ActuatorDevice()
+ActvityLog()
+abstract RuntimeElement(time timestamp)
+SensorReading(double value)
+ControlCommand(CommandType commandType, CommandStatus commandStatus)
+AlertRule(RuleStatus ruleStatus)
+abstract BooleanExpression()
+RelationalTerm()
+NotExpression()
+BinaryExpression(BinaryOp binaryOp)
+CommandSequence()","0..1 SHAS contain * SmartHome
+1 SHAS contain * User
+
+1 SmartHome contain 0..1 Address
+1 SmartHome contain 0..* Room
+1 SmartHome contain 0..1 ActivityLog
+* SmartHome associate * User
+
+1 Room contain * SensorDevice
+1 Room contain * ActuatorDevice
+
+1 ActivityLog contain * SensorReading
+1 ActivityLog contain * ControlCommand
+
+* SensorReading associate 1 SensorDevice
+
+* ControlCommand associate * ActuatorDevice
+
+1 AlertRule contain 0..1 BooleanExpression
+1 AlertRule contain * CommandSequence
+
+* RelationalTerm associate 0..1  Room
+* RelationalTerm associate 0..1  SensorDevice
+* RelationalTerm associate 0..1  ActuatorDevice
+* RelationalTerm associate 0..1  SensorReading
+* RelationalTerm associate 0..1  ControlCommand
+
+0..1 NotExpression associate 1 BooleanExpression
+
+0..1 BinaryExpression associate 1 BooleanExpreesion
+0..1 BinaryExpression associate 1 BooleanExpreesion
+
+* CommandSequence associate 0..1 CommandSequence
+1 CommandSequence contain 0..1 ControlCommand
+
+SensorDevice inherit Device
+ActuatorDevice inherit Device"
+Tile-O,"The Tile-O application first allows a game designer to design a board game and then allows players to play the game. Only one game can be played at a time and it cannot be paused or saved. The objective of the game is to find a hidden tile on the board. Two to four players take turns by moving their playing pieces along connected tiles based on the roll of a die. Each playing piece has a different color. 
+
+A designer first defines the whole game including the layout of the game board. The designer places the tiles on the board and connects them with connection pieces. A tile can be connected to other tiles on its right side, left side, top side, and bottom side. At the most one tile can be connected on each side. In addition, the designer indicates the hidden tile, the starting positions of each player, as well as the location of action tiles. 
+
+The designer also defines a deck of 32 action cards by choosing from the following predefined choices: (i) roll the die for an extra turn, (ii) connect two adjacent tiles with a connection piece from the pile of 32 spare connection pieces, (iii) remove a connection piece from the board and place it in the pile of spare connection pieces, (iv) move your playing piece to an arbitrary tile that is not your current tile, and (v) lose your next turn. 
+
+Players take turns, with Player 1 starting the game, followed by Player 2, Player 3 (if applicable), and Player 4 (if applicable). The player whose turn it is rolls the die and them moves their playing piece along connected tiles. If the player lands on any tile, the color of the tile changes from white to black to indicate that the tile has been visited during the game. If the player lands on the hidden tile, the game ends and the player wins the game. If the player lands on an action tile, the player takes the first action card from the deck of action cards and follows the instructions on the action card. In addition, the action tile turns into a regular tile for a number of turns as specified by the game designer. Players do not know whether a tile is an action tile until a player lands on it.","Enumeration:
+Mode(design, game)
+Color(red, blue, green, yellow)
+
+Classes:
+TileO()
+Game(int currentConnectionPieces, Mode mode, int spaceConnectionPieces=32, int numberOfActionCards=32)
+Connection()
+WinTile()
+Die()
+Deck()
+Tile(int x, int y)
+ActionCard(string instructions)
+RollDieActionCard()
+ConnectTilesActionCard()
+RemoveConnectionActionCard()
+TeleportActionCard()
+LoseTurnActionCard()
+ActionTile()
+NormalTile()
+Player(int number, int turnsUntilActive, Color color)","1 TileO contain * Game
+1 Game contain * Tile
+1 Game contain * Connection
+1 Game contain 1 Die
+1 Game contain 1 Deck
+1 Game contain 0..1 Player
+1 Deck contain 0..32 ActionCard
+
+WinTile inherit Tile
+ActionTile inherit Tile
+NormalTile inherit Tile
+RollDieActionCard inherit ActionCard
+ConnectTilesActionCard inherit ActionCard  
+RemoveConnectionActionCard inherit ActionCard
+TeleportActionCard inherit ActionCard
+LoseTurnActionCard inherit ActionCard
+
+1 Game associate 0..1 WinTile
+0..4 Connection associate 2 Tile
+1 Player associate 0..1 Tile
+0..4 Player associate 0..1 Tile
+1 Deck associate 0..1 ActionCard"
+Block 223,"The DestroyBlockapplication first allows a game admin to design a DestroyBlockgame and then players to play the game and compete for an entry in the game's hall of fame.
+
+DESIGN GAME:A user has a unique username. A user is always a player and optionally an admin. A user has the same password as a player and as an admin and chooses the admin mode or play mode when logging into the application. Only an admin may create a game.
+
+Each game has a unique name and its own hall of fame. The admin designs a game by defining a set of blocks. Each block has a color and is worth a certain number of points between 1 and 1000 as specified by the admin.
+
+A game has several levels as defined by the admin. Levels are numbered starting with Level 1 and the maximum number of levels is 99. For each level, the admin specifies the starting arrangement of blocks. Each block is placed in one cell of a grid system. The block at the top left corner is in grid position 1/1, the one to the right of it is in grid position 2/1, the one below it is in grid position 1/2, and so on. The admin may also define a level as random, i.e., the blocks at the top are randomly selected for the level from the set of blocks defined by the admin.
+
+The number of blocks shown at the beginning of each level is the same and is also defined by the admin. With each level, the speed of the ball increases starting at its minimum speed and the length of the paddle is reduced gradually from its maximum length to its minimum length. The minimum speed, speed increase factor, maximum length, and minimum length are all specified by the admin for the game.
+
+PLAY GAME: A player can play a game when it is published by the game admin. At the beginning of a game or level, the DestroyBlockapplication places the blocks at the top of the play area as specified by the admin in the design phase. The ball is placed in the center of the play area and drops in a straight line towards the bottom. The paddle of the player is positioned in the middle at the bottom of the play area. The player moves the paddle to the right or left at the bottom of the play area while trying to bounce the ball towards the blocks. The ball moves at a certain speed in a certain direction. The ball bounces back from the wall at the top as well as the two side walls on the right and left. If the ball hits a block, the ball bounces back, the block disappears, and the player scores the points of the hit block.
+
+When the ball hits the last block, the player advances to the next level. If the ball reaches the bottom wall, the ball is out-of-bounds and the player loses one life. The player starts a game with three lives. When the player has lost all three lives or the player has finished the last level, the game ends and the total score is displayed in the game?? hall of fame.
+
+At the end of a level or when the player pauses the game, the game is saved. A paused game can be resumed by the player. The next level of a game does not start automatically but only upon player confirmation.
+
+A user may be a player for one game and an admin for another game but cannot be both for the same game. There is only one admin per game. Players compete against each other for the high score in the game- hall of fame. A player may play different games and the same game multiple times. However, only one game may be played at any point in time, i.e., games are not played in parallel.","Classes:
+
+DestroyBlock()
+User(string username, string password)
+BlockAssignment(int gridHorizontalPosition, int gridVerticalPosition)
+Level(boolean isRandom)
+Game(string name, int nrBlocksPerLevel)
+Block(int id, int red, int green, int blue, int points)
+Paddle(int amxPaddleLength, int minPaddleLength)
+Ball(int minBallSpeedX, int minBallSpeedY)
+HallOfFameEntry(int score)
+PlayedGame(int id, int score, int lives, int currentLevel)
+PlayedBall(double ballDirectionX, double ballDirectionY, double currentBallX, double currentBallY)
+PlayedPaddle(double currentPaddleLength, double currentPaddleX, double currentPaddleY)
+PlayedBlockAssignment(int x, int y)","
+1 DestroyBlock contain * User
+1 DestroyBlock contain * Game
+1 DestroyBlock contain * PlayedGame
+1 DestroyBlock contain * HallOfFameEntry
+
+1 Game contain * Block
+1 Game contain 1 Paddle
+1 Game contain 1 Ball
+1 Game contain 1..* Level
+1 Level contain * BlockAssignment
+
+1 User associate * Game
+* BlockAssignment associate 1 Block
+1 User associate * HallOfFameEntry
+* HallOfFameEntry associate 1 Game
+1 Game associate * PlayedGame
+1 Block associate * PlayedBlockAssignment
+
+1 PlayedGame contain * PlayedBlockAssignment
+1 PlayedGame contain 1 PlayedPaddle
+1 PlayedGame contain 1 PlayedBall"
+Online Tutoring System (OTS),"The OTS is used by students and tutors where a tutor may also be a student. At registration, tutors need to provide their name, email address and bank account. After that, tutors may offer online tutoring in different subjects (e.g. mathematics, science, literature, etc.) by providing their level of expertise (e.g. primary school level, high school level, university level) in the given subject and their hourly price of a tutoring session (which may again be subject specific). Tutors may specify their weekly availability for tutoring sessions (e.g. Thursdays from 10:00 to 11:30).
+Registered students (with a name and an email address) may browse available tutoring offers in a specific subject and then make a tutoring request from the designated tutor by specifying the level of tutoring. This request should suggest the target date and time of the first tutoring session. The tutor may confirm the requested tutoring session or offer a session at another slot. Once the session is agreed, the tutor and the student is expected to turn up at the given time for tutoring. During the tutoring session, the student and the tutor may agree upon to schedule follow-up a tutoring session. After the actual tutoring session, the student pays for the session (with a credit card or wire transfer).
+A tutoring session may be cancelled by either the student or the tutor. However, if the student cancels less than 24 hours prior to the session then 75% of the session's price has to be paid. If the tutor cancels within 24 hours then he/she needs to offer a 25% discount for his/her next session to the same student.","Enumeration:
+LevelOfTutoring(PrimarySchoolLevel, HighSchoolLevel, UniversityLevel)
+SessionStatus(Proposed, Confirmed, Completed, Paid, Cancelled)
+PaymentKind(CreditCard, WireTransfer)
+
+Classes:
+OTS()
+Subject(string name)
+User(string name, string email)
+BestTutorAward(int year, int month)
+Tutor(string bankAccount)
+TutoringOffer(float hourlyPrice)
+TutorAvailability(Date startTime, Time endTime)
+abstract TutoringRole()
+abstract TutoringElement(LevelOfTutoring tutoringLevel)
+Student()
+TutoringRequest()
+TutoringSession(Date sessionDate, float totalPrice, SessionStatus sessionStatus)
+Payment(PaymentKind paymentForm, date paymentDate)","1 OTS contain * Subject
+1 OTS contain * User
+1 OTS contain * BestTutorAward
+1 Tutor contain * TutoringOffer
+1 Tutor contain * TutorAvailability
+1 User contain 0..2 TutoringRole
+1 Student contain * TutoringRequest
+1 TutoringRequest contain * TutoringSession
+1 TutoringSession contain 0..1 Payment
+
+Tutor inherit TutoringRole
+Student inherit TutoringRole
+TutoringRequest inherit TutoringElement
+TutoringOffer inherit TutoringElement
+
+1 Subject associate * TutoringOffer
+0..1 TutoringOffer associate * TutoringRequest
+1 TutoringRequest associate 0..1 TutoringSession
+1 TutoringSession associate 0..1 TutoringSession
+1 Subject associate * TutoringOffer
+1 Subject associate * TutoringRequest
+1 Tutor associate * BestTutorAward"
+Hotel Booking Management System (HBMS),"Hotel Booking Management System (HBMS)
+
+Business travellers use HMBS for booking special accommodation deals offered by participating hotels. Travellers register to HBMS by providing their name, billing information (incl. company name and address) and optional travel preferences (e.g. breakfast included, free wifi, 24/7 front desk, etc.).
+
+When searching for accommodation, the traveller specifies the city, the date of arrival and departure, the number of needed rooms and the type of rooms (e.g. single, double, twin), minimum hotel rating (stars), a tentative budget (max. cost per night), and optionally, further travel preferences to filter offers in the search results. HBMS lists all available offers of hotels for the given travel period, and the traveller can either create a preliminary booking or complete a booking in the regular way. Regular offer is a kind of offeres. 
+
+In case of a preliminary booking, HBMS forwards the key parameters of the booking information (i.e. price, city area, hotel rating and key preferences and a unique booking identifier) to other hotels so that they can compete for the traveller with special offers provided within the next 24 hours. After 24-hour deadline, HBMS sends the five best special offers to the traveller who can switch to the new offer or proceed with the original preliminary booking. Special offer is a kind of offeres.
+
+In both cases, the traveller needs to provide credit card information to finalize a booking. Each finalized booking can be either pre-paid (i.e. paid immediately when it cannot be reimbursed), or paid at hotel (when the traveller pays during his/her stay). A finalized booking needs to be confirmed by the hotel within 24 hours. A booking may also contain a cancellation deadline: if the traveller cancels a confirmed booking before this deadline, then there are no further consequences. However, if a confirmed booking is cancelled after this deadline, then 1-night accommodation is charged for the traveller. HBMS stores all past booking information for a traveller to calculate a reliability rating.
+
+Each hotel is located in a city at a particular address, and possibly run by a hotel chain. A hotel may announce its available types of rooms for a given period in HBMS, and may also inform HBMS when a particular type of room is fully booked. HBMS sends information about the preliminary booking information to competitor hotels together with the traveller's preferences and his/her reliability rating. The competitor hotels may then provide a special offer. Once a booking is finalized, the hotel needs to send a confirmation to the traveller. If a completed booking is not confirmed by the hotel within 24 hours, then HBMS needs to cancel it, and reimburse the traveller in case of a pre-paid booking. If the hotel needs to cancel a confirmed booking, then financial compensation must be offered to the traveller.","Enumeration:
+RoomType(SINGLE, DOUBLE, TWIN)
+BookingStatus(FINALIZED, CONFIRMED, CANCELLED_BY_HBMS, PRELIMINARY, CANCELLED_BY_TRAVELLER, CANCELLED_BY_HOTEL)
+PaymentType(PREPAID, PAID_AT_HOTEL)
+
+Classes:
+HBMS()
+HotelChain()
+HotelBookingManager()
+Traveller(string name, int reliabilityRating)
+BillingInformation(string companyName, string address)
+TravelPreference(string preference, string value)
+Hotel(string city, string country, string area, RoomAvailability availability)
+abstract Offer()
+SpecialOffer()
+RegularOffer()
+TravelSearch()
+SearchInfo()
+RoomAvailability()
+abstract TripInfo(int numberOfRooms, RoomType roomType, date arrivalDate, date departureDate, float budgetPerNight)
+BookingInfo()
+Booking(int bookingId, date cancellationDeadline, string creditCardNumber, BookingStatus bookingStatus, PaymentType paymentType, date confirmationDate, float paidAmount)","1 HotelChain contain * Hotel
+1 HotelBookingManager contain * HotelChain
+1 HotelBookingManager contain * Traveller
+1 Hotel contain * Offer
+1 Hotel contain * RoomAvailability
+1 Traveller contain * TravelSearch
+1 Traveller contain * TravelPreference
+1 Traveller contain 1 BillingInformation
+1 TravelSearch contain 1 SearchInfo
+1 TravelSearch contain * TravelPreference
+
+SpecialOffer inherit Offer
+RegularOffer inherit Offer
+RoomAvailability inherit TripInfo
+SearchInfo inherit TripInfo
+
+* RegularOffer associate * TravelSearch"
+H2S,"The Helping Hand Store (H2S) collects second hand articles and non-perishable foods from residents of the city of and distributes them to those in need. H2S also operates in other cities, but each location is run independently. To increase the number of items available for distribution, H2S is seeking to offer a Pickup and Delivery Service to its customers, which would allow a resident to schedule a pickup of items from a street address online at the H2S website.
+
+A resident enters a name, street address, phone number, optional email address, as well as a description of the items to be picked up. The resident places the items just outside the front door of the building at the stated street address in the morning of the weekday requested for pickup.
+
+H2S has a fleet of pickup vehicles, which it uses to collect items from residents. At the beginning of every weekday, a pickup route for that day is determined for each vehicle for which a volunteer driver is available. Volunteer drivers indicate their available days on the H2S website. The route takes into account the available storage space of a vehicle and the dimensions and weights of scheduled items. A scheduled pickup may occur anytime between 8:00 and 14:00. After completing all scheduled pickups, the driver drops off all collected second hand articles at H2S's distribution center. Non-perishable foods, on the other hand, are directly dropped off at the   food bank, which then deals with these items without further involvement from H2S.
+
+At H2S's distribution center, an H2S employee examines the quality of the received second hand articles. Those articles that can still be used are tagged with an RFID device. The H2S employee double checks the description of the article given by the resident and makes any corrections as needed. In addition, the H2S employee assigns a category to the article from a standard list of 134 categories (e.g., baby clothing, women's winter boots, fridge, microwave...).
+
+In some cities in which H2S operates, the distribution center offers an additional service for clients who receive second hand articles from H2S but are not able to personally visit the H2S distribution center. Instead, H2S allows those clients to indicate which categories of articles they need. At the end of each day, an H2S employee calls them to let them know about the relevant articles that were dropped off that day. If the client still needs an article, the H2S employee arranges delivery of the article to the client's home address. Delivery of such articles is made by a volunteer driver before picking up items according to the pickup route.","Enumeration:
+ItemCategory(BabyClothing, Fridge)
+Classes:
+H2S()
+Person(string name, string address, string phoneNumber, string emailAddress)
+abstract UserRole()
+Client(ItemCategory[] neededCategories)
+Volunteer() 
+Resident()
+Date()
+FoodItem()
+SecondHandArticle(string codeRFID, boolean discarded, ItemCategory category)
+Vehicle(string dimension, int weightRestriction)
+abstract Item(string description, string dimension, int weight, Date requestedPickedDate)
+Route(Date date)","1 H2S contain * Item
+1 H2S contain * Vehicle
+1 H2S contain * Route
+1 H2S contain * UserRole
+1 H2S contain * Person
+1 Volunteer contain * Date
+Client inherit UserRole
+Volunteer inherit UserRole
+Resident inherit UserRole
+SecondHandArticle inherit Item
+FoodItem inherit Item
+
+1 Person associate * UserRole
+0..1 Client associate * SecondHandArticle
+1 Volunteer associate * Route
+1 Vehicle associate * Route
+0..1 Route associate * Item
+0..1 Route associate * SecondHandArticle
+1 Resident associate * Item"
+Celebrations Organization System (CelO),"The CelO application helps families and groups of friends to organize birthday celebrations and other events. Organizers can keep track of which tasks have been completed and who attends. Attendees can indicate what they are bringing to the event.
+
+For a small event, there is typically one organizer, but larger events require several organizers. An organizer provides their first and last name, their email address (which is also used as their username), their postal address, their phone number, and their password. Furthermore, an organizer indicates the kind of event that needs to be planned by selecting from a list of events (e.g., birthday party, graduation party or creating a new kind of event. The start date/time and end date/time of the event must be specified as well as the occasion and location of the event. The location can again be selected from a list, or a new one can be created by specifying the name of the location and its address. An organizer then invites the attendees by entering their first and last names as well as their email addresses. Sometimes, an organizer is only managing the event but not attending the event. Sometimes, an organizer also attends the event. When an attendee receives the email invitation, the attendee can create an account (if they do not yet have an account) with a new password and their email address from the invitation as their username. Afterwards, the attendee can indicate whether they will attend the event, maybe will attend the event, or cannot attend the event. An organizer can view the invitation status of an event, e.g., how many attendees have replied or have not yet replied and who is coming for sure or maybe will be coming.
+
+When an organizer selects an event, an event-specific checklist is presented to the organizer. For example, a birthday party may have a task to bring a birthday cake. For each task on the checklist, an organizer can indicate that the task needs to be done, has been done, or is not applicable for the event. An organizer can also add new tasks to the list, which will then also be available for the next event. For example, an organizer can add to bring birthday candles to the list for a birthday party and this task will then be available for the next birthday party, too. An organizer can also designate a task on the checklist for attendees to accomplish. For example, an organizer can indicate that the birthday cake should be brought to the event by an attendee. If this is the case, then the list of tasks to be accomplished by attendees is shown to attendees that have confirmed their attendance to the event. An attendee can then select their tasks, so that the organizer can see who is bringing what to the event.","Enumeration:
+AttendeeStatus(Yes, Maybe, No, NoResponse)
+CompletionStatus(ToBeDone, Done, NotApplicable, Attendee)
+
+Classes:
+CelO()
+Person(string lastName, string firstName, string emailAddress, string password)
+abstract PersonRole()
+Organizer(string address, string phoneNumber)
+Attendee()
+TaskStatus(CompletionStatus status)
+Registration(AttendeeStatus status)
+CheckList(string description)
+Location(string name, string address)
+Event(string occasion, date startTime, date endTime)
+EventType(string name)","1 CelO contain * Person
+1 CelO contain * PersonRole
+1 CelO contain * TaskStatus
+1 CelO contain * Registration
+1 CelO contain * CheckList
+1 CelO contain * Location
+1 CelO contain * Event
+1 CelO contain * EventType
+
+Organizer inherit PersonRole
+Attendee inherit PersonRole
+ 
+1..* Organizer associate * Event
+0..1 Attendee associate * TaskStatus
+* Event associate * TaskStatus
+* TaskStatus associate * CheckList
+* Attendee associate * Registration
+* Attendee associate * TaskStatus
+* Registration associate * Event
+1 Location associate * Event
+1 EventType associate * Event
+1 EventType associate * CheckList"
+Lab Requisition Management System,"The LabTracker software helps (i) doctors manage the requisition of tests and examinations for patients and (ii) patients book appointments for tests and examinations at a lab. For the remainder of this description, tests and examinations are used interchangeably. 
+
+For a requisition, a doctor must provide their numeric practitioner number and signature for verification as well as their full name, their address, and their phone number. The signature is a digital signature, i.e., an image of the actual signature of the doctor. Furthermore, the doctor indicates the date from which the requisition is valid. The requisition must also show the patient's information including their alpha-numeric health number, first name and last name, date of birth, address, and phone number. A doctor cannot prescribe a test for themselves but can prescribe tests to someone else who is a doctor. 
+
+Several tests can be combined on one requisition but only if they belong to the same group of tests. For example, only blood tests can be combined on one requisition or only ultrasound examinations can be combined. It is not possible to have a blood test and an ultrasound examination on the same requisition. For each test, its duration is defined by the lab network, so that it is possible to schedule appointments accordingly. The duration of a test is the same at each lab. For some kinds of tests, it does not matter how many tests are performed. They take as long as a single test. For example, several blood tests can be performed on a blood sample, i.e., it takes as long to draw the blood sample for a single blood test as it does for several blood tests. 
+
+A doctor may also indicate that the tests on a requisition are to be repeated for a specified number of times and interval. The interval is either weekly, monthly, every half year, or yearly. All tests on a requisition are following the same repetition pattern. 
+
+The doctor and the patient can view the results of each test (either negative or positive) as well as the accompanying report. 
+
+A patient is required to make an appointment for some tests while others are walk-in only. For example, x-ray examinations require an appointment, but blood tests are walk-in only (i.e., it is not possible to make an appointment for a blood test). On the other hand, some tests only require a sample to be dropped off (e.g., a urine or stool sample). 
+
+To make an appointment for a requisition, a patient selects the desired lab based on the lab's address and business hours. For requisitions with repeated tests, a patient is only allowed to make one appointment at a time. The confirmation for an appointment also shows a confirmation number, the date as well as start/end times, and the name of the lab as well as its registration number. It is possible to change or cancel an appointment at any time but doing so within 24 hours of the appointment incurs a change/cancellation fee. Each lab determines its own fee and business hours. All labs are open every day of the year and offer all tests. The business hours of a lab do not change from one week to the next. Each day a lab is open from the day's start time to its end time, i.e., there are no breaks.","Enumeration:
+Interval(weekly, monthly, everyHalfYear, yearly)
+AccessType(reservable, walkIn, dropOff)
+DayOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday)
+
+Classes:
+LabTracker()
+Person(string lastName, string firstName, string address, string phoneNumber)
+abstract PersonRole(idNumber)
+Patient(string dateOfBirth)
+Doctor(string signature)
+Requisition(string effectiveDate, int repetitionCount, Interval repetitionInterval)
+TestResult(boolean negative, string report)
+SpecificTest(Data date)
+Appointment(string confirmation, Date date, string startTime, string endTime)
+BusinessHour(DayOfWeek dayOfWeek, string startTime, string endTime)
+Lab(string registrationNumber, string name, string address, boolean changeCancelFee)
+Test(string name, string duration)
+TestType(string name, string durationAdditive, AccessType access)","1 LabTracker contain * Person
+1 LabTracker contain * PersonRole
+1 LabTracker contain * Requisition
+1 LabTracker contain * TestResult
+1 LabTracker contain * SpecificTest
+1 LabTracker contain * Appointment
+1 LabTracker contain * BusinessHour 
+1 LabTracker contain * Lab
+1 LabTracker contain * Test
+1 LabTracker contain * TestType
+
+Patient inherit PersonRole
+Doctor inherit PersonRole
+
+1 Person associate 0..2 PersonRole
+1 Patient associate * Requisition
+* Requisition associate * Appointment
+* Appointment associate 1 Lab
+1 Doctor associate * Requisition
+1 Requsition associate * SpecificTest
+0..1 TestResult associate * SpecificTest
+1 Lab associate 7 Business
+1 Test associate * SpecificTest
+1 TestType associate * Test"
+Restaurant Management System,"Restaurant Management System,
+Purpose: Restaurant management systems are a type of restaurant management software intended to assist with the tasks associated with the day-to-day management of a restaurant. 
+Scope: A restaurant management system may also run on your tablet, so waiting staff can take orders and alert the kitchen and counter even before leaving the table.
+Requirements: Restaurant management systems can include the following:
+Point-of-sale System: Used to input orders and record payments. The system captures all transactions, including charges, payments, voids, promo deals, and expenses.
+Payment Processing: This allows you to accept various payment options like credit or debit cards and mobile payments.
+Restaurant Inventory Management: Used to monitor current stock, the cost of the items, and more. The system shows the order details and table number when the cook prepares the order. The waiter in the service section serves the customer. When the waiter serves, the system shows the waiter's name and table number.
+Employee Scheduling: Check employee attendance, shifts, and time off.
+The restaurant has more than one employee. Each employee has a name, age, and gender information. The restaurant has more than one section. These sections are kitchen, service, and cash. Personnel works according to their sections. Personnel can be cooks, waiters, and cashiers. The cook stays in the kitchen and prepares the orders. The waiter in the service section serves the customer. The cashier prepares the check according to the order details in the system.
+Payroll, Accounting Service: Used to manage employee payroll and monitor the restaurant's cash flow.","Enumeration:
+SectionKind(kitchen, service, cash)
+EvenType(attendance, shift, timeOff)
+
+Classes:
+RestaurantManagementSystem()
+Employee(string name, int age, boolean gender, SectionKind kind)
+EmployeeScheduling()
+SchedulingEvent(Employee employee, date startTime, date endTime)
+Inventory()
+Table(int number)
+Order(string details, string waiter)
+StockItem(string name, double cost, int amount)
+PaymentProcessing()
+PointOfSaleSystem()
+Payment(double amount)
+AccountingService()
+Payroll(double salaries)","1 RestaurantManagementSystem contain * Inventory
+1 RestaurantManagementSystem contain * PointOfSaleSystem
+1 RestaurantManagementSystem contain * AccountingService
+1 RestaurantManagementSystem contain * EmployeeScheduling
+1 EmployeeScheduling contain * SchedulingEvent
+1 Inventory contain * Table
+1 Inventory contain * StockItem
+1 AccountingService contain * Payroll
+1 PointOfSaleSystem contain * Order
+1 PointOfSaleSystem contain * Payment
+
+1 Payroll associate 0..1 Employee
+1 SchedulingEvent associate 0..1 Employee
+0..1 Order associate 0..1 Table
+0..1 Table associate 0..1 Order
+1 Payment associate 0..1 Order
+"
+Supermarket,"The processes we want to describe are recording the product on the shelf, the customer collecting product, and payment after choosing items; in this part, we have two types of customers: Normal and Extra-customer.
+
+Before purchasing products from different continents, the supermarket puts on store according to or following on type of each product. They use physical inventory where every product purchased is recorded by using the form of stock. When the chief of the store wants to check the number on the store, they take all forms for each product and then count products to verify if the number written on the form matches the number of products stored.
+
+After purchasing a new product or getting the outcome from a supplier, those products are recorded in stock. For selling, Products are recorded on the shelf of supermarkets. Others to the cold chamber (cheese, meat) or in the fridge and freezer sometimes come from the cold chamber toward the freezer before being recorded to the shelf, checking the product's expiration date.
+
+All products are recorded according to the group of each product, the group of alimentation products, the group of pastry/bakery, and butcher products. After recording all products on stock and shelf, it is necessary to record on the cashier's machine where recordable depending on the group. There is a person loaded that action in the supermarket who controller when the shelf is taken care of or occupied of products.
+
+When clients or customers enter the supermarket, saw the product wanted in a different group of products, and some employees can help us or orient clients/customers by showing where products are placed. After choosing and selecting products, one can take a basket for storing goods; before going, check the price, expiration date, and ingredients, then go to the cashier. Arriving there, they deposit around him; the cashier takes one by one entering on machine according also on a group of the product when finished, gives us to the controller to make the product on free packing. When the cashier finishes those transactions, they calculate and show the client/customer on-screen of the machine and tell the customer total of money they can pay, and give us an invoice when the customer or client needed.
+
+The delivery process begins when the customer first interacts with the service organization and ends when the delivery of the desired service is completed and the customer exits the process. At the supermarket, after getting the order from the chief of order, the bakery and pastry agent prepare the goods and quantities of the order. When finished, they package according to each category of product. Then the chief of order checks and counts if there is no mistake; when the number of orders written to the proforma invoice is well prepared, they give the order for put out before arriving to the customer. Some controllers check again to see if there is some product stolen. After those actions, customers get their order of items ordered; after delivery of that product, the stump and original of the proforma invoice are transferred to the office of the general director.
+
+After selecting the product and calculating the total money, the payment to the customer is made in the following ways:
+Cash: where the customer presents cash to the cashier or where the cashier receives money, and the customer gets an invoice. 
+Cheques: where customers present checks to the cashier for extra-person, not every customer, for example, MINISANTE, CNLS, Rwanda Revenue Authority, and Top Tower Hotel","Classes:
+Supermarket()
+Product(string group, int amountInStock, string placeInStock,int amountOnShelf,string placeOnShelf,double price,date expirationDate,string ingredients,string supplier)
+Order(double totalMoney)
+OrderItem(int amount, double money)
+DeliveryOrder(string customer,double money, string supplier)","
+1 Order contain * OrderItem
+
+1 OrderItem associate 0..1 Procuct
+1 DeliveryOrder associate * OrderItem
+1 Payment associate 1 Customer"
+HotelReservation,"The total price of the reservation depends on the time of year and the type of room. There are three types of rooms in the hotel. There are 100 odd numbered rooms which types are standard, and six even numbered rooms which are large-deluxe. The types of remaining rooms are Deluxe.
+The price of standard rooms:
+$60 for the summer season, 
+$40 for the spring season, 
+And $25 for the autumn season per night per person. The room takes up to 4 people. The price is calculated according to the number of people entering the room.
+Rates for the deluxe room:
+$90 per person per night in the summer,
+$75 in the spring,
+And $50 in the autumn. The room takes up to 4 people. The price is calculated according to the number of people entering the room.
+While calculating the price for Large Deluxe rooms, the number of people is not considered. It is $400 daily in the summer, $300 in the spring, and $250 in the autumn. There can be a maximum of 7 people in this room.
+The user must be registered for the first time to the system. She must enter for pre-payment, 'H' for payment with a wire transfer, and 'S' for a standard reservation. A 15% discount will be applied on the price calculated when pre-paid reservation is selected. When payment using a wire transfer is selected, if the number of guests exceeds three persons, 50% of 1 guest's fee and 75% of 1 guest's fee will be deducted from the calculated amount. In standard reservations, customers make payments at the end of the accommodation. If all the rooms are reserved before, the user will be asked to make a choice again. If the user wishes to make another reservation transaction, the loop must start, and all transactions must be repeated.","Enumeration:
+RoomType(standard,large-deluxe,deluxe)
+PaymentMethod(WireTransfer, StandardReservation)
+
+Classes:
+Room(RoomType type,int maxOccupancy)
+Reservation(string pre-payment, date checkinDate,date checkoutDate, int guestCount, PaymentMethod paymentMethod)
+User(string name)","1 Reservation associate 1 Room
+1 Reservation associate 1 User"
+Romano,"Romano's Italian Restaurant
+
+Romano's is the finest Italian restaurant in the city. Unless you are a celebrity or a good friend of Romano, you will need a reservation. A reservation is made for a specific time, date, and number of people. The reservation also captures the name and phone number of the person making the reservation. Each reservation is assigned a unique reservation number.
+
+There are two categories of reservations at Romano's: individual and banquet. Additional reservation information captured when an individual makes a reservation includes seating preference (inside or patio) and smoking preference (smoking or nonsmoking). Additional information captured for banquet reservations includes the group name and payment method.
+
+Seating at Romano's is limited. Romano's has a fixed number of tables. Each table is identified.
+
+By unique table number. Tables are further described by unique free-form descriptions such as ""located by the North window,"" ""located in front of the fountain,"" and ""by the kitchen door.""Each table is classified as a 2-person, 4-person, or 6-person table.
+
+When a reservation is made, Romano associates a specific tal4 number(s) to the reservation. A table can be utilized many times over the evening by many reservations. Romano tends to overbook tables. Therefore, there can be overlapping table reservations.
+
+The management structure at Romano's is hierarchical. Several restaurant managers report to Romano. The managers are responsible for managing the Maitre and the chefs and ensuring guests have a pleasant dining experience. The Maitre'd responsible for managing the waiters, bartenders, and bus personnel. The Chefs are responsible for managing the cooks and dishwashers.
+
+Each person working for Romano's must be classified as a manager, Maitre, waiter, bartender, chef, cook, bus person, or dishwasher. Additional information maintained by Romano's for each person includes the person's name, date of birth, and driver's license number.
+
+When the reservation party arrives at Romano's, the reservation is assigned to one waiter. A waiter can be assigned to many reservations during the evening"".
+
+The menu at Romano's is exquisite. There are many exciting and exotic items. A unique menu item number identifies each menu item. Information maintained by Romano for each.
+
+A menu item includes an item description of (e.g., ""chicken marsala,"" ""fish soup,"" ""endive salad,"" ""1988 Merlot wine"", etc.) and item prep time.
+
+Romanos classify each menu item as ""appetizer,"" ""entree"", ""dessert,"" or ""beverage.""
+
+The price of each menu item can vary based on the time of day. For example, some menu items have different lunch and dinner prices. Some of the menu items change prices for happy hour.
+To calculate the check at the end of the dinner, the waiter maintains a list, by reservation number, of the menu items ordered and the time that the menu item was ordered. In other words, each reservation can be associated with many menu items, and a menu item can be associated with many reservations.
+
+In addition to menu items, Romano's maintains a list of the food items utilized by the restaurant, such as chicken, mushrooms, bread sticks, red sauce, cream sauce, etc. Food items are utilized in the preparation of menu items. A unique food item number identifies each food item.
+
+Additional information maintained by Romano's about food items includes a description of the food item and a purchase flag. A purchase flag indicates that the food item is purchased from a vendor rather than Prepared in-house.
+
+Many menu items can utilize a food item. A menu item can utilize many food items. For example, the menu item ""chicken lasagna dinner"" is comprised of the food items ""chicken lasagna, Italian bread, and broccoli spears. The menu item ""fish soup"" is comprised of the food items fish soup, crackers, and melon balls.
+
+Each food item is classified by one unit of measure. For example, olive oil is measured in tablespoons (tsp.), mozzarella cheese is measured in ounces (oz), and breadsticks are measured in
+
+""each"" The complete domain of unit of measure is each ounce, sheet, pound, gram, and dozen.
+
+Each food item can be comprised of many other items, and each can be used as an ingredient to comprise other items. For example, the food item chicken lasagna comprises chicken, mozzarella cheese, ricotta cheese, sheet pasta, tomatoes, and red sauce. Red sauce comprises the food items tomato sauce, olive oil and garlic, and white wine vinegar. Mozzarella cheese can be used as an ingredient in chicken lasagna, endive salad, and cheese pizza.
+
+The relationship between food items is identified by a combination of a parent food item number and the food item number used as an ingredient (child) of the parent food item. Additional information about the relationship between food items is the quantity of the child's food item used. For example, chicken lasagna and cheese pizza use mozzarella cheese as an ingredient (child).
+
+Chicken lasagna uses three oz. of mozzarella cheese, and cheese pizza uses 9 oz of mozzarella cheese.","Enumeration:
+SeatingPreference(inside, patio)
+SmokingPreference(smoking, nonsmoking)
+TableType(2person, 4person, 6person)
+Role(manager,Maitre,waiter,bartender,chef,cook,busPerson,dishwasher)
+MenuItemType(appetizer,entree,dessert,deverage)
+Unit(ounce,sheet,pound,gram,dozen)
+
+Classes:
+Reservation(string name, string phoneNumber, int reservationNumber, string date, string time, int numberOfPeople)
+OrderItem(date orderTime)
+IndividualReservation(SeatingPreference seatingPreference, SmokingPreference smokingPreference)
+BanquetReservation(string groupName, string paymentMethod)
+Table(int tableNumber, string description, TableType type)
+Employee(string name, date dateOfBirth, string driverLicenseNumber, Role role)
+Menu()
+MenuItem(int number, string description, int prepTime, MenuItemType type)
+FoodItem(int number, string description, boolean purchase, Unit unit)
+Ingredient(double quantity)
+Restaurant()
+","1 Reservation contain 0..* OrderItem
+1 Restaurant contain * Reservation
+1 Restaurant contain * Employee
+1 Restaurant contain * Table
+1 Restaurant contain 1 Menu
+1 Restaurant contain * FoodItem
+
+1 Employee associate * Employee
+1 Reservation associate 1 Employee
+1 Reservation associate 0..* Table
+1 OrderItem associate 1 MenuItem
+1 MenuItem associate * Ingredient
+1 FoodItem associate * Ingredient
+1 Ingredient associate 1 FoodItem
+
+IndividualReservation inherit Reservation
+BanquetReservation inherit Reservation"
+SchlockBuster,"SchlockBuster video is a chain of video rental stores. A unique storeID identifies each store. Additional information about each store is the store address and phone number. SchlockBuster has many employees. An employee ID identifies each employee. Additional information about an employee is the employee's name, address, and phone number. Each employee has at least one and could have many phone numbers. Each employee's phone number is classified by a phone number type, such as an office phone number, home phone number, beeper number, etc. An employee can have many phone numbers but only one per phone number type.
+
+Each employee is classified as one type of employee: ""manager,"" ""cashier,"" or ""stocker. An employee type such as ""manager,"" ""cashier,"" or ""stocker"" can classify many employees. A store can employ many employees. An employee must be employed by one and only one store.
+
+There are numerous video titles (Braveheart, Lion King, Waterworld, etc.) available to SchlockBuster from many video distributors. SchlockBuster maintains a listing of titles by a title ID. Additional information for each title includes the title's name, run time(such as 120 minutes), and rating (G, PG, R).
+
+SchlockBuster maintains a listing of distributors by distributor ID. Additional information about a distributor includes the distributor's name and phone number. A video title is available from one and only one distributor. A distributor can provide many video titles.
+
+Each SchlockBuster store can carry many titles. Many stores can carry a title. All stores carry not all titles. In other words, stores can carry many of the same titles, and some can carry titles that other stores do not. SchlockBuster also maintains, by store, the amount (rental rate) that the store charges to customers to rent the title. This implies that each store can set its rental price for each title.
+
+A store can stock multiple copies (the physical cassette cartridge) of the same title. In other words, store 101 can maintain five physical cartridges of ""Mission Impossible."" A cartridge ID number identifies each cartridge. A cartridge utilization count is also maintained for each cartridge. The utilization count represents the number of times a cartridge has been rented. A cartridge status classifies each cartridge. The domain of cartridge status is Available"", ""Rented,"" and ""Broken."" A status type can apply to many cartridges.
+
+SchlockBuster maintains a record of each of its customers. A unique customer ID identifies each customer. Additional information maintained about each customer is the customer's name and the customer's phone number. Each customer is associated with the store where they enrolled as members to receive their SchlockBuster Video card. A customer can rent a video from any store. This relationship allows Schlockbuster to credit a portion of each rental amount to the home store of the member, regardless of where the video is rented.
+
+SchlockBuster maintains a record of each rental transaction. A rental ID number identifies each rental transaction. Each rental transaction is associated with one and only one customer. Each rental transaction is associated with (rented from) one and only one store. Each rental transaction also captures the rental date and total rental amount. Each rental transaction is associated with one or more rental transaction detail lines. Each rental transaction detail line captures the id of the cartridge being rented, the due date of the cartridge being rented, and the actual return date.","Enumeration:
+EmployeeType(manager, cashier, stocker)
+CartridgeStatus(Available, Rented, Broken)
+
+Classes:
+SchlockBuster()
+Store(string id, string phoneNumber, string address)
+Employee(string id, string address, string name,EmployeeType type)
+PhoneNumber(string type, string number)
+VideoTitle(string name, string id, string rating, int runtime)
+Distributor(string name, strign id, string phoneNumber)
+StoreVideoTitle(double charge)
+Cartridge(string id,int utilizationCount, CartridgeStatus status)
+Customer(string name, string id, string phoneNumber)
+Rental(string id,date rentalDate, double totalAmount)
+DetailLine(Cartridge cartridge, date returnDue, date actualReturnDate)","1 SchlockBuster contain * Store
+1 SchlockBuster contain * VideoTitle
+1 SchlockBuster contain * Distributor
+1 SchlockBuster contain * Customer
+1 SchlockBuster contain * Rental
+1 Store contain * StoreVideoTitle
+1 Store contain * Employee
+1 Employee contain * PhoneNumber
+1 StoreVideoTitle contain * Cartridge
+1 Rental contain * DetailLine
+
+1 VideoTitle associate 1 Distributor
+1 StoreVideoTitle associate 1 VideoTitle
+1 Cartridge associate 1 VideoTitle
+1 Customer associate 1 Store
+1 Rental associate 1 Customer
+1 Rental associate 1 Store
+1 DetailLine associate 1 Cartridge"
+Board Game,"Presentation of the board
+The board is a rectangular zone where the user can move some blocks. Let x be the mesure unit. The height of the board game is x; its width is x: x can't be less than 0 pixels and greater than 00 pixels. The blocks are separated by a marge of 0. x.
+There are four square blocks with a side of x.
+Four rectangular blocks have the following dimensions: a height of x and a width of x.
+One block has the dimensions: a height of x and a width of x.
+There is one square block with a side of x.
+The board is black, and the blocks are yellow.
+Block selection
+Input
+Left-clicked down on a block.
+Processing
+The game state becomes ""Block replacement.""
+Output None.
+
+Block deselection
+Input
+Left-clicked up on a selected block.
+Processing
+The game state becomes ""Block selection.""
+Output None.
+
+Block movement
+Input
+Mouse movement during the ""Block movement"" state. 
+Processing
+The selected block follows the mouse movement without overlapping the other blocks and exits the game zone. The selected block can' move near other blocks at least 0.0x from the other blocks.
+Output None.
+
+Undo Action
+Description
+The user can cancel a movement. 
+Input Menu selection.
+Processing
+The game displays the block positions at the places where they were before the last movement. This action is considered a movement. The ""undo"" action is unavailable if there is no previous movement.
+Output
+New game board display.","Enumeration:
+GameState(BlockSelection, BlockReplacement, BlockMovement)
+Classes:
+Board(int width, int height)
+Block(int width,int height)
+Game(GameState state)
+Movement()
+Position(int x,int y)
+","1 Board contain * Block
+1 Block contain 1 Position
+1 Game contain * Movement
+1 Game contain 1 Board
+1 Movement contain 1 Position
+
+1 Movement associate 1 Block"
+Centralized store,"Centralized store for user information 
+The Framework MUST be capable of capturing information from the software tools. The data captured SHOULD be stored in a centralized data store. The Framework MAY decide whether the information should be stored as Entities or Associates. The data capturing and archiving mechanisms MAY resemble the following. 
+Type of Information: Personnel Mechanism: The Address Book is used to create Entities under the category ""People"" (Category names are user definable. However,a particular set of categories like People, Email, etc. MAY always need to be present).The user SHOULD be able to modify,add,delete or group these Entities by navigating to a virtual folder (e.g.,""People"").
+Type of Information: Email (Outbound) Mechanism: An Associate is created to contain the message body. The recipien's name(s) are used to create (if required) Entities under the""People""  category. The Associate is then linked to each Entity. 
+Type of Information: Email (Inbound) Mechanism: An Associate is created to contain the message body.The sender's name is used to create Entities under the category ""People"" .The Associate is then linked to this Entity. 
+Type of Information: Website Documents Mechanism: The user SHOULD be able to specify when he is to start a research project, i.e. when the websites he visits subsequently are to be permanently stored. The project name specified by the user spawns a new Entity in the Framework. An associate is created as an archive and is linked to this Entity. 
+Type of Information: Textual Documents Mechanism: The user may optionally specify a descriptive name for the document. The document is automatically saved to disk in a manner that reflects the relationships it has with other Entities. The user may,in the future, fetch this document by following the relationship paths he had created.","Enumeration:
+Type(outbound,inbound,website,document)
+Classes:
+Folder(string name)
+Entity(string name)
+People()
+Project()
+Associate(string body,Type type)
+DataStore()
+AddressBook()","1 Folder contain * Entity
+1 Folder contain * Type
+1 DataStore contain * Folder
+
+1 Associate associate * Entity
+
+People inherit Entity
+Project inherit Entity"
+StuffLendingSystem,"The Stuff Lending System
+
+The Stuff Lending System allows members to lend out their belongings in exchange for credits, which they can use to borrow items from others. 
+The system tracks where items are at a given time. 
+The system controls the username and password and authenticates the person as a user role (Member, System Administrator) in the system, the assigned user role is presented. 
+The person need to supply a user name , password,an unique email and an unique phone number for registering the system. Then the system creates a new member profile, assigns a unique member ID, and records the date of creation.
+
+Firstly, Member could register their possessions to the system and earn credits for every listing. 
+Member adds item and provides the item details including category, name, and a short description. System validates the information and registers the item to the member's account. The system rewards member with 100 credits and records the day of item registration.
+
+They also lend items from other members using credits and are responsible for returning the items within the agreed time. System verifies the member's credit amounts against the item's lending cost. If sufficient credits exist, system creates a lending contract. Credits are transferred from lender member to lending member based on the contract.If member does not have enough credits or the item is unavailable, the system denies the lending request.
+Member can initiate a request to update item details and profile information. They can request to view existing contract details.
+
+Administrator manages overall system functionality and provides administrative oversight. This includes tracking item listings, membership records, and the day counter.
+Administrator can view Member/Item details and number of owned items, remove the member and their associated data from the system if the member exists in the system. 
+
+Administrator triggers Advance Day count command. System increases the current day count. System triggers all established lending contracts. Each lending contract triggers a credit transfer equalling the item's lending cost. System transfers credits from the borrowing member to the lending member's account. If a lending contract cannot be executed (i.e. insufficient credits), the system flags the contract and notifies both the borrowing and lending member.
+
+Member/ Administrator both can request to remove a specific item listed in the system and its associated data from the system.
+
+It should be considered that notifications or updates need to be sent to members especially in situations like credit transfers, item unavailability, or disputed transactions. This is a common feature in lending or rental platforms. ","Classes:
+StuffLendingSystem()
+Member(int credits)
+Administrator()
+User(string username, string password,string email,string phoneNumber,string memberID,date dateOfCreation)
+Notification(string content,date date)
+Item(string name,string shortDescription,int cost,date dateOfRegistration)
+DayCounter(int count)
+LendingContract(date returnDue)","1 StuffLendingSystem contain * User
+1 StuffLendingSystem contain * LendingContract
+1 StuffLendingSystem contain * Item
+1 StuffLendingSystem contain * DayCounter
+1 Member contain * Notification
+
+1 Member associate * Item
+1 LendingContract associate 1 Member
+1 LendingContract associate 1 Member
+1 LendingContract associate 1 Item
+
+Member inherit User
+Administrator inherit User"
+HRIS,"Human-Resources Information System(HRIS)
+
+The Human-Resources Information System (HRIS) web-based, it is divided into four parts; they are User Login Management, Employee Information Management, Employee Leaves Management, and Employee Discipline Management.
+
+In the User Login Management, it is divided into ordinary user login, and administrator user login. The ordinary user is the registered user, such as employees and so on. The administrators are responsible for maintaining and updating the entire system and have more rights on the system. This system includes employee information entry, employee information changes, employee information inquiry, and employee information deleted. The Employee Leaves Management includes: leave information input, leave information query and statistics leave information. Employee Discipline Management includes: input information punishment, query information punishment.
+1. User login Management is divided into ordinary user login and administrator login. When ordinary users log on, the system will give him low authority to meet the basic needs of ordinary users. When the user is an administrator, the system will assign a higher authority in order to achieve the system's updates and maintenance by the administrator.
+2. The Employee Information Management is mainly the basic information management for employees. Employees can view the personal information page their own such as (name, address, sex, minority status, etc.,) when they enter system and do not have any right to edit and manage of the information as defined by HR Policies of the organization. They can edit personal information only as defined by HR administrators of the organization and also uploads their personal photographs into the system. 
+3. The Employee leaves Management is the assessment of the daily work of employees. The employee worth an annual leave when he has at least one year of continuous service to be eligible for this type of leave. The employee can request another leave (maternity, satisfactory, without pay, etc.,) as well as a local leave period of seven days for a while if an employee did not complete the year on his appointment and will be in cases necessary only. The employee can send request leave to the administrator after getting employee's to initial approval from the senior management for submission of the application. The administrator can approve or reject the approval.
+4. The Employee Discipline Management is the It encourages harmony and cooperation among employees as well as acts as a morale booster for the employees. In the absence of discipline, there will be chaos, confusion, corruption and disobedience in an organization. If the employee has committed any breach, the senior management will determine the type of offense and the punishment necessary. After the notify system administrator, such as (dismissal, written reprimand, etc.) when the employee gets on three written reprimand the administrator will notify senior management to take appropriate procedures against the employee such as separating the employee or transmission in the same or the outside institution.
+
+
+
+
+
+","Enumerations:
+EmployeeRole(normal,seniorMangement)
+ApprovalStatus(pending,initial,approved,rejected)
+LeaveType(annual,maternity,satisfactory,withoutPay,local)
+PunishmentType(dismissal,writtenReprimand)
+Classes:
+User()
+Administrator()
+Employee(string name,string adress,boolean sex,string minorityStatus,string photo,EmployeeRole role,int leaveBalance)
+LeaveRequest(LeaveType leavetype,ApprovalStatus approvalStatus,date startDate,date endDate)
+DisciplineRecord(string offenseType,PunishmentType punishmentType)","
+1 LeaveRequest associate 1 Employee
+1 DisciplineRecord associate 1 Employee
+
+Administrator inherit User
+Employee inherit User"
+Yacht Club System,"The Yacht Club System
+
+The yacht club system--The system is used to manage the club's competition infomation, the member's boat berth information, and the membership fee. Person need to supply a user name and password to sign up for a user role (Member, Treasurer or Secretary). Then, the person can use the user name and password to login the system. 
+The secretary would be able to goes through all members'boats and book their berth in the spring.  
+The secretary can choose to list all berths. A list of unbooked and booked berths with information about the boat and member is presented. The secretary can choose to book berths. The system assign and book berths in accordance with applicable rules and update member information.
+The Secretary would also be able to manage the club's calendar where important events and meetings are advertised. The Secretary can add, delete or change a calendar event. Then, boat club calendar will be updated.
+The treasurer would be able to manage member payments in an efficient manner. The treasurer lists and sends a reminder to those members who have not paid enough dues for a calendar year. The treasurer choose to print an invoice for each member in the invoice also includes a reminder fee of 25% per year behind schedule.The system prints an invoice per member and records that the member received a payment reminder. The Treasurer would be able to change a Member's payment status to paid.
+Member of the boat club, probably owns one or more boats registered and want a good berth for these. Members could view and manage their membership data, including registered boats, as well as to have a smooth overview of their payment history. They would also like to be able to participate in various boat club meetings and social activities.
+Members need to pay their dues via credit card. The system transmits a transaction id and a total to third-party system for Credit Card Payment. Third Party Credit Card Payments System for process the transaction and reply with a positive result. The system updates the Member's pay status to paid and presents a receipt of the transaction.
+Members could register a new boat and need to supply boat details including size and type (sailboat, motorsailer, powerboat, kayak/canoe, other) and an optional image of the boat. The system presents the information for the boat to be registered, including cost of berth. The member confirms the correct information.If the boat is registered during the ""offseason""(October 1 to December 31) , system assigns no berth and the membership fee for the current year is unchanged. If the boat is registered during the pre-season (January 1 to April 1) when no berth assignment has been made yet, system assigns no berth. This is done by the Secretary before the start of the season.
+Members can remove one of their registered boats and change a boat's data. Members also are able to list calendar events including a short title and start date in a certain time interval, and view all details for a particular calendar event including start and end dates.
+Municipality could know what boat owners have what berth. The tax authority has an interest in that the current regulations regarding the taxation of income associations are followed.","Enumerations:
+BoatType(sailboat,motosailer,powerboat,kayak,other)
+
+Classes:
+YachtClubSystem()
+User(string name,string password)
+Member(boolean paymentStatus,double membershipFee,string creditCard)
+Treasurer()
+Secretary()
+Reminder(date due,double fee)
+Receipt()
+Boat(double size, BoatType type,string image, double berthCost, date registerDate)
+Berth(boolean isBooked)
+Event(string shortTitle,date startDate,date endDate)
+Calendar()
+","1 YachtClubSystem contain * User
+1 YachtClubSystem contain * Reminder
+1 YachtClubSystem contain * Receipt
+1 YachtClubSystem contain 1 Calendar
+1 YachtClubSystem contain * Berth
+1 Calendar contain * Event
+1 Member contain * Boat
+
+1 Member associate * Event
+1 Member associate * Receipt
+1 Reminder associate 1 User
+1 Boat associate 1 Berth
+
+Member inherit User
+Treasurer inherit User
+Secretary inherit User"
+Online Project Management System (OPMS),"A company is comprised of two to eight departments. Each department has an ID and email. A department hires employees for certain projects. Employees working on projects can be temporary employees or permanent employees. Each employee is identified by a name, email, employee ID, employee number. Projects can be of types - production projects, research projects, education projects, and community projects. All projects have a title, description, budget amount, and deadline. In addition , each education project and community project are associated with one funding group. The funding group can be of types - private group, government group, or mixed group. The production projects are characterized by a site code.","Enumerations:
+GroupType(private, group, mixed)
+EmployeeType(temporary, permanent)
+
+Classes:
+Company()
+Department(Integer id, String email)
+Employee(String email, String name, String employeeID, String employeeNumber, EmployeeType type)
+Project(String title, String description, Float budget, Date deadline)
+ProductionProject(String siteCode)
+EducationProject()
+ResearchProject()
+CommunityProject()
+FundingGroup(GroupType type)","Relationships:
+1 Company contain 2..8 Department
+
+1 Department associate 0..* Employee
+1 Department associate  0..* Project
+0..1 FundingGroup associate  0..* EducationProject
+0..1 FundingGroup associate  0..* CommunityProject
+0..* Project associate 0..* Employee
+
+ProductionProject inherit Project 
+ResearchProject inherit Project 
+EducationProject inherit Project 
+CommunityProject inherit Project "
+Online Food Delivery System (OFDS),"Online Food Delivery System (OFDS) is used by many companies for delivering food at the doorstep. Each company has a name. In addition, companies hire employees for food delivery. The type of an employee can be a part-time employees or a full-time employees. Each employee has a name. The system also allows the company to manage multiple vehicles. Each vehicle has a registration number. Also, the type of a vehicle can be an owned vehicle or a rented vehicle. Employees drive these vehicles for food delivery.","Enumerations:
+VehicleType(ownedVehicle, rentedVehicle)
+EmployeeType(full-time, part-time)
+
+Classes:
+Company(String name)
+Employee(EmployeeType type, String name)
+Vehicle(String registrationNumber, VehicleType type)","Relationships:
+1 Company associate 0..* Employee
+1 Employee associate 0..* Vehicle
+0..* Vehicle associate 0..* Company"
+Map Information System (MIS),"A system used by map makers at the Government of Ootumlia contains information about various maps. Each map has a scale, and name. Each map also has information that defines the latitude and longitude of the top left corner of the map, and the height and width of the map in meters. A map includes several features where each feature has a name. Also, a feature can be curve feature, point feature, or region feature.","Classes:
+Map()
+Feature(String name)
+FeatureType()
+CurveFeature()
+PointFeature()
+RegionFeature()","Relationships:
+1 Map contain 0..* Feature
+1 Feature associate 1 FeatureType
+RegionFeature inherit Feature
+PointFeature inherit Feature
+PointFeature inherit Feature"
+Event Management System (EMS),"An event is organized in a venue. An event can be a CONCERT event or a THEATRICAL event. A venue can be an OPEN venue or a CLOSED venue. Each venue is comprised of multiple seats. These seats have different types of sections. A section can be of types - parquet center, balcony center ... Each seat has a number. The events are organized for different shows every 9 pm. Each show has a date.","Enumerations:
+EventType(concert, theatrical)
+VenueType(open, closed)
+SectionType(balconyCenter, parquetCenter)
+
+Classes:
+Event(EventType type)
+Showing(Date date)
+Venue(VenueType venue)
+Seat(Int number, SectionType section)","Relationships:
+1 Event associate 0..* Showing
+1 Event associate 0..* Venue
+1 Venue  associate  0..* Seat
+0..*  Showing associate  0..* Seat"
+Online Paper Review System (OPRS),"To help the program chair, we are planning to develop a computer-assisted review system. The system will be available to users who can be authors, reviewers, and co-chairs. Each user has a name. Papers are known by the title and whether they are research papers or experience report papers. The paper is reviewed by at least three reviewers. On the other side, the authors can submit as many papers as they want. When a reviewer logs in, she can consult the list of papers that have been assigned to her for review, and submit reviews for each of those papers.   Each review has feedback as well as grade that can be Accept or Reject. A final decision is made by the chair for each paper.","Enumerations:
+PaperType(experienceReport, research)
+DecisionKind(accept, reject, undecided)
+
+Classes:
+Person(String name)
+Role(Boolean chair)
+Reviewer()
+Author()
+Chair()
+Paper(DecisionKind decision, String title, PaperType type)
+Review(DecisionKind grade, String feedback)","Relationships:
+1 Person associate  0..2 Role
+1 Reviewer  associate  3..* Paper
+1 Paper  associate  0..* Review
+0..* Author  associate  0..* Paper
+Author inherit Role
+Reviewer  inherit Role
+Chair  inherit Role"
+Online Library Reservation System (OLRS),"Online Library System (OLS) provides easy access to customers to order different library items. A customer can place multiple orders. The status of an order can be pending or completed. Furthermore, each order is composed of multiple item lines. Each item line has a quantity. An item line is associated with a library item. The library item can be a book item or a digital item. Each library item has a status. The status can be available, hold, or loan. The book item can be of types - eBook format or print format. On the other side, the digital item can be an audio item or a video item. In addition, a digital item also has two options - downloadable and disc.","Enumerations:
+Status(pending, completed)
+ItemStatus(Hold, Loan, available)
+BookFormat(eBook, print)
+DigitalType(downloadable, disc)
+DigitalItemType(Audio, Video)
+
+Classes:
+Customer()
+Order(Status status)
+ItemLine(Int quantity)
+LibraryItem(ItemStatus status)
+Book(BookFormat format)
+Digital(DigitalType type)","Relationships:
+1 Order contain 0..* ItemLine
+
+1 Customer associate 0..* Order
+0..* ItemLine associate  1 LibraryItem
+Book inherite LibraryItem 
+Digital  inherite LibraryItem "
+University Enrollment System (UES),"University admits many students every year. Each student has a name and ID. A student can be of types part-time or full-time. After admission, students can attend up to five courses in a semester. The courses can be of types - research-based and project-based. University also allows students to drop the courses in the first two weeks. If a student drops the course within the first two weeks then no penalty is imposed by the university.","Enumerations:
+Type(research-based, project-based)
+Status(part-time, full-time)
+
+Classes:
+University()
+Students(String name, Status status, Integer id)
+Course(Type type)
+","Relationships:
+1 University associate 0..* Students
+0..* Students  associate 0..* Course"
+Online Rideshare System (ORS),"Online Rideshare System (ORS) allows users to manage road trips that are organized on a sharing basis. The users can be drivers or customers. Each user has a unique ID, email, and phone number. The system allows a driver to post trips. The trips can be direct trips or indirect trips (multiple stops). Each trip has a departure station, arrival station, number of seats, departure date, departure time, arrival time, and price. The customers can book seats until 2 hours before the departure time. The users can register for a membership package that includes rewards. These rewards can be in the form of cashback, discounts, or points.","Enumerations:
+TripType(direct, indirect)
+RewardType(cashback, discounts, points)
+
+Classes:
+User(Integer id, Integer phoneNumber, String email)
+Membership()
+Reward(RewardType type)
+Role()
+Driver()
+Customer()
+Trip(String departureStation, String arrivalStation, Integer numberOfSeats, Date departureDate, Time departureTime, Time arrivalTime, Float price, TripType tripType)
+","Relationships:
+Membership contain 0..1 Reward
+Driver inherit User
+Driver inherit User
+1 User associate 0..1 Membership
+1 User associate  0..2 Role 
+1 Driver associate 0..*  Trip
+0..* Customer associate 0..* Trip"
+Bank Management System (BMS),"This system provides basic services to manage bank accounts at various banks. Banks can be of types - public and private. Also, each bank has a service category. The service category can be national or international. Each bank is composed of multiple branches. Each branch has multiple addresses such as temporary addresses and permanent addresses. In addition, a branch can be the main branch or an express branch. A user can be a customer or an employee. Each user has a name. A customer opens accounts at a branch. The customer can be a general customer or a VIP customer. Each account is uniquely identified by an account number across the bank. Furthermore, the account can be a checking account or savings account. It is possible to have a joint account (e.g. for a husband and wife). Each customer is assigned a particular employee as his or her 'personal banker'. An employee can be a teller, manager, or loan officer at a bank. Employees may work for multiple branches in a bank.","Enumerations:
+AddressType(temporary, permanent)
+BranchType(main, express)
+BankType(public, private)
+ServiceCategory(national, international)
+AccountType(chequing, savings)
+CustomerCategory(general, vip)
+EmpPosition(teller, manager, loanOfficer)
+
+Classes:
+Address(String address, AddressType type)
+Branch(BranchType type)
+Bank(BankType type, ServiceCategory category)
+Account(AccountType type, String number)
+Person(String name)
+Role()
+Customer(CustomerCategory category)
+Employee(EmpPosition position)","Relationships:
+1 Bank contain 1..* Branch  
+
+Customer inherit Role
+Employee inherit Role
+
+0..* Address associate 0..1 Branch
+0..1 Branch associate 0..* Account
+0..* Account associate 1..2  Customer 
+0..* Branch associate 0..*  Employee 
+0..* Customer associate 1 Employee 
+0..2 Role associate 1 Person"
+Library System(LS),"An automated library book borrowing system maintains a collection of books. Each book has title, barcode, ISBN, and number of pages. In addition, the system allows users to have either a MEMBER User or a GUEST User. Each user (member/guest) has a name, email, address, and ID. A user can checkout a book on loan which has the start date and end date.","Classes:
+User(String name, String email, Integer id)
+Book(Integer numberOfPages, String title, String authorName, String isbn)
+BookCopy(String barcode)
+Loan(Date startDate, Date endDate)
+Guest()
+Member()","Relationships:
+1 User associate  0..1 Loan
+1 Loan associate  0..* BookCopy
+1 Book associate 0..* BookCopy
+Member inherit User
+Guest inherit User"
+Online Art Gallery System (OAGS),"Online Art Gallery System allows artists to put their artwork on auction. Each artist has a name, phone number, id, email, address and gender. To place artwork in an auction, each artist need a membership which can be of types -- individual membership, agency membership, and agency affiliate memberships. Each membership has an ID, start date, end date, and reward points. An artist can have multiple artworks where each artwork has a title, description, category (painting, sculpture, and architecture), and price. ","Enumerations:
+Category(painting, sculpture, architectural)
+MembershipType(individual, agency, agency-affiliate)
+
+Classes:
+Artist(String name, String address, String email, String contactNo, String gender)
+Membership(Date startDate, Date endDate, Integer ID, Integer rewardPoints, MembershipType type)
+Artwork(String description, String title, Category category, Float price)","Relationships:
+1 Artist associate 0..* Artwork
+1 Artist associate 1 Membership
+"
+Project Management System (PMS),"A project management system assigns one or multiple projects to students. A student can be an undergraduate student or a graduate student. Each student has a name, email and student id.  Furthermore, each project has a title, description, start date, deadline, and grade. These projects can be classified as research projects or course-based projects. ","Enumerations:
+ProjectType(Research, CourseBased)
+
+Classes:
+Student(String name, Integer id, String email)
+Project(Date startDate, Date deadline, String title, String description, String grade)
+UndergraduateStudent() 
+GraduateStudent()","Relationships:
+1..* Student associate 0..* Project
+GraduateStudent Inherit  Student
+UndergraduateStudent Inherit  Student"
