@@ -1,0 +1,1123 @@
+------------------------------------------------------------
+---------------------1/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Category (People, Email, etc.)
+
+Classes:
+1. Entity
+2. Associate
+3. AddressBook
+
+Relationships:
+1. AddressBook contain * Entity
+2. Associate contain * Entity (Outbound Email)
+3. Associate contain 1 Entity (Inbound Email)
+4. Entity inherit Associate (Website Documents)
+5. Entity inherit Associate (Textual Documents)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 AddressBook aggregation * Entity
+ 2 Associate aggregation * Entity
+ 3 Associate aggregation 1 Entity
+ False Entity inheritance False Associate
+ False Entity inheritance False Associate
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'AddressBook(class)'	-	'AddressBook(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   4                   8                   
+Attributes          3                   0                   8                   
+Associations        3                   0                   4                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+
+Class:
+1. InformationType(name: String)
+2. Mechanism(description: String)
+
+Relationships:
+1. 1 InformationType contain * Mechanism
+2. Mechanism associate 1..* InformationType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: InformationType (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Mechanism (enum) - Enum Attributes: [description], Class Attributes: []
+Relationships:
+ 1 InformationType aggregation * Mechanism
+ 2 Mechanism association 1..* InformationType
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'InformationType(enum)'	-	'Folder(class)'
+-Attributes:
+ 'InformationType(enum):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             2                   1                   8                   
+Attributes          2                   1                   8                   
+Associations        2                   0                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+None
+
+Classes:
+1. Framework
+2. AddressBook
+3. Entity
+4. Associate
+5. VirtualFolder
+6. ResearchProject
+7. Person
+8. EmailOutbound
+9. EmailInbound
+10. WebsiteDocument
+11. TextualDocument
+
+Relationships:
+1. 1 Framework contain * AddressBook (Composition)
+2. 1 AddressBook contain * Entity (Composition)
+3. 1 VirtualFolder contain * Entity (Composition)
+4. 1 Entity associate * Associate (Association)
+5. 1 Associate associate * Entity (Association)
+6. 1 EmailOutbound inherit Associate
+7. 1 EmailInbound inherit Associate
+8. 1 WebsiteDocument inherit Entity
+9. 1 Entity inherit WebsiteDocument
+10. 1 ResearchProject inherit Entity
+11. 1 Entity inherit ResearchProject
+12. 1 ResearchProject associate 1 Associate (Association)
+13. 1 Associate associate 1 ResearchProject (Association)
+14. 1 Person inherit Entity
+15. 1 Entity inherit Person
+16. 1 EmailOutbound associate * Person (Association)
+17. 1 Person associate * EmailOutbound (Association)
+18. 1 EmailInbound associate 1 Person (Association)
+19. 1 Person associate * EmailInbound (Association)
+20. 1 TextualDocument inherit Entity
+21. 1 Entity inherit TextualDocument
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Framework (class) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (class) - Enum Attributes: [], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Class: VirtualFolder (class) - Enum Attributes: [], Class Attributes: []
+Class: ResearchProject (class) - Enum Attributes: [], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: []
+Class: EmailOutbound (class) - Enum Attributes: [], Class Attributes: []
+Class: EmailInbound (class) - Enum Attributes: [], Class Attributes: []
+Class: WebsiteDocument (class) - Enum Attributes: [], Class Attributes: []
+Class: TextualDocument (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Framework aggregation * AddressBook
+ 1 AddressBook aggregation * Entity
+ 1 VirtualFolder aggregation * Entity
+ False EmailOutbound inheritance False Associate
+ False EmailInbound inheritance False Associate
+ False WebsiteDocument inheritance False Entity
+ False Entity inheritance False WebsiteDocument
+ False ResearchProject inheritance False Entity
+ False Entity inheritance False ResearchProject
+ False Person inheritance False Entity
+ False Entity inheritance False Person
+ False TextualDocument inheritance False Entity
+ False Entity inheritance False TextualDocument
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(class)'	-	'AddressBook(class)'
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'VirtualFolder(class)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+ ' 1 VirtualFolder aggregation * Entity'	-	' 1 Folder aggregation * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  4                   8                   
+Attributes          0                   0                   8                   
+Associations        3                   1                   4                   
+Inheritances        10                  0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+- None
+
+Classes:
+1. Entity
+2. Associate
+3. AddressBook
+4. Category
+5. Folder
+6. EmailOutbound
+7. EmailInbound
+8. WebsiteDocument
+9. TextualDocument
+
+Relationships:
+- An AddressBook contains 0..* Entities
+- An Entity can belong to 1 Category
+- A Category can have 0..* Entities
+- An Entity can be linked to 0..* Associates
+- An Associate can contain 1 Entity
+- A WebsiteDocument can have 1 Entity
+- A WebsiteDocument can have 1 Associate
+- A TextualDocument can have 0..* Entities
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (class) - Enum Attributes: [], Class Attributes: []
+Class: Category (class) - Enum Attributes: [], Class Attributes: []
+Class: Folder (class) - Enum Attributes: [], Class Attributes: []
+Class: EmailOutbound (class) - Enum Attributes: [], Class Attributes: []
+Class: EmailInbound (class) - Enum Attributes: [], Class Attributes: []
+Class: WebsiteDocument (class) - Enum Attributes: [], Class Attributes: []
+Class: TextualDocument (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 An association 1 contains
+ 1 An association 1 can
+ 1 A association 1 can
+ 1 An association 1 can
+ 1 An association 1 can
+ 1 A association 1 can
+ 1 A association 1 can
+ 1 A association 1 can
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'AddressBook(class)'	-	'AddressBook(class)'
+ 'Folder(class)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   4                   8                   
+Attributes          0                   0                   8                   
+Associations        0                   0                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. TypeOfInformation(Personnel, EmailOutbound, EmailInbound, WebsiteDocuments, TextualDocuments)
+
+Classes:
+1. Entity(name: string, category: string)
+2. Associate(messageBody: string)
+
+Relationships:
+- 1 Entity contain * Associate
+- 1 Associate associate * Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TypeOfInformation (enum) - Enum Attributes: [Personnel, EmailOutbound, EmailInbound, WebsiteDocuments, TextualDocuments], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,category:string]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [messageBody:string]
+Relationships:
+ 1 Entity aggregation * Associate
+ 1 Associate association * Entity
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'TypeOfInformation(enum)'	-	'Type(enum)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+-Relationships:
+ ' 1 Associate association * Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          8                   1                   8                   
+Associations        2                   1                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+- TypeOfInformation(Personnel, EmailOutbound, EmailInbound, WebsiteDocuments, TextualDocuments)
+
+Classes:
+1. Entity(name: string, category: string)
+2. Associate(messageBody: string)
+
+Relationships:
+- 1 Entity contain 1..* Entity (for grouping entities under a virtual folder)
+- 1 Associate contain 1..* Entity (for linking entities to an associate)
+- 1 Associate contain 1..* Entity (for linking entities to an associate)
+- 1 Entity inherit 1 Entity (for creating relationships between entities)
+- 1 Entity contain 1 Associate (for linking an associate to an entity)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TypeOfInformation (enum) - Enum Attributes: [Personnel, EmailOutbound, EmailInbound, WebsiteDocuments, TextualDocuments], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,category:string]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [messageBody:string]
+Relationships:
+ 1 Entity aggregation 1..* Entity
+ 1 Associate aggregation 1..* Entity
+ False Entity inheritance False Entity
+ 1 Entity aggregation 1 Associate
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'TypeOfInformation(enum)'	-	'Type(enum)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          8                   1                   8                   
+Associations        3                   0                   4                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+- Category (People, Email, etc.)
+
+Classes:
+1. Entity(name: string, category: Category)
+2. Associate(name: string, messageBody: string)
+
+Relationships:
+- 1 Entity contain * Associate
+- 1 Associate associate 1..* Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,category:Category]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [name:string,messageBody:string]
+Relationships:
+ 1 Entity aggregation * Associate
+ 1 Associate association 1..* Entity
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+-Relationships:
+ ' 1 Associate association 1..* Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          7                   1                   8                   
+Associations        2                   1                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+
+Class:
+1. UserInformation
+2. AddressBook
+3. Entity
+4. Associate
+5. Category
+6. Folder
+7. OutboundEmail
+8. InboundEmail
+9. WebsiteDocument
+10. TextualDocument
+
+Relationships:
+1. UserInformation contain 0..* AddressBook
+2. AddressBook contain 0..* Entity
+3. AddressBook contain 0..* Associate
+4. Entity inherit Category
+5. Entity contain 0..* Folder
+6. Associate contain 1..* Entity
+7. OutboundEmail inherit Associate
+8. InboundEmail inherit Associate
+9. WebsiteDocument inherit Entity
+10. WebsiteDocument contain 1 Associate
+11. TextualDocument inherit Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserInformation (enum) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [], Class Attributes: []
+Class: Category (enum) - Enum Attributes: [], Class Attributes: []
+Class: Folder (enum) - Enum Attributes: [], Class Attributes: []
+Class: OutboundEmail (enum) - Enum Attributes: [], Class Attributes: []
+Class: InboundEmail (enum) - Enum Attributes: [], Class Attributes: []
+Class: WebsiteDocument (enum) - Enum Attributes: [], Class Attributes: []
+Class: TextualDocument (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserInformation aggregation 0..* AddressBook
+ 2 AddressBook aggregation 0..* Entity
+ 3 AddressBook aggregation 0..* Associate
+ False Entity inheritance False Category
+ 5 Entity aggregation 0..* Folder
+ 6 Associate aggregation 1..* Entity
+ False OutboundEmail inheritance False Associate
+ False InboundEmail inheritance False Associate
+ False WebsiteDocument inheritance False Entity
+ 10 WebsiteDocument aggregation 1 Associate
+ False TextualDocument inheritance False Entity
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(enum)'	-	'AddressBook(class)'
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+ 'Folder(enum)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  4                   8                   
+Attributes          0                   0                   8                   
+Associations        6                   0                   4                   
+Inheritances        5                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(People, Email, etc.)
+
+Class:
+1. Framework
+2. AddressBook
+3. Entity
+4. Associate
+5. Folder
+6. Project
+7. Document
+
+Relationships:
+1 Framework contain * AddressBook
+2 AddressBook contain * Entity
+3 AddressBook contain * Folder
+4 Entity inherit Document
+5 Entity inherit Project
+6 Associate inherit Document
+7 Associate contain * Entity
+8 Associate associate 1..* Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Framework (enum) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [], Class Attributes: []
+Class: Folder (enum) - Enum Attributes: [], Class Attributes: []
+Class: Project (enum) - Enum Attributes: [], Class Attributes: []
+Class: Document (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Framework aggregation * AddressBook
+ 2 AddressBook aggregation * Entity
+ 3 AddressBook aggregation * Folder
+ False Entity inheritance False Document
+ False Entity inheritance False Project
+ False Associate inheritance False Document
+ 7 Associate aggregation * Entity
+ 8 Associate association 1..* Entity
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(enum)'	-	'AddressBook(class)'
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+ 'Folder(enum)'	-	'Folder(class)'
+ 'Project(enum)'	-	'Project(class)'
+-Attributes:
+-Relationships:
+ ' 8 Associate association 1..* Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   8                   
+Attributes          3                   0                   8                   
+Associations        5                   1                   4                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(People, Email, etc.)
+
+Classes:
+1. Entity(name : string, attributes : map<string, string>)
+2. Associate(messageBody : string)
+
+Relationships:
+1..* Entity contain 1 Associate
+1..* Entity inherit Category
+1 Category contain 0..* Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name :string,attributes :map<string,string>:]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [messageBody :string]
+Relationships:
+ 1..* Entity aggregation 1 Associate
+ False Entity inheritance False Category
+ 1 Category aggregation 0..* Entity
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+ 'Entity(class):name '	-	'name'
+-Relationships:
+ ' 1 Category aggregation 0..* Entity'	-	' 1 Folder aggregation * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          7                   1                   8                   
+Associations        2                   1                   4                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. TypeOfInformation(Personnel, Email_Outbound, Email_Inbound, Website_Documents, Textual_Documents)
+
+Classes:
+1. Entity(name: string, category: string)
+2. Associate(messageBody: string)
+
+Relationships:
+1. 1 Entity contain 1..* Entity (Category contains People entities)
+2. 1 Entity contain 1 Associate (Entity linked to Associate)
+3. 1 Associate contain 1..* Entity (Associate linked to People entities)
+4. 1 Associate contain 1 Entity (Associate linked to People entity)
+5. 1 Entity contain 1 Associate (Entity linked to Archive Associate)
+6. 1 Entity inherit 1 Entity (Relationship path inheritance)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TypeOfInformation (enum) - Enum Attributes: [Personnel, Email_Outbound, Email_Inbound, Website_Documents, Textual_Documents], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,category:string]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [messageBody:string]
+Relationships:
+ 1 Entity aggregation 1..* Entity
+ 1 Entity aggregation 1 Associate
+ 1 Associate aggregation 1..* Entity
+ 1 Associate aggregation 1 Entity
+ 1 Entity aggregation 1 Associate
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'TypeOfInformation(enum)'	-	'Type(enum)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          8                   1                   8                   
+Associations        5                   0                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+- None
+
+Classes:
+1. User
+2. AddressBook
+3. Entity
+4. Associate
+5. Email
+6. Website
+7. Document
+
+Relationships:
+- User contain 1..* AddressBook
+- AddressBook contain 0..* Entity
+- AddressBook contain 0..* Associate
+- Email inherit Document
+- Website inherit Document
+- Document contain 1 Entity
+- Associate contain 1 Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (class) - Enum Attributes: [], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Class: Email (class) - Enum Attributes: [], Class Attributes: []
+Class: Website (class) - Enum Attributes: [], Class Attributes: []
+Class: Document (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1..* AddressBook
+ 1 AddressBook aggregation 0..* Entity
+ 1 AddressBook aggregation 0..* Associate
+ False Email inheritance False Document
+ False Website inheritance False Document
+ 1 Document aggregation 1 Entity
+ 1 Associate aggregation 1 Entity
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(class)'	-	'AddressBook(class)'
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'User(class)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   8                   
+Attributes          0                   0                   8                   
+Associations        5                   0                   4                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- Category(People, Email, etc.)
+
+Class:
+1. Framework
+2. AddressBook
+3. Entity
+4. Associate
+5. Folder
+6. ResearchProject
+7. Document
+
+Relationships:
+1 Framework contain * AddressBook
+2 AddressBook contain * Entity
+3 AddressBook contain * Associate
+4 AddressBook contain * Folder
+5 Entity inherit Document
+6 Associate inherit Document
+7 Associate associate * Entity
+8 ResearchProject inherit Entity
+9 ResearchProject contain 1 Associate
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Framework (enum) - Enum Attributes: [], Class Attributes: []
+Class: AddressBook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [], Class Attributes: []
+Class: Folder (enum) - Enum Attributes: [], Class Attributes: []
+Class: ResearchProject (enum) - Enum Attributes: [], Class Attributes: []
+Class: Document (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Framework aggregation * AddressBook
+ 2 AddressBook aggregation * Entity
+ 3 AddressBook aggregation * Associate
+ 4 AddressBook aggregation * Folder
+ False Entity inheritance False Document
+ False Associate inheritance False Document
+ 7 Associate association * Entity
+ False ResearchProject inheritance False Entity
+ 9 ResearchProject aggregation 1 Associate
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(enum)'	-	'AddressBook(class)'
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+ 'Folder(enum)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+ ' 7 Associate association * Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   4                   8                   
+Attributes          3                   0                   8                   
+Associations        6                   1                   4                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- CategoryNames(People, Email, etc.)
+
+Class:
+1. Entity(name: String, type: String)
+2. Associate(name: String, type: String, content: String)
+
+Relationships:
+1 Entity contain 0..* Entity
+1 Entity contain 0..* Associate
+1 Associate associate 0..* Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryNames (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [name, type, content], Class Attributes: []
+Relationships:
+ 1 Entity aggregation 0..* Entity
+ 1 Entity aggregation 0..* Associate
+ 1 Associate association 0..* Entity
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+-Attributes:
+ 'Entity(enum):name'	-	'name'
+ 'Associate(enum):type'	-	'type'
+-Relationships:
+ ' 1 Associate association 0..* Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   2                   8                   
+Attributes          8                   2                   8                   
+Associations        3                   1                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- Category: People, Email, etc.
+
+Classes:
+1. Entity(name: string, category: Category, attributes: list<string>)
+2. Associate(messageBody: string, recipient: string, sender: string)
+
+Relationships:
+1 Entity contain 1..* Associate
+1 Entity inherit Entity (for grouping)
+1 Entity inherit Entity (for relationships)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,category:Category,attributes:list<string>]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [messageBody:string,recipient:string,sender:string]
+Relationships:
+ 1 Entity aggregation 1..* Associate
+ False Entity inheritance False Entity
+ False Entity inheritance False Entity
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             2                   2                   8                   
+Attributes          6                   1                   8                   
+Associations        1                   0                   4                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Category (People, Email)
+
+Classes:
+1. Entity(name: string, type: string)
+2. Associate(name: string, type: string, body: string)
+3. Folder(name: string)
+
+Relationships:
+1. 1..* Entity contain 1 Associate
+2. 1..* Associate associate 1 Entity
+3. Folder contain 0..* Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: [name:string,type:string]
+Class: Associate (class) - Enum Attributes: [], Class Attributes: [name:string,type:string,body:string]
+Class: Folder (class) - Enum Attributes: [], Class Attributes: [name:string]
+Relationships:
+ 1..* Entity aggregation 1 Associate
+ 1..* Associate association 1 Entity
+ 3 Folder aggregation 0..* Entity
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'Folder(class)'	-	'Folder(class)'
+-Attributes:
+ 'Entity(class):name'	-	'name'
+ 'Associate(class):type'	-	'type'
+ 'Associate(class):body'	-	'body'
+ 'Folder(class):name'	-	'name'
+-Relationships:
+ ' 1..* Associate association 1 Entity'	-	' 1 Associate association * Entity'
+ ' 3 Folder aggregation 0..* Entity'	-	' 1 Folder aggregation * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          8                   4                   8                   
+Associations        3                   2                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- Category (People, Email, etc.)
+
+Class:
+1. Entity(name: string, category: Category)
+2. Associate(messageBody: string)
+
+Relationships:
+1. 1 Entity contain 0..* Entity
+2. 1 Entity contain 1 Associate
+3. 1 Associate associate 0..* Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [name, category], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [messageBody], Class Attributes: []
+Relationships:
+ 1 Entity aggregation 0..* Entity
+ 1 Entity aggregation 1 Associate
+ 1 Associate association 0..* Entity
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+ 'Entity(enum):name'	-	'name'
+-Relationships:
+ ' 1 Associate association 0..* Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          6                   1                   8                   
+Associations        3                   1                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Category (People, Email, etc.)
+
+Classes:
+1. AddressBook
+2. Entity
+3. Associate
+4. Document
+
+Relationships:
+1. AddressBook contain * Entity
+2. Entity inherit Document
+3. Associate associate * Entity (recipient's name)
+4. Associate associate 1 Entity (sender's name)
+5. Document associate 1 Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: AddressBook (class) - Enum Attributes: [], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Class: Document (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 AddressBook aggregation * Entity
+ False Entity inheritance False Document
+ 3 Associate association * Entity
+ 4 Associate association 1 Entity
+ 5 Document association 1 Entity
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(class)'	-	'AddressBook(class)'
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+ ' 3 Associate association * Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          3                   0                   8                   
+Associations        4                   1                   4                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Centralized store:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Category (People, Email, etc.)
+
+Classes:
+1. Entity
+2. Associate
+
+Relationships:
+1. 1 Entity contain 0..* Associate
+2. 1 Associate associate 0..* Entity
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: Entity (class) - Enum Attributes: [], Class Attributes: []
+Class: Associate (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Entity aggregation 0..* Associate
+ 1 Associate association 0..* Entity
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Entity(class)'	-	'Entity(class)'
+ 'Associate(class)'	-	'Associate(class)'
+ 'Category(enum)'	-	'Folder(class)'
+-Attributes:
+-Relationships:
+ ' 1 Associate association 0..* Entity'	-	' 1 Associate association * Entity'
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   8                   
+Attributes          3                   0                   8                   
+Associations        2                   1                   4                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Centralized store:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- CategoryType(People, Email, etc.)
+
+Class:
+1. AddressBook(category : CategoryType, entities : List<Entity>)
+2. Entity(name : String, type : String, properties : Map<String, String>)
+3. Associate(messageBody : String, recipients : List<Entity>, sender : Entity)
+4. WebsiteDocument(projectName : String, researchProject : Boolean, entity : Entity)
+5. TextualDocument(documentName : String, entity : Entity)
+
+Relationships:
+1 AddressBook contain 1..* Entity
+1 Entity inherit 0..* Associate
+1 Associate contain 1..* Entity
+1 WebsiteDocument inherit 1 Entity
+1 WebsiteDocument contain 1 Associate
+1 TextualDocument inherit 1 Entity
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [People, Email, etc.], Class Attributes: []
+Class: AddressBook (enum) - Enum Attributes: [category , entities ], Class Attributes: []
+Class: Entity (enum) - Enum Attributes: [name , type , properties , String>], Class Attributes: []
+Class: Associate (enum) - Enum Attributes: [messageBody , recipients , sender ], Class Attributes: []
+Class: WebsiteDocument (enum) - Enum Attributes: [projectName , researchProject , entity ], Class Attributes: []
+Class: TextualDocument (enum) - Enum Attributes: [documentName , entity ], Class Attributes: []
+Relationships:
+ 1 AddressBook aggregation 1..* Entity
+ False Entity inheritance False Associate
+ 1 Associate aggregation 1..* Entity
+ False WebsiteDocument inheritance False Entity
+ 1 WebsiteDocument aggregation 1 Associate
+ False TextualDocument inheritance False Entity
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'AddressBook(enum)'	-	'AddressBook(class)'
+ 'Entity(enum)'	-	'Entity(class)'
+ 'Associate(enum)'	-	'Associate(class)'
+-Attributes:
+ 'Entity(enum):name '	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Centralized store, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   3                   8                   
+Attributes          17                  1                   8                   
+Associations        3                   0                   4                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+Centralized store, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.650          0.406          0.500          0.439
+Attributes          0.150          0.113          0.129          0.118
+Associations        0.190          0.150          0.168          0.157
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

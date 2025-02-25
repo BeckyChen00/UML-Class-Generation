@@ -1,0 +1,1502 @@
+------------------------------------------------------------
+---------------------1/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. IntervalType(Weekly, Monthly, HalfYearly, Yearly)
+
+Class:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phoneNumber : string, signature : image)
+2. Patient(healthNumber : alpha-numeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. TestGroup(name : string)
+4. Test(name : string, duration : time)
+5. Requisition(validFrom : date, repetitionTimes : int, interval : IntervalType)
+6. Result(type : string, report : string)
+7. Lab(address : string, businessHours : string, registrationNumber : string, fee : decimal, testsOffered : string)
+
+Relationships:
+1. Doctor prescribe 1..* Requisition
+2. Requisition include 1..* Test
+3. Requisition for 1 Patient
+4. Requisition for 1 Doctor
+5. Requisition for 1 TestGroup
+6. Requisition referTo 1 Result
+7. Test inGroup 1 TestGroup
+8. Patient book 0..* Appointment
+9. Patient make 0..* DropOff
+10. Appointment at 1 Lab
+11. Lab offer 1..* TestGroup
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: IntervalType (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , fullName , address , phoneNumber , signature ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phoneNumber ], Class Attributes: []
+Class: TestGroup (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [name , duration ], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [validFrom , repetitionTimes , interval ], Class Attributes: []
+Class: Result (enum) - Enum Attributes: [type , report ], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address , businessHours , registrationNumber , fee , testsOffered ], Class Attributes: []
+Relationships:
+ 1 Doctor association 1..* Requisition
+ 2 Requisition association 1..* Test
+ 3 Requisition association 1 Patient
+ 4 Requisition association 1 Doctor
+ 5 Requisition association 1 TestGroup
+ 6 Requisition association 1 Result
+ 7 Test association 1 TestGroup
+ 8 Patient association 0..* Appointment
+ 9 Patient association 0..* DropOff
+ 10 Appointment association 1 Lab
+ 11 Lab association 1..* TestGroup
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'IntervalType(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(enum):signature '	-	'signature'
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):name '	-	'name'
+ 'Test(enum):duration '	-	'duration'
+ 'Lab(enum):address '	-	'address'
+ 'Lab(enum):registrationNumber '	-	'registrationNumber'
+ 'IntervalType(enum):Weekly'	-	'weekly'
+ 'IntervalType(enum):Monthly'	-	'monthly'
+ 'IntervalType(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Doctor association 1..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 3 Requisition association 1 Patient'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   16                  
+Attributes          28                  9                   43                  
+Associations        8                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, Biannually, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phoneNumber : string, digitalSignature : image)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. TestGroup(name : string)
+4. Test(name : string, duration : time, testGroup : TestGroup)
+5. Requisition(validFromDate : date)
+6. TestRepetition(repetitionTimes : int, repetitionInterval : RepetitionInterval)
+7. Lab(address : string, businessHours : string, registrationNumber : string, fee : decimal)
+
+Relationships:
+1..* Doctor associates 0..1 TestGroup
+1..* Patient associates 1..* Requisition
+1 Requisition associates 1 Doctor
+1 Requisition associates 1 Patient
+1 Requisition associates 1..* Test
+1 Test associates 1 TestGroup
+1 Requisition contains 1..* TestRepetition
+1 Requisition contains 1..* Test
+
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, Biannually, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber :numeric,fullName :string,address :string,phoneNumber :string,digitalSignature :image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :string,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: [name :string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [name :string,duration :time,testGroup :TestGroup]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFromDate :date]
+Class: TestRepetition (class) - Enum Attributes: [], Class Attributes: [repetitionTimes :int,repetitionInterval :RepetitionInterval]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address :string,businessHours :string,registrationNumber :string,fee :decimal]
+Relationships:
+ 1..* Doctor association 0..1 TestGroup
+ 1..* Patient association 1..* Requisition
+ 1 Requisition association 1 Doctor
+ 1 Requisition association 1 Patient
+ 1 Requisition association 1..* Test
+ 1 Test association 1 TestGroup
+ 1 Requisition association 1..* TestRepetition
+ 1 Requisition association 1..* Test
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):name '	-	'name'
+ 'Test(class):duration '	-	'duration'
+ 'Lab(class):address '	-	'address'
+ 'Lab(class):registrationNumber '	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1..* Patient association 1..* Requisition'	-	' 1 Patient association * Requisition'
+ ' 1 Requisition association 1 Doctor'	-	' 1 Doctor association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   16                  
+Attributes          26                  8                   43                  
+Associations        8                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. TestType(blood, ultrasound, x-ray, urine, stool)
+
+Class:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phoneNumber : string, signature : image)
+2. Patient(healthNumber : alphanumeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. Requisition(dateValidFrom : date, repeatTimes : int, repeatInterval : {weekly, monthly, halfYearly, yearly})
+4. Test(duration : time, testType : TestType, result : {negative, positive}, report : string)
+5. Lab(address : string, businessHours : string, registrationNumber : string, fee : float)
+
+Relationships:
+1..* Doctor prescribe 1..* Requisition
+1..* Requisition contain 1..* Test
+1..* Patient book 1..* Requisition
+1..* Requisition schedule 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TestType (enum) - Enum Attributes: [blood, ultrasound, x-ray, urine, stool], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , fullName , address , phoneNumber , signature ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phoneNumber ], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [dateValidFrom , repeatTimes , repeatInterval , monthly, halfYearly, yearly}], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [duration , testType , result , positive}, report ], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address , businessHours , registrationNumber , fee ], Class Attributes: []
+Relationships:
+ 1..* Doctor association 1..* Requisition
+ 1..* Requisition aggregation 1..* Test
+ 1..* Patient association 1..* Requisition
+ 1..* Requisition association 1 Lab
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'TestType(enum)'	-	'TestType(class)'
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+-Attributes:
+ 'Doctor(enum):signature '	-	'signature'
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):duration '	-	'duration'
+ 'Lab(enum):address '	-	'address'
+ 'Lab(enum):registrationNumber '	-	'registrationNumber'
+-Relationships:
+ ' 1..* Doctor association 1..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1..* Patient association 1..* Requisition'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          31                  5                   43                  
+Associations        4                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, EveryHalfYear, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, digitalSignature : image)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. Test(duration : int, type : string)
+4. Requisition(validFrom : date)
+5. Appointment(appointmentNumber : int, date : date, startTime : time, endTime : time, labName : string, registrationNumber : string, status : string)
+
+Relationships:
+1..* Doctor prescribe 1..* Test
+1 Requisition contain 1..* Test
+1 Requisition belong 1 Test
+1 Requisition repeat 0..* Appointment
+1 Patient book 0..* Appointment
+1 Appointment select 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, EveryHalfYear, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber :int,fullName :string,address :string,phoneNumber :string,digitalSignature :image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :string,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration :int,type :string]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom :date]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [appointmentNumber :int,date :date,startTime :time,endTime :time,labName :string,registrationNumber :string,status :string]
+Relationships:
+ 1..* Doctor association 1..* Test
+ 1 Requisition aggregation 1..* Test
+ 1 Requisition association 1 Test
+ 1 Requisition association 0..* Appointment
+ 1 Patient association 0..* Appointment
+ 1 Appointment association 1 Lab
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):duration '	-	'duration'
+ 'Appointment(class):date '	-	'date'
+ 'Appointment(class):startTime '	-	'startTime'
+ 'Appointment(class):endTime '	-	'endTime'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):EveryHalfYear'	-	'everyHalfYear'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Requisition association 0..* Appointment'	-	' * Requisition association * Appointment'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          25                  9                   43                  
+Associations        5                   1                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Class:
+Doctor(doctorID : int, fullName : string, address : string, phoneNumber : string, digitalSignature : image, validFrom : date)
+Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+TestGroup(name : string)
+Test(duration : int)
+Requisition(date : date, repetitionInterval : string, repetitionTimes : int)
+
+Appointment(confirmNumber : string, date : date, startTime : time, endTime : time, labName : string, labRegistrationNumber : string)
+
+Lab(address : string, businessHours : string, fee : decimal)
+
+Result(resultType : string, report : string)
+
+Relationships:
+Doctor prescribe 1..* TestGroup
+Doctor prescribe 0..* Requisition
+Patient book 0..* Appointment
+Patient view 0..* Result
+TestGroup contain 1..* Test
+Requisition include 1..* TestGroup
+Requisition include 1..* Test
+Requisition schedule 1..* Appointment
+Appointment at 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [doctorID :int,fullName :string,address :string,phoneNumber :string,digitalSignature :image,validFrom :date]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :string,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: [name :string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration :int]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [date :date,repetitionInterval :string,repetitionTimes :int]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [confirmNumber :string,date :date,startTime :time,endTime :time,labName :string,labRegistrationNumber :string]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address :string,businessHours :string,fee :decimal]
+Class: Result (class) - Enum Attributes: [], Class Attributes: [resultType :string,report :string]
+Relationships:
+ 1 Doctor association 1..* TestGroup
+ 1 Doctor association 0..* Requisition
+ 1 Patient association 0..* Appointment
+ 1 Patient association 0..* Result
+ 1 TestGroup aggregation 1..* Test
+ 1 Requisition association 1..* TestGroup
+ 1 Requisition association 1..* Test
+ 1 Requisition association 1..* Appointment
+ 1 Appointment association 1 Lab
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+ 'Lab(class)'	-	'Lab(class)'
+-Attributes:
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):duration '	-	'duration'
+ 'Requisition(class):repetitionInterval '	-	'repetitionInterval'
+ 'Appointment(class):date '	-	'date'
+ 'Appointment(class):startTime '	-	'startTime'
+ 'Appointment(class):endTime '	-	'endTime'
+ 'Lab(class):address '	-	'address'
+-Relationships:
+ ' 1 Doctor association 0..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Requisition association 1..* Appointment'	-	' * Requisition association * Appointment'
+ ' 1 Appointment association 1 Lab'	-	' * Appointment association 1 Lab'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   16                  
+Attributes          28                  7                   43                  
+Associations        9                   3                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+2. TestType(Blood, Ultrasound, XRay, DropOffSample)
+
+Class:
+1. Doctor(practitionerNumber : numeric, signature : image, fullName : string, address : string, phone : string)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phone : string)
+3. Test(duration : time)
+4. Lab(address : string, businessHours : string, fee : decimal)
+
+Relationships:
+1..* Doctor prescribes 0..* Test
+1..* Patient books 0..* Test
+1 Doctor cannot prescribe 1 Doctor
+1..* Test can only be on 1 Requisition
+1..* Requisition includes 1..* Test
+1..* Test belongs to 1 TestType
+1..* Requisition specifies 1 RepetitionInterval
+1 Lab has 0..* Requisition
+1..* Requisition is for 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: TestType (enum) - Enum Attributes: [Blood, Ultrasound, XRay, DropOffSample], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , signature , fullName , address , phone ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phone ], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [duration ], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address , businessHours , fee ], Class Attributes: []
+Relationships:
+ 1..* Doctor association 0..* Test
+ 1..* Patient association 0..* Test
+ 1 Doctor association 1 prescribe
+ 1..* Test association 1 only
+ 1..* Requisition association 1..* Test
+ 1..* Test association 1 to
+ 1..* Requisition association 1 RepetitionInterval
+ 1 Lab association 0..* Requisition
+ 1..* Requisition association 1 for
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'TestType(enum)'	-	'TestType(class)'
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(enum):signature '	-	'signature'
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):duration '	-	'duration'
+ 'Lab(enum):address '	-	'address'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          23                  7                   43                  
+Associations        2                   0                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Doctor(doctorNumber: int, signature: image, fullName: string, address: string, phoneNumber: string)
+2. Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+3. TestGroup(name: string)
+4. Test(duration: int)
+5. AppointmentLab(address: string, businessHours: string, registrationNumber: string)
+6. Appointment(confirmNumber: string, date: date, startTime: time, endTime: time)
+
+Relationships:
+1..* Doctor prescribe 1..* Test
+1 Doctor view 0..* TestResult
+1 Patient book 0..* Appointment
+1..* TestGroup contain 1..* Test
+1..* Test on 1 Requisition
+1 Requisition contain 1 Doctor
+1 Requisition contain 1 Patient
+1 Requisition specify 1 RepeatedTests
+1 RepeatedTests specify 1 Interval
+1 Appointment select 1 AppointmentLab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [doctorNumber:int,signature:image,fullName:string,address:string,phoneNumber:string]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:string,firstName:string,lastName:string,dateOfBirth:date,address:string,phoneNumber:string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: [name:string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:int]
+Class: AppointmentLab (class) - Enum Attributes: [], Class Attributes: [address:string,businessHours:string,registrationNumber:string]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [confirmNumber:string,date:date,startTime:time,endTime:time]
+Relationships:
+ 1..* Doctor association 1..* Test
+ 1 Doctor association 0..* TestResult
+ 1 Patient association 0..* Appointment
+ 1..* TestGroup aggregation 1..* Test
+ 1..* Test association 1 Requisition
+ 1 Requisition aggregation 1 Doctor
+ 1 Requisition aggregation 1 Patient
+ 1 Requisition association 1 RepeatedTests
+ 1 RepeatedTests association 1 Interval
+ 1 Appointment association 1 AppointmentLab
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+-Attributes:
+ 'Doctor(class):signature'	-	'signature'
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'Appointment(class):date'	-	'date'
+ 'Appointment(class):startTime'	-	'startTime'
+ 'Appointment(class):endTime'	-	'endTime'
+-Relationships:
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   16                  
+Attributes          20                  6                   43                  
+Associations        4                   0                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. IntervalType(Weekly, Monthly, HalfYearly, Yearly)
+
+Class:
+1. Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, digitalSignature : image)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. TestGroup(name : string)
+4. Test(name : string, duration : int)
+5. Requisition(validFromDate : date, isRepeated : boolean, repeatInterval : int, intervalType : IntervalType)
+
+Relationships:
+1..* Doctor associate 0..* Patient
+1 Requisition associate 1..* Test
+1 Requisition associate 1 TestGroup
+1 Requisition associate 1 Patient
+1 Requisition associate 1 Doctor
+1 Requisition inherit Requisition
+1..* TestGroup contain 1..* Test
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: IntervalType (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , fullName , address , phoneNumber , digitalSignature ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phoneNumber ], Class Attributes: []
+Class: TestGroup (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [name , duration ], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [validFromDate , isRepeated , repeatInterval , intervalType ], Class Attributes: []
+Relationships:
+ 1..* Doctor association 0..* Patient
+ 1 Requisition association 1..* Test
+ 1 Requisition association 1 TestGroup
+ 1 Requisition association 1 Patient
+ 1 Requisition association 1 Doctor
+ False Requisition inheritance False Requisition
+ 1..* TestGroup aggregation 1..* Test
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'IntervalType(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):name '	-	'name'
+ 'Test(enum):duration '	-	'duration'
+ 'IntervalType(enum):Weekly'	-	'weekly'
+ 'IntervalType(enum):Monthly'	-	'monthly'
+ 'IntervalType(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Requisition association 1 Patient'	-	' 1 Patient association * Requisition'
+ ' 1 Requisition association 1 Doctor'	-	' 1 Doctor association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   16                  
+Attributes          22                  6                   43                  
+Associations        6                   2                   20                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. TestType (BloodTest, Ultrasound, XRay, UrineTest, StoolTest)
+2. RepetitionInterval (Weekly, Monthly, HalfYearly, Yearly)
+
+Class:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phone : string, digitalSignature : image)
+2. Patient(healthNumber : alphanumeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phone : string)
+3. Test(duration : time)
+4. Lab(address : string, businessHours : string, registrationNumber : string, fee : decimal)
+
+Relationships:
+1..* Doctor prescribe 1..* Test
+1..* Test belong to 1 TestType
+0..1 Test isRepeatedWith 1 RepetitionInterval
+1 Patient makeAppointmentAt 1..* Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TestType (enum) - Enum Attributes: [BloodTest, Ultrasound, XRay, UrineTest, StoolTest], Class Attributes: []
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , fullName , address , phone , digitalSignature ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phone ], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [duration ], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address , businessHours , registrationNumber , fee ], Class Attributes: []
+Relationships:
+ 1..* Doctor association 1..* Test
+ 1..* Test association 1 to
+ 0..1 Test association 1 RepetitionInterval
+ 1 Patient association 1..* Lab
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'TestType(enum)'	-	'TestType(class)'
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):duration '	-	'duration'
+ 'Lab(enum):address '	-	'address'
+ 'Lab(enum):registrationNumber '	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          25                  7                   43                  
+Associations        3                   0                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+
+Class:
+1. Doctor(practitionerNumber: numeric, signature: image, fullName: string, address: string, phoneNumber: string)
+2. Patient(healthNumber: alpha-numeric, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+3. TestGroup(name: string)
+4. Test(name: string, duration: time)
+5. Requisition(validFromDate: date, repeatTimes: int, repetitionInterval: RepetitionInterval)
+6. Lab(address: string, businessHours: string, registrationNumber: string, fee: decimal)
+7. Appointment(date: date, startTime: time, endTime: time, confirmationNumber: string, changeCancellationFee: decimal)
+
+Relationships:
+1..* Doctor prescribe 1..* Requisition
+1..* Patient make 0..* Appointment
+1 Requisition includes 1..* Test
+1 Test belongsTo 1 TestGroup
+1 Requisition isFor 1 Patient
+1 Requisition isFrom 1 Doctor
+1 Appointment isAt 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber, signature, fullName, address, phoneNumber], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber, firstName, lastName, dateOfBirth, address, phoneNumber], Class Attributes: []
+Class: TestGroup (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [name, duration], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [validFromDate, repeatTimes, repetitionInterval], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address, businessHours, registrationNumber, fee], Class Attributes: []
+Class: Appointment (enum) - Enum Attributes: [date, startTime, endTime, confirmationNumber, changeCancellationFee], Class Attributes: []
+Relationships:
+ 1..* Doctor association 1..* Requisition
+ 1..* Patient association 0..* Appointment
+ 1 Requisition association 1..* Test
+ 1 Test association 1 TestGroup
+ 1 Requisition association 1 Patient
+ 1 Requisition association 1 Doctor
+ 1 Appointment association 1 Lab
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'Appointment(enum)'	-	'Appointment(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(enum):signature'	-	'signature'
+ 'Patient(enum):dateOfBirth'	-	'dateOfBirth'
+ 'Test(enum):name'	-	'name'
+ 'Test(enum):duration'	-	'duration'
+ 'Requisition(enum):repetitionInterval'	-	'repetitionInterval'
+ 'Lab(enum):address'	-	'address'
+ 'Lab(enum):registrationNumber'	-	'registrationNumber'
+ 'Appointment(enum):date'	-	'date'
+ 'Appointment(enum):startTime'	-	'startTime'
+ 'Appointment(enum):endTime'	-	'endTime'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1..* Doctor association 1..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Requisition association 1 Patient'	-	' 1 Patient association * Requisition'
+ ' 1 Appointment association 1 Lab'	-	' * Appointment association 1 Lab'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          30                  13                  43                  
+Associations        7                   3                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, Every Half Year, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber: numeric, signature: image, fullName: string, address: string, phoneNumber: string)
+2. Patient(healthNumber: alphanumeric, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+3. TestGroup
+4. Test(duration: time)
+5. Requisition(validFrom: date)
+6. TestRepetition(repetitionNumber: integer, repetitionInterval: RepetitionInterval)
+7. TestResult(result: enum{Negative, Positive}, report: string)
+8. Lab(address: string, businessHours: string, registrationNumber: string)
+9. Appointment(date: date, startTime: time, endTime: time, confirmationNumber: string, labName: string, labRegistrationNumber: string, changeCancellationFee: decimal)
+
+Relationships:
+- Doctor associate 0..* Requisition
+- Patient associate 0..* Requisition
+- TestGroup contain 0..* Test
+- Requisition contain 1..* Test
+- Requisition associate 0..* TestRepetition
+- Test associate 1 TestGroup
+- Test associate 0..* TestResult
+- Patient associate 0..* Appointment
+- Lab contain 0..* Appointment
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, Half, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber:numeric,signature:image,fullName:string,address:string,phoneNumber:string]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:alphanumeric,firstName:string,lastName:string,dateOfBirth:date,address:string,phoneNumber:string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: []
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:time]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom:date]
+Class: TestRepetition (class) - Enum Attributes: [], Class Attributes: [repetitionNumber:integer,repetitionInterval:RepetitionInterval]
+Class: TestResult (class) - Enum Attributes: [], Class Attributes: [result:enum{Negative,Positive}:,report:string]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address:string,businessHours:string,registrationNumber:string]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [date:date,startTime:time,endTime:time,confirmationNumber:string,labName:string,labRegistrationNumber:string,changeCancellationFee:decimal]
+Relationships:
+ 1 Doctor association 0..* Requisition
+ 1 Patient association 0..* Requisition
+ 1 TestGroup aggregation 0..* Test
+ 1 Requisition aggregation 1..* Test
+ 1 Requisition association 0..* TestRepetition
+ 1 Test association 1 TestGroup
+ 1 Test association 0..* TestResult
+ 1 Patient association 0..* Appointment
+ 1 Lab aggregation 0..* Appointment
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'TestResult(class)'	-	'TestResult(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(class):signature'	-	'signature'
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'TestResult(class):report'	-	'report'
+ 'Lab(class):address'	-	'address'
+ 'Lab(class):registrationNumber'	-	'registrationNumber'
+ 'Appointment(class):date'	-	'date'
+ 'Appointment(class):startTime'	-	'startTime'
+ 'Appointment(class):endTime'	-	'endTime'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Doctor association 0..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Patient association 0..* Requisition'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  8                   16                  
+Attributes          32                  12                  43                  
+Associations        9                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Class:
+Doctor(practitionerNumber: int, signature: image, fullName: string, address: string, phoneNumber: string)
+Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+Test(duration: int)
+Requisition(validFrom: date)
+Lab(address: string, registrationNumber: string, businessHours: string, fee: decimal)
+
+Relationships:
+1 Doctor prescribe 0..* Test
+1 Patient book 1..* Appointment
+Patient make 1..* Appointment at 1 Lab
+Requisition combine 1..* Test
+Requisition repeat 0..* times with interval: enumeration(weekly, monthly, halfYearly, yearly)
+Test result 1..* Result
+Result include 1 Report
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber:int,signature:image,fullName:string,address:string,phoneNumber:string]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:string,firstName:string,lastName:string,dateOfBirth:date,address:string,phoneNumber:string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:int]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom:date]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address:string,registrationNumber:string,businessHours:string,fee:decimal]
+Relationships:
+ 1 Doctor association 0..* Test
+ 1 Patient association 1..* Appointment
+ 1 Patient association 1..* Appointment
+ 1 Requisition association 1..* Test
+ 1 Requisition association 0..* times
+ 1 Test association 1..* Result
+ 1 Result association 1 Report
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Lab(class)'	-	'Lab(class)'
+-Attributes:
+ 'Doctor(class):signature'	-	'signature'
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'Lab(class):address'	-	'address'
+ 'Lab(class):registrationNumber'	-	'registrationNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   16                  
+Attributes          17                  5                   43                  
+Associations        2                   0                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber : int, signature : image, fullName : string, address : string, phoneNumber : string)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. Test(duration : int, type : string)
+4. Requisition(validFrom : date)
+5. Appointment(date : date, startTime : time, endTime : time, confirmationNumber : string)
+6. Lab(address : string, businessHours : string, registrationNumber : string)
+
+Relationships:
+- Doctor contain 1..* Requisition
+- Patient contain 1..* Requisition
+- Requisition associate 1..* Test
+- Requisition associate 1 RepetitionInterval
+- Requisition associate 1..* Appointment
+- Appointment associate 1 Lab
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber :int,signature :image,fullName :string,address :string,phoneNumber :string]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :string,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration :int,type :string]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom :date]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [date :date,startTime :time,endTime :time,confirmationNumber :string]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address :string,businessHours :string,registrationNumber :string]
+Relationships:
+ 1 Doctor aggregation 1..* Requisition
+ 1 Patient aggregation 1..* Requisition
+ 1 Requisition association 1..* Test
+ 1 Requisition association 1 RepetitionInterval
+ 1 Requisition association 1..* Appointment
+ 1 Appointment association 1 Lab
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(class):signature '	-	'signature'
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):duration '	-	'duration'
+ 'Appointment(class):date '	-	'date'
+ 'Appointment(class):startTime '	-	'startTime'
+ 'Appointment(class):endTime '	-	'endTime'
+ 'Lab(class):address '	-	'address'
+ 'Lab(class):registrationNumber '	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Requisition association 1..* Appointment'	-	' * Requisition association * Appointment'
+ ' 1 Appointment association 1 Lab'	-	' * Appointment association 1 Lab'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   16                  
+Attributes          25                  11                  43                  
+Associations        6                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Doctor(practitionerNumber: numeric, signature: image, fullName: string, address: string, phoneNumber: string)
+2. Patient(healthNumber: alphanumeric, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+3. Test(duration: time)
+4. Requisition(validFrom: date, repetitionTimes: integer, repetitionInterval: enumeration)
+5. Lab(address: string, businessHours: string, registrationNumber: string, fee: decimal, testsOffered: string)
+
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+
+Relationships:
+1 Doctor associate 0..* Requisition
+2 Patient associate 0..* Requisition
+3 Test contain 0..* Requisition
+4 Requisition associate 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber:numeric,signature:image,fullName:string,address:string,phoneNumber:string]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:alphanumeric,firstName:string,lastName:string,dateOfBirth:date,address:string,phoneNumber:string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:time]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom:date,repetitionTimes:integer,repetitionInterval:enumeration]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address:string,businessHours:string,registrationNumber:string,fee:decimal,testsOffered:string]
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Relationships:
+ 1 Doctor association 0..* Requisition
+ 2 Patient association 0..* Requisition
+ 3 Test aggregation 0..* Requisition
+ 4 Requisition association 1 Lab
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(class):signature'	-	'signature'
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'Requisition(class):repetitionInterval'	-	'repetitionInterval'
+ 'Lab(class):address'	-	'address'
+ 'Lab(class):registrationNumber'	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Doctor association 0..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 2 Patient association 0..* Requisition'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          24                  9                   43                  
+Associations        4                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phoneNumber : string, signature : image)
+2. Patient(healthNumber : alphanumeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. TestGroup
+4. Test(duration : time)
+5. Requisition(startDate : date, repetitionTimes : int, repetitionInterval : RepetitionInterval)
+6. Lab(address : string, businessHours : string, registrationNumber : string, fee : decimal, testsOffered : list<Test>, appointments : list<Appointment>)
+7. Appointment(appointmentNumber : string, date : date, startTime : time, endTime : time, labName : string)
+
+Relationships:
+1..* Doctor prescribe 1..* Test
+1..* Patient book 1..* Appointment
+1..* TestGroup include 1..* Test
+1..* Requisition include 1..* Test
+1..* Requisition repeat 1..* RepetitionInterval
+1 Lab located 0..* TestGroup
+1 Lab located 0..* Requisition
+1 Lab has 0..* Appointment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber :numeric,fullName :string,address :string,phoneNumber :string,signature :image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :alphanumeric,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: []
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration :time]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [startDate :date,repetitionTimes :int,repetitionInterval :RepetitionInterval]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address :string,businessHours :string,registrationNumber :string,fee :decimal,testsOffered :list<Test>,appointments :list<Appointment>]
+Class: Appointment (class) - Enum Attributes: [], Class Attributes: [appointmentNumber :string,date :date,startTime :time,endTime :time,labName :string]
+Relationships:
+ 1..* Doctor association 1..* Test
+ 1..* Patient association 1..* Appointment
+ 1..* TestGroup association 1..* Test
+ 1..* Requisition association 1..* Test
+ 1..* Requisition association 1..* RepetitionInterval
+ 1 Lab association 0..* TestGroup
+ 1 Lab association 0..* Requisition
+ 1 Lab association 0..* Appointment
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'Appointment(class)'	-	'Appointment(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(class):signature '	-	'signature'
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):duration '	-	'duration'
+ 'Requisition(class):repetitionInterval '	-	'repetitionInterval'
+ 'Lab(class):address '	-	'address'
+ 'Lab(class):registrationNumber '	-	'registrationNumber'
+ 'Appointment(class):date '	-	'date'
+ 'Appointment(class):startTime '	-	'startTime'
+ 'Appointment(class):endTime '	-	'endTime'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Lab association 0..* Appointment'	-	' * Appointment association 1 Lab'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          30                  12                  43                  
+Associations        8                   1                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. TestType(bloodTest, ultrasound, xRay, other)
+2. RepetitionInterval(weekly, monthly, halfYearly, yearly)
+
+Classes:
+1. Doctor(practitionerNumber : numeric, fullName : string, address : string, phoneNumber : string, digitalSignature : image)
+2. Patient(healthNumber : alphanumeric, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. Requisition(validFromDate : date)
+4. Test(duration : duration, results : string, report : string)
+5. Lab(address : string, businessHours : string, registrationNumber : string, fee : float)
+
+Relationships:
+1..* Doctor prescribe 1..* Requisition
+1 Requisition contain 0..* Test
+1 Requisition indicate 1 Patient
+1 Requisition repeat 1 RepetitionInterval
+1 Requisition combine 1 TestType
+1 Patient make 0..* Appointment
+1 Appointment select 1 Lab
+1 Appointment confirm 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TestType (enum) - Enum Attributes: [bloodTest, ultrasound, xRay, other], Class Attributes: []
+Class: RepetitionInterval (enum) - Enum Attributes: [weekly, monthly, halfYearly, yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber :numeric,fullName :string,address :string,phoneNumber :string,digitalSignature :image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber :alphanumeric,firstName :string,lastName :string,dateOfBirth :date,address :string,phoneNumber :string]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFromDate :date]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration :duration,results :string,report :string]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address :string,businessHours :string,registrationNumber :string,fee :float]
+Relationships:
+ 1..* Doctor association 1..* Requisition
+ 1 Requisition aggregation 0..* Test
+ 1 Requisition association 1 Patient
+ 1 Requisition association 1 RepetitionInterval
+ 1 Requisition association 1 TestType
+ 1 Patient association 0..* Appointment
+ 1 Appointment association 1 Lab
+ 1 Appointment association 1 Lab
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'TestType(enum)'	-	'TestType(class)'
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(class):dateOfBirth '	-	'dateOfBirth'
+ 'Test(class):duration '	-	'duration'
+ 'Lab(class):address '	-	'address'
+ 'Lab(class):registrationNumber '	-	'registrationNumber'
+ 'RepetitionInterval(enum):weekly'	-	'weekly'
+ 'RepetitionInterval(enum):monthly'	-	'monthly'
+ 'RepetitionInterval(enum):yearly'	-	'yearly'
+-Relationships:
+ ' 1..* Doctor association 1..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Requisition association 1 Patient'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   16                  
+Attributes          27                  7                   43                  
+Associations        5                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, HalfYearly, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber: numeric, fullName: string, address: string, phoneNumber: string, digitalSignature: image)
+2. Patient(healthNumber: alphanumeric, firstName: string, lastName: string, dateOfBirth: date, address: string, phoneNumber: string)
+3. Test(duration: time)
+4. Requisition(validFrom: date, repetitionTimes: integer, repetitionInterval: RepetitionInterval)
+5. Lab(address: string, businessHours: string, fee: decimal, registrationNumber: string, testsOffered: List<Test>)
+
+Relationships:
+1. Doctor associate 0..* Requisition
+2. Patient associate 0..* Requisition
+3. Requisition associate 1..* Test
+4. Requisition associate 1 Lab
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, HalfYearly, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber:numeric,fullName:string,address:string,phoneNumber:string,digitalSignature:image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:alphanumeric,firstName:string,lastName:string,dateOfBirth:date,address:string,phoneNumber:string]
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:time]
+Class: Requisition (class) - Enum Attributes: [], Class Attributes: [validFrom:date,repetitionTimes:integer,repetitionInterval:RepetitionInterval]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address:string,businessHours:string,fee:decimal,registrationNumber:string,testsOffered:List<Test>]
+Relationships:
+ 1 Doctor association 0..* Requisition
+ 2 Patient association 0..* Requisition
+ 3 Requisition association 1..* Test
+ 4 Requisition association 1 Lab
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Requisition(class)'	-	'Requisition(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'Requisition(class):repetitionInterval'	-	'repetitionInterval'
+ 'Lab(class):address'	-	'address'
+ 'Lab(class):registrationNumber'	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1 Doctor association 0..* Requisition'	-	' 1 Doctor association * Requisition'
+ ' 2 Patient association 0..* Requisition'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          24                  8                   43                  
+Associations        4                   2                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. IntervalType(Weekly, Monthly, EveryHalfYear, Yearly)
+
+Class:
+1. Person(fullName: string, address: string, phoneNumber: string)
+2. Doctor(practitionerNumber: int, signature: image, personNumber: int)
+3. Patient(healthNumber: string, firstName: string, lastName: string, dateOfBirth: date, personNumber: int)
+4. Test(duration: int, groupName: string)
+5. Requisition(validFrom: date)
+6. Lab(address: string, businessHours: string, registrationNumber: int)
+
+Relationships:
+1..* Doctor associates 1 Requisition
+1 Requisition contains 0..* Test
+1 Requisition contains 1 Patient
+1 Requisition associates 1 Lab
+1 Requisition has 1 IntervalType for repetition
+
+Person inherit Doctor
+Person inherit Patient
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: IntervalType (enum) - Enum Attributes: [Weekly, Monthly, EveryHalfYear, Yearly], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [fullName, address, phoneNumber], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber, signature, personNumber], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber, firstName, lastName, dateOfBirth, personNumber], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [duration, groupName], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [validFrom], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address, businessHours, registrationNumber], Class Attributes: []
+Relationships:
+ 1..* Doctor association 1 Requisition
+ 1 Requisition association 0..* Test
+ 1 Requisition association 1 Patient
+ 1 Requisition association 1 Lab
+ 1 Requisition association 1 IntervalType
+ False Person inheritance False Doctor
+ False Person inheritance False Patient
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Person(enum)'	-	'Person(class)'
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'IntervalType(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Person(enum):address'	-	'address'
+ 'Person(enum):phoneNumber'	-	'phoneNumber'
+ 'Doctor(enum):signature'	-	'signature'
+ 'Patient(enum):dateOfBirth'	-	'dateOfBirth'
+ 'Test(enum):duration'	-	'duration'
+ 'Lab(enum):address'	-	'address'
+ 'Lab(enum):registrationNumber'	-	'registrationNumber'
+ 'IntervalType(enum):Weekly'	-	'weekly'
+ 'IntervalType(enum):Monthly'	-	'monthly'
+ 'IntervalType(enum):EveryHalfYear'	-	'everyHalfYear'
+ 'IntervalType(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1..* Doctor association 1 Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Requisition association 1 Patient'	-	' 1 Patient association * Requisition'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   16                  
+Attributes          21                  11                  43                  
+Associations        5                   2                   20                  
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, EveryHalfYear, Yearly)
+
+Class:
+1. Doctor(practitionerNumber : int, fullName : string, address : string, phoneNumber : string, signature : image)
+2. Patient(healthNumber : string, firstName : string, lastName : string, dateOfBirth : date, address : string, phoneNumber : string)
+3. Test(duration : int)
+4. Lab(address : string, businessHours : string, fee : float, registrationNumber : string)
+5. Requisition(validFrom : date)
+6. Appointment(appointmentDate : date, startTime : time, endTime : time, confirmationNumber : string, changeCancellationFee : float)
+
+Relationships:
+1..* Doctor associate 1 Requisition
+1 Patient associate 1..* Requisition
+1..* Test contain 1 Requisition
+1..* Test inherit Test
+1 Requisition associate 1 Appointment
+1 Lab associate 1..* Appointment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, EveryHalfYear, Yearly], Class Attributes: []
+Class: Doctor (enum) - Enum Attributes: [practitionerNumber , fullName , address , phoneNumber , signature ], Class Attributes: []
+Class: Patient (enum) - Enum Attributes: [healthNumber , firstName , lastName , dateOfBirth , address , phoneNumber ], Class Attributes: []
+Class: Test (enum) - Enum Attributes: [duration ], Class Attributes: []
+Class: Lab (enum) - Enum Attributes: [address , businessHours , fee , registrationNumber ], Class Attributes: []
+Class: Requisition (enum) - Enum Attributes: [validFrom ], Class Attributes: []
+Class: Appointment (enum) - Enum Attributes: [appointmentDate , startTime , endTime , confirmationNumber , changeCancellationFee ], Class Attributes: []
+Relationships:
+ 1..* Doctor association 1 Requisition
+ 1 Patient association 1..* Requisition
+ 1..* Test aggregation 1 Requisition
+ False Test inheritance False Test
+ 1 Requisition association 1 Appointment
+ 1 Lab association 1..* Appointment
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(enum)'	-	'Doctor(class)'
+ 'Patient(enum)'	-	'Patient(class)'
+ 'Test(enum)'	-	'Test(class)'
+ 'Lab(enum)'	-	'Lab(class)'
+ 'Requisition(enum)'	-	'Requisition(class)'
+ 'Appointment(enum)'	-	'Appointment(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Doctor(enum):signature '	-	'signature'
+ 'Patient(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Test(enum):duration '	-	'duration'
+ 'Lab(enum):address '	-	'address'
+ 'Lab(enum):registrationNumber '	-	'registrationNumber'
+ 'Appointment(enum):startTime '	-	'startTime'
+ 'Appointment(enum):endTime '	-	'endTime'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):EveryHalfYear'	-	'everyHalfYear'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+ ' 1..* Doctor association 1 Requisition'	-	' 1 Doctor association * Requisition'
+ ' 1 Patient association 1..* Requisition'	-	' 1 Patient association * Requisition'
+ ' 1 Requisition association 1 Appointment'	-	' * Requisition association * Appointment'
+ ' 1 Lab association 1..* Appointment'	-	' * Appointment association 1 Lab'
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   16                  
+Attributes          26                  11                  43                  
+Associations        5                   4                   20                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Lab Requisition Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RepetitionInterval(Weekly, Monthly, EveryHalfYear, Yearly)
+
+Classes:
+1. Doctor(practitionerNumber: numeric, name: string, address: string, phone: string, digitalSignature: image)
+2. Patient(healthNumber: alphanumeric, firstName: string, lastName: string, dateOfBirth: date, address: string, phone: string)
+3. TestGroup
+4. Test(duration: time)
+5. Lab(address: string, businessHours: string, registrationNumber: string, fee: decimal, testsOffered: string)
+
+Relationships:
+- Doctor associates 1..* Requisition
+- Patient associates 0..* Requisition
+- Requisition contains 1..* Test
+- Requisition has 1 RepetitionPattern
+- Lab contains 0..* Requisition
+- Lab has 1..* Test
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RepetitionInterval (enum) - Enum Attributes: [Weekly, Monthly, EveryHalfYear, Yearly], Class Attributes: []
+Class: Doctor (class) - Enum Attributes: [], Class Attributes: [practitionerNumber:numeric,name:string,address:string,phone:string,digitalSignature:image]
+Class: Patient (class) - Enum Attributes: [], Class Attributes: [healthNumber:alphanumeric,firstName:string,lastName:string,dateOfBirth:date,address:string,phone:string]
+Class: TestGroup (class) - Enum Attributes: [], Class Attributes: []
+Class: Test (class) - Enum Attributes: [], Class Attributes: [duration:time]
+Class: Lab (class) - Enum Attributes: [], Class Attributes: [address:string,businessHours:string,registrationNumber:string,fee:decimal,testsOffered:string]
+Relationships:
+ 1 Doctor association 1..* Requisition
+ 1 Patient association 0..* Requisition
+ 1 Requisition association 1..* Test
+ 1 Requisition association 1 RepetitionPattern
+ 1 Lab association 0..* Requisition
+ 1 Lab association 1..* Test
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Doctor(class)'	-	'Doctor(class)'
+ 'Patient(class)'	-	'Patient(class)'
+ 'Test(class)'	-	'Test(class)'
+ 'Lab(class)'	-	'Lab(class)'
+ 'RepetitionInterval(enum)'	-	'Interval(enum)'
+-Attributes:
+ 'Patient(class):dateOfBirth'	-	'dateOfBirth'
+ 'Test(class):duration'	-	'duration'
+ 'Lab(class):address'	-	'address'
+ 'Lab(class):registrationNumber'	-	'registrationNumber'
+ 'RepetitionInterval(enum):Weekly'	-	'weekly'
+ 'RepetitionInterval(enum):Monthly'	-	'monthly'
+ 'RepetitionInterval(enum):EveryHalfYear'	-	'everyHalfYear'
+ 'RepetitionInterval(enum):Yearly'	-	'yearly'
+-Relationships:
+--------------------------------------------------------------------------------
+Lab Requisition Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   16                  
+Attributes          21                  8                   43                  
+Associations        1                   0                   20                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+Lab Requisition Management System, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.898          0.384          0.538          0.434
+Attributes          0.339          0.202          0.253          0.220
+Associations        0.305          0.080          0.127          0.094
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

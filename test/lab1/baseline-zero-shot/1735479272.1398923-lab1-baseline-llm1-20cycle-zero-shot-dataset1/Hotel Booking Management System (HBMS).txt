@@ -1,0 +1,1829 @@
+------------------------------------------------------------
+---------------------1/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(single, double, twin)
+2. PaymentType(pre-paid, paid at hotel)
+
+Class:
+1. Traveller(name : string, billingInformation : string, company : string, address : string, travelPreferences : string)
+2. Hotel(name : string, city : string, address : string, rating : int, chain : string)
+3. Offer(price : decimal, cityArea : string, hotelRating : int, preferences : string, uniqueIdentifier : string)
+4. SpecialOffer(price : decimal, cityArea : string, hotelRating : int, preferences : string, uniqueIdentifier : string)
+5. Booking(traveller : Traveller, hotel : Hotel, roomType : RoomType, checkInDate : date, checkOutDate : date, paymentType : PaymentType, confirmationStatus : bool, cancellationDeadline : date)
+6. CompetitorHotel(name : string)
+7. CompetitorOffer(price : decimal, cityArea : string, hotelRating : int, preferences : string, travellerReliabilityRating : int)
+
+Relationships:
+1. 1..* Traveller associate 1 Hotel
+2. 1 Hotel contain 0..* Room
+3. 1 Hotel inherit 0..* CompetitorHotel
+4. 1 Booking associate 1 SpecialOffer
+5. 1..* SpecialOffer inherit 1 Offer
+6. 1 Booking inherit 1 PaymentType
+7. 1 Booking inherit 1 RoomType
+8. 1 Hotel contain 0..* Offer
+9. 1 Booking inherit 1 Traveller
+10. 1 Hotel associate 0..* Booking
+11. 1..* Hotel associate 0..* CompetitorOffer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [single, double, twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInformation , company , address , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , city , address , rating , chain ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences , uniqueIdentifier ], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences , uniqueIdentifier ], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [traveller , hotel , roomType , checkInDate , checkOutDate , paymentType , confirmationStatus , cancellationDeadline ], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: CompetitorOffer (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences , travellerReliabilityRating ], Class Attributes: []
+Relationships:
+ 1..* Traveller association 1 Hotel
+ 1 Hotel aggregation 0..* Room
+ False Hotel inheritance False CompetitorHotel
+ 1 Booking association 1 SpecialOffer
+ False SpecialOffer inheritance False Offer
+ False Booking inheritance False PaymentType
+ False Booking inheritance False RoomType
+ 1 Hotel aggregation 0..* Offer
+ False Booking inheritance False Traveller
+ 1 Hotel association 0..* Booking
+ 1..* Hotel association 0..* CompetitorOffer
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+-Attributes:
+ 'RoomType(enum):single'	-	'SINGLE'
+ 'RoomType(enum):double'	-	'DOUBLE'
+ 'RoomType(enum):twin'	-	'TWIN'
+ 'PaymentType(enum):pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'Hotel(enum):city '	-	'city'
+ 'Booking(enum):paymentType '	-	'paymentType'
+ 'Booking(enum):cancellationDeadline '	-	'cancellationDeadline'
+-Relationships:
+ ' False SpecialOffer inheritance False Offer'	-	' False SpecialOffer inheritance False Offer'
+ ' 1 Hotel aggregation 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   19                  
+Attributes          39                  8                   33                  
+Associations        5                   1                   11                  
+Inheritances        5                   1                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name: String, billingInfo: String, company: String, address: String, travelPreferences: String)
+2. Hotel(name: String, city: String, address: String, hotelChain: String)
+3. Booking(dateOfArrival: Date, dateOfDeparture: Date, numRooms: Integer, roomType: RoomType, minRating: Integer, maxCostPerNight: Double, tentativeBudget: Double, travelPreferences: String, price: Double, cityArea: String, keyPreferences: String, uniqueBookingId: String, cancellationDeadline: Date)
+4. Offer(price: Double, cityArea: String, hotelRating: Integer, keyPreferences: String)
+5. SpecialOffer(price: Double, cityArea: String, hotelRating: Integer, keyPreferences: String)
+6. CompetitorHotel(name: String)
+7. Confirmation()
+
+Relationships:
+1..* Traveller contain 0..* Booking
+1..* Hotel contain 0..* RoomType
+1..* Hotel announce 0..* Offer
+1..* Hotel inform 0..* RoomType
+1..* Booking associate 0..* SpecialOffer
+1..* Booking associate 1 Confirmation
+1..* Booking associate 0..* CompetitorHotel
+1..* Booking associate 0..* PaymentType
+1 Hotel inherit HotelChain
+1..* Hotel inherit 0..* RoomType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInfo, company, address, travelPreferences], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, hotelChain], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [dateOfArrival, dateOfDeparture, numRooms, roomType, minRating, maxCostPerNight, tentativeBudget, travelPreferences, price, cityArea, keyPreferences, uniqueBookingId, cancellationDeadline], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Confirmation (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Traveller aggregation 0..* Booking
+ 1..* Hotel aggregation 0..* RoomType
+ 1..* Hotel association 0..* Offer
+ 1..* Hotel association 0..* RoomType
+ 1..* Booking association 0..* SpecialOffer
+ 1..* Booking association 1 Confirmation
+ 1..* Booking association 0..* CompetitorHotel
+ 1..* Booking association 0..* PaymentType
+ False Hotel inheritance False HotelChain
+ False Hotel inheritance False RoomType
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Hotel(enum):city'	-	'city'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+-Relationships:
+ ' 1..* Hotel association 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   19                  
+Attributes          36                  7                   33                  
+Associations        8                   1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Classes:
+1. Traveller(name: string, billingInfo: string, company: string, address: string, travelPreferences: string)
+2. Hotel(name: string, city: string, address: string, rating: int, hotelChain: string)
+3. Booking(dateOfArrival: date, dateOfDeparture: date, numRooms: int, roomType: RoomType, minRating: int, maxBudget: double, travelPreferences: string, price: double, cityArea: string, keyPreferences: string, uniqueIdentifier: string, cancellationDeadline: date)
+4. Offer(price: double, cityArea: string, hotelRating: int, keyPreferences: string)
+5. SpecialOffer(price: double, cityArea: string, hotelRating: int, keyPreferences: string)
+6. RegularOffer
+
+Relationships:
+- Traveller has 0..* Bookings
+- Booking is associated with 1 Hotel
+- Hotel has 0..* Offers
+- Hotel may have 0..* RoomTypes
+- Booking is associated with 1..* Offers
+- Booking may have 1 SpecialOffer
+- Traveller has 0..* PaymentTypes
+- Hotel is run by 0..1 HotelChain
+
+Note: This is a simplified representation of the relationships based on the provided description. Additional relationships and attributes may be defined based on specific requirements and constraints.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (class) - Enum Attributes: [], Class Attributes: [name:string,billingInfo:string,company:string,address:string,travelPreferences:string]
+Class: Hotel (class) - Enum Attributes: [], Class Attributes: [name:string,city:string,address:string,rating:int,hotelChain:string]
+Class: Booking (class) - Enum Attributes: [], Class Attributes: [dateOfArrival:date,dateOfDeparture:date,numRooms:int,roomType:RoomType,minRating:int,maxBudget:double,travelPreferences:string,price:double,cityArea:string,keyPreferences:string,uniqueIdentifier:string,cancellationDeadline:date]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string]
+Class: SpecialOffer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string]
+Class: RegularOffer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Traveller association 0..* Bookings
+ 1 Booking association 1 associated
+ 1 Hotel association 0..* Offers
+ 1 Hotel association 1 have
+ 1 Booking association 1 associated
+ 1 Booking association 1 have
+ 1 Traveller association 0..* PaymentTypes
+ 1 Hotel association 1 run
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(class)'	-	'Traveller(class)'
+ 'Hotel(class)'	-	'Hotel(class)'
+ 'Booking(class)'	-	'Booking(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'SpecialOffer(class)'	-	'SpecialOffer(class)'
+ 'RegularOffer(class)'	-	'RegularOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(class):name'	-	'name'
+ 'Hotel(class):city'	-	'city'
+ 'Booking(class):cancellationDeadline'	-	'cancellationDeadline'
+-Relationships:
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   19                  
+Attributes          35                  7                   33                  
+Associations        0                   0                   11                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name: String, billingInfo: BillingInformation, travelPreferences: String)
+2. Booking(city: String, arrivalDate: Date, departureDate: Date, numRooms: int, roomType: RoomType, minRating: int, maxBudget: double, furtherPreferences: String, isPreliminary: boolean, isConfirmed: boolean, cancellationDeadline: Date)
+3. Offer(price: double, cityArea: String, hotelRating: int, keyPreferences: String, bookingID: String)
+4. Hotel(name: String, city: String, address: String, chain: String, availableRooms: List<RoomType>, fullyBookedRooms: List<RoomType>)
+5. CompetitorHotel(name: String, specialOffer: Offer, reliabilityRating: int)
+6. Confirmation(bookingID: String, isConfirmed: boolean, compensationOffered: boolean)
+
+Relationships:
+1. Traveller contain 0..* Booking
+2. Booking associate 1 Hotel
+3. Booking inherit Offer
+4. Booking associate 0..* CompetitorHotel
+5. Booking associate 1 Confirmation
+6. Booking has 1 PaymentType
+7. Hotel contain 0..* RoomType
+8. Hotel associate 0..* CompetitorHotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInfo, travelPreferences], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [city, arrivalDate, departureDate, numRooms, roomType, minRating, maxBudget, furtherPreferences, isPreliminary, isConfirmed, cancellationDeadline], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences, bookingID], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, chain, availableRooms, fullyBookedRooms], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name, specialOffer, reliabilityRating], Class Attributes: []
+Class: Confirmation (enum) - Enum Attributes: [bookingID, isConfirmed, compensationOffered], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ 2 Booking association 1 Hotel
+ False Booking inheritance False Offer
+ 4 Booking association 0..* CompetitorHotel
+ 5 Booking association 1 Confirmation
+ 6 Booking association 1 PaymentType
+ 7 Hotel aggregation 0..* RoomType
+ 8 Hotel association 0..* CompetitorHotel
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+ 'Hotel(enum):city'	-	'city'
+-Relationships:
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   19                  
+Attributes          36                  7                   33                  
+Associations        7                   0                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+RoomType(single, double, twin)
+OfferType(regular, special)
+PaymentType(pre-paid, paid at hotel)
+
+Classes:
+1. Traveller(name : String, billingInformation : String, company : String, address : String, travelPreferences : String)
+2. Hotel(name : String, city : String, address : String, hotelChain : String)
+3. Booking(city : String, dateOfArrival : Date, dateOfDeparture : Date, numberOfRooms : Integer, roomType : RoomType, minHotelRating : Integer, maxCostPerNight : Float, travelPreferences : String, bookingIdentifier : String, status : String, cancellationDeadline : Date)
+4. Offer(status : String, price : Float, cityArea : String, hotelRating : Integer, keyPreferences : String, offerType : OfferType)
+5. CompetitorHotel(name : String, preferences : String, reliabilityRating : Integer)
+6. RoomTypeAvailability(roomType : RoomType, availablePeriod : Date, isFullyBooked : Boolean)
+
+Relationships:
+1..* Traveller contain 0..* Booking
+1..* Hotel contain 0..* RoomTypeAvailability
+1 Booking associate 1 Hotel
+1 Booking associate 0..* CompetitorHotel
+1 Booking associate 0..* Offer
+1 Booking inherit 1 RoomTypeAvailability
+1 Booking inherit 1 PaymentType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [single, double, twin], Class Attributes: []
+Class: OfferType (enum) - Enum Attributes: [regular, special], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [pre-paid, at], Class Attributes: []
+Class: Traveller (class) - Enum Attributes: [], Class Attributes: [name :String,billingInformation :String,company :String,address :String,travelPreferences :String]
+Class: Hotel (class) - Enum Attributes: [], Class Attributes: [name :String,city :String,address :String,hotelChain :String]
+Class: Booking (class) - Enum Attributes: [], Class Attributes: [city :String,dateOfArrival :Date,dateOfDeparture :Date,numberOfRooms :Integer,roomType :RoomType,minHotelRating :Integer,maxCostPerNight :Float,travelPreferences :String,bookingIdentifier :String,status :String,cancellationDeadline :Date]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [status :String,price :Float,cityArea :String,hotelRating :Integer,keyPreferences :String,offerType :OfferType]
+Class: CompetitorHotel (class) - Enum Attributes: [], Class Attributes: [name :String,preferences :String,reliabilityRating :Integer]
+Class: RoomTypeAvailability (class) - Enum Attributes: [], Class Attributes: [roomType :RoomType,availablePeriod :Date,isFullyBooked :Boolean]
+Relationships:
+ 1..* Traveller aggregation 0..* Booking
+ 1..* Hotel aggregation 0..* RoomTypeAvailability
+ 1 Booking association 1 Hotel
+ 1 Booking association 0..* CompetitorHotel
+ 1 Booking association 0..* Offer
+ False Booking inheritance False RoomTypeAvailability
+ False Booking inheritance False PaymentType
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(class)'	-	'Traveller(class)'
+ 'Hotel(class)'	-	'Hotel(class)'
+ 'Booking(class)'	-	'Booking(class)'
+ 'Offer(class)'	-	'Offer(class)'
+-Attributes:
+ 'RoomType(enum):single'	-	'SINGLE'
+ 'RoomType(enum):double'	-	'DOUBLE'
+ 'RoomType(enum):twin'	-	'TWIN'
+ 'PaymentType(enum):pre-paid'	-	'PREPAID'
+ 'Traveller(class):name '	-	'name'
+ 'Hotel(class):city '	-	'city'
+ 'Booking(class):cancellationDeadline '	-	'cancellationDeadline'
+-Relationships:
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   19                  
+Attributes          39                  7                   33                  
+Associations        5                   0                   11                  
+Inheritances        2                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RoomType (Single, Double, Twin)
+2. PaymentType (Pre-paid, Paid at hotel)
+
+Classes:
+1. Traveller(name: string, billingInfo: string, company: string, address: string, travelPreferences: string)
+2. Booking(city: string, arrivalDate: date, departureDate: date, numRooms: int, roomType: RoomType, minRating: int, budget: double, specialPreferences: string, status: string, price: double, uniqueIdentifier: string, creditCardInfo: string, paymentType: PaymentType, cancellationDeadline: date)
+3. Hotel(name: string, city: string, address: string, chain: string)
+4. Offer(type: string, price: double, cityArea: string, hotelRating: int, keyPreferences: string)
+5. SpecialOffer(price: double, cityArea: string, hotelRating: int, keyPreferences: string, expiryDate: date)
+6. HotelRoom(type: RoomType, availability: boolean)
+7. CompetitorHotel(name: string, preferences: string, reliabilityRating: int)
+
+Relationships:
+- Traveller contains 0..* Booking
+- Traveller has 0..* CompetitorHotel
+- Booking associate 0..* Offer
+- Booking has 0..* SpecialOffer
+- Booking has 1 Hotel
+- Booking inherit Offer
+- Booking inherit SpecialOffer
+- Booking has 1..* HotelRoom
+- Booking associate 1 Traveller
+- Booking associate 0..* CompetitorHotel
+- Hotel contain 1..* HotelRoom
+- Hotel announce 0..* Offer
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (class) - Enum Attributes: [], Class Attributes: [name:string,billingInfo:string,company:string,address:string,travelPreferences:string]
+Class: Booking (class) - Enum Attributes: [], Class Attributes: [city:string,arrivalDate:date,departureDate:date,numRooms:int,roomType:RoomType,minRating:int,budget:double,specialPreferences:string,status:string,price:double,uniqueIdentifier:string,creditCardInfo:string,paymentType:PaymentType,cancellationDeadline:date]
+Class: Hotel (class) - Enum Attributes: [], Class Attributes: [name:string,city:string,address:string,chain:string]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [type:string,price:double,cityArea:string,hotelRating:int,keyPreferences:string]
+Class: SpecialOffer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string,expiryDate:date]
+Class: HotelRoom (class) - Enum Attributes: [], Class Attributes: [type:RoomType,availability:boolean]
+Class: CompetitorHotel (class) - Enum Attributes: [], Class Attributes: [name:string,preferences:string,reliabilityRating:int]
+Relationships:
+ 1 Traveller association 0..* Booking
+ 1 Traveller association 0..* CompetitorHotel
+ 1 Booking association 0..* Offer
+ 1 Booking association 0..* SpecialOffer
+ 1 Booking association 1 Hotel
+ False Booking inheritance False Offer
+ False Booking inheritance False SpecialOffer
+ 1 Booking association 1..* HotelRoom
+ 1 Booking association 1 Traveller
+ 1 Booking association 0..* CompetitorHotel
+ 1 Hotel aggregation 1..* HotelRoom
+ 1 Hotel association 0..* Offer
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(class)'	-	'Traveller(class)'
+ 'Booking(class)'	-	'Booking(class)'
+ 'Hotel(class)'	-	'Hotel(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'SpecialOffer(class)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(class):name'	-	'name'
+ 'Booking(class):paymentType'	-	'paymentType'
+ 'Booking(class):cancellationDeadline'	-	'cancellationDeadline'
+ 'Hotel(class):city'	-	'city'
+-Relationships:
+ ' 1 Hotel association 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   19                  
+Attributes          43                  8                   33                  
+Associations        10                  1                   11                  
+Inheritances        2                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Classes:
+1. Traveller(name: String, billingInfo: String, company: String, address: String, travelPreferences: String)
+2. Hotel(name: String, city: String, address: String, rating: int, hotelChain: String)
+3. Booking(city: String, arrivalDate: Date, departureDate: Date, numRooms: int, roomType: RoomType, minRating: int, maxCostPerNight: double, preferences: String, bookingType: String, price: double, cityArea: String, keyPreferences: String, uniqueIdentifier: String, confirmationDeadline: Date, cancellationDeadline: Date)
+4. Offer(offerType: String)
+5. SpecialOffer(specialOfferType: String)
+6. CompetitorHotel(name: String)
+7. RoomAvailability(startDate: Date, endDate: Date, roomType: RoomType)
+8. CompetitorOffer(offerType: String)
+9. Confirmation
+
+Relationships:
+- Traveller contain 0..* Booking
+- Booking associate 0..* Offer
+- Booking associate 0..* SpecialOffer
+- Booking associate 0..* CompetitorHotel
+- Booking associate 1 Confirmation
+- Hotel contain 0..* RoomAvailability
+- RoomAvailability associate 0..* Booking
+- Hotel inherit HotelChain
+- Booking inherit PaymentType
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (class) - Enum Attributes: [], Class Attributes: [name:String,billingInfo:String,company:String,address:String,travelPreferences:String]
+Class: Hotel (class) - Enum Attributes: [], Class Attributes: [name:String,city:String,address:String,rating:int,hotelChain:String]
+Class: Booking (class) - Enum Attributes: [], Class Attributes: [city:String,arrivalDate:Date,departureDate:Date,numRooms:int,roomType:RoomType,minRating:int,maxCostPerNight:double,preferences:String,bookingType:String,price:double,cityArea:String,keyPreferences:String,uniqueIdentifier:String,confirmationDeadline:Date,cancellationDeadline:Date]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [offerType:String]
+Class: SpecialOffer (class) - Enum Attributes: [], Class Attributes: [specialOfferType:String]
+Class: CompetitorHotel (class) - Enum Attributes: [], Class Attributes: [name:String]
+Class: RoomAvailability (class) - Enum Attributes: [], Class Attributes: [startDate:Date,endDate:Date,roomType:RoomType]
+Class: CompetitorOffer (class) - Enum Attributes: [], Class Attributes: [offerType:String]
+Class: Confirmation (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ 1 Booking association 0..* Offer
+ 1 Booking association 0..* SpecialOffer
+ 1 Booking association 0..* CompetitorHotel
+ 1 Booking association 1 Confirmation
+ 1 Hotel aggregation 0..* RoomAvailability
+ 1 RoomAvailability association 0..* Booking
+ False Hotel inheritance False HotelChain
+ False Booking inheritance False PaymentType
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(class)'	-	'Traveller(class)'
+ 'Hotel(class)'	-	'Hotel(class)'
+ 'Booking(class)'	-	'Booking(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'SpecialOffer(class)'	-	'SpecialOffer(class)'
+ 'RoomAvailability(class)'	-	'RoomAvailability(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(class):name'	-	'name'
+ 'Hotel(class):city'	-	'city'
+ 'Booking(class):cancellationDeadline'	-	'cancellationDeadline'
+ 'RoomAvailability(class):roomType'	-	'roomType'
+-Relationships:
+ ' 1 Hotel aggregation 0..* RoomAvailability'	-	' 1 Hotel aggregation * RoomAvailability'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   19                  
+Attributes          37                  8                   33                  
+Associations        7                   1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name: string, company: string, billingAddress: string, travelPreferences: string)
+2. Hotel(name: string, city: string, address: string, rating: int, chain: string)
+3. Offer(price: decimal, cityArea: string, hotelRating: int, preferences: string, uniqueIdentifier: string)
+4. Booking(price: decimal, cityArea: string, hotelRating: int, preferences: string, uniqueIdentifier: string, paymentType: PaymentType, confirmationStatus: boolean, cancellationDeadline: date)
+5. CompetitorHotel(name: string, preferences: string, reliabilityRating: int)
+
+Relationships:
+Traveller contain 0..* Booking
+Hotel contain 1..* RoomType
+Hotel inherit Offer
+Hotel inherit CompetitorHotel
+Booking inherit Offer
+Booking associate 1 Hotel
+Booking associate 1 Traveller
+Booking associate 0..* CompetitorHotel
+Booking associate 1 PaymentType
+Booking associate 0..1 CompetitorHotel
+Booking associate 1 PaymentType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, company, billingAddress, travelPreferences], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, rating, chain], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, preferences, uniqueIdentifier], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [price, cityArea, hotelRating, preferences, uniqueIdentifier, paymentType, confirmationStatus, cancellationDeadline], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name, preferences, reliabilityRating], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ 1 Hotel aggregation 1..* RoomType
+ False Hotel inheritance False Offer
+ False Hotel inheritance False CompetitorHotel
+ False Booking inheritance False Offer
+ 1 Booking association 1 Hotel
+ 1 Booking association 1 Traveller
+ 1 Booking association 0..* CompetitorHotel
+ 1 Booking association 1 PaymentType
+ 1 Booking association 0..1 CompetitorHotel
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Hotel(enum):city'	-	'city'
+ 'Booking(enum):paymentType'	-	'paymentType'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+-Relationships:
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   19                  
+Attributes          30                  8                   33                  
+Associations        7                   0                   11                  
+Inheritances        3                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(single, double, twin)
+2. PaymentType(pre-paid, paid at hotel)
+
+Class:
+1. Traveller(name : String, billingInfo : BillingInformation, travelPreferences : String[])
+2. Hotel(name : String, address : String, chain : HotelChain, roomTypes : RoomType[], availableRooms : RoomType[])
+3. Offer(price : Double, cityArea : String, hotelRating : Integer, preferences : String[])
+4. BookingInformation(price : Double, cityArea : String, hotelRating : Integer, preferences : String[], bookingID : String)
+5. CreditCardInformation
+6. HotelChain(name : String)
+7. BillingInformation(companyName : String, address : String)
+8. CompetitorHotel
+9. BookingConfirmation
+10. BookingCancellation
+
+Relationships:
+1..* Traveller contain 0..* BookingInformation
+1 Hotel inherit HotelChain
+1..* Hotel contain 0..* Offer
+1 Traveller associate 1 CreditCardInformation (finalizing a booking)
+1 BookingConfirmation associate 1 BookingInformation
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* BookingInformation
+0..* CompetitorHotel associate 1 BookingInformation (providing special offers)
+1 Hotel contain 0..* BookingConfirmation
+1 Hotel contain 0..* BookingCancellation
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [single, double, twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInfo , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , address , chain , roomTypes , availableRooms ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences ], Class Attributes: []
+Class: BookingInformation (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences , bookingID ], Class Attributes: []
+Class: CreditCardInformation (enum) - Enum Attributes: [], Class Attributes: []
+Class: HotelChain (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: BillingInformation (enum) - Enum Attributes: [companyName , address ], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [], Class Attributes: []
+Class: BookingConfirmation (enum) - Enum Attributes: [], Class Attributes: []
+Class: BookingCancellation (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Traveller aggregation 0..* BookingInformation
+ False Hotel inheritance False HotelChain
+ 1..* Hotel aggregation 0..* Offer
+ 1 Traveller association 1 CreditCardInformation
+ 1 BookingConfirmation association 1 BookingInformation
+ 1 Hotel aggregation 0..* RoomType
+ 1 Hotel aggregation 0..* BookingInformation
+ 0..* CompetitorHotel association 1 BookingInformation
+ 1 Hotel aggregation 0..* BookingConfirmation
+ 1 Hotel aggregation 0..* BookingCancellation
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'HotelChain(enum)'	-	'HotelChain(class)'
+ 'BillingInformation(enum)'	-	'BillingInformation(class)'
+-Attributes:
+ 'RoomType(enum):single'	-	'SINGLE'
+ 'RoomType(enum):double'	-	'DOUBLE'
+ 'RoomType(enum):twin'	-	'TWIN'
+ 'PaymentType(enum):pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'BillingInformation(enum):companyName '	-	'companyName'
+ 'BillingInformation(enum):address '	-	'address'
+-Relationships:
+ ' 1..* Hotel aggregation 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  7                   19                  
+Attributes          25                  7                   33                  
+Associations        9                   1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(single, double, twin)
+2. PaymentType(pre-paid, paid at hotel)
+
+Class:
+1. Traveller(name : String, billingInfo : BillingInfo, travelPreferences : String[])
+2. Hotel(name : String, city : String, address : String, hotelChain : HotelChain, roomTypes : RoomType[], availableRooms : RoomType[], fullyBookedRooms : RoomType[])
+3. BookingInfo(price : Double, cityArea : String, hotelRating : int, preferences : String[], bookingIdentifier : String, confirmationStatus : boolean, cancellationDeadline : Date)
+4. Offer(type : String)
+5. SpecialOffer(validityPeriod : int, competitorHotels : Hotel[], travellerPreferences : String[], travellerReliabilityRating : int)
+6. HotelChain(name : String)
+7. BillingInfo(companyName : String, companyAddress : String)
+8. CreditCardInformation(cardNumber : String, expiryDate : Date, cvv : String)
+9. CompetitorHotel()
+
+Relationships:
+1. 1 Traveller contain * BookingInfo
+2. 1 Traveller inherit BookingInfo
+3. 1 BookingInfo associate 1 Hotel
+4. 1 BookingInfo associate * CompetitorHotel
+5. 1 BookingInfo contain * SpecialOffer
+6. 1 BookingInfo associate 1 CreditCardInformation
+7. 1 BookingInfo associate * PaymentType
+8. 1 Hotel inherit HotelChain
+9. 1 Hotel contain * RoomType
+10. 1 Hotel contain * Offer
+11. 1 Hotel contain * RoomType
+12. 1 Hotel contain * RoomType
+13. 1 SpecialOffer inherit Offer
+14. 1 SpecialOffer associate * CompetitorHotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [single, double, twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInfo , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , city , address , hotelChain , roomTypes , availableRooms , fullyBookedRooms ], Class Attributes: []
+Class: BookingInfo (enum) - Enum Attributes: [price , cityArea , hotelRating , preferences , bookingIdentifier , confirmationStatus , cancellationDeadline ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [validityPeriod , competitorHotels , travellerPreferences , travellerReliabilityRating ], Class Attributes: []
+Class: HotelChain (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: BillingInfo (enum) - Enum Attributes: [companyName , companyAddress ], Class Attributes: []
+Class: CreditCardInformation (enum) - Enum Attributes: [cardNumber , expiryDate , cvv ], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation * BookingInfo
+ False Traveller inheritance False BookingInfo
+ 1 BookingInfo association 1 Hotel
+ 1 BookingInfo association * CompetitorHotel
+ 1 BookingInfo aggregation * SpecialOffer
+ 1 BookingInfo association 1 CreditCardInformation
+ 1 BookingInfo association * PaymentType
+ False Hotel inheritance False HotelChain
+ 1 Hotel aggregation * RoomType
+ 1 Hotel aggregation * Offer
+ 1 Hotel aggregation * RoomType
+ 1 Hotel aggregation * RoomType
+ False SpecialOffer inheritance False Offer
+ 1 SpecialOffer association * CompetitorHotel
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'BookingInfo(enum)'	-	'BookingInfo(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+ 'HotelChain(enum)'	-	'HotelChain(class)'
+-Attributes:
+ 'RoomType(enum):single'	-	'SINGLE'
+ 'RoomType(enum):double'	-	'DOUBLE'
+ 'RoomType(enum):twin'	-	'TWIN'
+ 'PaymentType(enum):pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'Hotel(enum):city '	-	'city'
+-Relationships:
+ ' 1 Hotel aggregation * Offer'	-	' 1 Hotel aggregation * Offer'
+ ' False SpecialOffer inheritance False Offer'	-	' False SpecialOffer inheritance False Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   19                  
+Attributes          33                  6                   33                  
+Associations        11                  1                   11                  
+Inheritances        3                   1                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+3. OfferType(Regular offer, Special offer)
+
+Class:
+1. Traveller(name: string, billingInformation: string, company: string, address: string, travelPreferences: string)
+2. Booking(city: string, arrivalDate: date, departureDate: date, numRooms: int, roomType: RoomType, minRating: int, maxCostPerNight: float, budget: float, travelPreferences: string, status: string, bookingIdentifier: string, cancellationDeadline: date)
+3. Hotel(name: string, city: string, address: string, chain: string)
+4. RoomAvailability(roomType: RoomType, availabilityPeriod: date, isFullyBooked: boolean)
+5. CompetitorHotel(name: string, preferences: string, reliabilityRating: int)
+6. Offer(price: float, cityArea: string, hotelRating: int, keyPreferences: string, bookingIdentifier: string, offerType: OfferType)
+7. Confirmation(bookingIdentifier: string, confirmationDate: date)
+8. Compensation(amount: float)
+
+Relationships:
+1..* Traveller associate 0..* Booking
+1..* Hotel contain 0..* RoomAvailability
+1 Hotel inherit Hotel
+1..* CompetitorHotel associate 0..* Offer
+1..* Booking associate 1 Confirmation
+1 Hotel contain 0..* Offer
+1..* Booking associate 1..* Compensation
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: OfferType (enum) - Enum Attributes: [offer, offer], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInformation, company, address, travelPreferences], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [city, arrivalDate, departureDate, numRooms, roomType, minRating, maxCostPerNight, budget, travelPreferences, status, bookingIdentifier, cancellationDeadline], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, chain], Class Attributes: []
+Class: RoomAvailability (enum) - Enum Attributes: [roomType, availabilityPeriod, isFullyBooked], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name, preferences, reliabilityRating], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences, bookingIdentifier, offerType], Class Attributes: []
+Class: Confirmation (enum) - Enum Attributes: [bookingIdentifier, confirmationDate], Class Attributes: []
+Class: Compensation (enum) - Enum Attributes: [amount], Class Attributes: []
+Relationships:
+ 1..* Traveller association 0..* Booking
+ 1..* Hotel aggregation 0..* RoomAvailability
+ False Hotel inheritance False Hotel
+ 1..* CompetitorHotel association 0..* Offer
+ 1..* Booking association 1 Confirmation
+ 1 Hotel aggregation 0..* Offer
+ 1..* Booking association 1..* Compensation
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'RoomAvailability(enum)'	-	'RoomAvailability(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+ 'Hotel(enum):city'	-	'city'
+ 'RoomAvailability(enum):roomType'	-	'roomType'
+-Relationships:
+ ' 1..* Hotel aggregation 0..* RoomAvailability'	-	' 1 Hotel aggregation * RoomAvailability'
+ ' 1 Hotel aggregation 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  7                   19                  
+Attributes          43                  8                   33                  
+Associations        6                   2                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(single, double, twin)
+2. PaymentType(pre-paid, paid at hotel)
+
+Class:
+1. Traveller(name : string, billingInformation : string, company : string, address : string, travelPreferences : string)
+2. Hotel(name : string, city : string, address : string, rating : int, chain : string)
+3. Offer(price : double, cityArea : string, hotelRating : int, keyPreferences : string, bookingIdentifier : string)
+4. SpecialOffer(price : double, cityArea : string, hotelRating : int, keyPreferences : string, bookingIdentifier : string)
+5. Booking(traveller : Traveller, hotel : Hotel, roomType : RoomType, checkInDate : date, checkOutDate : date, paymentType : PaymentType, confirmed : bool, cancellationDeadline : date, competitorHotels : list<Hotel>, reliabilityRating : int)
+
+Relationships:
+1..* Traveller contain 0..* Booking
+1..* Hotel contain 0..* Offer
+1..* Hotel inherit Hotel
+1..* Hotel associate 0..* RoomType
+0..* Hotel associate 0..* SpecialOffer
+1 Booking associate 1 Hotel
+1 Booking associate 0..* Hotel
+1 Booking associate 1 Traveller
+1 Booking associate 0..* CompetitorHotel
+1 Hotel associate 0..* RoomType
+1 Hotel associate 0..* SpecialOffer
+1 Booking inherit PaymentType
+1 Hotel inherit PaymentType
+1 Booking inherit RoomType
+1 Traveller inherit PaymentType
+1 Traveller inherit RoomType
+1 Hotel inherit RoomType
+1 Booking inherit Booking
+1 Hotel inherit Booking
+1 Booking inherit SpecialOffer
+1 Hotel inherit SpecialOffer
+1 Hotel inherit Offer
+1 Booking inherit Offer
+1..* Booking inherit Booking
+1 Hotel inherit Booking
+1 Hotel inherit SpecialOffer
+1 Booking inherit Hotel
+1 Hotel inherit Hotel
+1 Booking inherit Traveller
+1 Traveller inherit Traveller
+1 Hotel inherit Traveller
+1..* Hotel inherit Hotel
+1 Hotel inherit Traveller
+1 Traveller inherit Hotel
+1..* Traveller inherit Traveller
+1 Traveller inherit Hotel
+1 Booking inherit Traveller
+1 Booking inherit Hotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [single, double, twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInformation , company , address , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , city , address , rating , chain ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price , cityArea , hotelRating , keyPreferences , bookingIdentifier ], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price , cityArea , hotelRating , keyPreferences , bookingIdentifier ], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [traveller , hotel , roomType , checkInDate , checkOutDate , paymentType , confirmed , cancellationDeadline , competitorHotels , reliabilityRating ], Class Attributes: []
+Relationships:
+ 1..* Traveller aggregation 0..* Booking
+ 1..* Hotel aggregation 0..* Offer
+ False Hotel inheritance False Hotel
+ 1..* Hotel association 0..* RoomType
+ 0..* Hotel association 0..* SpecialOffer
+ 1 Booking association 1 Hotel
+ 1 Booking association 0..* Hotel
+ 1 Booking association 1 Traveller
+ 1 Booking association 0..* CompetitorHotel
+ 1 Hotel association 0..* RoomType
+ 1 Hotel association 0..* SpecialOffer
+ False Booking inheritance False PaymentType
+ False Hotel inheritance False PaymentType
+ False Booking inheritance False RoomType
+ False Traveller inheritance False PaymentType
+ False Traveller inheritance False RoomType
+ False Hotel inheritance False RoomType
+ False Booking inheritance False Booking
+ False Hotel inheritance False Booking
+ False Booking inheritance False SpecialOffer
+ False Hotel inheritance False SpecialOffer
+ False Hotel inheritance False Offer
+ False Booking inheritance False Offer
+ False Booking inheritance False Booking
+ False Booking inheritance False Hotel
+ False Hotel inheritance False Hotel
+ False Booking inheritance False Traveller
+ False Traveller inheritance False Traveller
+ False Hotel inheritance False Traveller
+ False Traveller inheritance False Hotel
+ False Traveller inheritance False Traveller
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+-Attributes:
+ 'RoomType(enum):single'	-	'SINGLE'
+ 'RoomType(enum):double'	-	'DOUBLE'
+ 'RoomType(enum):twin'	-	'TWIN'
+ 'PaymentType(enum):pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'Hotel(enum):city '	-	'city'
+ 'Booking(enum):paymentType '	-	'paymentType'
+ 'Booking(enum):cancellationDeadline '	-	'cancellationDeadline'
+-Relationships:
+ ' 1..* Hotel aggregation 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   19                  
+Attributes          35                  8                   33                  
+Associations        9                   1                   11                  
+Inheritances        21                  0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Classes:
+1. Traveller(name: string, billingInfo: string, companyInfo: string, travelPreferences: string)
+2. Hotel(name: string, city: string, address: string, rating: int, chain: string)
+3. Booking(city: string, arrivalDate: date, departureDate: date, numRooms: int, roomType: RoomType, minRating: int, maxBudget: double, specialPreferences: string, price: double, isPreliminary: boolean, isConfirmed: boolean, cancellationDeadline: date, paymentType: PaymentType, confirmationDeadline: date, reliabilityRating: double)
+4. Offer(price: double, cityArea: string, hotelRating: int, keyPreferences: string, bookingIdentifier: string)
+5. RegularOffer(price: double, cityArea: string, hotelRating: int, keyPreferences: string, bookingIdentifier: string)
+6. SpecialOffer(price: double, cityArea: string, hotelRating: int, keyPreferences: string, bookingIdentifier: string)
+
+Relationships:
+- Traveller create 0..* Booking
+- Booking contain 0..* Offer
+- Booking contain 0..* SpecialOffer
+- Booking inherit RegularOffer
+- SpecialOffer inherit Offer
+- Booking associate 1 Hotel
+- Hotel contain 0..* RoomType
+- Hotel contain 0..* Booking
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (class) - Enum Attributes: [], Class Attributes: [name:string,billingInfo:string,companyInfo:string,travelPreferences:string]
+Class: Hotel (class) - Enum Attributes: [], Class Attributes: [name:string,city:string,address:string,rating:int,chain:string]
+Class: Booking (class) - Enum Attributes: [], Class Attributes: [city:string,arrivalDate:date,departureDate:date,numRooms:int,roomType:RoomType,minRating:int,maxBudget:double,specialPreferences:string,price:double,isPreliminary:boolean,isConfirmed:boolean,cancellationDeadline:date,paymentType:PaymentType,confirmationDeadline:date,reliabilityRating:double]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string,bookingIdentifier:string]
+Class: RegularOffer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string,bookingIdentifier:string]
+Class: SpecialOffer (class) - Enum Attributes: [], Class Attributes: [price:double,cityArea:string,hotelRating:int,keyPreferences:string,bookingIdentifier:string]
+Relationships:
+ 1 Traveller association 0..* Booking
+ 1 Booking aggregation 0..* Offer
+ 1 Booking aggregation 0..* SpecialOffer
+ False Booking inheritance False RegularOffer
+ False SpecialOffer inheritance False Offer
+ 1 Booking association 1 Hotel
+ 1 Hotel aggregation 0..* RoomType
+ 1 Hotel aggregation 0..* Booking
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(class)'	-	'Traveller(class)'
+ 'Hotel(class)'	-	'Hotel(class)'
+ 'Booking(class)'	-	'Booking(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'RegularOffer(class)'	-	'RegularOffer(class)'
+ 'SpecialOffer(class)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(class):name'	-	'name'
+ 'Hotel(class):city'	-	'city'
+ 'Booking(class):cancellationDeadline'	-	'cancellationDeadline'
+ 'Booking(class):paymentType'	-	'paymentType'
+-Relationships:
+ ' False SpecialOffer inheritance False Offer'	-	' False SpecialOffer inheritance False Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   19                  
+Attributes          44                  8                   33                  
+Associations        6                   0                   11                  
+Inheritances        2                   1                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Pay at hotel)
+
+Class:
+1. Traveller(name: String, billingInformation: BillingInformation, travelPreferences: TravelPreferences)
+2. Hotel(name: String, city: String, address: String, hotelChain: HotelChain)
+3. Booking(city: String, arrivalDate: Date, departureDate: Date, numberOfRooms: Int, roomType: RoomType, minRating: Int, maxCostPerNight: Double, specialPreferences: String)
+4. Offer(price: Double, cityArea: String, hotelRating: Int, keyPreferences: String, bookingIdentifier: String)
+5. CreditCardInformation(cardNumber: String, expiryDate: Date, cvv: String)
+6. HotelChain(name: String)
+7. RoomAvailability(type: RoomType, isFullyBooked: Boolean)
+8. CompetitorHotel
+9. Confirmation
+
+Relationships:
+Traveller contain 0..* Booking
+Traveller inherit Confirmation
+Hotel contain 1..* RoomAvailability
+Hotel inherit Confirmation
+Booking associate 1..* Offer
+Booking associate 1 CreditCardInformation
+Booking associate 1 PaymentType
+Booking inherit Confirmation
+Booking inherit CancellationPolicy
+HotelChain contain 1..* Hotel
+HotelChain inherit Hotel
+RoomAvailability associate 1 Booking
+CompetitorHotel associate 1 Booking
+Offer inherit Offer
+Offer associate 1 Booking
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInformation, travelPreferences], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, hotelChain], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [city, arrivalDate, departureDate, numberOfRooms, roomType, minRating, maxCostPerNight, specialPreferences], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences, bookingIdentifier], Class Attributes: []
+Class: CreditCardInformation (enum) - Enum Attributes: [cardNumber, expiryDate, cvv], Class Attributes: []
+Class: HotelChain (enum) - Enum Attributes: [name], Class Attributes: []
+Class: RoomAvailability (enum) - Enum Attributes: [type, isFullyBooked], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [], Class Attributes: []
+Class: Confirmation (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ False Traveller inheritance False Confirmation
+ 1 Hotel aggregation 1..* RoomAvailability
+ False Hotel inheritance False Confirmation
+ 1 Booking association 1..* Offer
+ 1 Booking association 1 CreditCardInformation
+ 1 Booking association 1 PaymentType
+ False Booking inheritance False Confirmation
+ False Booking inheritance False CancellationPolicy
+ 1 HotelChain aggregation 1..* Hotel
+ False HotelChain inheritance False Hotel
+ 1 RoomAvailability association 1 Booking
+ 1 CompetitorHotel association 1 Booking
+ False Offer inheritance False Offer
+ 1 Offer association 1 Booking
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'HotelChain(enum)'	-	'HotelChain(class)'
+ 'RoomAvailability(enum)'	-	'RoomAvailability(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Hotel(enum):city'	-	'city'
+-Relationships:
+ ' 1 Hotel aggregation 1..* RoomAvailability'	-	' 1 Hotel aggregation * RoomAvailability'
+ ' 1 HotelChain aggregation 1..* Hotel'	-	' 1 HotelChain aggregation * Hotel'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   19                  
+Attributes          31                  6                   33                  
+Associations        9                   2                   11                  
+Inheritances        5                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name: String, billingInformation: String, company: String, address: String, travelPreferences: String)
+2. Hotel(name: String, city: String, address: String, rating: int, roomTypes: List<RoomType>, roomAvailability: List<RoomType>, hotelChain: String)
+3. Booking(traveller: Traveller, hotel: Hotel, dateOfArrival: Date, dateOfDeparture: Date, numRooms: int, roomType: RoomType, minHotelRating: int, maxCostPerNight: double, travelPreferences: String, bookingStatus: String, paymentType: PaymentType, creditCardInfo: String, confirmationStatus: String, cancellationDeadline: Date)
+
+Relationships:
+- Traveller contains 0..* Booking
+- Hotel contains 0..* RoomType
+- Booking associate 1 Hotel
+- Booking associate 1 Traveller
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInformation, company, address, travelPreferences], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, rating, roomTypes, roomAvailability, hotelChain], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [traveller, hotel, dateOfArrival, dateOfDeparture, numRooms, roomType, minHotelRating, maxCostPerNight, travelPreferences, bookingStatus, paymentType, creditCardInfo, confirmationStatus, cancellationDeadline], Class Attributes: []
+Relationships:
+ 1 Traveller association 0..* Booking
+ 1 Hotel association 0..* RoomType
+ 1 Booking association 1 Hotel
+ 1 Booking association 1 Traveller
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Hotel(enum):city'	-	'city'
+ 'Booking(enum):bookingStatus'	-	'bookingStatus'
+ 'Booking(enum):paymentType'	-	'paymentType'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+-Relationships:
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   19                  
+Attributes          31                  9                   33                  
+Associations        4                   0                   11                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentStatus(PaidImmediately, PaidAtHotel)
+
+Class:
+1. Traveller(name: String, billingInfo: BillingInformation, travelPreferences: TravelPreferences, creditCardInfo: CreditCardInformation, reliabilityRating: int)
+2. Hotel(name: String, city: String, address: String, hotelChain: HotelChain, roomTypes: List<RoomType>)
+3. Offer(price: double, cityArea: String, hotelRating: int, preferences: TravelPreferences, bookingId: String)
+4. Booking(bookingId: String, price: double, cityArea: String, hotelRating: int, preferences: TravelPreferences, bookingStatus: PaymentStatus)
+5. HotelChain(name: String)
+6. BillingInformation(companyName: String, address: String)
+7. TravelPreferences(preferences: List<String>)
+8. CreditCardInformation(cardNumber: String, expirationDate: String, cvv: String)
+
+Relationships:
+1..* Traveller contains 0..* Booking
+1 HotelChain contain 0..* Hotel
+1 Hotel announce 0..* RoomTypes
+1 Hotel inform 0..* RoomTypes are FullyBooked
+1 Offer is a kind of Offers
+1 RegularOffer is a kind of Offers
+1 SpecialOffer is a kind of Offers
+1 Booking is a kind of Offers
+1 Traveller inherit Booking
+1..* Hotel compete for 0..* Offer
+1 Hotel confirm 0..* Booking
+1 Booking pay 0..1 PaymentStatus
+1 Booking reimburse 0..1 Traveller
+1 HBMS cancel 0..* Booking
+1 Hotel cancel 0..* Booking
+1 Hotel offer 0..* FinancialCompensation to Traveller
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentStatus (enum) - Enum Attributes: [PaidImmediately, PaidAtHotel], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInfo, travelPreferences, creditCardInfo, reliabilityRating], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, hotelChain, roomTypes], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, preferences, bookingId], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [bookingId, price, cityArea, hotelRating, preferences, bookingStatus], Class Attributes: []
+Class: HotelChain (enum) - Enum Attributes: [name], Class Attributes: []
+Class: BillingInformation (enum) - Enum Attributes: [companyName, address], Class Attributes: []
+Class: TravelPreferences (enum) - Enum Attributes: [preferences], Class Attributes: []
+Class: CreditCardInformation (enum) - Enum Attributes: [cardNumber, expirationDate, cvv], Class Attributes: []
+Relationships:
+ 1..* Traveller association 0..* Booking
+ 1 HotelChain aggregation 0..* Hotel
+ 1 Hotel association 0..* RoomTypes
+ 1 Hotel association 0..* RoomTypes
+ 1 Offer association 1 a
+ 1 RegularOffer association 1 a
+ 1 SpecialOffer association 1 a
+ 1 Booking association 1 a
+ False Traveller inheritance False Booking
+ 1..* Hotel association 1 for
+ 1 Hotel association 0..* Booking
+ 1 Booking association 0..1 PaymentStatus
+ 1 Booking association 0..1 Traveller
+ 1 HBMS association 0..* Booking
+ 1 Hotel association 0..* Booking
+ 1 Hotel association 0..* FinancialCompensation
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'HotelChain(enum)'	-	'HotelChain(class)'
+ 'BillingInformation(enum)'	-	'BillingInformation(class)'
+ 'TravelPreferences(enum)'	-	'TravelPreference(class)'
+ 'PaymentStatus(enum)'	-	'PaymentType(enum)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'Traveller(enum):name'	-	'name'
+ 'Traveller(enum):reliabilityRating'	-	'reliabilityRating'
+ 'Hotel(enum):city'	-	'city'
+ 'Booking(enum):bookingId'	-	'bookingId'
+ 'Booking(enum):bookingStatus'	-	'bookingStatus'
+ 'BillingInformation(enum):companyName'	-	'companyName'
+ 'BillingInformation(enum):address'	-	'address'
+ 'TravelPreferences(enum):preferences'	-	'preference'
+ 'PaymentStatus(enum):PaidAtHotel'	-	'PAID_AT_HOTEL'
+-Relationships:
+ ' 1 HotelChain aggregation 0..* Hotel'	-	' 1 HotelChain aggregation * Hotel'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   19                  
+Attributes          33                  12                  33                  
+Associations        6                   1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. BookingStatus(Preliminary, Confirmed, Cancelled)
+3. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name : String, billingInfo : String, company : String, address : String, travelPreferences : String)
+2. Hotel(name : String, city : String, address : String, rating : Int, chain : String)
+3. Booking(arrivalDate : Date, departureDate : Date, numRooms : Int, roomType : RoomType, minRating : Int, maxBudget : Double, paymentType : PaymentType, cancellationDeadline : Date)
+4. Offer(price : Double, area : String, hotelRating : Int, preferences : String, bookingID : String)
+5. SpecialOffer(price : Double, area : String, hotelRating : Int, preferences : String, bookingID : String)
+6. CompetitorHotel(name : String, preferences : String, reliabilityRating : Double)
+
+Relationships:
+1..* Traveller contain 1..* Booking
+1 Hotel contain 1..* RoomType
+1 Booking associate 0..* Offer
+1 Booking inherit PreliminaryOffer
+1 Booking inherit ConfirmedOffer
+1 SpecialOffer inherit Offer
+1 Booking associate 1 CompetitorHotel
+1 Booking associate 1 Hotel
+1 Booking associate 1 Traveller
+1 Hotel inherit ChainHotel
+1 Booking inherit BookingStatus
+1 Booking associate 1 PaymentType
+1 Hotel associate 0..* RoomType
+1 Booking contain 1 Hotel
+1 FinalizedBooking associate 1 Booking
+1 FinalizedBooking associate 1 Hotel
+1 FinalizedBooking associate 1 Traveller
+1 Hotel associate 1 City
+1 Hotel associate 1 Address
+1 Booking contain 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+1 Booking associate 1 BookingStatus
+1 Booking associate 1 PaymentType
+1 Booking associate 1 CancellationDeadline
+1 Booking associate 1 Traveller
+1 Booking associate 1 Hotel
+1 Booking associate 0..* SpecialOffer
+1 Hotel associate 0..* SpecialOffer
+1 Hotel contain 0..* RoomType
+1 Hotel contain 0..* FullyBookedRoomType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: BookingStatus (enum) - Enum Attributes: [Preliminary, Confirmed, Cancelled], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInfo , company , address , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , city , address , rating , chain ], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [arrivalDate , departureDate , numRooms , roomType , minRating , maxBudget , paymentType , cancellationDeadline ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price , area , hotelRating , preferences , bookingID ], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price , area , hotelRating , preferences , bookingID ], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name , preferences , reliabilityRating ], Class Attributes: []
+Relationships:
+ 1..* Traveller aggregation 1..* Booking
+ 1 Hotel aggregation 1..* RoomType
+ 1 Booking association 0..* Offer
+ False Booking inheritance False PreliminaryOffer
+ False Booking inheritance False ConfirmedOffer
+ False SpecialOffer inheritance False Offer
+ 1 Booking association 1 CompetitorHotel
+ 1 Booking association 1 Hotel
+ 1 Booking association 1 Traveller
+ False Hotel inheritance False ChainHotel
+ False Booking inheritance False BookingStatus
+ 1 Booking association 1 PaymentType
+ 1 Hotel association 0..* RoomType
+ 1 Booking aggregation 1 Hotel
+ 1 FinalizedBooking association 1 Booking
+ 1 FinalizedBooking association 1 Hotel
+ 1 FinalizedBooking association 1 Traveller
+ 1 Hotel association 1 City
+ 1 Hotel association 1 Address
+ 1 Booking aggregation 0..* SpecialOffer
+ 1 Hotel association 0..* SpecialOffer
+ 1 Hotel aggregation 0..* RoomType
+ 1 Hotel aggregation 0..* FullyBookedRoomType
+ 1 Booking association 1 BookingStatus
+ 1 Booking association 1 CancellationDeadline
+ 1 Booking association 0..* SpecialOffer
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'BookingStatus(enum)'	-	'BookingStatus(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'BookingStatus(enum):Preliminary'	-	'PRELIMINARY'
+ 'BookingStatus(enum):Confirmed'	-	'CONFIRMED'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'Hotel(enum):city '	-	'city'
+ 'Booking(enum):paymentType '	-	'paymentType'
+ 'Booking(enum):cancellationDeadline '	-	'cancellationDeadline'
+-Relationships:
+ ' False SpecialOffer inheritance False Offer'	-	' False SpecialOffer inheritance False Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   19                  
+Attributes          39                  10                  33                  
+Associations        14                  0                   11                  
+Inheritances        2                   1                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Paid at hotel)
+
+Class:
+1. Traveller(name : String, billingInfo : String, company : String, address : String, travelPreferences : String)
+2. Hotel(name : String, city : String, address : String, hotelChain : String, availableRoomTypes : List<RoomType>, fullyBookedRoomTypes : List<RoomType>, rating : int, cancellationDeadline : int)
+3. Booking(price : double, cityArea : String, hotelRating : int, keyPreferences : String, uniqueIdentifier : String, specialOffer : SpecialOffer, paymentInfo : PaymentInfo, preliminary : boolean, confirmed : boolean, cancellationDeadline : int, traveller : Traveller, hotel : Hotel)
+4. Offer(price : double, cityArea : String, hotelRating : int, keyPreferences : String, uniqueIdentifier : String)
+5. SpecialOffer(price : double, cityArea : String, hotelRating : int, keyPreferences : String, uniqueIdentifier : String)
+6. PaymentInfo(paymentType : PaymentType, creditCardInfo : String, paid : boolean)
+7. CompetitorHotel(name : String, specialOffers : List<SpecialOffer>, reliabilityRating : int)
+
+Relationships:
+1..* Traveller contain 1 Booking
+1 Hotel contain 0..* Offer
+0..* Hotel associate 0..* CompetitorHotel
+1..* Booking associate 1 Hotel
+1 Booking contain 1 SpecialOffer
+1 Booking contain 1 PaymentInfo
+1..* SpecialOffer inherit 1 Offer
+1 Traveller inherit 1 CompetitorHotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name , billingInfo , company , address , travelPreferences ], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name , city , address , hotelChain , availableRoomTypes , fullyBookedRoomTypes , rating , cancellationDeadline ], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [price , cityArea , hotelRating , keyPreferences , uniqueIdentifier , specialOffer , paymentInfo , preliminary , confirmed , cancellationDeadline , traveller , hotel ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price , cityArea , hotelRating , keyPreferences , uniqueIdentifier ], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price , cityArea , hotelRating , keyPreferences , uniqueIdentifier ], Class Attributes: []
+Class: PaymentInfo (enum) - Enum Attributes: [paymentType , creditCardInfo , paid ], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name , specialOffers , reliabilityRating ], Class Attributes: []
+Relationships:
+ 1..* Traveller aggregation 1 Booking
+ 1 Hotel aggregation 0..* Offer
+ 0..* Hotel association 0..* CompetitorHotel
+ 1..* Booking association 1 Hotel
+ 1 Booking aggregation 1 SpecialOffer
+ 1 Booking aggregation 1 PaymentInfo
+ False SpecialOffer inheritance False Offer
+ False Traveller inheritance False CompetitorHotel
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name '	-	'name'
+ 'Hotel(enum):city '	-	'city'
+ 'Booking(enum):cancellationDeadline '	-	'cancellationDeadline'
+-Relationships:
+ ' 1 Hotel aggregation 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+ ' False SpecialOffer inheritance False Offer'	-	' False SpecialOffer inheritance False Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   19                  
+Attributes          46                  7                   33                  
+Associations        6                   1                   11                  
+Inheritances        2                   1                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Pay at hotel)
+
+Class:
+1. Traveller(name: String, billingInfo: BillingInformation, travelPreferences: String)
+2. Hotel(name: String, city: String, address: String, chain: HotelChain)
+3. Booking(city: String, arrivalDate: Date, departureDate: Date, numRooms: int, roomType: RoomType, minRating: int, maxCostPerNight: double, preliminary: boolean, offer: Offer, paymentType: PaymentType, confirmation: boolean, cancellationDeadline: Date)
+4. Offer(price: double, cityArea: String, hotelRating: int, preferences: String, uniqueIdentifier: String)
+5. HotelChain(name: String)
+6. BillingInformation(companyName: String, address: String)
+7. CompetitorHotel(name: String)
+
+Relationships:
+1. Traveller contain 0..* Booking
+2. Traveller inherit HotelChain
+3. Hotel contain 0..* RoomType
+4. Hotel announce 0..* Offer
+5. Hotel inform 0..* RoomType
+6. Hotel send 1 Confirmation
+7. Hotel cancel 1 Booking
+8. Booking associate 0..* Offer
+9. Booking associate 1 Hotel
+10. Booking associate 1 Traveller
+11. Booking associate 1 PaymentType
+12. Booking associate 0..* CompetitorHotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInfo, travelPreferences], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, chain], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [city, arrivalDate, departureDate, numRooms, roomType, minRating, maxCostPerNight, preliminary, offer, paymentType, confirmation, cancellationDeadline], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, preferences, uniqueIdentifier], Class Attributes: []
+Class: HotelChain (enum) - Enum Attributes: [name], Class Attributes: []
+Class: BillingInformation (enum) - Enum Attributes: [companyName, address], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ False Traveller inheritance False HotelChain
+ 3 Hotel aggregation 0..* RoomType
+ 4 Hotel association 0..* Offer
+ 5 Hotel association 0..* RoomType
+ 6 Hotel association 1 Confirmation
+ 7 Hotel association 1 Booking
+ 8 Booking association 0..* Offer
+ 9 Booking association 1 Hotel
+ 10 Booking association 1 Traveller
+ 11 Booking association 1 PaymentType
+ 12 Booking association 0..* CompetitorHotel
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'HotelChain(enum)'	-	'HotelChain(class)'
+ 'BillingInformation(enum)'	-	'BillingInformation(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Hotel(enum):city'	-	'city'
+ 'Booking(enum):paymentType'	-	'paymentType'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+ 'BillingInformation(enum):companyName'	-	'companyName'
+ 'BillingInformation(enum):address'	-	'address'
+-Relationships:
+ ' 4 Hotel association 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   19                  
+Attributes          33                  10                  33                  
+Associations        10                  1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Hotel Booking Management System (HBMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. RoomType(Single, Double, Twin)
+2. PaymentType(Pre-paid, Pay at hotel)
+
+Class:
+1. Traveller(name: String, billingInfo: String, company: String, address: String, travelPreferences: String)
+2. Booking(city: String, arrivalDate: Date, departureDate: Date, numRooms: int, roomType: RoomType, minRating: int, maxCostPerNight: double, budget: double, travelPreferences: String, bookingIdentifier: String, creditCardInfo: String, paymentType: PaymentType, cancellationDeadline: Date, reliabilityRating: int)
+3. Hotel(name: String, city: String, address: String, chain: String)
+4. Offer(price: double, cityArea: String, hotelRating: int, keyPreferences: String, specialOffer: boolean)
+5. SpecialOffer(price: double, cityArea: String, hotelRating: int, keyPreferences: String)
+6. CompetitorHotel(name: String)
+
+Relationships:
+Traveller contain 0..* Booking
+Booking associate 0..* SpecialOffer
+Booking inherit Offer
+Booking contain 1 CompetitorHotel
+Hotel contain 0..* RoomType
+Hotel associate 0..* Offer
+Hotel associate 0..* CompetitorHotel
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: RoomType (enum) - Enum Attributes: [Single, Double, Twin], Class Attributes: []
+Class: PaymentType (enum) - Enum Attributes: [Pre-paid, at], Class Attributes: []
+Class: Traveller (enum) - Enum Attributes: [name, billingInfo, company, address, travelPreferences], Class Attributes: []
+Class: Booking (enum) - Enum Attributes: [city, arrivalDate, departureDate, numRooms, roomType, minRating, maxCostPerNight, budget, travelPreferences, bookingIdentifier, creditCardInfo, paymentType, cancellationDeadline, reliabilityRating], Class Attributes: []
+Class: Hotel (enum) - Enum Attributes: [name, city, address, chain], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences, specialOffer], Class Attributes: []
+Class: SpecialOffer (enum) - Enum Attributes: [price, cityArea, hotelRating, keyPreferences], Class Attributes: []
+Class: CompetitorHotel (enum) - Enum Attributes: [name], Class Attributes: []
+Relationships:
+ 1 Traveller aggregation 0..* Booking
+ 1 Booking association 0..* SpecialOffer
+ False Booking inheritance False Offer
+ 1 Booking aggregation 1 CompetitorHotel
+ 1 Hotel aggregation 0..* RoomType
+ 1 Hotel association 0..* Offer
+ 1 Hotel association 0..* CompetitorHotel
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'RoomType(enum)'	-	'RoomType(enum)'
+ 'PaymentType(enum)'	-	'PaymentType(enum)'
+ 'Traveller(enum)'	-	'Traveller(class)'
+ 'Booking(enum)'	-	'Booking(class)'
+ 'Hotel(enum)'	-	'Hotel(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'SpecialOffer(enum)'	-	'SpecialOffer(class)'
+-Attributes:
+ 'RoomType(enum):Single'	-	'SINGLE'
+ 'RoomType(enum):Double'	-	'DOUBLE'
+ 'RoomType(enum):Twin'	-	'TWIN'
+ 'PaymentType(enum):Pre-paid'	-	'PREPAID'
+ 'Traveller(enum):name'	-	'name'
+ 'Booking(enum):paymentType'	-	'paymentType'
+ 'Booking(enum):cancellationDeadline'	-	'cancellationDeadline'
+ 'Hotel(enum):city'	-	'city'
+-Relationships:
+ ' 1 Hotel association 0..* Offer'	-	' 1 Hotel aggregation * Offer'
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   19                  
+Attributes          38                  8                   33                  
+Associations        6                   1                   11                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+Hotel Booking Management System (HBMS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.800          0.379          0.514          0.424
+Attributes          0.219          0.238          0.228          0.234
+Associations        0.103          0.068          0.082          0.073
+Inheritances        0.091          0.062          0.074          0.067
+--------------------------------------------------------------------------------

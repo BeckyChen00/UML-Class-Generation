@@ -1,0 +1,1680 @@
+------------------------------------------------------------
+---------------------1/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PlayerPosition(GK, LB, CB, RB, CDM, CM, CAM, LW, RW, ST) 
+
+Classes:
+1. Employee(name : string, role : string)
+2. PlayerProfile(targetPosition : PlayerPosition, attributes : map<string, string>)
+3. Player(name : string)
+4. ScoutingAssignment(player : Player, scout : Employee, status : string)
+5. ScoutingReport(player : Player, pros : string, cons : string, recommendation : string)
+6. ShortListedPlayer(player : Player, round : int)
+7. Offer(player : Player, director : Employee)
+
+Relationships:
+1..* Employee associate 1 HeadCoach
+1..* Employee associate 1 HeadScout
+1 HeadCoach associate 1 HeadScout
+1 HeadScout associate 0..* Scout
+0..* Scout associate 1 ScoutingAssignment
+1 ScoutingAssignment contain 1 Player
+1 ScoutingAssignment contain 1 ScoutingReport
+1..* ScoutingAssignment associate 1..* ShortListedPlayer
+1 ShortListedPlayer associate 1 Player
+1..* ShortListedPlayer associate 1 ScoutingAssignment
+1..* ShortListedPlayer associate 0..* ScoutingAssignment
+1 HeadScout contain 1 Offer
+1 Offer contain 1 Player
+1 Offer contain 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PlayerPosition (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, CAM, LW, RW, ST], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name :string,role :string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [targetPosition :PlayerPosition,attributes :map<string,string>:]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [name :string]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [player :Player,scout :Employee,status :string]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [player :Player,pros :string,cons :string,recommendation :string]
+Class: ShortListedPlayer (class) - Enum Attributes: [], Class Attributes: [player :Player,round :int]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [player :Player,director :Employee]
+Relationships:
+ 1..* Employee association 1 HeadCoach
+ 1..* Employee association 1 HeadScout
+ 1 HeadCoach association 1 HeadScout
+ 1 HeadScout association 0..* Scout
+ 0..* Scout association 1 ScoutingAssignment
+ 1 ScoutingAssignment aggregation 1 Player
+ 1 ScoutingAssignment aggregation 1 ScoutingReport
+ 1..* ScoutingAssignment association 1..* ShortListedPlayer
+ 1 ShortListedPlayer association 1 Player
+ 1..* ShortListedPlayer association 1 ScoutingAssignment
+ 1..* ShortListedPlayer association 0..* ScoutingAssignment
+ 1 HeadScout aggregation 1 Offer
+ 1 Offer aggregation 1 Player
+ 1 Offer aggregation 1 Employee
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'PlayerPosition(enum)'	-	'Position(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'PlayerPosition(enum):GK'	-	'GK'
+ 'PlayerPosition(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          27                  3                   24                  
+Associations        8                   0                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. TargetPositions(GK, LB, CB, RB, CDM, CM, LM, RM, LW, RW, ST)
+2. PlayerAttributeTypes(Name, Value)
+
+Classes:
+1. PlayerProfile(targetPosition : TargetPositions, otherAttributes : List<PlayerAttribute>)
+2. Scout
+3. ScoutingAssignment(assignedPlayers : List<PlayerProfile>)
+4. ScoutingReport(pros : String, cons : String, recommendation : String)
+5. ShortListedPlayer
+6. Director
+7. OfficialOffer
+
+Relationships:
+1. 1 HeadCoach associate * PlayerProfile
+2. 1 Director associate * OfficialOffer
+3. * Scout associate * ScoutingAssignment
+4. 1 HeadScout associate * ScoutingReport
+5. 1 HeadCoach contain * ShortListedPlayer
+6. 1 HeadScout contain * ScoutingAssignment
+7. 1 HeadScout inherit Scout
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TargetPositions (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, LM, RM, LW, RW, ST], Class Attributes: []
+Class: PlayerAttributeTypes (enum) - Enum Attributes: [Name, Value], Class Attributes: []
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [targetPosition :TargetPositions,otherAttributes :List<PlayerAttribute>]
+Class: Scout (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [assignedPlayers :List<PlayerProfile>]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [pros :String,cons :String,recommendation :String]
+Class: ShortListedPlayer (class) - Enum Attributes: [], Class Attributes: []
+Class: Director (class) - Enum Attributes: [], Class Attributes: []
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 HeadCoach association * PlayerProfile
+ 1 Director association * OfficialOffer
+ * Scout association * ScoutingAssignment
+ 1 HeadScout association * ScoutingReport
+ 1 HeadCoach aggregation * ShortListedPlayer
+ 1 HeadScout aggregation * ScoutingAssignment
+ False HeadScout inheritance False Scout
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Scout(class)'	-	'Scout(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Director(class)'	-	'Director(class)'
+ 'PlayerAttributeTypes(enum)'	-	'PlayerAttribute(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+-Attributes:
+ 'PlayerAttributeTypes(enum):Name'	-	'name'
+ 'PlayerAttributeTypes(enum):Value'	-	'value'
+ 'ScoutingReport(class):recommendation '	-	'recommendation'
+-Relationships:
+ ' 1 Director association * OfficialOffer'	-	' 1 Director aggregation * Offer'
+ ' * Scout association * ScoutingAssignment'	-	' 1 Scout aggregation * ScoutingAssignment'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   16                  
+Attributes          19                  3                   24                  
+Associations        2                   2                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PlayerPosition(GK, LB, CB, RB, CDM, CM, LM, RM, LW, RW, ST)
+2. RecommendationType(KeyPlayer, FirstTeamPlayer, ReserveTeamPlayer, ProspectivePlayer, NotAGoodSigning)
+
+Classes:
+1. Employee(employeeID : int, name : string, role : string)
+2. PlayerProfile(profileID : int, targetPosition : PlayerPosition, otherAttributes : List<Attribute>)
+3. Player(playerID : int, name : string, position : PlayerPosition, attributes : List<Attribute>)
+4. ScoutingAssignment(assignmentID : int, scout : Employee, player : Player)
+5. ScoutingReport(reportID : int, scout : Employee, player : Player, pros : string, cons : string, recommendation : RecommendationType)
+6. ShortList(player : Player)
+7. ScoutingRound(roundID : int, player : Player, scout : Employee)
+
+Relationships:
+1..* Employee associate 1 HeadCoach
+1..* Employee associate 1 Director
+1 HeadCoach associate 0..* PlayerProfile
+0..* Scout associate 0..* ScoutingAssignment
+1 HeadScout associate 0..* ScoutingAssignment
+1..* ScoutingAssignment associate 1 ScoutingReport
+1..* Player inherit 1 ShortList
+1 Player contain 0..* ScoutingRound
+1 HeadScout contain 0..* ScoutingRound
+1 Director contain 0..* Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PlayerPosition (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, LM, RM, LW, RW, ST], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [KeyPlayer, FirstTeamPlayer, ReserveTeamPlayer, ProspectivePlayer, NotAGoodSigning], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,role :string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [profileID :int,targetPosition :PlayerPosition,otherAttributes :List<Attribute>]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [playerID :int,name :string,position :PlayerPosition,attributes :List<Attribute>]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [assignmentID :int,scout :Employee,player :Player]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [reportID :int,scout :Employee,player :Player,pros :string,cons :string,recommendation :RecommendationType]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: [player :Player]
+Class: ScoutingRound (class) - Enum Attributes: [], Class Attributes: [roundID :int,player :Player,scout :Employee]
+Relationships:
+ 1..* Employee association 1 HeadCoach
+ 1..* Employee association 1 Director
+ 1 HeadCoach association 0..* PlayerProfile
+ 0..* Scout association 0..* ScoutingAssignment
+ 1 HeadScout association 0..* ScoutingAssignment
+ 1..* ScoutingAssignment association 1 ScoutingReport
+ False Player inheritance False ShortList
+ 1 Player aggregation 0..* ScoutingRound
+ 1 HeadScout aggregation 0..* ScoutingRound
+ 1 Director aggregation 0..* Player
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'PlayerPosition(enum)'	-	'Position(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'RecommendationType(enum):KeyPlayer'	-	'KEY_PLAYER'
+ 'RecommendationType(enum):FirstTeamPlayer'	-	'FIRST_TEAM_PLAYER'
+ 'RecommendationType(enum):ReserveTeamPlayer'	-	'RESERVE_TEAM_PLAYER'
+ 'RecommendationType(enum):ProspectivePlayer'	-	'PROSPECTIVE_PLAYER'
+ 'PlayerPosition(enum):GK'	-	'GK'
+ 'PlayerPosition(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   16                  
+Attributes          39                  7                   24                  
+Associations        2                   0                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Position(GK, LB, CB, RB, CDM, CM, CAM, LW, RW, ST)
+2. Recommendation(KEY_PLAYER, FIRST_TEAM_PLAYER, RESERVE_TEAM_PLAYER, PROSPECTIVE_PLAYER, NOT_A_GOOD_SIGNING)
+
+Classes:
+1. PlayerProfile(position: Position, attributes: Map<String, String>)
+2. Scout
+3. ScoutingAssignment
+4. ScoutingReport(pros: String, cons: String, recommendation: Recommendation)
+5. ShortList
+6. Director
+7. OfficialOffer
+
+Relationships:
+1..* Scout associate 1 PlayerProfile
+1 HeadCoach inherit Scout
+1 Director inherit Scout
+0..* Scout contain 1..* ScoutingAssignment
+1 HeadScout inherit Scout
+1 HeadCoach inherit HeadScout
+1 Director inherit HeadScout
+1 ScoutingAssignment associate 1 LongList
+1 ScoutingAssignment associate 1 ScoutingReport
+1 ShortList contain 1..* PlayerProfile
+1 Director associate 1 OfficialOffer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, CAM, LW, RW, ST], Class Attributes: []
+Class: Recommendation (enum) - Enum Attributes: [KEY_PLAYER, FIRST_TEAM_PLAYER, RESERVE_TEAM_PLAYER, PROSPECTIVE_PLAYER, NOT_A_GOOD_SIGNING], Class Attributes: []
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [position:Position,attributes:Map<String,String>:]
+Class: Scout (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [pros:String,cons:String,recommendation:Recommendation]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: []
+Class: Director (class) - Enum Attributes: [], Class Attributes: []
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Scout association 1 PlayerProfile
+ False HeadCoach inheritance False Scout
+ False Director inheritance False Scout
+ 0..* Scout aggregation 1..* ScoutingAssignment
+ False HeadScout inheritance False Scout
+ False HeadCoach inheritance False HeadScout
+ False Director inheritance False HeadScout
+ 1 ScoutingAssignment association 1 LongList
+ 1 ScoutingAssignment association 1 ScoutingReport
+ 1 ShortList aggregation 1..* PlayerProfile
+ 1 Director association 1 OfficialOffer
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'Recommendation(enum)'	-	'Recommendation(enum)'
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Scout(class)'	-	'Scout(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Director(class)'	-	'Director(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+-Attributes:
+ 'Position(enum):GK'	-	'GK'
+ 'Position(enum):LB'	-	'LB'
+ 'Recommendation(enum):KEY_PLAYER'	-	'KEY_PLAYER'
+ 'Recommendation(enum):FIRST_TEAM_PLAYER'	-	'FIRST_TEAM_PLAYER'
+ 'Recommendation(enum):RESERVE_TEAM_PLAYER'	-	'RESERVE_TEAM_PLAYER'
+ 'Recommendation(enum):PROSPECTIVE_PLAYER'	-	'PROSPECTIVE_PLAYER'
+ 'PlayerProfile(class):position'	-	'position'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+ ' 0..* Scout aggregation 1..* ScoutingAssignment'	-	' 1 Scout aggregation * ScoutingAssignment'
+ ' 1 Director association 1 OfficialOffer'	-	' 1 Director aggregation * Offer'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          21                  8                   24                  
+Associations        5                   2                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PositionType(GK, LB, CB, RB, CM, LM, RM, ST)
+2. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Class:
+1. Employee(name: string, role: string)
+2. PlayerProfile(position: PositionType, attributes: list<Attribute>)
+3. Attribute(name: string, value: string)
+4. ScoutingAssignment(longList: list<PlayerProfile>, shortList: list<PlayerProfile>)
+5. ScoutingReport(pros: string, cons: string, recommendation: RecommendationType)
+6. Offer
+
+Relationships:
+1..* Employee associate 1 TeamSportsScoutingSystem
+1 HeadCoach inherit Employee
+1 Director inherit Employee
+1..* Scout inherit Employee
+1 HeadScout inherit Scout
+1 HeadCoach contain 1..* PlayerProfile
+1 HeadCoach contain 1 ScoutingAssignment
+1 HeadScout contain 1..* ScoutingAssignment
+1 Scout contain 1 ScoutingReport
+1 ScoutingAssignment associate 1..* PlayerProfile
+1 ScoutingAssignment associate 1 ScoutingReport
+1 ScoutingAssignment contain 1..* ScoutingAssignment
+1 PlayerProfile contain 1..* ScoutingAssignment
+1 Director contain 1 Offer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, CB, RB, CM, LM, RM, ST], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Class: PlayerProfile (enum) - Enum Attributes: [position, attributes], Class Attributes: []
+Class: Attribute (enum) - Enum Attributes: [name, value], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [longList, shortList], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [pros, cons, recommendation], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 TeamSportsScoutingSystem
+ False HeadCoach inheritance False Employee
+ False Director inheritance False Employee
+ False Scout inheritance False Employee
+ False HeadScout inheritance False Scout
+ 1 HeadCoach aggregation 1..* PlayerProfile
+ 1 HeadCoach aggregation 1 ScoutingAssignment
+ 1 HeadScout aggregation 1..* ScoutingAssignment
+ 1 Scout aggregation 1 ScoutingReport
+ 1 ScoutingAssignment association 1..* PlayerProfile
+ 1 ScoutingAssignment association 1 ScoutingReport
+ 1 ScoutingAssignment aggregation 1..* ScoutingAssignment
+ 1 PlayerProfile aggregation 1..* ScoutingAssignment
+ 1 Director aggregation 1 Offer
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(enum)'	-	'PlayerProfile(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'Attribute(enum)'	-	'PlayerAttribute(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+-Attributes:
+ 'PlayerProfile(enum):position'	-	'position'
+ 'Attribute(enum):name'	-	'name'
+ 'Attribute(enum):value'	-	'value'
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'ScoutingReport(enum):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   16                  
+Attributes          24                  6                   24                  
+Associations        4                   0                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PositionType(GK, LB, ...)
+2. PlayerAttributeType(name, value)
+3. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Class:
+1. Employee(name : string, role : string)
+2. PlayerProfile(position : PositionType, attributes : PlayerAttributeType[])
+3. Player(name : string, position : PositionType, attributes : PlayerAttributeType[])
+4. ScoutingAssignment(player : Player, scout : Employee, completionDate : date)
+5. ScoutingReport(player : Player, pros : string[], cons : string[], recommendation : RecommendationType)
+6. ShortListedPlayer(player : Player)
+
+Relationships:
+1..* Employee contain 1 PlayerProfile
+0..* Scout associate 1..* ScoutingAssignment
+1 ScoutingAssignment associate 1 ScoutingReport
+1 Player inherit 1 PlayerProfile
+1 HeadCoach inherit 1 Employee
+1 HeadScout inherit 1 Employee
+1 Director inherit 1 Employee
+1..* Player compose 1..* ScoutingAssignment
+1..* ShortListedPlayer compose 1 Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, ...], Class Attributes: []
+Class: PlayerAttributeType (enum) - Enum Attributes: [name, value], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name , role ], Class Attributes: []
+Class: PlayerProfile (enum) - Enum Attributes: [position , attributes ], Class Attributes: []
+Class: Player (enum) - Enum Attributes: [name , position , attributes ], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [player , scout , completionDate ], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [player , pros , cons , recommendation ], Class Attributes: []
+Class: ShortListedPlayer (enum) - Enum Attributes: [player ], Class Attributes: []
+Relationships:
+ 1..* Employee aggregation 1 PlayerProfile
+ 0..* Scout association 1..* ScoutingAssignment
+ 1 ScoutingAssignment association 1 ScoutingReport
+ False Player inheritance False PlayerProfile
+ False HeadCoach inheritance False Employee
+ False HeadScout inheritance False Employee
+ False Director inheritance False Employee
+ 1..* Player association 1..* ScoutingAssignment
+ 1..* ShortListedPlayer association 1 Player
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(enum)'	-	'PlayerProfile(class)'
+ 'Player(enum)'	-	'Player(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'PlayerAttributeType(enum)'	-	'PlayerAttribute(class)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+-Attributes:
+ 'PlayerProfile(enum):position '	-	'position'
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'PlayerAttributeType(enum):name'	-	'name'
+ 'PlayerAttributeType(enum):value'	-	'value'
+ 'ScoutingReport(enum):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          25                  6                   24                  
+Associations        4                   0                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Position(GK, LB, CB, RB, DM, CM, AM, LW, RW, CF)
+
+Class:
+1. Employee(name: string, role: string)
+2. PlayerProfile(position: Position, otherAttributes: list<Attribute>)
+3. Attribute(name: string, value: string)
+4. ScoutingAssignment
+5. ScoutingReport(pros: string, cons: string, recommendation: string)
+6. ShortList
+7. Round
+8. OfficialOffer
+
+Relationships:
+1..* Employee associate 1 PlayerProfile
+1 Employee associate 0..* ScoutingAssignment
+1 ScoutingAssignment associate 1 ScoutingReport
+1 ScoutingAssignment contain 0..* PlayerProfile
+1 ScoutingAssignment contain 1 ShortList
+1 ShortList contain 0..* Round
+1 ShortList contain 1 PlayerProfile
+1 Round associate 1 ScoutingAssignment
+1 Round contain 0..* PlayerProfile
+1 Employee associate 0..* OfficialOffer
+1 PlayerProfile associate 1 OfficialOffer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [GK, LB, CB, RB, DM, CM, AM, LW, RW, CF], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Class: PlayerProfile (enum) - Enum Attributes: [position, otherAttributes], Class Attributes: []
+Class: Attribute (enum) - Enum Attributes: [name, value], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [pros, cons, recommendation], Class Attributes: []
+Class: ShortList (enum) - Enum Attributes: [], Class Attributes: []
+Class: Round (enum) - Enum Attributes: [], Class Attributes: []
+Class: OfficialOffer (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 PlayerProfile
+ 1 Employee association 0..* ScoutingAssignment
+ 1 ScoutingAssignment association 1 ScoutingReport
+ 1 ScoutingAssignment aggregation 0..* PlayerProfile
+ 1 ScoutingAssignment aggregation 1 ShortList
+ 1 ShortList aggregation 0..* Round
+ 1 ShortList aggregation 1 PlayerProfile
+ 1 Round association 1 ScoutingAssignment
+ 1 Round aggregation 0..* PlayerProfile
+ 1 Employee association 0..* OfficialOffer
+ 1 PlayerProfile association 1 OfficialOffer
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'PlayerProfile(enum)'	-	'PlayerProfile(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'Attribute(enum)'	-	'PlayerAttribute(class)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+ 'OfficialOffer(enum)'	-	'Offer(class)'
+-Attributes:
+ 'Position(enum):GK'	-	'GK'
+ 'Position(enum):LB'	-	'LB'
+ 'PlayerProfile(enum):position'	-	'position'
+ 'Attribute(enum):name'	-	'name'
+ 'Attribute(enum):value'	-	'value'
+ 'ScoutingReport(enum):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   16                  
+Attributes          19                  6                   24                  
+Associations        11                  0                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Employee
+2. HeadCoach
+3. Director
+4. Scout
+5. Player
+6. PlayerAttribute
+7. PlayerPosition
+8. ScoutingAssignment
+9. ScoutingReport
+10. PlayerRecommendation
+11. ShortList
+12. Offer
+
+Relationships:
+Employee inherit HeadCoach
+Employee inherit Director
+Employee inherit Scout
+HeadCoach contain PlayerPosition
+HeadCoach contain PlayerAttribute
+HeadCoach associate Scout (1..*)
+Scout contain Player
+Scout contain ScoutingAssignment
+ScoutingAssignment contain Player
+ScoutingAssignment contain ScoutingReport
+ScoutingReport contain PlayerRecommendation
+ScoutingReport associate ShortList
+ShortList contain Player
+Director associate Offer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: HeadCoach (class) - Enum Attributes: [], Class Attributes: []
+Class: Director (class) - Enum Attributes: [], Class Attributes: []
+Class: Scout (class) - Enum Attributes: [], Class Attributes: []
+Class: Player (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayerAttribute (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayerPosition (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayerRecommendation (class) - Enum Attributes: [], Class Attributes: []
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: []
+Class: Offer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Employee inheritance False HeadCoach
+ False Employee inheritance False Director
+ False Employee inheritance False Scout
+ 1 HeadCoach aggregation 1 PlayerPosition
+ 1 HeadCoach aggregation 1 PlayerAttribute
+ 1 HeadCoach association 1 Scout
+ 1 Scout aggregation 1 Player
+ 1 Scout aggregation 1 ScoutingAssignment
+ 1 ScoutingAssignment aggregation 1 Player
+ 1 ScoutingAssignment aggregation 1 ScoutingReport
+ 1 ScoutingReport aggregation 1 PlayerRecommendation
+ 1 ScoutingReport association 1 ShortList
+ 1 ShortList aggregation 1 Player
+ 1 Director association 1 Offer
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'HeadCoach(class)'	-	'HeadCoach(class)'
+ 'Director(class)'	-	'Director(class)'
+ 'Scout(class)'	-	'Scout(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'PlayerAttribute(class)'	-	'PlayerAttribute(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'PlayerPosition(class)'	-	'Position(enum)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'PlayerRecommendation(class)'	-	'Recommendation(enum)'
+-Attributes:
+-Relationships:
+ ' 1 Scout aggregation 1 ScoutingAssignment'	-	' 1 Scout aggregation * ScoutingAssignment'
+ ' 1 Director association 1 Offer'	-	' 1 Director aggregation * Offer'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  16                  
+Attributes          0                   0                   24                  
+Associations        11                  2                   17                  
+Inheritances        3                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PositionType(GK, LB, ...)
+2. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Classes:
+1. Employee(name: String, role: String)
+2. PlayerProfile(targetPosition: PositionType, otherAttributes: List<Attribute>)
+3. Player(name: String, attributes: List<Attribute>)
+4. ScoutingAssignment(longList: List<Player>, shortList: List<Player>)
+5. ScoutingReport(player: Player, pros: String, cons: String, recommendation: RecommendationType)
+6. OfficialOffer(player: Player)
+
+Relationships:
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- PlayerProfile inherit PlayerProfile
+- PlayerProfile inherit PlayerProfile
+- PlayerProfile inherit PlayerProfile
+- ScoutingAssignment associate 1 Employee
+- ScoutingAssignment associate 1 PlayerProfile
+- ScoutingAssignment associate 1 ScoutingReport
+- ScoutingAssignment contain 0..* Player
+- ScoutingAssignment contain 0..* Player
+- ScoutingReport associate 1 Scout
+- ScoutingReport associate 1 Player
+- OfficialOffer associate 1 Player
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, ...], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:String,role:String]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [targetPosition:PositionType,otherAttributes:List<Attribute>]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [name:String,attributes:List<Attribute>]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [longList:List<Player>,shortList:List<Player>]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [player:Player,pros:String,cons:String,recommendation:RecommendationType]
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: [player:Player]
+Relationships:
+ False Employee inheritance False Employee
+ False PlayerProfile inheritance False PlayerProfile
+ 1 ScoutingAssignment association 1 Employee
+ 1 ScoutingAssignment association 1 PlayerProfile
+ 1 ScoutingAssignment association 1 ScoutingReport
+ 1 ScoutingAssignment aggregation 0..* Player
+ 1 ScoutingReport association 1 Scout
+ 1 ScoutingReport association 1 Player
+ 1 OfficialOffer association 1 Player
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+-Attributes:
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+ ' 1 OfficialOffer association 1 Player'	-	' * Offer association 0..1 Player'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   16                  
+Attributes          21                  3                   24                  
+Associations        6                   1                   17                  
+Inheritances        2                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Employee(employeeId: int, name: string, role: string)
+2. PlayerProfile(profileId: int, targetPosition: string, attributes: map<string, string>)
+3. Player(playerId: int, name: string)
+4. ScoutingAssignment(assignmentId: int, playerProfileId: int, scoutId: int, status: string)
+5. ScoutingReport(reportId: int, assignmentId: int, pros: string, cons: string, recommendation: string)
+6. ShortList(playerId: int)
+7. Offer(offerId: int, playerId: int)
+
+Relationships:
+1. Employee inherit Employee
+2. HeadCoach inherit Employee
+3. Director inherit Employee
+4. Scout inherit Employee
+5. HeadCoach contain PlayerProfile
+6. Scout contain ShortList
+7. HeadScout contain ScoutingAssignment
+8. Scout contain ScoutingReport
+9. ScoutingAssignment associate 1..* ScoutingReport
+10. Scout associate 1 HeadScout
+11. ShortList associate 1..* Player
+12. Offer associate 1 Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeId:int,name:string,role:string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [profileId:int,targetPosition:string,attributes:map<string,string>:]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [playerId:int,name:string]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [assignmentId:int,playerProfileId:int,scoutId:int,status:string]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [reportId:int,assignmentId:int,pros:string,cons:string,recommendation:string]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: [playerId:int]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [offerId:int,playerId:int]
+Relationships:
+ False Employee inheritance False Employee
+ False HeadCoach inheritance False Employee
+ False Director inheritance False Employee
+ False Scout inheritance False Employee
+ 5 HeadCoach aggregation 1 PlayerProfile
+ 6 Scout aggregation 1 ShortList
+ 7 HeadScout aggregation 1 ScoutingAssignment
+ 8 Scout aggregation 1 ScoutingReport
+ 9 ScoutingAssignment association 1..* ScoutingReport
+ 10 Scout association 1 HeadScout
+ 11 ShortList association 1..* Player
+ 12 Offer association 1 Player
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+ ' 12 Offer association 1 Player'	-	' * Offer association 0..1 Player'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   16                  
+Attributes          21                  1                   24                  
+Associations        3                   1                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PositionType(GK, LB, ...)
+2. PlayerAttributeType
+
+Classes:
+1. Employee(name: string, role: string)
+2. Player(name: string, age: int, position: PositionType, attributes: map<PlayerAttributeType, string>)
+3. ScoutingAssignment(player: Player, scout: Employee, status: string)
+4. ScoutingReport(player: Player, pros: string, cons: string, recommendation: string)
+5. ShortList(player: Player)
+6. Offer(player: Player)
+
+Relationships:
+- Employee inherit Employee
+- Employee inherit Player
+- Employee inherit ScoutingAssignment
+- Employee inherit ScoutingReport
+- Employee inherit ShortList
+- Employee inherit Offer
+- Employee contain ScoutingAssignment
+- Employee contain ScoutingReport
+- Employee contain ShortList
+- Employee contain Offer
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, ...], Class Attributes: []
+Class: PlayerAttributeType (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,role:string]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [name:string,age:int,position:PositionType,attributes:map<PlayerAttributeType,string>:]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [player:Player,scout:Employee,status:string]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [player:Player,pros:string,cons:string,recommendation:string]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: [player:Player]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [player:Player]
+Relationships:
+ False Employee inheritance False Employee
+ False Employee inheritance False Player
+ False Employee inheritance False ScoutingAssignment
+ False Employee inheritance False ScoutingReport
+ False Employee inheritance False ShortList
+ False Employee inheritance False Offer
+ 1 Employee aggregation 1 ScoutingAssignment
+ 1 Employee aggregation 1 ScoutingReport
+ 1 Employee aggregation 1 ShortList
+ 1 Employee aggregation 1 Offer
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'PlayerAttributeType(enum)'	-	'PlayerAttribute(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          19                  3                   24                  
+Associations        4                   0                   17                  
+Inheritances        6                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Position(literals: GK, LB, etc.)
+2. PlayerAttribute(literals: name, value)
+
+Classes:
+1. Employee(name: string, role: string)
+2. PlayerProfile(targetPosition: Position, otherAttributes: PlayerAttribute[])
+3. Player(name: string)
+4. ScoutingAssignment(status: string, scout: Employee, player: Player)
+5. ScoutingReport(pros: string, cons: string, recommendation: string)
+6. ShortListedPlayer(player: Player)
+7. OfficialOffer(player: Player)
+
+Relationships:
+- Employee inherit Employee
+- Employee has 0..* ScoutingAssignment
+- Employee has 0..* ScoutingReport
+- Employee has 0..* ShortListedPlayer
+- Employee has 0..* OfficialOffer
+- PlayerProfile contain 0..* PlayerAttribute
+- Employee associate 0..* ScoutingAssignment
+- ScoutingAssignment associate 0..1 ScoutingReport
+- ScoutingAssignment associate 0..* ShortListedPlayer
+- ShortListedPlayer associate 0..* ScoutingAssignment
+- ShortListedPlayer associate 0..* ScoutingReport
+- ShortListedPlayer associate 0..* OfficialOffer
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [literals, LB, etc.], Class Attributes: []
+Class: PlayerAttribute (enum) - Enum Attributes: [literals, value], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,role:string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [targetPosition:Position,otherAttributes:PlayerAttribute[]]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [name:string]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [status:string,scout:Employee,player:Player]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [pros:string,cons:string,recommendation:string]
+Class: ShortListedPlayer (class) - Enum Attributes: [], Class Attributes: [player:Player]
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: [player:Player]
+Relationships:
+ False Employee inheritance False Employee
+ 1 Employee association 0..* ScoutingAssignment
+ 1 Employee association 0..* ScoutingReport
+ 1 Employee association 0..* ShortListedPlayer
+ 1 Employee association 0..* OfficialOffer
+ 1 PlayerProfile aggregation 0..* PlayerAttribute
+ 1 Employee association 0..* ScoutingAssignment
+ 1 ScoutingAssignment association 0..1 ScoutingReport
+ 1 ScoutingAssignment association 0..* ShortListedPlayer
+ 1 ShortListedPlayer association 0..* ScoutingAssignment
+ 1 ShortListedPlayer association 0..* ScoutingReport
+ 1 ShortListedPlayer association 0..* OfficialOffer
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'PlayerAttribute(enum)'	-	'PlayerAttribute(class)'
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+-Attributes:
+ 'Position(enum):LB'	-	'LB'
+ 'PlayerAttribute(enum):value'	-	'value'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+ ' 1 PlayerProfile aggregation 0..* PlayerAttribute'	-	' 1 PlayerProfile aggregation * PlayerAttribute'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          18                  3                   24                  
+Associations        11                  1                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Position(GK, LB, CB, RB, CDM, CM, CAM, LM, RM, LW, RW, ST)
+2. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Class:
+1. Employee(employeeID : int, name : string, role : string)
+2. PlayerProfile(profileID : int, targetPosition : Position, otherAttributes : list<Attribute>)
+3. Player(playerID : int, name : string, position : Position)
+4. ScoutingAssignment(assignmentID : int, playerID : int, scoutID : int, status : string)
+5. ScoutingReport(reportID : int, playerID : int, pros : string, cons : string, recommendation : RecommendationType)
+6. ShortList(playerID : int, round : int)
+7. Offer(offerID : int, playerID : int, directorID : int)
+
+Relationships:
+1..* Employee contain 1 PlayerProfile
+1..* Employee associate 1 ScoutingAssignment
+1 ScoutingAssignment associate 1 Player
+1 ScoutingAssignment inherit 1 ScoutingReport
+1 Player inherit 1 ShortList
+1 ShortList inherit 1 ScoutingAssignment
+1 ScoutingReport inherit 1 Offer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, CAM, LM, RM, LW, RW, ST], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID , name , role ], Class Attributes: []
+Class: PlayerProfile (enum) - Enum Attributes: [profileID , targetPosition , otherAttributes ], Class Attributes: []
+Class: Player (enum) - Enum Attributes: [playerID , name , position ], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [assignmentID , playerID , scoutID , status ], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [reportID , playerID , pros , cons , recommendation ], Class Attributes: []
+Class: ShortList (enum) - Enum Attributes: [playerID , round ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [offerID , playerID , directorID ], Class Attributes: []
+Relationships:
+ 1..* Employee aggregation 1 PlayerProfile
+ 1..* Employee association 1 ScoutingAssignment
+ 1 ScoutingAssignment association 1 Player
+ False ScoutingAssignment inheritance False ScoutingReport
+ False Player inheritance False ShortList
+ False ShortList inheritance False ScoutingAssignment
+ False ScoutingReport inheritance False Offer
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'PlayerProfile(enum)'	-	'PlayerProfile(class)'
+ 'Player(enum)'	-	'Player(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+-Attributes:
+ 'Position(enum):GK'	-	'GK'
+ 'Position(enum):LB'	-	'LB'
+ 'ScoutingReport(enum):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          40                  3                   24                  
+Associations        3                   0                   17                  
+Inheritances        4                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. TargetPosition(GK, LB, ...)
+2. Recommendation(KEY_PLAYER, FIRST_TEAM_PLAYER, RESERVE_TEAM_PLAYER, PROSPECTIVE_PLAYER, NOT_A_GOOD_SIGNING)
+
+Class:
+1. Employee(employeeID : int, name : string, role : string)
+2. PlayerProfile(position : TargetPosition, attributes : list<Attribute>)
+3. Player(name : string, position : TargetPosition, attributes : list<Attribute>)
+4. ScoutingReport(player : Player, pros : string, cons : string, recommendation : Recommendation)
+5. ScoutingAssignment(scout : Employee, player : Player, status : string)
+6. ShortList(player : Player, roundNumber : int)
+7. Offer(player : Player, director : Employee)
+
+Relationships:
+1..* Employee associate 1 Employee
+1 HeadCoach inherit Employee
+1 Director inherit Employee
+1..* Scout inherit Employee
+1 HeadCoach contain 0..* PlayerProfile
+1 Scout contain 0..* ScoutingAssignment
+1 Scout contain 0..* ScoutingReport
+1 HeadCoach contain 0..* ShortList
+1 Scout contain 0..* ShortList
+1 Scout contain 0..* ScoutingAssignment
+1 Director contain 0..* Offer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: TargetPosition (enum) - Enum Attributes: [GK, LB, ...], Class Attributes: []
+Class: Recommendation (enum) - Enum Attributes: [KEY_PLAYER, FIRST_TEAM_PLAYER, RESERVE_TEAM_PLAYER, PROSPECTIVE_PLAYER, NOT_A_GOOD_SIGNING], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID , name , role ], Class Attributes: []
+Class: PlayerProfile (enum) - Enum Attributes: [position , attributes ], Class Attributes: []
+Class: Player (enum) - Enum Attributes: [name , position , attributes ], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [player , pros , cons , recommendation ], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [scout , player , status ], Class Attributes: []
+Class: ShortList (enum) - Enum Attributes: [player , roundNumber ], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [player , director ], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 Employee
+ False HeadCoach inheritance False Employee
+ False Director inheritance False Employee
+ False Scout inheritance False Employee
+ 1 HeadCoach aggregation 0..* PlayerProfile
+ 1 Scout aggregation 0..* ScoutingAssignment
+ 1 Scout aggregation 0..* ScoutingReport
+ 1 HeadCoach aggregation 0..* ShortList
+ 1 Scout aggregation 0..* ShortList
+ 1 Director aggregation 0..* Offer
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Recommendation(enum)'	-	'Recommendation(enum)'
+ 'PlayerProfile(enum)'	-	'PlayerProfile(class)'
+ 'Player(enum)'	-	'Player(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'TargetPosition(enum)'	-	'Position(enum)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+-Attributes:
+ 'Recommendation(enum):KEY_PLAYER'	-	'KEY_PLAYER'
+ 'Recommendation(enum):FIRST_TEAM_PLAYER'	-	'FIRST_TEAM_PLAYER'
+ 'Recommendation(enum):RESERVE_TEAM_PLAYER'	-	'RESERVE_TEAM_PLAYER'
+ 'Recommendation(enum):PROSPECTIVE_PLAYER'	-	'PROSPECTIVE_PLAYER'
+ 'PlayerProfile(enum):position '	-	'position'
+ 'TargetPosition(enum):GK'	-	'GK'
+ 'TargetPosition(enum):LB'	-	'LB'
+ 'ScoutingReport(enum):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          27                  8                   24                  
+Associations        1                   0                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Employee
+2. HeadCoach
+3. Director
+4. Scout
+5. Player
+6. PlayerAttribute
+7. ScoutingAssignment
+8. ScoutingReport
+9. PlayerProfile
+10. Position
+11. ScoutingRound
+12. ShortList
+13. OfficialOffer
+
+Enumerations:
+1. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Relationships:
+1. Employee inherit HeadCoach
+2. Employee inherit Director
+3. Employee inherit Scout
+4. Player has 0..* PlayerAttribute
+5. HeadCoach has 0..* PlayerProfile
+6. Scout has 0..* Player in ScoutingAssignment
+7. Scout submit 1 ScoutingReport
+8. ScoutingAssignment contains 1 PlayerProfile
+9. ScoutingAssignment has 1..* Scout
+10. ScoutingAssignment has 0..* ScoutingRound
+11. ScoutingRound contains 1 Player in ShortList
+12. ScoutingRound contains 1 ScoutingReport
+13. ShortList contains 1..* Player
+14. Director makes 1 OfficialOffer for Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: HeadCoach (class) - Enum Attributes: [], Class Attributes: []
+Class: Director (class) - Enum Attributes: [], Class Attributes: []
+Class: Scout (class) - Enum Attributes: [], Class Attributes: []
+Class: Player (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayerAttribute (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: []
+Class: Position (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingRound (class) - Enum Attributes: [], Class Attributes: []
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: []
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Relationships:
+ False Employee inheritance False HeadCoach
+ False Employee inheritance False Director
+ False Employee inheritance False Scout
+ 4 Player association 0..* PlayerAttribute
+ 5 HeadCoach association 0..* PlayerProfile
+ 6 Scout association 0..* Player
+ 7 Scout association 1 ScoutingReport
+ 8 ScoutingAssignment association 1 PlayerProfile
+ 9 ScoutingAssignment association 1..* Scout
+ 10 ScoutingAssignment association 0..* ScoutingRound
+ 11 ScoutingRound association 1 Player
+ 12 ScoutingRound association 1 ScoutingReport
+ 13 ShortList association 1..* Player
+ 14 Director association 1 OfficialOffer
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'HeadCoach(class)'	-	'HeadCoach(class)'
+ 'Director(class)'	-	'Director(class)'
+ 'Scout(class)'	-	'Scout(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'PlayerAttribute(class)'	-	'PlayerAttribute(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Position(class)'	-	'Position(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+-Attributes:
+-Relationships:
+ ' 5 HeadCoach association 0..* PlayerProfile'	-	' 1 HeadCoach aggregation * PlayerProfile'
+ ' 9 ScoutingAssignment association 1..* Scout'	-	' 1 Scout aggregation * ScoutingAssignment'
+ ' 14 Director association 1 OfficialOffer'	-	' 1 Director aggregation * Offer'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  12                  16                  
+Attributes          5                   0                   24                  
+Associations        11                  3                   17                  
+Inheritances        3                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PlayerPosition(GK, LB, ...)
+2. PlayerAttributeType
+
+Classes:
+1. Employee(name: string, role: string)
+2. PlayerProfile(name: string, position: PlayerPosition)
+3. PlayerAttribute(name: string, value: string)
+4. ScoutingList
+5. ScoutingAssignment
+6. ScoutingReport(pros: string, cons: string, recommendation: string)
+7. ShortList
+8. OfficialOffer
+
+Relationships:
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee inherit Employee
+- Employee contain ScoutingList
+- Employee contain ScoutingAssignment
+- Employee contain ScoutingReport
+- Employee contain ShortList
+- Employee contain OfficialOffer
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PlayerPosition (enum) - Enum Attributes: [GK, LB, ...], Class Attributes: []
+Class: PlayerAttributeType (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,role:string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [name:string,position:PlayerPosition]
+Class: PlayerAttribute (class) - Enum Attributes: [], Class Attributes: [name:string,value:string]
+Class: ScoutingList (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: []
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [pros:string,cons:string,recommendation:string]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: []
+Class: OfficialOffer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Employee inheritance False Employee
+ 1 Employee aggregation 1 ScoutingList
+ 1 Employee aggregation 1 ScoutingAssignment
+ 1 Employee aggregation 1 ScoutingReport
+ 1 Employee aggregation 1 ShortList
+ 1 Employee aggregation 1 OfficialOffer
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'PlayerAttribute(class)'	-	'PlayerAttribute(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'PlayerPosition(enum)'	-	'Position(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+ 'OfficialOffer(class)'	-	'Offer(class)'
+-Attributes:
+ 'PlayerProfile(class):position'	-	'position'
+ 'PlayerAttribute(class):name'	-	'name'
+ 'PlayerAttribute(class):value'	-	'value'
+ 'PlayerPosition(enum):GK'	-	'GK'
+ 'PlayerPosition(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   16                  
+Attributes          12                  6                   24                  
+Associations        5                   0                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Position(GK, LB, CB, RB, CDM, CM, CAM, LM, RM, LW, RW, ST)
+
+Classes:
+1. Employee(name: String, role: String)
+2. PlayerProfile(targetPosition: Position, otherAttributes: List<Attribute>)
+3. Player(name: String)
+4. ScoutingAssignment(longList: List<Player>, shortList: List<Player>)
+5. ScoutingReport(pros: String, cons: String, recommendation: String)
+6. Offer()
+
+Relationships:
+1. Employee contain 1..* PlayerProfile
+2. Employee inherit Employee
+3. Employee inherit Employee
+4. Employee inherit Employee
+5. ScoutingAssignment associate 1 Employee
+6. ScoutingAssignment associate 1 Employee
+7. ScoutingAssignment associate 1..* ScoutingReport
+8. PlayerProfile associate 0..* Player
+9. Player inherit Player
+10. ScoutingAssignment contain 1..* Player
+11. ScoutingAssignment contain 1..* Player
+12. ScoutingAssignment contain 1..* ScoutingAssignment
+13. ScoutingAssignment contain 1..* ScoutingAssignment
+14. ScoutingAssignment contain 1 Offer
+15. Offer associate 1 Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [GK, LB, CB, RB, CDM, CM, CAM, LM, RM, LW, RW, ST], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:String,role:String]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [targetPosition:Position,otherAttributes:List<Attribute>]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [name:String]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [longList:List<Player>,shortList:List<Player>]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [pros:String,cons:String,recommendation:String]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Employee aggregation 1..* PlayerProfile
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ 5 ScoutingAssignment association 1 Employee
+ 6 ScoutingAssignment association 1 Employee
+ 7 ScoutingAssignment association 1..* ScoutingReport
+ 8 PlayerProfile association 0..* Player
+ False Player inheritance False Player
+ 10 ScoutingAssignment aggregation 1..* Player
+ 11 ScoutingAssignment aggregation 1..* Player
+ 12 ScoutingAssignment aggregation 1..* ScoutingAssignment
+ 13 ScoutingAssignment aggregation 1..* ScoutingAssignment
+ 14 ScoutingAssignment aggregation 1 Offer
+ 15 Offer association 1 Player
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'Position(enum):GK'	-	'GK'
+ 'Position(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+ ' 8 PlayerProfile association 0..* Player'	-	' 0..1 Player association 0..1 PlayerProfile'
+ ' 15 Offer association 1 Player'	-	' * Offer association 0..1 Player'
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   16                  
+Attributes          22                  3                   24                  
+Associations        11                  2                   17                  
+Inheritances        4                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Position (GK, LB, CB, RB, CM, LM, RM, ST)
+2. PlayerAttribute (name, value)
+
+Class:
+1. Employee(employeeID: int, name: string, role: string)
+2. Player(name: string, position: Position, attributes: map<string, string>)
+3. ScoutingAssignment(player: Player, scoutID: int, completionDate: date)
+4. ScoutingReport(player: Player, pros: string, cons: string, recommendation: string)
+5. ShortList(player: Player)
+6. Offer(player: Player)
+
+Relationships:
+1..* Employee contain 1 Employee
+1 HeadCoach inherit Employee
+1 HeadScout inherit Employee
+1 Scout inherit Employee
+1 HeadCoach associate 0..* Player (Identifying designated player profiles)
+0..* Scout associate 1 LongList
+1 LongList associate 1 HeadScout (Periodical evaluation)
+1 ScoutingAssignment associate 1 ScoutingReport
+1 Player contain 1 ScoutingAssignment
+1 HeadScout contain 1 ShortList
+1 HeadCoach contain 1 ShortList
+1 ShortList associate 1..* Player
+1 ShortList associate 1 Offer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Position (enum) - Enum Attributes: [GK, LB, CB, RB, CM, LM, RM, ST], Class Attributes: []
+Class: PlayerAttribute (enum) - Enum Attributes: [name, value], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID, name, role], Class Attributes: []
+Class: Player (enum) - Enum Attributes: [name, position, attributes, string>], Class Attributes: []
+Class: ScoutingAssignment (enum) - Enum Attributes: [player, scoutID, completionDate], Class Attributes: []
+Class: ScoutingReport (enum) - Enum Attributes: [player, pros, cons, recommendation], Class Attributes: []
+Class: ShortList (enum) - Enum Attributes: [player], Class Attributes: []
+Class: Offer (enum) - Enum Attributes: [player], Class Attributes: []
+Relationships:
+ 1..* Employee aggregation 1 Employee
+ False HeadCoach inheritance False Employee
+ False HeadScout inheritance False Employee
+ False Scout inheritance False Employee
+ 1 HeadCoach association 0..* Player
+ 0..* Scout association 1 LongList
+ 1 LongList association 1 HeadScout
+ 1 ScoutingAssignment association 1 ScoutingReport
+ 1 Player aggregation 1 ScoutingAssignment
+ 1 HeadScout aggregation 1 ShortList
+ 1 HeadCoach aggregation 1 ShortList
+ 1 ShortList association 1..* Player
+ 1 ShortList association 1 Offer
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Position(enum)'	-	'Position(enum)'
+ 'PlayerAttribute(enum)'	-	'PlayerAttribute(class)'
+ 'Player(enum)'	-	'Player(class)'
+ 'ScoutingAssignment(enum)'	-	'ScoutingAssignment(class)'
+ 'Offer(enum)'	-	'Offer(class)'
+ 'Employee(enum)'	-	'Person(class)'
+ 'ScoutingReport(enum)'	-	'ScoutReport(class)'
+-Attributes:
+ 'Position(enum):GK'	-	'GK'
+ 'Position(enum):LB'	-	'LB'
+ 'PlayerAttribute(enum):name'	-	'name'
+ 'PlayerAttribute(enum):value'	-	'value'
+ 'ScoutingReport(enum):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          26                  5                   24                  
+Associations        5                   0                   17                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PositionType(GK, LB, etc.)
+2. PlayerAttributeType
+
+Classes:
+1. Employee(employeeId : int, name : string, role : string)
+2. Player(playerId : int, name : string, position : PositionType, attributes : map<string, PlayerAttributeType>)
+3. ScoutingAssignment(assignmentId : int, player : Player)
+4. ScoutingReport(reportId : int, player : Player, pros : string, cons : string, recommendation : string)
+5. ShortList(player : Player)
+6. Offer(player : Player)
+
+Relationships:
+Employee inherit Employee
+Employee contain ScoutingAssignment
+Employee contain ScoutingReport
+ScoutingAssignment associate Player 1..*
+ScoutingReport associate Player 1
+ShortList contain Player 0..*
+Offer contain Player 1
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, etc.], Class Attributes: []
+Class: PlayerAttributeType (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeId :int,name :string,role :string]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [playerId :int,name :string,position :PositionType,attributes :map<string,PlayerAttributeType>:]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [assignmentId :int,player :Player]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [reportId :int,player :Player,pros :string,cons :string,recommendation :string]
+Class: ShortList (class) - Enum Attributes: [], Class Attributes: [player :Player]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [player :Player]
+Relationships:
+ False Employee inheritance False Employee
+ 1 Employee aggregation 1 ScoutingAssignment
+ 1 Employee aggregation 1 ScoutingReport
+ 1 ScoutingAssignment association 1 Player
+ 1 ScoutingReport association 1 Player
+ 1 ShortList aggregation 1 Player
+ 1 Offer aggregation 1 Player
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Player(class)'	-	'Player(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'PlayerAttributeType(enum)'	-	'PlayerAttribute(class)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation '	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          20                  3                   24                  
+Associations        6                   0                   17                  
+Inheritances        1                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Team Sports Scouting (TSS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PositionType(GK, LB, CB, RB, CM, LM, RM, LW, RW, ST)
+2. RecommendationType(key player, first team player, reserve team player, prospective player, not a good signing)
+
+Classes:
+1. Employee(name: string, role: string)
+2. PlayerProfile(name: string, targetPositions: list<PositionType>, otherAttributes: list<Attribute>)
+3. Attribute(name: string, value: string)
+4. ScoutingList(players: list<PlayerProfile>)
+5. ScoutingAssignment(scout: Employee, playerProfile: PlayerProfile, scoutingReport: ScoutingReport)
+6. ScoutingReport(player: PlayerProfile, pros: string, cons: string, recommendation: RecommendationType)
+7. ShortListedPlayer(player: PlayerProfile, roundsOfScouting: int)
+8. Offer(player: PlayerProfile, director: Employee)
+
+Relationships:
+1. Employee inherit Employee
+2. Employee inherit Employee
+3. Employee inherit Employee
+4. Employee inherit Employee
+5. Employee inherit Employee
+6. ScoutingList contain PlayerProfile
+7. ScoutingAssignment associate Employee 1..*
+8. ScoutingAssignment associate PlayerProfile 1
+9. ScoutingAssignment associate ScoutingReport 0..1
+10. ScoutingReport associate PlayerProfile 1
+11. ShortListedPlayer associate PlayerProfile 1
+12. ShortListedPlayer associate Employee 1
+13. ShortListedPlayer associate ScoutingAssignment 0..*
+14. Offer associate PlayerProfile 1
+15. Offer associate Employee 1
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PositionType (enum) - Enum Attributes: [GK, LB, CB, RB, CM, LM, RM, LW, RW, ST], Class Attributes: []
+Class: RecommendationType (enum) - Enum Attributes: [player, team, team, player, a], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,role:string]
+Class: PlayerProfile (class) - Enum Attributes: [], Class Attributes: [name:string,targetPositions:list<PositionType>,otherAttributes:list<Attribute>]
+Class: Attribute (class) - Enum Attributes: [], Class Attributes: [name:string,value:string]
+Class: ScoutingList (class) - Enum Attributes: [], Class Attributes: [players:list<PlayerProfile>]
+Class: ScoutingAssignment (class) - Enum Attributes: [], Class Attributes: [scout:Employee,playerProfile:PlayerProfile,scoutingReport:ScoutingReport]
+Class: ScoutingReport (class) - Enum Attributes: [], Class Attributes: [player:PlayerProfile,pros:string,cons:string,recommendation:RecommendationType]
+Class: ShortListedPlayer (class) - Enum Attributes: [], Class Attributes: [player:PlayerProfile,roundsOfScouting:int]
+Class: Offer (class) - Enum Attributes: [], Class Attributes: [player:PlayerProfile,director:Employee]
+Relationships:
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ False Employee inheritance False Employee
+ 6 ScoutingList aggregation 1 PlayerProfile
+ 7 ScoutingAssignment association 1 Employee
+ 8 ScoutingAssignment association 1 PlayerProfile
+ 9 ScoutingAssignment association 1 ScoutingReport
+ 10 ScoutingReport association 1 PlayerProfile
+ 11 ShortListedPlayer association 1 PlayerProfile
+ 12 ShortListedPlayer association 1 Employee
+ 13 ShortListedPlayer association 1 ScoutingAssignment
+ 14 Offer association 1 PlayerProfile
+ 15 Offer association 1 Employee
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'PlayerProfile(class)'	-	'PlayerProfile(class)'
+ 'ScoutingAssignment(class)'	-	'ScoutingAssignment(class)'
+ 'Offer(class)'	-	'Offer(class)'
+ 'Attribute(class)'	-	'PlayerAttribute(class)'
+ 'PositionType(enum)'	-	'Position(enum)'
+ 'RecommendationType(enum)'	-	'Recommendation(enum)'
+ 'Employee(class)'	-	'Person(class)'
+ 'ScoutingReport(class)'	-	'ScoutReport(class)'
+-Attributes:
+ 'Attribute(class):name'	-	'name'
+ 'Attribute(class):value'	-	'value'
+ 'PositionType(enum):GK'	-	'GK'
+ 'PositionType(enum):LB'	-	'LB'
+ 'ScoutingReport(class):recommendation'	-	'recommendation'
+-Relationships:
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  8                   16                  
+Attributes          34                  5                   24                  
+Associations        10                  0                   17                  
+Inheritances        5                   0                   4                   
+--------------------------------------------------------------------------------
+Team Sports Scouting (TSS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.867          0.487          0.624          0.534
+Attributes          0.187          0.181          0.184          0.182
+Associations        0.114          0.041          0.060          0.047
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

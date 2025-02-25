@@ -1,0 +1,1292 @@
+------------------------------------------------------------
+---------------------1/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String)
+2. Event(eventType: Enum, startDate: DateTime, endDate: DateTime, occasion: String, location: Location)
+3. Location(name: String, address: String)
+4. Attendee(firstName: String, lastName: String, email: String, password: String, status: Enum)
+5. Task(description: String, status: Enum)
+
+Enumerations:
+1. EventType(BirthdayParty, GraduationParty, Other)
+2. TaskStatus(ToDo, Done, NotApplicable)
+
+Relationships:
+1 Organizer invite * Attendee
+1 Organizer manage * Event
+1 Organizer attend * Event
+1 Event has 0..* Task
+1 Task assignedTo 0..* Attendee
+1 Attendee responseTo 1 Event
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventType:Enum,startDate:DateTime,endDate:DateTime,occasion:String,location:Location]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:String,address:String]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,password:String,status:Enum]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:String,status:Enum]
+Class: EventType (enum) - Enum Attributes: [BirthdayParty, GraduationParty, Other], Class Attributes: []
+Class: TaskStatus (enum) - Enum Attributes: [ToDo, Done, NotApplicable], Class Attributes: []
+Relationships:
+ 1 Organizer association * Attendee
+ 1 Organizer association * Event
+ 1 Organizer association * Event
+ 1 Event association 0..* Task
+ 1 Task association 0..* Attendee
+ 1 Attendee association 1 Event
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'EventType(enum)'	-	'EventType(class)'
+ 'TaskStatus(enum)'	-	'TaskStatus(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Event(class):occasion'	-	'occasion'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+ ' 1 Organizer association * Event'	-	' 1..* Organizer association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   13                  
+Attributes          26                  5                   23                  
+Associations        6                   1                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventTypes(birthday party, graduation party, other)
+
+Class:
+1. Organizer(firstName : string, lastName : string, email : string, postalAddress : string, phoneNumber : string, password : string)
+2. Event(startDateTime : datetime, endDateTime : datetime, occasion : string, location : Location)
+3. Location(name : string, address : string)
+4. Attendee(firstName : string, lastName : string, email : string, attendingStatus : enum[Attending, Maybe Attending, Not Attending], tasks : list<Task>)
+5. Task(description : string, status : enum[To Do, Done, Not Applicable])
+
+Relationships:
+1 Organizer contains 0..* Event
+2 Organizer invite 0..* Attendee
+3 Attendee attend 0..* Event
+4 Event has 1 Location
+5 Event has 1 Organizer
+6 Event has 0..* Attendee
+7 Organizer manage 0..* Task
+8 Task designatedFor 0..* Attendee
+9 Task onChecklistFor 1 Event
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password ], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [startDateTime , endDateTime , occasion , location ], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [name , address ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , attendingStatus , Attending, Attending], tasks ], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [description , status , Done, Applicable]], Class Attributes: []
+Relationships:
+ 1 Organizer association 0..* Event
+ 2 Organizer association 0..* Attendee
+ 3 Attendee association 0..* Event
+ 4 Event association 1 Location
+ 5 Event association 1 Organizer
+ 6 Event association 0..* Attendee
+ 7 Organizer association 0..* Task
+ 8 Task association 0..* Attendee
+ 9 Task association 1 Event
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+ 'Event(enum):occasion '	-	'occasion'
+ 'Location(enum):name '	-	'name'
+ 'Location(enum):address '	-	'address'
+ 'Task(enum):description '	-	'description'
+-Relationships:
+ ' 1 Organizer association 0..* Event'	-	' 1..* Organizer association * Event'
+ ' 4 Event association 1 Location'	-	' 1 Location association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          26                  5                   23                  
+Associations        9                   2                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventTypes(Birthday Party, Graduation Party, Other)
+
+Class:
+1. Organizer(firstName: string, lastName: string, email: string, address: string, phone: string, password: string)
+2. Event(name: string, startDate: datetime, endDate: datetime, occasion: string, location: string)
+3. Location(name: string, address: string)
+4. Attendee(firstName: string, lastName: string, email: string, status: enum(Attending, Maybe, Not Attending))
+5. Task(description: string, status: enum(To Do, Done, Not Applicable), isForAttendee: boolean)
+
+Relationships:
+1. One Organizer can organize multiple Events (0..* Organizer - 1 Event)
+2. One Event has one Location (1 Event - 1 Location)
+3. One Organizer can invite multiple Attendees for an Event (0..* Organizer - 1..* Attendee)
+4. One Event can have multiple Tasks (0..* Event - 1..* Task)
+5. One Task can be designated to multiple Attendees (0..* Task - 1..* Attendee)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName, lastName, email, address, phone, password], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [name, startDate, endDate, occasion, location], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [name, address], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 One association 1 can
+ 2 One association 1 has
+ 3 One association 1 can
+ 4 One association 1 can
+ 5 One association 1 can
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):address'	-	'address'
+ 'Event(enum):occasion'	-	'occasion'
+ 'Location(enum):name'	-	'name'
+ 'Location(enum):address'	-	'address'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          16                  4                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventTypes(Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: string, lastName: string, email: string, postalAddress: string, phoneNumber: string, password: string, eventTypes: EventTypes, startDate: datetime, endDate: datetime, occasion: string, location: string)
+2. Attendee(firstName: string, lastName: string, email: string, password: string, attendingStatus: enum(Attending, Maybe Attending, Not Attending))
+
+Relationships:
+1..* Organizer contains 1..* Attendee
+1 Organizer inherit Attendee
+1 Organizer associate 1..* EventChecklist
+1 EventChecklist contain 0..* Task
+1 Organizer contain 1 EventChecklist
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:string,lastName:string,email:string,postalAddress:string,phoneNumber:string,password:string,eventTypes:EventTypes,startDate:datetime,endDate:datetime,occasion:string,location:string]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Organizer association 1..* Attendee
+ False Organizer inheritance False Attendee
+ 1 Organizer association 1..* EventChecklist
+ 1 EventChecklist aggregation 0..* Task
+ 1 Organizer aggregation 1 EventChecklist
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   13                  
+Attributes          14                  1                   23                  
+Associations        1                   0                   18                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventTypes (Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String, eventTypes: EventTypes, events: Event[], invitations: Invitation[])
+2. Event(startDate: DateTime, endDate: DateTime, occasion: String, location: Location, tasks: Task[], attendees: Attendee[], invitedOrganizers: Organizer[])
+3. Location(name: String, address: String)
+4. Task(description: String, status: TaskStatus, designatedAttendee: Attendee)
+5. Attendee(firstName: String, lastName: String, email: String, eventStatus: EventStatus, tasks: Task[], attendedEvents: Event[])
+
+Relationships:
+- One Organizer can organize multiple Events (1..*)
+- One Event is organized by one or more Organizers (1..*)
+- One Event is associated with one Location (1)
+- One Organizer can invite multiple Attendees to an Event (0..*)
+- One Event can have multiple Attendees (0..*)
+- One Event contains multiple Tasks (0..*)
+- One Task can be designated to one Attendee (1)
+- One Task can be associated with one Event (1)
+- One Attendee can have multiple Tasks (0..*)
+- One Attendee can attend multiple Events (0..*)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String,eventTypes:EventTypes,events:Event[],invitations:Invitation[]]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [startDate:DateTime,endDate:DateTime,occasion:String,location:Location,tasks:Task[],attendees:Attendee[],invitedOrganizers:Organizer[]]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:String,address:String]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:String,status:TaskStatus,designatedAttendee:Attendee]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,eventStatus:EventStatus,tasks:Task[],attendedEvents:Event[]]
+Relationships:
+ 1 One association 1 can
+ 1 One association 1 is
+ 1 One association 1 is
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 contains
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Event(class):occasion'	-	'occasion'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          30                  5                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventTypes(birthday party, graduation party, other)
+2. InvitationStatus(accepted, maybe, declined)
+3. TaskStatus(to do, done, not applicable)
+
+Class:
+1. Organizer(firstName: string, lastName: string, email: string, password: string, postalAddress: string, phoneNumber: string)
+2. Event(eventName: string, eventType: EventTypes, startDate: datetime, endDate: datetime, location: Location)
+3. Location(locationName: string, address: string)
+4. Attendee(firstName: string, lastName: string, email: string, password: string)
+5. Task(taskName: string, taskStatus: TaskStatus, assignedToAttendee: Attendee)
+
+Relationships:
+1..* Organizer associate 1 Event
+1 Event contain 0..* Task
+1 Organizer inherit Attendee
+1 Organizer associate 0..* Attendee
+1 Attendee associate 0..* Task
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: InvitationStatus (enum) - Enum Attributes: [accepted, maybe, declined], Class Attributes: []
+Class: TaskStatus (enum) - Enum Attributes: [do, done, applicable], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName, lastName, email, password, postalAddress, phoneNumber], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [eventName, eventType, startDate, endDate, location], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [locationName, address], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName, lastName, email, password], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [taskName, taskStatus, assignedToAttendee], Class Attributes: []
+Relationships:
+ 1..* Organizer association 1 Event
+ 1 Event aggregation 0..* Task
+ False Organizer inheritance False Attendee
+ 1 Organizer association 0..* Attendee
+ 1 Attendee association 0..* Task
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'TaskStatus(enum)'	-	'TaskStatus(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'InvitationStatus(enum)'	-	'AttendeeStatus(enum)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber'	-	'phoneNumber'
+ 'Location(enum):address'	-	'address'
+ 'InvitationStatus(enum):maybe'	-	'Maybe'
+-Relationships:
+ ' 1..* Organizer association 1 Event'	-	' 1..* Organizer association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   13                  
+Attributes          29                  3                   23                  
+Associations        4                   1                   18                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(birthday party, graduation party, other)
+
+Class:
+1. Organizer(firstName : string, lastName : string, email : string, postalAddress : string, phoneNumber : string, password : string, eventKind : EventType, startDate : dateTime, endDate : dateTime, occasion : string, location : Location)
+2. Attendee(firstName : string, lastName : string, email : string, password : string, eventResponse : enum{attending, maybe, not attending})
+
+Relationships:
+1..* Organizer contain 1..* Attendee
+1..* Attendee attend 1 Organizer
+1..* Organizer invite 0..* Attendee
+1 Organizer inherit Event
+1 Event contain 0..* Task
+1..* Task designate 0..* Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password , eventKind , startDate , endDate , occasion , location ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , password , eventResponse , maybe, attending}], Class Attributes: []
+Relationships:
+ 1..* Organizer aggregation 1..* Attendee
+ 1..* Attendee association 1 Organizer
+ 1..* Organizer association 0..* Attendee
+ False Organizer inheritance False Event
+ 1 Event aggregation 0..* Task
+ 1..* Task association 0..* Attendee
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   13                  
+Attributes          21                  1                   23                  
+Associations        3                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(birthday party, graduation party, other)
+
+Classes:
+1. Organizer(firstName : string, lastName : string, email : string, address : string, phoneNumber : string, password : string, attending : Boolean)
+2. Event(eventType : EventType, startDate : datetime, endDate : datetime, occasion : string, location : Location)
+3. Location(name : string, address : string)
+4. Attendee(firstName : string, lastName : string, email : string, attendingStatus : enum(attending, maybe, not attending), tasks : List<Task>)
+5. Task(description : string, status : enum(needs to be done, done, not applicable), assignedTo : Attendee)
+
+Relationships:
+1..* Organizer contain 1 Event
+1 Event contain 0..* Attendee
+1 Attendee associate 0..* Task
+1 Organizer associate 0..* Attendee
+1 Organizer inherit Attendee
+1 Event inherit Location
+1 Organizer inherit Task
+1 Event contain 0..* Task
+1 Task associate 1 Attendee
+1 Organizer contain 1..* Task
+1 Task associate 0..* Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName :string,lastName :string,email :string,address :string,phoneNumber :string,password :string,attending :Boolean]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventType :EventType,startDate :datetime,endDate :datetime,occasion :string,location :Location]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name :string,address :string]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: []
+Class: Task (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Organizer aggregation 1 Event
+ 1 Event aggregation 0..* Attendee
+ 1 Attendee association 0..* Task
+ 1 Organizer association 0..* Attendee
+ False Organizer inheritance False Attendee
+ False Event inheritance False Location
+ False Organizer inheritance False Task
+ 1 Event aggregation 0..* Task
+ 1 Task association 1 Attendee
+ 1 Organizer aggregation 1..* Task
+ 1 Task association 0..* Attendee
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):address '	-	'address'
+ 'Organizer(class):phoneNumber '	-	'phoneNumber'
+ 'Event(class):occasion '	-	'occasion'
+ 'Location(class):name '	-	'name'
+ 'Location(class):address '	-	'address'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          17                  5                   23                  
+Associations        8                   0                   18                  
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String, eventKind: Enum[EventKind], events: List[Event])
+2. Event(startDate: DateTime, endDate: DateTime, occasion: String, location: Location, organizer: Organizer, attendees: List[Attendee], tasks: List[Task])
+3. Location(name: String, address: String)
+4. Attendee(firstName: String, lastName: String, email: String, eventStatus: Enum[EventStatus], tasks: List[Task])
+5. Task(description: String, status: Enum[TaskStatus], assignedTo: Attendee)
+
+Enumerations:
+1. EventKind(BirthdayParty, GraduationParty, Other)
+2. EventStatus(Attending, MaybeAttending, NotAttending)
+3. TaskStatus(ToDo, Done, NotApplicable)
+
+Relationships:
+1. 1..* Organizer associates 1 Event
+2. 1 Event contains 0..* Task
+3. 1 Organizer invites 0..* Attendee
+4. 1 Event associates 0..* Attendee
+5. 1 Event specifies 1 Location
+6. 0..* Task designatedTo 1 Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String,eventKind:Enum[EventKind],events:List[Event]]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [startDate:DateTime,endDate:DateTime,occasion:String,location:Location,organizer:Organizer,attendees:List[Attendee],tasks:List[Task]]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:String,address:String]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,eventStatus:Enum[EventStatus],tasks:List[Task]]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:String,status:Enum[TaskStatus],assignedTo:Attendee]
+Class: EventKind (enum) - Enum Attributes: [BirthdayParty, GraduationParty, Other], Class Attributes: []
+Class: EventStatus (enum) - Enum Attributes: [Attending, MaybeAttending, NotAttending], Class Attributes: []
+Class: TaskStatus (enum) - Enum Attributes: [ToDo, Done, NotApplicable], Class Attributes: []
+Relationships:
+ 1..* Organizer association 1 Event
+ 2 1 association 1 contains
+ 3 1 association 1 invites
+ 4 1 association 1 associates
+ 5 1 association 1 specifies
+ 0..* Task association 1 Attendee
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'TaskStatus(enum)'	-	'TaskStatus(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Event(class):occasion'	-	'occasion'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+ ' 1..* Organizer association 1 Event'	-	' 1..* Organizer association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   13                  
+Attributes          34                  5                   23                  
+Associations        2                   1                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(Birthday Party, Graduation Party, Other)
+2. InvitationStatus(Replied, Not Replied, Confirmed, Maybe, Cannot Attend)
+3. TaskStatus(To Do, Completed, Not Applicable)
+
+Class:
+1. Organizer(firstName : string, lastName : string, email : string, postalAddress : string, phoneNumber : string, password : string)
+2. Event(name : string, startDateTime : datetime, endDateTime : datetime, occasion : string)
+3. Location(name : string, address : string)
+4. Attendee(firstName : string, lastName : string, email : string, password : string)
+5. Task(description : string, status : TaskStatus)
+
+Relationships:
+1..* Organizer associate 1 Event
+1 Event contain * Task
+1 Event associate * Location
+1 Organizer invite * Attendee
+1..* Attendee associate 0..1 Task
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: InvitationStatus (enum) - Enum Attributes: [Replied, Replied, Confirmed, Maybe, Attend], Class Attributes: []
+Class: TaskStatus (enum) - Enum Attributes: [Do, Completed, Applicable], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password ], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [name , startDateTime , endDateTime , occasion ], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [name , address ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , password ], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [description , status ], Class Attributes: []
+Relationships:
+ 1..* Organizer association 1 Event
+ 1 Event aggregation * Task
+ 1 Event association * Location
+ 1 Organizer association * Attendee
+ 1..* Attendee association 0..1 Task
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'TaskStatus(enum)'	-	'TaskStatus(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'InvitationStatus(enum)'	-	'AttendeeStatus(enum)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+ 'Event(enum):occasion '	-	'occasion'
+ 'Location(enum):name '	-	'name'
+ 'Location(enum):address '	-	'address'
+ 'InvitationStatus(enum):Maybe'	-	'Maybe'
+ 'Task(enum):description '	-	'description'
+-Relationships:
+ ' 1..* Organizer association 1 Event'	-	' 1..* Organizer association * Event'
+ ' 1 Event association * Location'	-	' 1 Location association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   13                  
+Attributes          29                  6                   23                  
+Associations        5                   2                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventType(Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String, eventKind: EventType, startDate: DateTime, endDate: DateTime, occasion: String, location: Location)
+2. Location(name: String, address: String)
+3. Attendee(firstName: String, lastName: String, email: String, password: String)
+4. Task(description: String, status: {Needs to be done, Done, Not Applicable}, assignedTo: Attendee)
+
+Relationships:
+1. 1 Organizer contains 0..* Attendee
+2. 1 Organizer has 1 Location
+3. 1 Organizer invites 0..* Attendee
+4. 1 Attendee attends 0..* Organizer
+5. 1 Organizer manages 0..* Event
+6. 1 Event has 0..* Task
+7. 1 Task is assigned to 0..1 Attendee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String,eventKind:EventType,startDate:DateTime,endDate:DateTime,occasion:String,location:Location]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:String,address:String]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,password:String]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:String,status:{Needs to be done,Done:,Applicable}:Not,assignedTo:Attendee]
+Relationships:
+ 1 1 association 1 contains
+ 2 1 association 1 has
+ 3 1 association 1 invites
+ 4 1 association 1 attends
+ 5 1 association 1 manages
+ 6 1 association 1 has
+ 7 1 association 1 is
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   13                  
+Attributes          25                  4                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType (Birthday Party, Graduation Party, Other)
+2. AttendanceStatus (Attending, Maybe Attending, Not Attending, Not Replied)
+
+Class:
+1. Organizer(firstName : String, lastName : String, email : String, postalAddress : String, phoneNumber : String, password : String, isAttending : Boolean)
+2. Event(startDateTime : DateTime, endDateTime : DateTime, occasion : String)
+3. Location(name : String, address : String)
+4. Attendee(firstName : String, lastName : String, email : String, password : String, isAttending : AttendanceStatus)
+5. Task(description : String, status : String, isApplicable : Boolean, isAssignedToAttendee : Boolean)
+
+Relationships:
+1..* Organizer contain 1 Event
+0..* Organizer invite 1..* Attendee
+1 Event associate 1 Location
+1 Event contain 1..* Task
+1 Organizer inherit 1 Attendee
+1 Task associate 1 Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: AttendanceStatus (enum) - Enum Attributes: [Attending, Attending, Attending, Replied], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password , isAttending ], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [startDateTime , endDateTime , occasion ], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [name , address ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , password , isAttending ], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [description , status , isApplicable , isAssignedToAttendee ], Class Attributes: []
+Relationships:
+ 1..* Organizer aggregation 1 Event
+ 0..* Organizer association 1..* Attendee
+ 1 Event association 1 Location
+ 1 Event aggregation 1..* Task
+ False Organizer inheritance False Attendee
+ 1 Task association 1 Attendee
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'AttendanceStatus(enum)'	-	'AttendeeStatus(enum)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+ 'Event(enum):occasion '	-	'occasion'
+ 'Location(enum):name '	-	'name'
+ 'Location(enum):address '	-	'address'
+ 'Task(enum):description '	-	'description'
+-Relationships:
+ ' 1 Event association 1 Location'	-	' 1 Location association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   13                  
+Attributes          28                  5                   23                  
+Associations        5                   1                   18                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(birthday party, graduation party, other)
+
+Class:
+1. Organizer(firstName : String, lastName : String, email : String, postalAddress : String, phoneNumber : String, password : String, isAttending : Boolean)
+2. Event(eventName : String, startDate : DateTime, endDate : DateTime, location : Location)
+3. Location(name : String, address : String)
+4. Attendee(firstName : String, lastName : String, email : String, isAttending : Boolean)
+5. Task(description : String, status : Enum{to do, done, not applicable}, assignedTo : Attendee)
+
+Relationships:
+1..* Organizer associate 1..* Event
+1 Event contain 0..* Task
+1 Organizer inherit 1 Attendee
+1 Organizer contain 0..* Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password , isAttending ], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [eventName , startDate , endDate , location ], Class Attributes: []
+Class: Location (enum) - Enum Attributes: [name , address ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , isAttending ], Class Attributes: []
+Class: Task (enum) - Enum Attributes: [description , status , done, applicable}, assignedTo ], Class Attributes: []
+Relationships:
+ 1..* Organizer association 1..* Event
+ 1 Event aggregation 0..* Task
+ False Organizer inheritance False Attendee
+ 1 Organizer aggregation 0..* Attendee
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Event(enum)'	-	'Event(class)'
+ 'Location(enum)'	-	'Location(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+ 'Task(enum)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+ 'Location(enum):name '	-	'name'
+ 'Location(enum):address '	-	'address'
+ 'Task(enum):description '	-	'description'
+-Relationships:
+ ' 1..* Organizer association 1..* Event'	-	' 1..* Organizer association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          25                  4                   23                  
+Associations        3                   1                   18                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventType(Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String, eventKind: EventType, startDate: DateTime, endDate: DateTime, occasion: String, location: Location)
+2. Attendee(firstName: String, lastName: String, email: String, password: String, responseStatus: Enum{Attending, Maybe Attending, Not Attending})
+
+Relationships:
+1..* Organizer contain 1 Event
+1 Event associate 0..* Attendee
+1 Organizer contain 0..* Task
+1 Task associate 0..* Attendee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String,eventKind:EventType,startDate:DateTime,endDate:DateTime,occasion:String,location:Location]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,password:String,responseStatus:Enum{Attending,Attending:Maybe,Attending}:Not]
+Relationships:
+ 1..* Organizer aggregation 1 Event
+ 1 Event association 0..* Attendee
+ 1 Organizer aggregation 0..* Task
+ 1 Task association 0..* Attendee
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   13                  
+Attributes          21                  1                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(birthday party, graduation party, other)
+
+Classes:
+1. Organizer(firstName : string, lastName : string, email : string, postalAddress : string, phoneNumber : string, password : string)
+2. Event(eventType : EventType, startDate : datetime, endDate : datetime, occasion : string)
+3. Location(name : string, address : string)
+4. Attendee(firstName : string, lastName : string, email : string, status : enum{attending, maybe, not attending})
+5. Task(description : string, status : enum{to do, done, not applicable}, designatedForAttendees : boolean)
+
+Relationships:
+1..* Organizer associate 1 Event
+1 Event associate 1 Location
+1 Organizer invite 0..* Attendee
+1 Organizer inherit 1 Task (to indicate attendee's task)
+1 Organizer contain 0..* Task (for event-specific checklist)
+1 Attendee associate 1 Event
+1 Event inherit 0..* Task (for tasks designated for attendees)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName :string,lastName :string,email :string,postalAddress :string,phoneNumber :string,password :string]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventType :EventType,startDate :datetime,endDate :datetime,occasion :string]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name :string,address :string]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName :string,lastName :string,email :string,status :enum{attending,maybe:,attending}:not]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description :string,status :enum{to do,done:,applicable}:not,designatedForAttendees :boolean]
+Relationships:
+ 1..* Organizer association 1 Event
+ 1 Event association 1 Location
+ 1 Organizer association 0..* Attendee
+ False Organizer inheritance False Task
+ 1 Organizer aggregation 0..* Task
+ 1 Attendee association 1 Event
+ False Event inheritance False Task
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber '	-	'phoneNumber'
+ 'Event(class):occasion '	-	'occasion'
+ 'Location(class):name '	-	'name'
+ 'Location(class):address '	-	'address'
+ 'Task(class):description '	-	'description'
+-Relationships:
+ ' 1..* Organizer association 1 Event'	-	' 1..* Organizer association * Event'
+ ' 1 Event association 1 Location'	-	' 1 Location association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          26                  5                   23                  
+Associations        5                   2                   18                  
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventTypes(Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: String, lastName: String, email: String, address: String, phone: String, password: String, eventTypes: EventTypes, startDate: DateTime, endDate: DateTime, occasion: String, location: Location, attendees: List<Attendee>)
+2. Location(name: String, address: String)
+3. Attendee(firstName: String, lastName: String, email: String, attendingStatus: AttendingStatus, tasks: List<Task>)
+4. Task(description: String, status: TaskStatus)
+
+Relationships:
+- One Organizer can organize multiple events (0..*)
+- One event can have multiple organizers (0..*)
+- One Location can be associated with multiple events (0..*)
+- One Event can have only one Location (1)
+- One Organizer can invite multiple Attendees (0..*)
+- One Attendee can attend multiple Events (0..*)
+- One Event can have multiple Attendees (0..*)
+- One Event can have multiple Tasks (0..*)
+- One Task can be assigned to multiple Attendees (0..*)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,address:String,phone:String,password:String,eventTypes:EventTypes,startDate:DateTime,endDate:DateTime,occasion:String,location:Location,attendees:List<Attendee>]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:String,address:String]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,attendingStatus:AttendingStatus,tasks:List<Task>]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:String,status:TaskStatus]
+Relationships:
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):address'	-	'address'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   13                  
+Attributes          24                  4                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventType (Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: string, lastName: string, email: string, postalAddress: string, phoneNumber: string, password: string, eventTypes: list<EventType>, events: list<Event>)
+2. Event(startDate: datetime, endDate: datetime, occasion: string, location: Location, organizer: Organizer, attendees: list<Attendee>)
+3. Location(name: string, address: string)
+4. Attendee(firstName: string, lastName: string, email: string, eventStatus: enum<Attending, Maybe, Not Attending>, tasks: list<Task>)
+5. Task(description: string, status: enum<To Do, Done, Not Applicable>, assignedTo: Attendee)
+
+Relationships:
+1. Organizer contains 1..* Event
+2. Event associate 0..* Attendee
+3. Organizer inherit Attendee
+4. Organizer contain 0..* Task
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:string,lastName:string,email:string,postalAddress:string,phoneNumber:string,password:string,eventTypes:list<EventType>,events:list<Event>]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [startDate:datetime,endDate:datetime,occasion:string,location:Location,organizer:Organizer,attendees:list<Attendee>]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:string,address:string]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:string,lastName:string,email:string,eventStatus:enum<Attending,Maybe:,Attending>:Not,tasks:list<Task>]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [description:string,status:enum<To Do,Done:,Applicable>:Not,assignedTo:Attendee]
+Relationships:
+ 1 Organizer association 1..* Event
+ 2 Event association 0..* Attendee
+ False Organizer inheritance False Attendee
+ 4 Organizer aggregation 0..* Task
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Event(class):occasion'	-	'occasion'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+ 'Task(class):description'	-	'description'
+-Relationships:
+ ' 1 Organizer association 1..* Event'	-	' 1..* Organizer association * Event'
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          31                  5                   23                  
+Associations        3                   1                   18                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventType (Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: String, lastName: String, email: String, postalAddress: String, phoneNumber: String, password: String)
+2. Event(eventName: String, eventType: EventType, startDate: DateTime, endDate: DateTime, location: Location)
+3. Location(locationName: String, address: String)
+4. Attendee(firstName: String, lastName: String, email: String, attendanceStatus: Enum{Attending, Maybe, Not Attending})
+5. Task(taskName: String, status: Enum{To Do, Done, Not Applicable}, assignedTo: Attendee)
+
+Relationships:
+- One Organizer can organize multiple Events (0..*)
+- One Event can have multiple Organizers (1..*)
+- One Event is associated with one Location (1)
+- One Organizer can invite multiple Attendees (0..*)
+- One Attendee can attend multiple Events (0..*)
+- One Event can have multiple Tasks (0..*)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,postalAddress:String,phoneNumber:String,password:String]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventName:String,eventType:EventType,startDate:DateTime,endDate:DateTime,location:Location]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [locationName:String,address:String]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: [firstName:String,lastName:String,email:String,attendanceStatus:Enum{Attending,Maybe:,Attending}:Not]
+Class: Task (class) - Enum Attributes: [], Class Attributes: [taskName:String,status:Enum{To Do,Done:,Applicable}:Not,assignedTo:Attendee]
+Relationships:
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 is
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Location(class):address'	-	'address'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          27                  2                   23                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. EventTypes (Birthday Party, Graduation Party, Other)
+
+Classes:
+1. Organizer(firstName: string, lastName: string, email: string, postalAddress: string, phoneNumber: string, password: string)
+2. Event(startDateTime: datetime, endDateTime: datetime, occasion: string, location: string)
+3. Location(name: string, address: string)
+4. Attendee(firstName: string, lastName: string, email: string, status: enum(attending, maybeAttending, notAttending))
+5. Task(description: string, status: enum(toDo, done, notApplicable))
+
+Relationships:
+1. Organizer 1..* organize Event
+2. Organizer 0..* manage Event
+3. Organizer 0..* attend Event
+4. Organizer invite Attendee
+5. Attendee 0..* receive Invitation
+6. Event 1..* have Task
+7. Task 0..* designatedFor Attendee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [Party, Party, Other], Class Attributes: []
+Class: Organizer (class) - Enum Attributes: [], Class Attributes: [firstName:string,lastName:string,email:string,postalAddress:string,phoneNumber:string,password:string]
+Class: Event (class) - Enum Attributes: [], Class Attributes: [startDateTime:datetime,endDateTime:datetime,occasion:string,location:string]
+Class: Location (class) - Enum Attributes: [], Class Attributes: [name:string,address:string]
+Class: Attendee (class) - Enum Attributes: [], Class Attributes: []
+Class: Task (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Organizer association 1 organize
+ 2 Organizer association 1 manage
+ 3 Organizer association 1 attend
+ 4 Organizer association 1 Attendee
+ 5 Attendee association 1 receive
+ 6 Event association 1 have
+ 7 Task association 1 designatedFor
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(class)'
+ 'Organizer(class)'	-	'Organizer(class)'
+ 'Event(class)'	-	'Event(class)'
+ 'Location(class)'	-	'Location(class)'
+ 'Attendee(class)'	-	'Attendee(class)'
+ 'Task(class)'	-	'CheckList(class)'
+-Attributes:
+ 'Organizer(class):phoneNumber'	-	'phoneNumber'
+ 'Event(class):occasion'	-	'occasion'
+ 'Location(class):name'	-	'name'
+ 'Location(class):address'	-	'address'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          15                  4                   23                  
+Associations        1                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Celebrations Organization System (CelO):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EventType(birthday party, graduation party, other)
+
+Class:
+1. Organizer(firstName : string, lastName : string, email : string, postalAddress : string, phoneNumber : string, password : string, eventKind : EventType, startDate : dateTime, endDate : dateTime, occasion : string, location : string)
+2. Attendee(firstName : string, lastName : string, email : string, password : string, attendanceStatus : {attending, maybeAttending, notAttending})
+
+Relationships:
+1..* Organizer associate 0..* Attendee
+0..* Attendee associate 1 Organizer
+1 Organizer contain 1..* Event
+1 Event contain 1..* Task
+1 Task associate 0..* Attendee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [party, party, other], Class Attributes: []
+Class: Organizer (enum) - Enum Attributes: [firstName , lastName , email , postalAddress , phoneNumber , password , eventKind , startDate , endDate , occasion , location ], Class Attributes: []
+Class: Attendee (enum) - Enum Attributes: [firstName , lastName , email , password , attendanceStatus , maybeAttending, notAttending}], Class Attributes: []
+Relationships:
+ 1..* Organizer association 0..* Attendee
+ 0..* Attendee association 1 Organizer
+ 1 Organizer aggregation 1..* Event
+ 1 Event aggregation 1..* Task
+ 1 Task association 0..* Attendee
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(class)'
+ 'Organizer(enum)'	-	'Organizer(class)'
+ 'Attendee(enum)'	-	'Attendee(class)'
+-Attributes:
+ 'Organizer(enum):phoneNumber '	-	'phoneNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   3                   13                  
+Attributes          21                  1                   23                  
+Associations        2                   0                   18                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+Celebrations Organization System (CelO), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.982          0.431          0.599          0.485
+Attributes          0.155          0.165          0.160          0.163
+Associations        0.211          0.033          0.058          0.040
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

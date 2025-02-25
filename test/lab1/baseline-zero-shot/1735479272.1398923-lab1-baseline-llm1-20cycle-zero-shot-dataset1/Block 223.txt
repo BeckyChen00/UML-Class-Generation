@@ -1,0 +1,1868 @@
+------------------------------------------------------------
+---------------------1/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Class:
+User(username: String, password: String)
+Player
+Admin
+Game(name: String)
+Block(color: String, points: Integer)
+Level(number: Integer, arrangement: String, random: Boolean, speedIncreaseFactor: Integer, maxPaddleLength: Integer, minPaddleLength: Integer)
+Ball(speed: Integer, direction: String)
+Paddle(position: String)
+HallOfFame
+Life
+Score
+
+Relationships:
+User inherit Player
+User inherit Admin
+Admin design 1..* Game
+Game contain 1..* Block
+Game contain 1..* Level
+Level inherit Block
+Game has 1 HallOfFame
+Game has 1..* Level
+Player play 1..* Game
+Player play 1..* Level
+Player play 1 Ball
+Player play 1 Paddle
+Player play 1 Life
+Player play 1 Score
+Level contain 1..* Block
+Level contain 1 Ball
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:String]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:String,points:Integer]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:Integer,arrangement:String,random:Boolean,speedIncreaseFactor:Integer,maxPaddleLength:Integer,minPaddleLength:Integer]
+Class: Ball (class) - Enum Attributes: [], Class Attributes: [speed:Integer,direction:String]
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: [position:String]
+Relationships:
+ False User inheritance False Player
+ False User inheritance False Admin
+ 1 Admin association 1..* Game
+ 1 Game aggregation 1..* Block
+ 1 Game aggregation 1..* Level
+ False Level inheritance False Block
+ 1 Game association 1 HallOfFame
+ 1 Game association 1..* Level
+ 1 Player association 1..* Game
+ 1 Player association 1..* Level
+ 1 Player association 1 Ball
+ 1 Player association 1 Paddle
+ 1 Player association 1 Life
+ 1 Player association 1 Score
+ 1 Level aggregation 1..* Block
+ 1 Level aggregation 1 Ball
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Ball(class)'	-	'Ball(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+-Relationships:
+ ' 1 Game aggregation 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   13                  
+Attributes          14                  4                   30                  
+Associations        5                   2                   18                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(admin, play)
+2. Direction(up, down, left, right)
+
+Class:
+1. User(username: string, password: string, mode: Mode)
+2. Game(name: string, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+3. Block(color: string, points: int)
+4. Level(levelNumber: int, arrangement: Block[][], isRandom: boolean)
+5. HallOfFameEntry(player: User, score: int)
+6. Ball(speed: int, direction: Direction)
+7. Paddle(length: int)
+8. Life
+
+Relationships:
+1. User contains 0..* Game
+2. Game associate 1 User as admin
+3. Game associate 1..* Block
+4. Game contain 1..* Level
+5. Game associate 1 HallOfFameEntry
+6. Level contain 1..* Block
+7. Level inherit Game
+8. Level associate 1 Ball
+9. Level associate 1 Paddle
+10. Level associate 1 Life
+11. HallOfFameEntry associate 1 User
+12. Game inherit User
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [up, down, left, right], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, mode], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [levelNumber, arrangement, isRandom], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [player, score], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed, direction], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 0..* Game
+ 2 Game association 1 User
+ 3 Game association 1..* Block
+ 4 Game aggregation 1..* Level
+ 5 Game association 1 HallOfFameEntry
+ 6 Level aggregation 1..* Block
+ False Level inheritance False Game
+ 8 Level association 1 Ball
+ 9 Level association 1 Paddle
+ 10 Level association 1 Life
+ 11 HallOfFameEntry association 1 User
+ False Game inheritance False User
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+ 'Level(enum):isRandom'	-	'isRandom'
+ 'HallOfFameEntry(enum):score'	-	'score'
+-Relationships:
+ ' 1 User association 0..* Game'	-	' 1 User association * Game'
+ ' 3 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 4 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+ ' 5 Game association 1 HallOfFameEntry'	-	' * HallOfFameEntry association 1 Game'
+ ' 11 HallOfFameEntry association 1 User'	-	' 1 User association * HallOfFameEntry'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   13                  
+Attributes          25                  6                   30                  
+Associations        10                  5                   18                  
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- AdminMode(PLAY, DESIGN)
+- GridPosition(1/1, 2/1, 1/2, ...)
+
+Class:
+1. User(username: string, password: string)
+2. Game(name: string, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int, numBlocksPerLevel: int)
+3. Block(color: string, points: int)
+4. Level(number: int, arrangement: List<GridPosition>, random: boolean)
+5. HallOfFameEntry(player: User, score: int)
+6. Ball(speed: int, direction: string)
+7. Paddle(length: int)
+8. Life
+9. SavedGame
+
+Relationships:
+- User(1) inherit Player(1)   // A User is always a Player
+- User(0..1) inherit Admin(0..1)   // A User can optionally be an Admin
+- User(1) contain SavedGame(0..*)   // A User can have multiple saved games
+- Admin(1) contain Game(1)   // An Admin can create only one Game
+- Game(1) contain Block(0..*)   // A Game can have multiple Blocks
+- Game(1) contain Level(1..99)   // A Game can have 1 to 99 Levels
+- Level(1) contain Block(1..*)   // A Level can have multiple Blocks
+- Game(1) contain HallOfFameEntry(0..*)   // A Game can have multiple Hall of Fame entries
+- Game(1) contain SavedGame(0..*)   // A Game can have multiple saved games
+- Player(1) associate Game(*..1)   // A Player can play multiple Games
+- Player(1) associate HallOfFameEntry(0..*)   // A Player can have multiple Hall of Fame entries
+- Game(1) associate HallOfFameEntry(0..*)   // A Game can have multiple Hall of Fame entries
+- Ball(1) associate Game(1)   // A Ball is associated with a Game
+- Paddle(1) associate Game(1)   // A Paddle is associated with a Game
+- Game(1) contain Life(3)   // A Game has three lives
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: AdminMode (enum) - Enum Attributes: [PLAY, DESIGN], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [1/1, 2/1, 1/2, ...], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength, numBlocksPerLevel], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number, arrangement, random], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [player, score], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed, direction], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [], Class Attributes: []
+Class: SavedGame (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 A
+ 1 User association 1 A
+ 1 User association 1 A
+ 1 Admin association 1 An
+ 1 Game association 1 A
+ 1 Game association 1 A
+ 1 Level association 1 A
+ 1 Game association 1 A
+ 1 Game association 1 A
+ 1 Player association 1 Game
+ 1 Player association 1 HallOfFameEntry
+ 1 Game association 1 HallOfFameEntry
+ 1 Ball association 1 Game
+ 1 Paddle association 1 Game
+ 1 Game association 1 A
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Game(enum):numBlocksPerLevel'	-	'nrBlocksPerLevel'
+ 'Block(enum):points'	-	'points'
+ 'HallOfFameEntry(enum):score'	-	'score'
+-Relationships:
+ ' 1 Game association 1 HallOfFameEntry'	-	' * HallOfFameEntry association 1 Game'
+ ' 1 Ball association 1 Game'	-	' 1 Game aggregation 1 Ball'
+ ' 1 Paddle association 1 Game'	-	' 1 Game aggregation 1 Paddle'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   13                  
+Attributes          25                  6                   30                  
+Associations        3                   3                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Class:
+User(username: string, password: string, isAdmin: boolean)
+Game(name: string, numberOfLevels: int, minimumSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+Block(color: string, points: int)
+Level(levelNumber: int, isRandom: boolean)
+PlayArea()
+Ball()
+Paddle()
+Life()
+Score()
+
+Enumerations:
+None
+
+Relationships:
+1 User inherit Player
+1 User inherit Admin
+1 Admin create 1..* Game
+1 Game contain 1..* Block
+1 Game contain 1..* Level
+1 Level contain 1..* Block
+1 Game has 1 HallOfFame
+1 Player play 1..* Game
+1 Game publish 1..* Player
+1 Player play 1 Game at a time
+1 Player has 3 Life
+1 Player has 1..* Score
+1 Player save 1..* Game
+1 Player pause 1 Game
+1 Player resume 1 Game
+1 Player confirm 1 Level to start
+1 Player advance to next Level if last Block hit
+1 Ball moves in a certain direction
+1 Ball bounces back from walls
+1 Ball bounces back from blocks
+1 Ball out-of-bounds if hits bottom wall
+1 Player loses 1 Life if Ball out-of-bounds
+1 Game ends if Player loses all Lives or finishes last Level
+1 Total score displayed in HallOfFame
+1 Player competes for high score in HallOfFame
+1 Player can play different Games
+1 User cannot be Player and Admin for same Game
+1 Admin per Game
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,isAdmin:boolean]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,numberOfLevels:int,minimumSpeed:int,speedIncreaseFactor:int,maxPaddleLength:int,minPaddleLength:int]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [levelNumber:int,isRandom:boolean]
+Class: PlayArea (class) - Enum Attributes: [], Class Attributes: []
+Class: Ball (class) - Enum Attributes: [], Class Attributes: []
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: []
+Class: Life (class) - Enum Attributes: [], Class Attributes: []
+Class: Score (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False User inheritance False Player
+ False User inheritance False Admin
+ 1 Admin association 1..* Game
+ 1 Game aggregation 1..* Block
+ 1 Game aggregation 1..* Level
+ 1 Level aggregation 1..* Block
+ 1 Game association 1 HallOfFame
+ 1 Player association 1..* Game
+ 1 Game association 1..* Player
+ 1 Player association 1 Game
+ 1 Player association 3 Life
+ 1 Player association 1..* Score
+ 1 Player association 1..* Game
+ 1 Player association 1 Game
+ 1 Player association 1 Game
+ 1 Player association 1 Level
+ 1 Player association 1 to
+ 1 Ball association 1 in
+ 1 Ball association 1 back
+ 1 Ball association 1 back
+ 1 Ball association 1 if
+ 1 Player association 1 Life
+ 1 Game association 1 if
+ 1 Total association 1 displayed
+ 1 Player association 1 for
+ 1 Player association 1 play
+ 1 User association 1 be
+ 1 Admin association 1 Game
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Ball(class)'	-	'Ball(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+ 'Level(class):isRandom'	-	'isRandom'
+-Relationships:
+ ' 1 Game aggregation 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   13                  
+Attributes          13                  5                   30                  
+Associations        3                   2                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(admin, play)
+2. Direction(left, right, straight)
+3. Position(1/1, 2/1, 1/2)
+
+Class:
+1. User(username: String, password: String)
+2. Game(name: String, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+3. Block(color: String, points: int)
+4. Level(number: int, arrangement: List<Block>, random: boolean)
+5. HallOfFame
+6. PlayArea
+7. Paddle
+8. Ball(speed: int, direction: Direction, position: Position)
+9. Life(lives: int)
+
+Relationships:
+1. User - Game (0..* - 1)
+2. User - User (0..1 - 0..1)
+3. Game - Block (1 - 0..*)
+4. Game - Level (1 - 0..*)
+5. Game - HallOfFame (1 - 1)
+6. Game - PlayArea (1 - 1)
+7. Game - Paddle (1 - 1)
+8. Game - Ball (1 - 1)
+9. Game - Life (1 - 1)
+10. Level - Block (1 - 0..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [left, right, straight], Class Attributes: []
+Class: Position (enum) - Enum Attributes: [1/1, 2/1, 1/2], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number, arrangement, random], Class Attributes: []
+Class: HallOfFame (enum) - Enum Attributes: [], Class Attributes: []
+Class: PlayArea (enum) - Enum Attributes: [], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed, direction, position], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [lives], Class Attributes: []
+Relationships:
+ 1 User association 1 Game
+ 2 User association 1 User
+ 3 Game association 1 Block
+ 4 Game association 1 Level
+ 5 Game association 1 HallOfFame
+ 6 Game association 1 PlayArea
+ 7 Game association 1 Paddle
+ 8 Game association 1 Ball
+ 9 Game association 1 Life
+ 10 Level association 1 Block
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'HallOfFame(enum)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+-Relationships:
+ ' 1 User association 1 Game'	-	' 1 User association * Game'
+ ' 3 Game association 1 Block'	-	' 1 Game aggregation * Block'
+ ' 4 Game association 1 Level'	-	' 1 Game aggregation 1..* Level'
+ ' 5 Game association 1 HallOfFame'	-	' * HallOfFameEntry association 1 Game'
+ ' 7 Game association 1 Paddle'	-	' 1 Game aggregation 1 Paddle'
+ ' 8 Game association 1 Ball'	-	' 1 Game aggregation 1 Ball'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  7                   13                  
+Attributes          25                  4                   30                  
+Associations        10                  6                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Block 223:
+------------------------------------------------------------
+AI:
+Enumerations:
+
+1. Mode (Admin, Play)
+2. GridPosition (e.g., 1/1, 2/1, 1/2)
+
+Classes:
+
+1. User(username: string, password: string)
+2. Block(color: string, points: integer)
+3. Game(name: string, maxLevels: integer, minSpeed: integer, speedIncreaseFactor: integer, maxPaddleLength: integer, minPaddleLength: integer)
+4. Level(number: integer, random: boolean)
+5. PlayArea(blocks: array, ball: Ball, paddle: Paddle)
+6. Ball(speed: integer, direction: string)
+7. Paddle(position: integer)
+
+Relationships:
+
+- User has Mode (0..1 User associates 1 Mode)
+- User plays Game (User associates 0..* Game)
+- User designs Game (User associates 0..1 Game)
+- User competes in HallOfFame (User associates 0..* HallOfFame)
+- Game has HallOfFame (Game associates 1 HallOfFame)
+- Game contains Blocks (Game contains 0..* Block)
+- Game has Levels (Game has 1..99 Level)
+- Level has Blocks (Level contains 1..* Block)
+- Level has GridPositions (Level contains 1..* GridPosition)
+- PlayArea has Blocks (PlayArea contains 1..* Block)
+- PlayArea has Ball (PlayArea contains 1 Ball)
+- PlayArea has Paddle (PlayArea contains 1 Paddle)
+- Player plays Game (Player plays 1 Game)
+- Player has Lives (Player has 3 Lives)
+- Player saves Game (Player saves 0..* Game)
+- Player competes in HallOfFame (Player competes in 0..* HallOfFame)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [Admin, Play], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [e.g., 1/1, 2/1, 1/2], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:integer]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:integer,minSpeed:integer,speedIncreaseFactor:integer,maxPaddleLength:integer,minPaddleLength:integer]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:integer,random:boolean]
+Class: PlayArea (class) - Enum Attributes: [], Class Attributes: [blocks:array,ball:Ball,paddle:Paddle]
+Class: Ball (class) - Enum Attributes: [], Class Attributes: [speed:integer,direction:string]
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: [position:integer]
+Relationships:
+ 1 User association 1 Mode
+ 1 User association 1 Game
+ 1 User association 1 Game
+ 1 User association 1 in
+ 1 Game association 1 HallOfFame
+ 1 Game association 1 Blocks
+ 1 Game association 1 Levels
+ 1 Level association 1 Blocks
+ 1 Level association 1 GridPositions
+ 1 PlayArea association 1 Blocks
+ 1 PlayArea association 1 Ball
+ 1 PlayArea association 1 Paddle
+ 1 Player association 1 Game
+ 1 Player association 1 Lives
+ 1 Player association 1 Game
+ 1 Player association 1 in
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Ball(class)'	-	'Ball(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Block(class):points'	-	'points'
+ 'Game(class):name'	-	'name'
+-Relationships:
+ ' 1 User association 1 Game'	-	' 1 User association * Game'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   13                  
+Attributes          24                  4                   30                  
+Associations        5                   1                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Block 223:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Mode (Admin, Play)
+2. Direction (Right, Left)
+
+Classes:
+1. User(username: string, password: string, mode: Mode)
+2. Game(name: string, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxLength: int, minLength: int)
+3. Block(color: string, points: int)
+4. Level(levelNumber: int)
+5. Ball
+6. Paddle
+7. Life
+8. HallOfFame
+9. Cell(gridPositionX: int, gridPositionY: int)
+
+Relationships:
+- User has 1 User
+- User plays 0..* Game
+- User administers 0..* Game
+- Game is created by 1 User
+- Game contains 1..* Block
+- Game has 1..99 Level
+- Level contains 1..* Block
+- Level has random Block arrangement
+- Game specifies initial number of Blocks for each Level
+- Game specifies starting arrangement of Blocks for each Level
+- Game specifies minSpeed, speedIncreaseFactor, maxLength, minLength
+- Game is published by 1 User
+- Game is played by 1..* User
+- Game has 1 HallOfFame
+- Ball moves in a certain Direction
+- Ball bounces off walls
+- Ball hits Block
+- Block disappears when hit by Ball
+- User competes for entry in HallOfFame
+- User has 0..* Life
+- Game is saved at end of Level or when paused
+- Paused game can be resumed by User
+- User cannot be both Player and Admin for same Game
+- Game has 1 Admin
+- Player may play multiple Games
+- Only one Game can be played at a time
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [Admin, Play], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [Right, Left], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,mode:Mode]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:int,minSpeed:int,speedIncreaseFactor:int,maxLength:int,minLength:int]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [levelNumber:int]
+Class: Ball (class) - Enum Attributes: [], Class Attributes: []
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: []
+Class: Life (class) - Enum Attributes: [], Class Attributes: []
+Class: HallOfFame (class) - Enum Attributes: [], Class Attributes: []
+Class: Cell (class) - Enum Attributes: [], Class Attributes: [gridPositionX:int,gridPositionY:int]
+Relationships:
+ 1 User association 1 User
+ 1 User association 0..* Game
+ 1 User association 0..* Game
+ 1 Game association 1 created
+ 1 Game association 1..* Block
+ 1 Game association 1..99 Level
+ 1 Level association 1..* Block
+ 1 Level association 1 random
+ 1 Game association 1 initial
+ 1 Game association 1 starting
+ 1 Game association 1 minSpeed
+ 1 Game association 1 published
+ 1 Game association 1 played
+ 1 Game association 1 HallOfFame
+ 1 Ball association 1 in
+ 1 Ball association 1 off
+ 1 Ball association 1 Block
+ 1 Block association 1 when
+ 1 User association 1 for
+ 1 User association 0..* Life
+ 1 Game association 1 saved
+ 1 Paused association 1 can
+ 1 User association 1 be
+ 1 Game association 1 Admin
+ 1 Player association 1 play
+ 1 Only association 1 Game
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Ball(class)'	-	'Ball(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+ 'HallOfFame(class)'	-	'HallOfFameEntry(class)'
+ 'Cell(class)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+-Relationships:
+ ' 1 User association 0..* Game'	-	' 1 User association * Game'
+ ' 1 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game association 1..99 Level'	-	' 1 Game aggregation 1..* Level'
+ ' 1 Game association 1 HallOfFame'	-	' * HallOfFameEntry association 1 Game'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   13                  
+Attributes          18                  4                   30                  
+Associations        9                   4                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. GameMode(admin, player)
+2. BlockColor(red, blue, green, yellow, etc.)
+
+Classes:
+1. User(username: string, password: string, mode: GameMode)
+2. Game(name: string, admin: User, levels: Level[], hallOfFame: Player[])
+3. Block(color: BlockColor, points: int)
+4. Level(number: int, blocks: Block[], arrangement: string, random: bool)
+5. Player(username: string, score: int, lives: int, currentGame: Game, paused: bool)
+
+Relationships:
+1..* User contains 1 Game
+1 Game inherit User
+1 Game contain 1..* Block
+1 Game contain 1..* Level
+1 Game associate 1..* Player (via hallOfFame)
+1 Level associate 1..* Block
+1..* Player associate 1 Game
+1 Player associate 0..* Game (for multiple games played)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: GameMode (enum) - Enum Attributes: [admin, player], Class Attributes: []
+Class: BlockColor (enum) - Enum Attributes: [red, blue, green, yellow, etc.], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,mode:GameMode]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,admin:User,levels:Level[],hallOfFame:Player[]]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:BlockColor,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:int,blocks:Block[],arrangement:string,random:bool]
+Class: Player (class) - Enum Attributes: [], Class Attributes: [username:string,score:int,lives:int,currentGame:Game,paused:bool]
+Relationships:
+ 1..* User association 1 Game
+ False Game inheritance False User
+ 1 Game aggregation 1..* Block
+ 1 Game aggregation 1..* Level
+ 1 Game association 1..* Player
+ 1 Level association 1..* Block
+ 1..* Player association 1 Game
+ 1 Player association 0..* Game
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+-Relationships:
+ ' 1..* User association 1 Game'	-	' 1 User association * Game'
+ ' 1 Game aggregation 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   13                  
+Attributes          25                  4                   30                  
+Associations        7                   3                   18                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode (Admin, Play)
+
+Class:
+1. User(username: string, password: string, mode: Mode)
+2. Game(name: string, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int, blocks: Block[], levels: Level[])
+3. Block(color: string, points: int, position: string)
+4. Level(number: int, blocksArrangement: Block[], isRandom: boolean)
+5. HallOfFameEntry(player: User, score: int)
+
+Relationships:
+1. User is a Player (1) and optionally an Admin (0..1)
+2. User creates Game (1..*) 
+3. Game has HallOfFame (1)
+4. Game has Blocks (1..*)
+5. Game has Levels (1..99)
+6. Level contains Blocks (1..*)
+7. Game is Published by Admin (1) and Played by Player (1..*)
+8. Player plays Game (1)
+9. Game is Saved (1) when Level ends or Player pauses
+```  
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [Admin, Play], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, mode], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength, blocks, levels], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points, position], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number, blocksArrangement, isRandom], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [player, score], Class Attributes: []
+Relationships:
+ 1 User association 1 a
+ 2 User association 1 Game
+ 3 Game association 1 HallOfFame
+ 4 Game association 1 Blocks
+ 5 Game association 1 Levels
+ 6 Level association 1 Blocks
+ 7 Game association 1 Published
+ 8 Player association 1 Game
+ 9 Game association 1 Saved
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+ 'Level(enum):isRandom'	-	'isRandom'
+ 'HallOfFameEntry(enum):score'	-	'score'
+-Relationships:
+ ' 2 User association 1 Game'	-	' 1 User association * Game'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   13                  
+Attributes          21                  6                   30                  
+Associations        1                   1                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserType(Player, Admin)
+2. GridPosition
+
+Class:
+1. User(username: string, password: string, userType: UserType)
+2. Game(name: string, maxLevels: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int, numBlocks: int)
+3. Block(color: string, points: int)
+4. Level(levelNumber: int, arrangement: List<List<Block>>, random: boolean)
+5. PlayArea(blocks: List<Block>, ball: Ball, paddle: Paddle)
+6. Ball(speed: int, direction: string)
+7. Paddle(length: int)
+8. Life
+
+Relationships:
+1..* User contains 1 Game
+1 Game has 1 HallOfFame
+1 Admin inherits 1 User
+1 Player inherits 1 User
+1 Game contains 1..* Block
+1 Game has 1..99 Level
+1..* Level contains 1..* Block
+1 PlayArea contains 1 Ball
+1 PlayArea contains 1 Paddle
+1 Game has 1 Player
+1 Player plays 1 Game
+1 Player has 3 Life
+1 Game saves 1..* PlayArea
+1 Player plays 1..* PlayArea
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Player, Admin], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, userType], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, speedIncreaseFactor, maxPaddleLength, minPaddleLength, numBlocks], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [levelNumber, arrangement, random], Class Attributes: []
+Class: PlayArea (enum) - Enum Attributes: [blocks, ball, paddle], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed, direction], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* User association 1 Game
+ 1 Game association 1 HallOfFame
+ 1 Admin association 1 User
+ 1 Player association 1 User
+ 1 Game association 1..* Block
+ 1 Game association 1..99 Level
+ 1..* Level association 1..* Block
+ 1 PlayArea association 1 Ball
+ 1 PlayArea association 1 Paddle
+ 1 Game association 1 Player
+ 1 Player association 1 Game
+ 1 Player association 3 Life
+ 1 Game association 1..* PlayArea
+ 1 Player association 1..* PlayArea
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+-Relationships:
+ ' 1..* User association 1 Game'	-	' 1 User association * Game'
+ ' 1 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game association 1..99 Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   13                  
+Attributes          22                  4                   30                  
+Associations        7                   3                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+- Mode(admin, play)
+- GridPosition(1/1, 2/1, 1/2, ...)
+
+Class:
+1. User(username : string, password : string, mode : Mode)
+2. Game(name : string, maxLevels : int, blockSet : Block[], levels : Level[], speedIncreaseFactor : float, maxPaddleLength : int, minPaddleLength : int)
+3. Block(color : string, points : int)
+4. Level(levelNumber : int, blocksArrangement : Block[], random : boolean)
+5. Ball(speed : int, direction : string)
+6. Paddle(position : int)
+7. HallOfFame(players : Player[])
+
+Relationships:
+1 User inherit Player
+1 User inherit Admin
+1 Admin associate 1 Game
+1 Game contain 0..* Block
+1 Game contain 0..* Level
+1 Level contain 0..* Block
+1 Level associate 1 Game
+1 Player associate 1 Game
+1 Game contain 1 Ball
+1 Game contain 1 Paddle
+1 Game contain 1 HallOfFame
+1 Player inherit User
+1 Game inherit Block
+1 Game inherit Level
+1 Game inherit Ball
+1 Game inherit Paddle
+1 Game inherit HallOfFame
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [1/1, 2/1, 1/2, ...], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username , password , mode ], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name , maxLevels , blockSet , levels , speedIncreaseFactor , maxPaddleLength , minPaddleLength ], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color , points ], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [levelNumber , blocksArrangement , random ], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed , direction ], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [position ], Class Attributes: []
+Class: HallOfFame (enum) - Enum Attributes: [players ], Class Attributes: []
+Relationships:
+ False User inheritance False Player
+ False User inheritance False Admin
+ 1 Admin association 1 Game
+ 1 Game aggregation 0..* Block
+ 1 Game aggregation 0..* Level
+ 1 Level aggregation 0..* Block
+ 1 Level association 1 Game
+ 1 Player association 1 Game
+ 1 Game aggregation 1 Ball
+ 1 Game aggregation 1 Paddle
+ 1 Game aggregation 1 HallOfFame
+ False Player inheritance False User
+ False Game inheritance False Block
+ False Game inheritance False Level
+ False Game inheritance False Ball
+ False Game inheritance False Paddle
+ False Game inheritance False HallOfFame
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+ 'HallOfFame(enum)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(enum):username '	-	'username'
+ 'User(enum):password '	-	'password'
+ 'Game(enum):name '	-	'name'
+ 'Block(enum):points '	-	'points'
+-Relationships:
+ ' 1 Game aggregation 0..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game aggregation 0..* Level'	-	' 1 Game aggregation 1..* Level'
+ ' 1 Game aggregation 1 Ball'	-	' 1 Game aggregation 1 Ball'
+ ' 1 Game aggregation 1 Paddle'	-	' 1 Game aggregation 1 Paddle'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   13                  
+Attributes          25                  4                   30                  
+Associations        7                   4                   18                  
+Inheritances        5                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Block 223:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. AdminMode(NONE, PLAY, ADMIN)
+2. GridPosition
+3. LevelStatus(IN_PROGRESS, COMPLETED)
+4. Direction(UP, DOWN, LEFT, RIGHT)
+5. GameStatus(UNPUBLISHED, PUBLISHED, PAUSED, ENDED)
+
+Class:
+1. User(username: string, password: string, adminMode: AdminMode)
+2. Block(color: string, points: int)
+3. Game(name: string, maxLevels: int, startBlocksNumber: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int, status: GameStatus)
+4. Level(levelNumber: int, blocks: Block[][], random: bool)
+5. Player(user: User, lives: int, score: int)
+6. HallOfFameEntry(player: Player, score: int)
+7. GameInstance(game: Game, player: Player, currentLevel: Level, levelStatus: LevelStatus)
+
+Relationships:
+- User has 1..* Player
+- User has 0..1 Admin
+- Admin creates 1..* Game
+- Game has 1 Admin
+- Game has 1..* Block
+- Game has 1..99 Level
+- Level belongs to 1 Game
+- Player plays 1..* GameInstance
+- Player competes for 1..* HallOfFameEntry
+- GameInstance has 1 Level
+- GameInstance has 1 Player
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: AdminMode (enum) - Enum Attributes: [NONE, PLAY, ADMIN], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [], Class Attributes: []
+Class: LevelStatus (enum) - Enum Attributes: [IN_PROGRESS, COMPLETED], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [UP, DOWN, LEFT, RIGHT], Class Attributes: []
+Class: GameStatus (enum) - Enum Attributes: [UNPUBLISHED, PUBLISHED, PAUSED, ENDED], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, adminMode], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, startBlocksNumber, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength, status], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [levelNumber, blocks, random], Class Attributes: []
+Class: Player (enum) - Enum Attributes: [user, lives, score], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [player, score], Class Attributes: []
+Class: GameInstance (enum) - Enum Attributes: [game, player, currentLevel, levelStatus], Class Attributes: []
+Relationships:
+ 1 User association 1..* Player
+ 1 User association 0..1 Admin
+ 1 Admin association 1..* Game
+ 1 Game association 1 Admin
+ 1 Game association 1..* Block
+ 1 Game association 1..99 Level
+ 1 Level association 1 to
+ 1 Player association 1..* GameInstance
+ 1 Player association 1 for
+ 1 GameInstance association 1 Level
+ 1 GameInstance association 1 Player
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+ 'GameInstance(enum)'	-	'PlayedGame(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Block(enum):points'	-	'points'
+ 'Game(enum):name'	-	'name'
+ 'HallOfFameEntry(enum):score'	-	'score'
+ 'GameInstance(enum):currentLevel'	-	'currentLevel'
+-Relationships:
+ ' 1 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game association 1..99 Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  7                   13                  
+Attributes          38                  6                   30                  
+Associations        6                   2                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Block 223:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Mode(Admin, Play)
+2. GridPosition(1/1, 2/1, 1/2, ...)
+
+Classes:
+1. User(username: string, password: string, mode: Mode)
+2. Block(color: string, points: integer)
+3. Game(name: string, maxLevels: integer, startBlocks: integer, minSpeed: integer, speedIncrease: integer, maxLength: integer, minLength: integer)
+4. Level(number: integer, type: string)
+5. HallOfFame
+6. PlayArea
+7. Paddle
+8. Life
+
+Relationships:
+- User is a Player and optionally an Admin (inheritance)
+- User creates Game (0..1 to 1)
+- Game has HallOfFame (1 to 1)
+- Game consists of Blocks (1 to *)
+- Game has Levels (1 to *)
+- Level has Blocks (1 to *)
+- Level has GridPositions (1 to *)
+- PlayArea contains Blocks (1 to *)
+- PlayArea has Paddle (1 to 1)
+- PlayArea has Ball (1 to 1)
+- PlayArea has Lives (1 to 1)
+- User plays Game (0..* to 1)
+- Game is published by Admin (0..1 to 1)
+- Game is saved (composition, 1 to *)
+- Player competes for HallOfFame (0..* to 1)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [Admin, Play], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [1/1, 2/1, 1/2, ...], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,mode:Mode]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:integer]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:integer,startBlocks:integer,minSpeed:integer,speedIncrease:integer,maxLength:integer,minLength:integer]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:integer,type:string]
+Class: HallOfFame (class) - Enum Attributes: [], Class Attributes: []
+Class: PlayArea (class) - Enum Attributes: [], Class Attributes: []
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: []
+Class: Life (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 a
+ 1 User association 1 Game
+ 1 Game association 1 HallOfFame
+ 1 Game association 1 of
+ 1 Game association 1 Levels
+ 1 Level association 1 Blocks
+ 1 Level association 1 GridPositions
+ 1 PlayArea association 1 Blocks
+ 1 PlayArea association 1 Paddle
+ 1 PlayArea association 1 Ball
+ 1 PlayArea association 1 Lives
+ 1 User association 1 Game
+ 1 Game association 1 published
+ 1 Game association 1 saved
+ 1 Player association 1 for
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+ 'HallOfFame(class)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Block(class):points'	-	'points'
+ 'Game(class):name'	-	'name'
+-Relationships:
+ ' 1 User association 1 Game'	-	' 1 User association * Game'
+ ' 1 Game association 1 HallOfFame'	-	' * HallOfFameEntry association 1 Game'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   13                  
+Attributes          20                  4                   30                  
+Associations        4                   2                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(play, admin)
+2. Direction(up, down, left, right)
+
+Class:
+1. User(username: String, password: String, mode: Mode)
+2. Game(name: String, maxLevels: Integer, initialBlocks: Integer, minSpeed: Integer, speedIncreaseFactor: Integer, maxPaddleLength: Integer, minPaddleLength: Integer)
+3. Block(color: String, points: Integer)
+4. Level(levelNumber: Integer, isRandom: Boolean)
+5. HallOfFame
+6. PlayArea
+7. Ball(speed: Integer, direction: Direction)
+8. Paddle(length: Integer)
+9. Life
+10. Score
+
+Relationships:
+1 user contain 0..1 mode
+1 user inherit player
+1 user inherit admin
+1 admin create 1 game
+1 game contain 1 hallOfFame
+1 game define 0..* blocks
+1 game define 1..99 levels
+1 level contain 0..* blocks
+1 level inherit playArea
+1 level inherit ball
+1 level contain paddle
+1 level contain life
+1 level contain score
+1 player play 1..* games
+1 game publish 1..* players
+1 player play 1..* levels
+1 level save 1..* games
+1 player play 1 game at a time
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [play, admin], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [up, down, left, right], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, mode], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, initialBlocks, minSpeed, speedIncreaseFactor, maxPaddleLength, minPaddleLength], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [levelNumber, isRandom], Class Attributes: []
+Class: HallOfFame (enum) - Enum Attributes: [], Class Attributes: []
+Class: PlayArea (enum) - Enum Attributes: [], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed, direction], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [], Class Attributes: []
+Class: Score (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 user aggregation 0..1 mode
+ False user inheritance False player
+ False user inheritance False admin
+ 1 admin association 1 game
+ 1 game aggregation 1 hallOfFame
+ 1 game association 0..* blocks
+ 1 game association 1..99 levels
+ 1 level aggregation 0..* blocks
+ False level inheritance False playArea
+ False level inheritance False ball
+ 1 level aggregation 1 paddle
+ 1 level aggregation 1 life
+ 1 level aggregation 1 score
+ 1 player association 1..* games
+ 1 game association 1..* players
+ 1 player association 1..* levels
+ 1 level association 1..* games
+ 1 player association 1 game
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'HallOfFame(enum)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+ 'Level(enum):isRandom'	-	'isRandom'
+-Relationships:
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  7                   13                  
+Attributes          23                  5                   30                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Class:
+User(username: string, password: string, isAdmin: boolean)
+Game(name: string, maxLevels: int, minSpeed: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+Block(color: string, points: int)
+Level(number: int, isRandom: boolean)
+PlayArea(blocks: Block[], ball: Ball, paddle: Paddle)
+HallOfFameEntry(player: User, score: int)
+Life
+Ball
+Paddle
+
+Relationships:
+User isPlayer 1..1 Game
+User isAdmin 0..1 Game
+User plays 1..* Game
+Game has 1..* Block
+Game has 1..* Level
+Game has 1 HallOfFame
+Game isPublished 1..* User
+Block isPlacedIn 1..1 PlayArea
+Level hasStartingArrangement 1..* Block
+PlayArea hasBall 1..1 Ball
+PlayArea hasPaddle 1..1 Paddle
+HallOfFameEntry belongsTo 1 Game
+Life belongsTo 1 User
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,isAdmin:boolean]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:int,minSpeed:int,speedIncreaseFactor:int,maxPaddleLength:int,minPaddleLength:int]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:int,isRandom:boolean]
+Class: PlayArea (class) - Enum Attributes: [], Class Attributes: [blocks:Block[],ball:Ball,paddle:Paddle]
+Class: HallOfFameEntry (class) - Enum Attributes: [], Class Attributes: [player:User,score:int]
+Relationships:
+ 1 User association 1..1 Game
+ 1 User association 0..1 Game
+ 1 User association 1..* Game
+ 1 Game association 1..* Block
+ 1 Game association 1..* Level
+ 1 Game association 1 HallOfFame
+ 1 Game association 1..* User
+ 1 Block association 1..1 PlayArea
+ 1 Level association 1..* Block
+ 1 PlayArea association 1..1 Ball
+ 1 PlayArea association 1..1 Paddle
+ 1 HallOfFameEntry association 1 Game
+ 1 Life association 1 User
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'HallOfFameEntry(class)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+ 'Level(class):isRandom'	-	'isRandom'
+ 'HallOfFameEntry(class):score'	-	'score'
+-Relationships:
+ ' 1 User association 1..1 Game'	-	' 1 User association * Game'
+ ' 1 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game association 1..* Level'	-	' 1 Game aggregation 1..* Level'
+ ' 1 HallOfFameEntry association 1 Game'	-	' * HallOfFameEntry association 1 Game'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   13                  
+Attributes          18                  6                   30                  
+Associations        9                   4                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Block 223:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Mode (Admin, Play)
+2. GridPosition (1/1, 2/1, 1/2, ...)
+
+Classes:
+1. User(username: string, password: string, mode: Mode)
+2. Game(name: string, maxLevels: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+3. Block(color: string, points: int)
+4. Level(number: int, random: boolean)
+5. Ball(speed: int, direction: string)
+6. Paddle(length: int)
+7. Score(totalScore: int)
+
+Relationships:
+- User is a Player (0..1) and optionally an Admin (0..1).
+- Admin creates Game (1..*).
+- Game has HallOfFame (1).
+- Admin designs Blocks for Game (1..*).
+- Admin defines Levels for Game (1..*).
+- Admin specifies the arrangement of Blocks for each Level (1..*).
+- Game has Levels (1..*).
+- Level has Blocks (0..*).
+- Game has Balls (1).
+- Game has Paddle (1).
+- Player scores Points when hitting Blocks (1..*).
+- Player loses Life when Ball reaches the bottom wall (1..*).
+- Game is saved when Level ends or Player pauses (1).
+- User can be Player for one Game and Admin for another Game, but not both for the same Game. (Composition)
+- Only one Admin per Game. (Composition)
+- Players compete for high score in Game's HallOfFame. (Association)
+- Player can play different Games multiple times. (Association)
+- Only one Game can be played at any point in time. (Association)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [Admin, Play], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [1/1, 2/1, 1/2, ...], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,mode:Mode]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:int,speedIncreaseFactor:int,maxPaddleLength:int,minPaddleLength:int]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [number:int,random:boolean]
+Class: Ball (class) - Enum Attributes: [], Class Attributes: [speed:int,direction:string]
+Class: Paddle (class) - Enum Attributes: [], Class Attributes: [length:int]
+Class: Score (class) - Enum Attributes: [], Class Attributes: [totalScore:int]
+Relationships:
+ 1 User association 1 a
+ 1 Admin association 1 Game
+ 1 Game association 1 HallOfFame
+ 1 Admin association 1 Blocks
+ 1 Admin association 1 Levels
+ 1 Admin association 1 the
+ 1 Game association 1 Levels
+ 1 Level association 1 Blocks
+ 1 Game association 1 Balls
+ 1 Game association 1 Paddle
+ 1 Player association 1 Points
+ 1 Player association 1 Life
+ 1 Game association 1 saved
+ 1 User association 1 be
+ 1 Only association 1 Admin
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+ 'Ball(class)'	-	'Ball(class)'
+ 'Paddle(class)'	-	'Paddle(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+-Relationships:
+ ' 1 Game association 1 Paddle'	-	' 1 Game aggregation 1 Paddle'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   13                  
+Attributes          22                  4                   30                  
+Associations        1                   1                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(admin, play)
+2. GridPosition(1/1, 2/1, 1/2, ...)
+3. Direction(up, down, left, right)
+
+Class:
+1. User(username : unique, password : string, mode : Mode)
+2. Game(name : unique)
+3. Block(color : string, points : integer)
+4. Level(number : integer, arrangement : Block[1..*], isRandom : boolean)
+5. Paddle(length : integer)
+6. Ball(speed : integer, direction : Direction)
+7. HallOfFame(score : integer)
+8. Life
+
+Relationships:
+1. User inherit Player
+2. User inherit Admin
+3. Admin associate 1 Game
+4. Game contain 1 HallOfFame
+5. Game contain 1..* Block
+6. Game contain 1..* Level
+7. Level associate 1..* Block
+8. Level inherit Paddle
+9. Level inherit Ball
+10. Player contain 1..* Life
+11. Player play 1 Game
+12. Game save 1..* Level
+13. Game publish 1..* Player
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: GridPosition (enum) - Enum Attributes: [1/1, 2/1, 1/2, ...], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [up, down, left, right], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username , password , mode ], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color , points ], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number , arrangement , isRandom ], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length ], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed , direction ], Class Attributes: []
+Class: HallOfFame (enum) - Enum Attributes: [score ], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False User inheritance False Player
+ False User inheritance False Admin
+ 3 Admin association 1 Game
+ 4 Game aggregation 1 HallOfFame
+ 5 Game aggregation 1..* Block
+ 6 Game aggregation 1..* Level
+ 7 Level association 1..* Block
+ False Level inheritance False Paddle
+ False Level inheritance False Ball
+ 10 Player aggregation 1..* Life
+ 11 Player association 1 Game
+ 12 Game association 1..* Level
+ 13 Game association 1..* Player
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'HallOfFame(enum)'	-	'HallOfFameEntry(class)'
+ 'GridPosition(enum)'	-	'PlayedBlockAssignment(class)'
+-Attributes:
+ 'User(enum):username '	-	'username'
+ 'User(enum):password '	-	'password'
+ 'Game(enum):name '	-	'name'
+ 'Block(enum):points '	-	'points'
+ 'Level(enum):isRandom '	-	'isRandom'
+ 'HallOfFame(enum):score '	-	'score'
+-Relationships:
+ ' 5 Game aggregation 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 6 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   13                  
+Attributes          23                  6                   30                  
+Associations        5                   2                   18                  
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(admin, play)
+2. Direction(up, down, right, left)
+
+Class:
+1. User(username : string, password : string, mode : Mode)
+2. Block(color : string, points : integer)
+3. Game(name : string, maxLevels : integer, speedIncreaseFactor : float, maxPaddleLength : integer, minPaddleLength : integer, minBallSpeed : float)
+4. Level(number : integer, arrangement : array<Block>, random : boolean)
+5. HallOfFameEntry(playerName : string, score : integer, gameName : string)
+6. PlayArea(blocks : array<Block>, ball : Ball, paddle : Paddle)
+7. Ball(speed : float, direction : Direction)
+8. Paddle(length : integer)
+
+Relationships:
+1. User 1 contain 1 Block
+2. User 0..1 inherit User
+3. Game 1 contain 1 HallOfFameEntry
+4. Game 1 design 1..* Block
+5. Game 1 design 1..* Level
+6. Level 1 contain 1..* Block
+7. PlayArea 1 contain 1 Ball
+8. PlayArea 1 contain 1 Paddle
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [up, down, right, left], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username , password , mode ], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color , points ], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name , maxLevels , speedIncreaseFactor , maxPaddleLength , minPaddleLength , minBallSpeed ], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number , arrangement , random ], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [playerName , score , gameName ], Class Attributes: []
+Class: PlayArea (enum) - Enum Attributes: [blocks , ball , paddle ], Class Attributes: []
+Class: Ball (enum) - Enum Attributes: [speed , direction ], Class Attributes: []
+Class: Paddle (enum) - Enum Attributes: [length ], Class Attributes: []
+Relationships:
+ 1 User association 1 contain
+ 2 User association 1 inherit
+ 3 Game association 1 contain
+ 4 Game association 1 design
+ 5 Game association 1 design
+ 6 Level association 1 contain
+ 7 PlayArea association 1 contain
+ 8 PlayArea association 1 contain
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+ 'Ball(enum)'	-	'Ball(class)'
+ 'Paddle(enum)'	-	'Paddle(class)'
+-Attributes:
+ 'User(enum):username '	-	'username'
+ 'User(enum):password '	-	'password'
+ 'Block(enum):points '	-	'points'
+ 'Game(enum):name '	-	'name'
+ 'HallOfFameEntry(enum):score '	-	'score'
+-Relationships:
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   13                  
+Attributes          29                  5                   30                  
+Associations        0                   0                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Mode(admin, play)
+2. Direction(left, right, up, down)
+
+Class:
+1. User(username: string, password: string, mode: Mode)
+2. Game(name: string, maxLevels: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+3. Block(color: string, points: int)
+4. Level(number: int, random: boolean)
+5. PlayArea(blocks: Block[], ball: Ball, paddle: Paddle)
+6. Life(count: int)
+7. HallOfFameEntry(player: User, score: int)
+8. SavedGame(game: Game, level: Level, playArea: PlayArea)
+
+Relationships:
+1. User contain 1 Game (0..1)
+2. User inherit User (admin) (1)
+3. Game contain 1..* Block (0..*)
+4. Game contain 1..* Level (0..*)
+5. Level contain 1..* Block (0..*)
+6. Game inherit 1 User (admin) (1)
+7. Game contain 1 PlayArea (1)
+8. PlayArea contain 1 Ball (1)
+9. PlayArea contain 1 Paddle (1)
+10. PlayArea contain 1..* Block (0..*)
+11. User associate 1 HallOfFameEntry (0..*)
+12. User contain 1..* SavedGame (0..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Mode (enum) - Enum Attributes: [admin, play], Class Attributes: []
+Class: Direction (enum) - Enum Attributes: [left, right, up, down], Class Attributes: []
+Class: User (enum) - Enum Attributes: [username, password, mode], Class Attributes: []
+Class: Game (enum) - Enum Attributes: [name, maxLevels, speedIncreaseFactor, maxPaddleLength, minPaddleLength], Class Attributes: []
+Class: Block (enum) - Enum Attributes: [color, points], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [number, random], Class Attributes: []
+Class: PlayArea (enum) - Enum Attributes: [blocks, ball, paddle], Class Attributes: []
+Class: Life (enum) - Enum Attributes: [count], Class Attributes: []
+Class: HallOfFameEntry (enum) - Enum Attributes: [player, score], Class Attributes: []
+Class: SavedGame (enum) - Enum Attributes: [game, level, playArea], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 Game
+ False User inheritance False User
+ 3 Game aggregation 1..* Block
+ 4 Game aggregation 1..* Level
+ 5 Level aggregation 1..* Block
+ False Game inheritance False User
+ 7 Game aggregation 1 PlayArea
+ 8 PlayArea aggregation 1 Ball
+ 9 PlayArea aggregation 1 Paddle
+ 10 PlayArea aggregation 1..* Block
+ 11 User association 1 HallOfFameEntry
+ 12 User aggregation 1..* SavedGame
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Game(enum)'	-	'Game(class)'
+ 'Block(enum)'	-	'Block(class)'
+ 'Level(enum)'	-	'Level(class)'
+ 'HallOfFameEntry(enum)'	-	'HallOfFameEntry(class)'
+-Attributes:
+ 'User(enum):username'	-	'username'
+ 'User(enum):password'	-	'password'
+ 'Game(enum):name'	-	'name'
+ 'Block(enum):points'	-	'points'
+ 'HallOfFameEntry(enum):score'	-	'score'
+-Relationships:
+ ' 3 Game aggregation 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 4 Game aggregation 1..* Level'	-	' 1 Game aggregation 1..* Level'
+ ' 11 User association 1 HallOfFameEntry'	-	' 1 User association * HallOfFameEntry'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  5                   13                  
+Attributes          27                  5                   30                  
+Associations        8                   3                   18                  
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Block 223:
+------------------------------------------------------------
+AI:
+```
+Class:
+User(username: string, password: string, role: Role)
+Game(name: string, maxLevels: int, speedIncreaseFactor: int, maxPaddleLength: int, minPaddleLength: int)
+Block(color: string, points: int)
+Level(levelNumber: int, isRandom: boolean)
+PlayArea
+Ball
+Paddle
+HallOfFame
+Life
+Score
+
+Enumerations:
+Role(Admin, Player)
+
+Relationships:
+1 User has 0..1 Role
+1 Admin creates 1 Game
+1 Game has 1 HallOfFame
+1 Game has 1..* Block
+1 Game has 1..99 Level
+1 Level contains 1..* Block
+1 Level isRandom 0..1
+1 Game has 1 PlayArea
+1 PlayArea has 1 Ball
+1 PlayArea has 1 Paddle
+1 Game has 1 HallOfFame
+1 Player plays 1..* Game
+1 Game is played by 1 Player
+1 Game has 1..* Life
+1 Player has 1..* Life
+1 Player has 1 Score
+1 Game has 1..* Score
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,role:Role]
+Class: Game (class) - Enum Attributes: [], Class Attributes: [name:string,maxLevels:int,speedIncreaseFactor:int,maxPaddleLength:int,minPaddleLength:int]
+Class: Block (class) - Enum Attributes: [], Class Attributes: [color:string,points:int]
+Class: Level (class) - Enum Attributes: [], Class Attributes: [levelNumber:int,isRandom:boolean]
+Class: Role (enum) - Enum Attributes: [Admin, Player], Class Attributes: []
+Relationships:
+ 1 User association 0..1 Role
+ 1 Admin association 1 Game
+ 1 Game association 1 HallOfFame
+ 1 Game association 1..* Block
+ 1 Game association 1..99 Level
+ 1 Level association 1..* Block
+ 1 Level association 0.. 1
+ 1 Game association 1 PlayArea
+ 1 PlayArea association 1 Ball
+ 1 PlayArea association 1 Paddle
+ 1 Player association 1..* Game
+ 1 Game association 1 played
+ 1 Game association 1..* Life
+ 1 Player association 1..* Life
+ 1 Player association 1 Score
+ 1 Game association 1..* Score
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Game(class)'	-	'Game(class)'
+ 'Block(class)'	-	'Block(class)'
+ 'Level(class)'	-	'Level(class)'
+-Attributes:
+ 'User(class):username'	-	'username'
+ 'User(class):password'	-	'password'
+ 'Game(class):name'	-	'name'
+ 'Block(class):points'	-	'points'
+ 'Level(class):isRandom'	-	'isRandom'
+-Relationships:
+ ' 1 Game association 1..* Block'	-	' 1 Game aggregation * Block'
+ ' 1 Game association 1..99 Level'	-	' 1 Game aggregation 1..* Level'
+--------------------------------------------------------------------------------
+Block 223, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   13                  
+Attributes          14                  5                   30                  
+Associations        4                   2                   18                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+Block 223, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.703          0.500          0.584          0.531
+Attributes          0.215          0.163          0.186          0.172
+Associations        0.481          0.139          0.216          0.162
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

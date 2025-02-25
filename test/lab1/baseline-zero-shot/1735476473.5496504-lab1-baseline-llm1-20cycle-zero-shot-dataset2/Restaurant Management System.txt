@@ -1,0 +1,1525 @@
+------------------------------------------------------------
+---------------------1/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+
+Class:
+1.Restaurant(name : String)
+2.Employee(name : String, age : int, gender : String)
+3.Section(name : String)
+4.Personnel(type : String)
+5.Order
+6.Table
+7.Payment
+8.Inventory
+9.Schedule
+10.Payroll
+11.Accounting
+
+Relationships:
+1 Restaurant contain * Employee (0..*)
+2 Restaurant contain * Section (0..*)
+3 Section contain * Personnel (0..*)
+4 Personnel inherit Cook
+5 Personnel inherit Waiter
+6 Personnel inherit Cashier
+7 Order associate 1 Table
+8 Order associate 1 Personnel
+9 Payment associate 1 Order
+10 Inventory associate * Order (0..*)
+11 Schedule associate 1 Employee
+12 Payroll associate * Employee (0..*)
+13 Accounting associate Restaurant
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Restaurant (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name , age , gender ], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: Inventory (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [], Class Attributes: []
+Class: Accounting (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Restaurant aggregation * Employee
+ 2 Restaurant aggregation * Section
+ 3 Section aggregation * Personnel
+ False Personnel inheritance False Cook
+ False Personnel inheritance False Waiter
+ False Personnel inheritance False Cashier
+ 7 Order association 1 Table
+ 8 Order association 1 Personnel
+ 9 Payment association 1 Order
+ 10 Inventory association * Order
+ 11 Schedule association 1 Employee
+ 12 Payroll association * Employee
+ 13 Accounting association 1 Restaurant
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Inventory(enum)'	-	'Inventory(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'Section(enum)'	-	'SectionKind(enum)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+ 'Accounting(enum)'	-	'AccountingService(class)'
+-Attributes:
+ 'Employee(enum):name '	-	'name'
+ 'Employee(enum):age '	-	'age'
+ 'Employee(enum):gender '	-	'gender'
+-Relationships:
+ ' 7 Order association 1 Table'	-	' 0..1 Order association 0..1 Table'
+ ' 9 Payment association 1 Order'	-	' 1 Payment association 0..1 Order'
+ ' 12 Payroll association * Employee'	-	' 1 Payroll association 0..1 Employee'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   15                  
+Attributes          6                   3                   21                  
+Associations        10                  3                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType (kitchen, service, cash)
+2. EmployeeRole (cook, waiter, cashier)
+
+Class:
+1. Employee(name: string, age: int, gender: string, role: EmployeeRole)
+2. Section(name: string, type: SectionType)
+3. OrderDetails(orderNumber: int, tableNumber: int, details: string)
+4. Transaction(type: string, amount: float, date: date)
+5. PaymentOption(type: string, description: string)
+6. StockItem(name: string, cost: float, quantity: int)
+7. Shift(employee: Employee, startTime: time, endTime: time)
+
+Relationships:
+1. Employee worksIn Section (0..* Employee associates 1 Section)
+2. Section contains Employee (1 Section contains 0..* Employee)
+3. Section contains StockItem (1 Section contains 0..* StockItem)
+4. OrderDetails belongsTo Section (1 OrderDetails belongs to 1 Section)
+5. OrderDetails hasTransaction Transaction (1 OrderDetails has 0..* Transaction)
+6. Transaction hasPaymentOption PaymentOption (1 Transaction has 1 PaymentOption)
+7. Employee hasShift Shift (1 Employee has 0..* Shift)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender, role], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: OrderDetails (enum) - Enum Attributes: [orderNumber, tableNumber, details], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [type, amount, date], Class Attributes: []
+Class: PaymentOption (enum) - Enum Attributes: [type, description], Class Attributes: []
+Class: StockItem (enum) - Enum Attributes: [name, cost, quantity], Class Attributes: []
+Class: Shift (enum) - Enum Attributes: [employee, startTime, endTime], Class Attributes: []
+Relationships:
+ 1 Employee association 1 Section
+ 2 Section association 1 Employee
+ 3 Section association 1 StockItem
+ 4 OrderDetails association 1 Section
+ 5 OrderDetails association 1 Transaction
+ 6 Transaction association 1 PaymentOption
+ 7 Employee association 1 Shift
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'StockItem(enum)'	-	'StockItem(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'Shift(enum)'	-	'SchedulingEvent(class)'
+ 'PaymentOption(enum)'	-	'PaymentProcessing(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'StockItem(enum):name'	-	'name'
+ 'StockItem(enum):cost'	-	'cost'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+ 'Shift(enum):employee'	-	'employee'
+ 'Shift(enum):startTime'	-	'startTime'
+ 'Shift(enum):endTime'	-	'endTime'
+-Relationships:
+ ' 7 Employee association 1 Shift'	-	' 1 SchedulingEvent association 0..1 Employee'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   15                  
+Attributes          26                  11                  21                  
+Associations        7                   1                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(kitchen, service, cash)
+
+Class:
+1. Employee(name: string, age: int, gender: string)
+2. Section(sectionType: SectionType)
+3. Personnel(role: string)
+4. OrderDetails
+5. Table(tableNumber: int)
+6. Cook
+7. Waiter
+8. Cashier
+
+Relationships:
+1. Employee inherit Personnel
+2. Cook contain OrderDetails
+3. Waiter contain OrderDetails, Table
+4. Cashier contain OrderDetails
+5. Section contain Employee
+6. Section inherit Table
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [sectionType], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [role], Class Attributes: []
+Class: OrderDetails (enum) - Enum Attributes: [], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Cashier (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Employee inheritance False Personnel
+ 2 Cook aggregation 1 OrderDetails
+ 3 Waiter aggregation 1 OrderDetails
+ 4 Cashier aggregation 1 OrderDetails
+ 5 Section aggregation 1 Employee
+ False Section inheritance False Table
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   3                   15                  
+Attributes          9                   6                   21                  
+Associations        4                   0                   15                  
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Class:
+1. Restaurant
+2. Employee(name: string, age: int, gender: string)
+3. Section(type: SectionType)
+4. Order
+5. Payment
+6. InventoryItem
+7. Schedule
+8. Payroll
+
+Relationships:
+1..* Restaurant contains 1..* Employee
+1..* Restaurant contains 1..* Section
+1..* Section associate 0..* Employee
+1 Order associate 1 Employee
+1 Order associate 1 Section
+1 Payment associate 1 Order
+1..* InventoryItem associate 1 Order
+1..* Schedule associate 1 Employee
+1 Payroll associate 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Restaurant (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Restaurant association 1..* Employee
+ 1..* Restaurant association 1..* Section
+ 1..* Section association 0..* Employee
+ 1 Order association 1 Employee
+ 1 Order association 1 Section
+ 1 Payment association 1 Order
+ 1..* InventoryItem association 1 Order
+ 1..* Schedule association 1 Employee
+ 1 Payroll association 1 Employee
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+ ' 1 Payment association 1 Order'	-	' 1 Payment association 0..1 Order'
+ ' 1 Payroll association 1 Employee'	-	' 1 Payroll association 0..1 Employee'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   15                  
+Attributes          10                  6                   21                  
+Associations        9                   2                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Class:
+1. Employee(name : string, age : int, gender : string, type : EmployeeType)
+2. Section(name : string, type : SectionType)
+3. Order(orderNumber : int, tableNumber : int)
+4. Payment(amount : float, paymentType : string)
+5. InventoryItem(name : string, cost : float, quantity : int)
+6. Schedule(date : Date, shift : string, employee : Employee)
+
+Relationships:
+1..* Employee belong 1 Section
+1 Order is prepared by 1 Employee
+1 Order is associated with 1 Table
+1 Payment is associated with 1 Order
+1..* InventoryItem is part of 1 Section
+1..* Schedule is assigned to 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name , age , gender , type ], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [name , type ], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [orderNumber , tableNumber ], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [amount , paymentType ], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [name , cost , quantity ], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [date , shift , employee ], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 Section
+ 1 Order association 1 prepared
+ 1 Order association 1 associated
+ 1 Payment association 1 associated
+ 1..* InventoryItem association 1 part
+ 1..* Schedule association 1 assigned
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+-Attributes:
+ 'Employee(enum):name '	-	'name'
+ 'Employee(enum):age '	-	'age'
+ 'Employee(enum):gender '	-	'gender'
+ 'Payment(enum):amount '	-	'amount'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+ 'InventoryItem(enum):name '	-	'name'
+ 'InventoryItem(enum):cost '	-	'cost'
+ 'Schedule(enum):shift '	-	'shift'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   15                  
+Attributes          22                  10                  21                  
+Associations        1                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(cook, waiter, cashier)
+2. SectionType(kitchen, service, cash)
+
+Class:
+1. Employee(name: string, age: int, gender: string, type: EmployeeType)
+2. Section(type: SectionType)
+3. Order
+4. Payment
+5. InventoryItem
+6. Transaction
+
+Relationships:
+1..* Employee contain 1 Section
+1 Order associate 0..* InventoryItem
+1 Order associate 1 Section
+1 Order associate 1 Employee
+1 Payment associate 1 Transaction
+1 Section inherit 0..* Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender, type], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Employee aggregation 1 Section
+ 1 Order association 0..* InventoryItem
+ 1 Order association 1 Section
+ 1 Order association 1 Employee
+ 1 Payment association 1 Transaction
+ False Section inheritance False Employee
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   15                  
+Attributes          11                  6                   21                  
+Associations        5                   0                   15                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+
+1. SectionType (kitchen, service, cash)
+2. EmployeeType (cook, waiter, cashier)
+
+Classes:
+
+1. Restaurant
+2. Employee(name: string, age: int, gender: string)
+3. Section(name: string, type: SectionType)
+4. Order
+5. Payment
+6. InventoryItem
+7. EmployeeSchedule
+8. Payroll
+9. AccountingService
+
+Relationships:
+
+- Restaurant has multiple Employees (0..*)
+- Restaurant has multiple Sections (0..*)
+- Section contains multiple Employees (0..*)
+- Section contains multiple Orders (0..*)
+- Order is associated with InventoryItem (1..*)
+- Payment is associated with Order (1)
+- EmployeeSchedule is associated with Employee (1)
+- Payroll is associated with Employee (1)
+- AccountingService is associated with Restaurant (1)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Restaurant (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,age:int,gender:string]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [name:string,type:SectionType]
+Class: Order (class) - Enum Attributes: [], Class Attributes: []
+Class: Payment (class) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeSchedule (class) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (class) - Enum Attributes: [], Class Attributes: []
+Class: AccountingService (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Restaurant association 1 multiple
+ 1 Restaurant association 1 multiple
+ 1 Section association 1 multiple
+ 1 Section association 1 multiple
+ 1 Order association 1 associated
+ 1 Payment association 1 associated
+ 1 EmployeeSchedule association 1 associated
+ 1 Payroll association 1 associated
+ 1 AccountingService association 1 associated
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(class)'	-	'Employee(class)'
+ 'Order(class)'	-	'Order(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'Payroll(class)'	-	'Payroll(class)'
+ 'AccountingService(class)'	-	'AccountingService(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(class)'	-	'StockItem(class)'
+ 'EmployeeSchedule(class)'	-	'EvenType(enum)'
+-Attributes:
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):age'	-	'age'
+ 'Employee(class):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   15                  
+Attributes          11                  6                   21                  
+Associations        0                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Class:
+1. Restaurant
+2. Employee(name: String, age: int, gender: String)
+3. Section(type: SectionType)
+4. Order
+5. Payment
+6. InventoryItem
+7. Schedule
+8. Payroll
+9. AccountingService
+
+Relationships:
+1..* Restaurant contain 1..* Employee
+1 Restaurant contain 1..* Section
+1 Restaurant contain 1..* Order
+1 Restaurant contain 1..* Payment
+1 Restaurant contain 1..* InventoryItem
+1 Restaurant contain 1 Schedule
+1 Restaurant contain 1 Payroll
+1 Restaurant contain 1 AccountingService
+
+Employee inherit Section
+Employee inherit EmployeeType
+Section inherit SectionType
+
+Section contain 1..* Employee
+Section contain 1..* InventoryItem
+Section contain 1..* Order
+Section contain 1 Schedule
+
+EmployeeType associate 1..* Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Restaurant (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [], Class Attributes: []
+Class: AccountingService (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Restaurant aggregation 1..* Employee
+ 1 Restaurant aggregation 1..* Section
+ 1 Restaurant aggregation 1..* Order
+ 1 Restaurant aggregation 1..* Payment
+ 1 Restaurant aggregation 1..* InventoryItem
+ 1 Restaurant aggregation 1 Schedule
+ 1 Restaurant aggregation 1 Payroll
+ 1 Restaurant aggregation 1 AccountingService
+ False Employee inheritance False Section
+ False Employee inheritance False EmployeeType
+ False Section inheritance False SectionType
+ 1 Section aggregation 1..* Employee
+ 1 Section aggregation 1..* InventoryItem
+ 1 Section aggregation 1..* Order
+ 1 Section aggregation 1 Schedule
+ 1 EmployeeType association 1..* Employee
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'AccountingService(enum)'	-	'AccountingService(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   15                  
+Attributes          10                  6                   21                  
+Associations        13                  0                   15                  
+Inheritances        3                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Class:
+1. Restaurant
+2. Employee(name: string, age: int, gender: string)
+3. Section(type: SectionType)
+4. Order
+5. Payment
+6. InventoryItem
+7. Schedule
+8. Payroll
+9. Accounting
+
+Relationships:
+1..* Employee belong 1 Restaurant
+1..* Employee work 1 Section
+1 Order contain 1..* InventoryItem
+1 Order associate 1 Employee
+1 Order associate 1 Section
+1 Payment associate 1 Order
+1 Schedule associate 1 Employee
+1 Payroll associate 1 Employee
+1 Accounting associate 1 Restaurant
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Restaurant (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [], Class Attributes: []
+Class: Accounting (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 Restaurant
+ 1..* Employee association 1 Section
+ 1 Order aggregation 1..* InventoryItem
+ 1 Order association 1 Employee
+ 1 Order association 1 Section
+ 1 Payment association 1 Order
+ 1 Schedule association 1 Employee
+ 1 Payroll association 1 Employee
+ 1 Accounting association 1 Restaurant
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+ 'Accounting(enum)'	-	'AccountingService(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+ ' 1 Payment association 1 Order'	-	' 1 Payment association 0..1 Order'
+ ' 1 Payroll association 1 Employee'	-	' 1 Payroll association 0..1 Employee'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   15                  
+Attributes          10                  6                   21                  
+Associations        9                   2                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(Kitchen, Service, Cash)
+
+Classes:
+1. Employee(name: String, age: int, gender: String)
+2. Section(type: SectionType)
+3. Personnel(role: String)
+
+Relationships:
+1. Employee contain 1..* Personnel
+2. Personnel inherit Employee
+3. Section contain 1..* Personnel
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [Kitchen, Service, Cash], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:String,age:int,gender:String]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType]
+Class: Personnel (class) - Enum Attributes: [], Class Attributes: [role:String]
+Relationships:
+ 1 Employee aggregation 1..* Personnel
+ False Personnel inheritance False Employee
+ 3 Section aggregation 1..* Personnel
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(class)'	-	'Employee(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):age'	-	'age'
+ 'Employee(class):gender'	-	'gender'
+ 'SectionType(enum):Kitchen'	-	'kitchen'
+ 'SectionType(enum):Service'	-	'service'
+ 'SectionType(enum):Cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   2                   15                  
+Attributes          8                   6                   21                  
+Associations        2                   0                   15                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(kitchen, service, cash)
+
+Class:
+1. Employee(name: string, age: int, gender: string, section: SectionType)
+2. Section
+3. Cook
+4. Waiter
+5. Cashier
+6. RestaurantInventory
+7. PointOfSale
+8. PaymentProcessing
+9. EmployeeScheduling
+10. Payroll
+11. AccountingService
+
+Relationships:
+Employee inherit Cook
+Employee inherit Waiter
+Employee inherit Cashier
+Employee contain Section 
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender, section], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Cashier (enum) - Enum Attributes: [], Class Attributes: []
+Class: RestaurantInventory (enum) - Enum Attributes: [], Class Attributes: []
+Class: PointOfSale (enum) - Enum Attributes: [], Class Attributes: []
+Class: PaymentProcessing (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeScheduling (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [], Class Attributes: []
+Class: AccountingService (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Employee inheritance False Cook
+ False Employee inheritance False Waiter
+ False Employee inheritance False Cashier
+ 1 Employee aggregation 1 Section
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'PaymentProcessing(enum)'	-	'PaymentProcessing(class)'
+ 'EmployeeScheduling(enum)'	-	'EmployeeScheduling(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'AccountingService(enum)'	-	'AccountingService(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  6                   15                  
+Attributes          7                   6                   21                  
+Associations        1                   0                   15                  
+Inheritances        3                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+
+Class:
+1. Restaurant
+2. Employee
+3. Section
+4. Personnel
+5. Order
+6. Payment
+7. Inventory
+8. Schedule
+
+Relationships:
+1..* Restaurant contain 1..* Section
+1..* Section contain 1..* Personnel
+1..* Personnel associate 1 Employee
+1..* Employee associate 1..* Schedule
+1 Order associate 1..* Employee
+1 Order associate 1 Inventory
+1 Payment associate 1 Order
+1 Payment associate 1 Employee
+1..* Employee inherit 1 Personnel
+1 Payroll, Accounting Service inherit 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: Restaurant (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: Inventory (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Restaurant aggregation 1..* Section
+ 1..* Section aggregation 1..* Personnel
+ 1..* Personnel association 1 Employee
+ 1..* Employee association 1..* Schedule
+ 1 Order association 1..* Employee
+ 1 Order association 1 Inventory
+ 1 Payment association 1 Order
+ 1 Payment association 1 Employee
+ False Employee inheritance False Personnel
+ 1 1 association 1 Accounting
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Inventory(enum)'	-	'Inventory(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+-Attributes:
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+ ' 1 Payment association 1 Order'	-	' 1 Payment association 0..1 Order'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   15                  
+Attributes          3                   3                   21                  
+Associations        8                   1                   15                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Class:
+1. Employee(name: string, age: int, gender: string, type: EmployeeType)
+2. Section(type: SectionType)
+3. Order(details: string, tableNumber: int)
+4. PaymentOption(type: string)
+5. Transaction(type: string, amount: float)
+6. Schedule(employee: Employee, attendance: bool, shift: string, timeOff: string)
+
+Relationships:
+1. Employee contain 1..* Schedule
+2. Employee inherit Section
+3. Section contain 1..* Employee
+4. Order associate 1 PaymentOption
+5. Order associate 1..* Employee
+6. Transaction associate 1 PaymentOption
+7. Transaction associate 1 Employee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender, type], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [details, tableNumber], Class Attributes: []
+Class: PaymentOption (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [type, amount], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [employee, attendance, shift, timeOff], Class Attributes: []
+Relationships:
+ 1 Employee aggregation 1..* Schedule
+ False Employee inheritance False Section
+ 3 Section aggregation 1..* Employee
+ 4 Order association 1 PaymentOption
+ 5 Order association 1..* Employee
+ 6 Transaction association 1 PaymentOption
+ 7 Transaction association 1 Employee
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+ 'PaymentOption(enum)'	-	'PaymentProcessing(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'Order(enum):details'	-	'details'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+ 'Schedule(enum):attendance'	-	'attendance'
+ 'Schedule(enum):shift'	-	'shift'
+ 'Schedule(enum):timeOff'	-	'timeOff'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   15                  
+Attributes          20                  10                  21                  
+Associations        6                   0                   15                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+
+Class:
+1.Employee(name: string, age: int, gender: string)
+2.Section(name: string)
+3.Personnel(name: string, section: Section)
+4.Order(details: string, tableNumber: int)
+5.Transaction(type: string, amount: double)
+6.PaymentOption(option: string)
+7.Inventory(item: string, cost: double)
+8.Schedule(attendance: boolean, shifts: int, timeOff: boolean)
+
+Relationships:
+1..* Employee belong to 1..* Section
+1..* Personnel belong to 1..* Section
+1..* Order contain 1..* Transaction
+1..* Order contain 1..* Inventory
+1..* Personnel work on 1..* Order
+1..* Personnel work on 1..* Schedule
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [name, section], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [details, tableNumber], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [type, amount], Class Attributes: []
+Class: PaymentOption (enum) - Enum Attributes: [option], Class Attributes: []
+Class: Inventory (enum) - Enum Attributes: [item, cost], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [attendance, shifts, timeOff], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 to
+ 1..* Personnel association 1 to
+ 1..* Order aggregation 1..* Transaction
+ 1..* Order aggregation 1..* Inventory
+ 1..* Personnel association 1 on
+ 1..* Personnel association 1 on
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Inventory(enum)'	-	'Inventory(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+ 'Section(enum)'	-	'SectionKind(enum)'
+ 'PaymentOption(enum)'	-	'PaymentProcessing(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'Order(enum):details'	-	'details'
+ 'Schedule(enum):attendance'	-	'attendance'
+ 'Schedule(enum):shifts'	-	'shift'
+ 'Schedule(enum):timeOff'	-	'timeOff'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   15                  
+Attributes          16                  7                   21                  
+Associations        2                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Role (cook, waiter, cashier)
+2. Section (kitchen, service, cash)
+
+Class:
+1. Employee(name: string, age: int, gender: string, role: Role)
+2. SectionEmployee(employee: Employee, section: Section)
+3. Order(orderDetails: string, tableNumber: int)
+4. Payment(paymentOptions: string)
+5. InventoryItem(name: string, cost: double)
+6. Transaction(transactionType: string, amount: double)
+7. Schedule(employee: Employee, attendance: bool, shifts: int, timeOff: bool)
+8. Payroll(employee: Employee, amount: double)
+9. Accounting(cashFlow: double)
+
+Relationships:
+1..* Employee contain 1 SectionEmployee (Employee works in a specific section)
+1..* Section contain 0..* SectionEmployee (A section can have multiple employees)
+1..* Order associate 1 InventoryItem (An order includes inventory items)
+1 Order contain 1..* Transaction (An order can have multiple transactions)
+1 Employee associate 1..* Schedule (Employee has a schedule)
+1..* Employee associate 1 Payroll (Employee has a payroll record)
+1..* SectionEmployee associate 1 Section (SectionEmployee belongs to a section)
+1 Accounting inherit Payroll (Accounting service includes payroll management)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender, role], Class Attributes: []
+Class: SectionEmployee (enum) - Enum Attributes: [employee, section], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [orderDetails, tableNumber], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [paymentOptions], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [name, cost], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [transactionType, amount], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [employee, attendance, shifts, timeOff], Class Attributes: []
+Class: Payroll (enum) - Enum Attributes: [employee, amount], Class Attributes: []
+Class: Accounting (enum) - Enum Attributes: [cashFlow], Class Attributes: []
+Relationships:
+ 1..* Employee aggregation 1 SectionEmployee
+ 1..* Section aggregation 0..* SectionEmployee
+ 1..* Order association 1 InventoryItem
+ 1 Order aggregation 1..* Transaction
+ 1 Employee association 1..* Schedule
+ 1..* Employee association 1 Payroll
+ 1..* SectionEmployee association 1 Section
+ False Accounting inheritance False Payroll
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Payroll(enum)'	-	'Payroll(class)'
+ 'Section(enum)'	-	'SectionKind(enum)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Schedule(enum)'	-	'EvenType(enum)'
+ 'Accounting(enum)'	-	'AccountingService(class)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'Section(enum):kitchen'	-	'kitchen'
+ 'Section(enum):service'	-	'service'
+ 'Section(enum):cash'	-	'cash'
+ 'InventoryItem(enum):name'	-	'name'
+ 'InventoryItem(enum):cost'	-	'cost'
+ 'Schedule(enum):attendance'	-	'attendance'
+ 'Schedule(enum):shifts'	-	'shift'
+ 'Schedule(enum):timeOff'	-	'timeOff'
+-Relationships:
+ ' 1..* Employee association 1 Payroll'	-	' 1 Payroll association 0..1 Employee'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   15                  
+Attributes          26                  11                  21                  
+Associations        7                   1                   15                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(Kitchen, Service, Cash)
+
+Class:
+1. Employee(name: string, age: int, gender: string)
+2. Section(type: SectionType)
+3. Personnel(name: string, role: string)
+
+Relationships:
+1. 1..* Employee belong to 1 Section
+2. 1 Section contain 1..* Personnel
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [Kitchen, Service, Cash], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [name, role], Class Attributes: []
+Relationships:
+ 1..* Employee association 1 to
+ 1 Section aggregation 1..* Personnel
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'SectionType(enum):Kitchen'	-	'kitchen'
+ 'SectionType(enum):Service'	-	'service'
+ 'SectionType(enum):Cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   2                   15                  
+Attributes          9                   6                   21                  
+Associations        1                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(Kitchen, Service, Cash)
+
+Classes:
+1. Employee(name: string, age: int, gender: string)
+2. Section(type: SectionType)
+3. Personnel
+4. Cook
+5. Waiter
+6. Cashier
+7. Order
+8. Table
+9. Payroll
+10. AccountingService
+
+Relationships:
+1. Employee works in 1..1 Section
+2. Section contains 0..* Personnel
+3. Section contains 0..* Employee
+4. Personnel inherit Employee
+5. Cook inherit Personnel
+6. Waiter inherit Personnel
+7. Cashier inherit Personnel
+8. Order is associated with 1..* Employee
+9. Order is associated with 1 Table
+10. AccountingService manages 1..* Payroll
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [Kitchen, Service, Cash], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,age:int,gender:string]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType]
+Class: Personnel (class) - Enum Attributes: [], Class Attributes: []
+Class: Cook (class) - Enum Attributes: [], Class Attributes: []
+Class: Waiter (class) - Enum Attributes: [], Class Attributes: []
+Class: Cashier (class) - Enum Attributes: [], Class Attributes: []
+Class: Order (class) - Enum Attributes: [], Class Attributes: []
+Class: Table (class) - Enum Attributes: [], Class Attributes: []
+Class: Payroll (class) - Enum Attributes: [], Class Attributes: []
+Class: AccountingService (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Employee association 1 in
+ 2 Section association 0..* Personnel
+ 3 Section association 0..* Employee
+ False Personnel inheritance False Employee
+ False Cook inheritance False Personnel
+ False Waiter inheritance False Personnel
+ False Cashier inheritance False Personnel
+ 8 Order association 1 associated
+ 9 Order association 1 associated
+ 10 AccountingService association 1..* Payroll
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(class)'	-	'Employee(class)'
+ 'Order(class)'	-	'Order(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'Payroll(class)'	-	'Payroll(class)'
+ 'AccountingService(class)'	-	'AccountingService(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):age'	-	'age'
+ 'Employee(class):gender'	-	'gender'
+ 'SectionType(enum):Kitchen'	-	'kitchen'
+ 'SectionType(enum):Service'	-	'service'
+ 'SectionType(enum):Cash'	-	'cash'
+-Relationships:
+ ' 10 AccountingService association 1..* Payroll'	-	' 1 AccountingService aggregation * Payroll'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  6                   15                  
+Attributes          7                   6                   21                  
+Associations        3                   1                   15                  
+Inheritances        4                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SectionType(kitchen, service, cash)
+2. EmployeeType(cook, waiter, cashier)
+
+Classes:
+1. Restaurant(name: string, location: string)
+2. Employee(name: string, age: int, gender: string, type: EmployeeType)
+3. Section(type: SectionType)
+4. OrderDetails(item: string, quantity: int, cost: float)
+5. Table(number: int)
+
+Relationships:
+1..* Restaurant contain 0..* Employee
+1..* Restaurant contain 0..* Section
+1..* Section contain 0..* Employee
+1..* Employee associate 0..* OrderDetails
+1..* Section associate 0..* Table
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [kitchen, service, cash], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [cook, waiter, cashier], Class Attributes: []
+Class: Restaurant (class) - Enum Attributes: [], Class Attributes: [name:string,location:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,age:int,gender:string,type:EmployeeType]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType]
+Class: OrderDetails (class) - Enum Attributes: [], Class Attributes: [item:string,quantity:int,cost:float]
+Class: Table (class) - Enum Attributes: [], Class Attributes: [number:int]
+Relationships:
+ 1..* Restaurant aggregation 0..* Employee
+ 1..* Restaurant aggregation 0..* Section
+ 1..* Section aggregation 0..* Employee
+ 1..* Employee association 0..* OrderDetails
+ 1..* Section association 0..* Table
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(class)'	-	'Employee(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):age'	-	'age'
+ 'Employee(class):gender'	-	'gender'
+ 'Table(class):number'	-	'number'
+ 'SectionType(enum):kitchen'	-	'kitchen'
+ 'SectionType(enum):service'	-	'service'
+ 'SectionType(enum):cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   3                   15                  
+Attributes          17                  7                   21                  
+Associations        5                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Gender(Male, Female)
+
+Class:
+1. Restaurant(name: string)
+2. Employee(name: string, age: int, gender: Gender)
+3. Section(name: string)
+4. Personnel(name: string, section: Section)
+5. Cook
+6. Waiter
+7. Cashier
+8. Order
+9. Payment
+10. InventoryItem(name: string, cost: float)
+11. Table(number: int)
+
+Relationships:
+1. 1 Restaurant contain * Employee
+2. 1 Restaurant contain * Section
+3. 1 Section contain * Personnel
+4. 1 Personnel inherit Cook
+5. 1 Personnel inherit Waiter
+6. 1 Personnel inherit Cashier
+7. * Order associate 1 InventoryItem
+8. * Order associate 1 Table
+9. * Order associate 1 Personnel
+10. 1 Payment associate 1 Order
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Gender (enum) - Enum Attributes: [Male, Female], Class Attributes: []
+Class: Restaurant (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, age, gender], Class Attributes: []
+Class: Section (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Personnel (enum) - Enum Attributes: [name, section], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Cashier (enum) - Enum Attributes: [], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [], Class Attributes: []
+Class: InventoryItem (enum) - Enum Attributes: [name, cost], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [number], Class Attributes: []
+Relationships:
+ 1 Restaurant aggregation * Employee
+ 1 Restaurant aggregation * Section
+ 1 Section aggregation * Personnel
+ False Personnel inheritance False Cook
+ False Personnel inheritance False Waiter
+ False Personnel inheritance False Cashier
+ * Order association 1 InventoryItem
+ * Order association 1 Table
+ * Order association 1 Personnel
+ 1 Payment association 1 Order
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Order(enum)'	-	'Order(class)'
+ 'Payment(enum)'	-	'Payment(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'InventoryItem(enum)'	-	'StockItem(class)'
+ 'Section(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):age'	-	'age'
+ 'Employee(enum):gender'	-	'gender'
+ 'Table(enum):number'	-	'number'
+ 'InventoryItem(enum):name'	-	'name'
+ 'InventoryItem(enum):cost'	-	'cost'
+-Relationships:
+ ' * Order association 1 Table'	-	' 0..1 Order association 0..1 Table'
+ ' 1 Payment association 1 Order'	-	' 1 Payment association 0..1 Order'
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  6                   15                  
+Attributes          12                  6                   21                  
+Associations        7                   2                   15                  
+Inheritances        3                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Restaurant Management System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SectionType(Kitchen, Service, Cash)
+
+Classes:
+1. Employee(name: string, age: int, gender: string)
+2. Section(type: SectionType)
+3. Personnel(name: string, role: string)
+
+Relationships:
+1..* Employee associate 1 Section
+1..* Personnel associate 1 Section
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SectionType (enum) - Enum Attributes: [Kitchen, Service, Cash], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [name:string,age:int,gender:string]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType]
+Class: Personnel (class) - Enum Attributes: [], Class Attributes: [name:string,role:string]
+Relationships:
+ 1..* Employee association 1 Section
+ 1..* Personnel association 1 Section
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Employee(class)'	-	'Employee(class)'
+ 'SectionType(enum)'	-	'SectionKind(enum)'
+-Attributes:
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):age'	-	'age'
+ 'Employee(class):gender'	-	'gender'
+ 'SectionType(enum):Kitchen'	-	'kitchen'
+ 'SectionType(enum):Service'	-	'service'
+ 'SectionType(enum):Cash'	-	'cash'
+-Relationships:
+--------------------------------------------------------------------------------
+Restaurant Management System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   2                   15                  
+Attributes          9                   6                   21                  
+Associations        2                   0                   15                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+Restaurant Management System, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.624          0.370          0.464          0.403
+Attributes          0.538          0.333          0.412          0.361
+Associations        0.127          0.043          0.065          0.050
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

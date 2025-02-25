@@ -1,0 +1,2742 @@
+------------------------------------------------------------
+---------------------1/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Class:
+Reservation(reservationNumber : int, time : string, date : string, numberOfPeople : int, name : string, phoneNumber : string)
+IndividualReservation(seatingPreference : string, smokingPreference : string) 
+BanquetReservation(groupName : string, paymentMethod : string)
+Table(tableNumber : int, description : string, tableType : string)
+Person(name : string, dateOfBirth : string, driverLicenseNumber : string)
+Employee(employeeType : string)
+Manager
+Maitre
+Waiter
+Bartender
+Chef
+Cook
+BusPerson
+Dishwasher
+MenuItem(itemNumber : int, description : string, prepTime : string, category : string, price : float)
+FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : string)
+
+Enumerations:
+UnitOfMeasure(each, ounce, sheet, pound, gram, dozen)
+
+Relationships:
+1 Reservation contain 1..* Table
+1 Table associate 0..* Reservation
+Manager inherit Employee
+Maitre inherit Employee
+Waiter inherit Employee
+Bartender inherit Employee
+Chef inherit Employee
+Cook inherit Employee
+BusPerson inherit Employee
+Dishwasher inherit Employee
+Reservation associate 1 Waiter
+1 MenuItem contain 1..* FoodItem
+1 FoodItem associate 1..* MenuItem
+FoodItem contain 1..* FoodItem (as ingredients)
+
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Reservation (class) - Enum Attributes: [], Class Attributes: [reservationNumber :int,time :string,date :string,numberOfPeople :int,name :string,phoneNumber :string]
+Class: IndividualReservation (class) - Enum Attributes: [], Class Attributes: [seatingPreference :string,smokingPreference :string]
+Class: BanquetReservation (class) - Enum Attributes: [], Class Attributes: [groupName :string,paymentMethod :string]
+Class: Table (class) - Enum Attributes: [], Class Attributes: [tableNumber :int,description :string,tableType :string]
+Class: Person (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :string,driverLicenseNumber :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeType :string]
+Class: MenuItem (class) - Enum Attributes: [], Class Attributes: [itemNumber :int,description :string,prepTime :string,category :string,price :float]
+Class: FoodItem (class) - Enum Attributes: [], Class Attributes: [foodItemNumber :int,description :string,purchaseFlag :boolean,unitOfMeasure :string]
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Relationships:
+ 1 Reservation aggregation 1..* Table
+ 1 Table association 0..* Reservation
+ False Manager inheritance False Employee
+ False Maitre inheritance False Employee
+ False Waiter inheritance False Employee
+ False Bartender inheritance False Employee
+ False Chef inheritance False Employee
+ False Cook inheritance False Employee
+ False BusPerson inheritance False Employee
+ False Dishwasher inheritance False Employee
+ 1 Reservation association 1 Waiter
+ 1 MenuItem aggregation 1..* FoodItem
+ 1 FoodItem association 1..* MenuItem
+ 1 FoodItem aggregation 1..* FoodItem
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Reservation(class)'	-	'Reservation(class)'
+ 'IndividualReservation(class)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(class)'	-	'BanquetReservation(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'MenuItem(class)'	-	'MenuItem(class)'
+ 'FoodItem(class)'	-	'FoodItem(class)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+-Attributes:
+ 'Reservation(class):reservationNumber '	-	'reservationNumber'
+ 'Reservation(class):time '	-	'time'
+ 'Reservation(class):date '	-	'date'
+ 'Reservation(class):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(class):name '	-	'name'
+ 'Reservation(class):phoneNumber '	-	'phoneNumber'
+ 'IndividualReservation(class):seatingPreference '	-	'seatingPreference'
+ 'IndividualReservation(class):smokingPreference '	-	'smokingPreference'
+ 'BanquetReservation(class):groupName '	-	'groupName'
+ 'BanquetReservation(class):paymentMethod '	-	'paymentMethod'
+ 'Table(class):tableNumber '	-	'tableNumber'
+ 'Table(class):description '	-	'description'
+ 'MenuItem(class):description '	-	'description'
+ 'MenuItem(class):prepTime '	-	'prepTime'
+ 'FoodItem(class):description '	-	'description'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+-Relationships:
+ ' 1 Table association 0..* Reservation'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   17                  
+Attributes          32                  20                  51                  
+Associations        5                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SeatingPreference(inside, patio)
+2. SmokingPreference(smoking, nonsmoking)
+3. ReservationType(individual, banquet)
+4. TableSize(2-person, 4-person, 6-person)
+5. PositionDescription(North window, in front of the fountain, by the kitchen door)
+6. EmployeeRole(manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+7. MenuItemType(appetizer, entree, dessert, beverage)
+8. TimeOfDay(lunch, dinner, happy hour)
+9. UnitOfMeasure(each, ounce, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber : unique, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string, type : ReservationType)
+2. Table(tableNumber : unique, description : string, size : TableSize)
+3. ReservationTable(reservationNumber : unique, tableNumber : unique)
+4. Person(name : string, dateOfBirth : date, driverLicenseNumber : string, role : EmployeeRole)
+5. ManagementStructure
+6. Menu(menuItemNumber : unique, description : string, prepTime : time, type : MenuItemType, price : float, timeOfDay : TimeOfDay)
+7. Order(reservationNumber : unique, menuItemNumber : unique, orderTime : time)
+8. FoodItem(foodItemNumber : unique, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+9. MenuFoodItem(menuItemNumber : unique, foodItemNumber : unique)
+10. FoodItemComposition(parentFoodItemNumber : unique, childFoodItemNumber : unique, quantity : int)
+
+Relationships:
+1. ReservationTable associate 0..* Table
+2. Person inherit EmployeeRole
+3. ManagementStructure contain 1..* Person
+4. ManagementStructure inherit Manager
+5. ManagementStructure inherit Maitre
+6. ManagementStructure inherit Chef
+7. Person inherit Waiter
+8. Person inherit Bartender
+9. Person inherit BusPerson
+10. Person inherit Dishwasher
+11. Order associate 1..* Menu
+12. MenuFoodItem associate 0..* FoodItem
+13. FoodItemComposition contain 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [inside, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: ReservationType (enum) - Enum Attributes: [individual, banquet], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: PositionDescription (enum) - Enum Attributes: [window, front, the], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: TimeOfDay (enum) - Enum Attributes: [lunch, dinner, hour], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , type ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: ReservationTable (enum) - Enum Attributes: [reservationNumber , tableNumber ], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber , role ], Class Attributes: []
+Class: ManagementStructure (enum) - Enum Attributes: [], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , type , price , timeOfDay ], Class Attributes: []
+Class: Order (enum) - Enum Attributes: [reservationNumber , menuItemNumber , orderTime ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Class: MenuFoodItem (enum) - Enum Attributes: [menuItemNumber , foodItemNumber ], Class Attributes: []
+Class: FoodItemComposition (enum) - Enum Attributes: [parentFoodItemNumber , childFoodItemNumber , quantity ], Class Attributes: []
+Relationships:
+ 1 ReservationTable association 0..* Table
+ False Person inheritance False EmployeeRole
+ 3 ManagementStructure aggregation 1..* Person
+ False ManagementStructure inheritance False Manager
+ False ManagementStructure inheritance False Maitre
+ False ManagementStructure inheritance False Chef
+ False Person inheritance False Waiter
+ False Person inheritance False Bartender
+ False Person inheritance False BusPerson
+ False Person inheritance False Dishwasher
+ 11 Order association 1..* Menu
+ 12 MenuFoodItem association 0..* FoodItem
+ 13 FoodItemComposition aggregation 1..* FoodItem
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Person(enum)'	-	'Employee(class)'
+ 'MenuFoodItem(enum)'	-	'Ingredient(class)'
+-Attributes:
+ 'SeatingPreference(enum):inside'	-	'inside'
+ 'SeatingPreference(enum):patio'	-	'patio'
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):appetizer'	-	'appetizer'
+ 'MenuItemType(enum):entree'	-	'entree'
+ 'MenuItemType(enum):dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):waiter'	-	'waiter'
+ 'EmployeeRole(enum):bartender'	-	'bartender'
+ 'EmployeeRole(enum):chef'	-	'chef'
+ 'EmployeeRole(enum):cook'	-	'cook'
+ 'EmployeeRole(enum):dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'Person(enum):name '	-	'name'
+ 'Person(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Person(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+ 'Person(enum):role '	-	'role'
+-Relationships:
+ ' 12 MenuFoodItem association 0..* FoodItem'	-	' 1 FoodItem association * Ingredient'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  12                  17                  
+Attributes          67                  35                  51                  
+Associations        5                   1                   13                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, NonSmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeType(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuCategory(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string, type : ReservationType)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Menu(menuItemNumber : int, description : string, prepTime : time, category : MenuCategory, lunchPrice : decimal, dinnerPrice : decimal, happyHourPrice : decimal)
+5. FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+6. Relationship(parentFoodItemNumber : int, childFoodItemNumber : int, quantity : int)
+
+Relationships:
+1..* Reservation associate 1..* Table
+1..* Manager report 1 Romano
+1..* Waiter assign 1..* Reservation
+1..* MenuItemOrder associate with 1..* Reservation
+1..* MenuItemOrder associate with 1..* Menu
+1..* Menu utilize 1..* FoodItem
+1..* FoodItem utilize 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuCategory (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , type ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , category , lunchPrice , dinnerPrice , happyHourPrice ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 1..* Table
+ 1..* Manager association 1 Romano
+ 1..* Waiter association 1..* Reservation
+ 1..* MenuItemOrder association 1 with
+ 1..* MenuItemOrder association 1 with
+ 1..* Menu association 1..* FoodItem
+ 1..* FoodItem association 1..* FoodItem
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'MenuCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'MenuCategory(enum):Appetizer'	-	'appetizer'
+ 'MenuCategory(enum):Entree'	-	'entree'
+ 'MenuCategory(enum):Dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  17                  
+Attributes          51                  35                  51                  
+Associations        3                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, Nonsmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeRole(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemType(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Tbsp., oz, each, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : DateTime, date : Date, numberOfPeople : int, name : string, phoneNumber : string, type : ReservationType)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+11. Menu(menuItemNumber : int, description : string, prepTime : int, type : MenuItemType, priceLunch : double, priceDinner : double, priceHappyHour : double)
+12. FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+13. Ingredient(parentFoodItemNumber : int, childFoodItemNumber : int, quantityUsed : double)
+
+Relationships:
+1..* Reservation contain 1..* Table
+1 Manager inherit Employee
+1 Maitre inherit Employee
+1 Waiter inherit Employee
+1 Bartender inherit Employee
+1 Chef inherit Employee
+1 Cook inherit Employee
+1 BusPerson inherit Employee
+1 Dishwasher inherit Employee
+1 Reservation associate 1 Waiter
+1..* MenuItems associate 1..* Reservation
+1..* FoodItems associate 1..* MenuItems
+1..* FoodItems associate 0..* FoodItems
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Tbsp., oz, each, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , type ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , type , priceLunch , priceDinner , priceHappyHour ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Class: Ingredient (enum) - Enum Attributes: [parentFoodItemNumber , childFoodItemNumber , quantityUsed ], Class Attributes: []
+Relationships:
+ 1..* Reservation aggregation 1..* Table
+ False Manager inheritance False Employee
+ False Maitre inheritance False Employee
+ False Waiter inheritance False Employee
+ False Bartender inheritance False Employee
+ False Chef inheritance False Employee
+ False Cook inheritance False Employee
+ False BusPerson inheritance False Employee
+ False Dishwasher inheritance False Employee
+ 1 Reservation association 1 Waiter
+ 1..* MenuItems association 1..* Reservation
+ 1..* FoodItems association 1..* MenuItems
+ 1..* FoodItems association 0..* FoodItems
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'Ingredient(enum)'	-	'Ingredient(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):Manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):Waiter'	-	'waiter'
+ 'EmployeeRole(enum):Bartender'	-	'bartender'
+ 'EmployeeRole(enum):Chef'	-	'chef'
+ 'EmployeeRole(enum):Cook'	-	'cook'
+ 'EmployeeRole(enum):BusPerson'	-	'busPerson'
+ 'EmployeeRole(enum):Dishwasher'	-	'dishwasher'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+-Relationships:
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  12                  17                  
+Attributes          76                  34                  51                  
+Associations        2                   0                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PreferenceType (inside, patio)
+2. SmokingPreference (smoking, nonsmoking)
+3. TableSize (2-person, 4-person, 6-person)
+4. EmployeeType (manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+5. MenuItemType (appetizer, entree, dessert, beverage)
+6. UnitOfMeasure (each, ounce, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber: int, time: time, date: date, numberOfPeople: int, name: string, phoneNumber: string)
+2. IndividualReservation(seatingPreference: PreferenceType, smokingPreference: SmokingPreference) extends Reservation
+3. BanquetReservation(groupName: string, paymentMethod: string) extends Reservation
+4. Table(tableNumber: int, description: string, tableSize: TableSize)
+5. Manager(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+6. Maitre(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+7. Waiter(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+8. Bartender(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+9. Chef(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+10. Cook(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+11. BusPerson(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+12. Dishwasher(name: string, dateOfBirth: date, driverLicenseNumber: string) extends Employee
+13. Menu(menuItemNumber: int, description: string, prepTime: time, menuItemType: MenuItemType)
+14. FoodItem(foodItemNumber: int, description: string, purchaseFlag: boolean)
+15. Relationship(parentFoodItemNumber: int, childFoodItemNumber: int, quantityUsed: int)
+
+Relationships:
+1. Reservation contain 0..* Table
+2. Reservation associate 1 Waiter
+3. Reservation associate 0..* MenuItem
+4. MenuItem associate 0..* FoodItem
+5. FoodItem contain 0..* FoodItem
+6. FoodItem inherit UnitOfMeasure
+7. Employee inherit Manager
+8. Employee inherit Maitre
+9. Employee inherit Waiter
+10. Employee inherit Bartender
+11. Employee inherit Chef
+12. Employee inherit Cook
+13. Employee inherit BusPerson
+14. Employee inherit Dishwasher
+15. Manager associate 0..* Employee
+16. Maitre associate 0..* Employee
+17. Chef associate 0..* Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PreferenceType (enum) - Enum Attributes: [inside, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber, time, date, numberOfPeople, name, phoneNumber], Class Attributes: []
+Class: IndividualReservation (enum) - Enum Attributes: [seatingPreference, smokingPreference], Class Attributes: []
+Class: BanquetReservation (enum) - Enum Attributes: [groupName, paymentMethod], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber, description, tableSize], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber, description, prepTime, menuItemType], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber, description, purchaseFlag], Class Attributes: []
+Relationships:
+ 1 Reservation aggregation 0..* Table
+ 2 Reservation association 1 Waiter
+ 3 Reservation association 0..* MenuItem
+ 4 MenuItem association 0..* FoodItem
+ 5 FoodItem aggregation 0..* FoodItem
+ False FoodItem inheritance False UnitOfMeasure
+ False Employee inheritance False Manager
+ False Employee inheritance False Maitre
+ False Employee inheritance False Waiter
+ False Employee inheritance False Bartender
+ False Employee inheritance False Chef
+ False Employee inheritance False Cook
+ False Employee inheritance False BusPerson
+ False Employee inheritance False Dishwasher
+ 15 Manager association 0..* Employee
+ 16 Maitre association 0..* Employee
+ 17 Chef association 0..* Employee
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'IndividualReservation(enum)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(enum)'	-	'BanquetReservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'PreferenceType(enum)'	-	'SeatingPreference(enum)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):appetizer'	-	'appetizer'
+ 'MenuItemType(enum):entree'	-	'entree'
+ 'MenuItemType(enum):dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber'	-	'reservationNumber'
+ 'Reservation(enum):time'	-	'time'
+ 'Reservation(enum):date'	-	'date'
+ 'Reservation(enum):numberOfPeople'	-	'numberOfPeople'
+ 'Reservation(enum):name'	-	'name'
+ 'Reservation(enum):phoneNumber'	-	'phoneNumber'
+ 'IndividualReservation(enum):seatingPreference'	-	'seatingPreference'
+ 'IndividualReservation(enum):smokingPreference'	-	'smokingPreference'
+ 'BanquetReservation(enum):groupName'	-	'groupName'
+ 'BanquetReservation(enum):paymentMethod'	-	'paymentMethod'
+ 'Table(enum):tableNumber'	-	'tableNumber'
+ 'Table(enum):description'	-	'description'
+ 'FoodItem(enum):description'	-	'description'
+ 'PreferenceType(enum):inside'	-	'inside'
+ 'PreferenceType(enum):patio'	-	'patio'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):waiter'	-	'waiter'
+ 'EmployeeType(enum):bartender'	-	'bartender'
+ 'EmployeeType(enum):chef'	-	'chef'
+ 'EmployeeType(enum):cook'	-	'cook'
+ 'EmployeeType(enum):dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'Manager(enum):name'	-	'name'
+ 'Manager(enum):dateOfBirth'	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber'	-	'driverLicenseNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  13                  17                  
+Attributes          69                  38                  51                  
+Associations        3                   0                   13                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, NonSmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeRole(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemType(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : datetime, date : date, numberOfPeople : int, name : string, phoneNumber : string, reservationType : ReservationType, seatingPreference : SeatingPreference, smokingPreference : SmokingPreference, groupname : string, paymentMethod : string)
+2. Table(tableNumber : int, description : string, tableSize : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : date, driverLicenseNumber : string)
+11. MenuItem(menuItemNumber : int, description : string, prepTime : int, menuItemType : MenuItemType, lunchPrice : decimal, dinnerPrice : decimal, happyHourPrice : decimal)
+12. FoodItem(foodItemNumber : int, description : string, purchaseFlag : bool, unitOfMeasure : UnitOfMeasure)
+13. Ingredient(parentFoodItemNumber : int, childFoodItemNumber : int, quantity : int)
+
+Relationships:
+1..* Reservation associate 0..* Table
+1 Manager inherit from Employee
+1 Maitre inherit from Employee
+1 Waiter inherit from Employee
+1 Bartender inherit from Employee
+1 Chef inherit from Employee
+1 Cook inherit from Employee
+1 BusPerson inherit from Employee
+1 Dishwasher inherit from Employee
+1 Reservation associate 1 Waiter
+1 Reservation associate 0..* MenuItem
+1 MenuItem associate 1..* FoodItem
+1 FoodItem associate 1..* Ingredient
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , reservationType , seatingPreference , smokingPreference , groupname , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , tableSize ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [menuItemNumber , description , prepTime , menuItemType , lunchPrice , dinnerPrice , happyHourPrice ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Class: Ingredient (enum) - Enum Attributes: [parentFoodItemNumber , childFoodItemNumber , quantity ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 0..* Table
+ False Manager inheritance False from
+ False Maitre inheritance False from
+ False Waiter inheritance False from
+ False Bartender inheritance False from
+ False Chef inheritance False from
+ False Cook inheritance False from
+ False BusPerson inheritance False from
+ False Dishwasher inheritance False from
+ 1 Reservation association 1 Waiter
+ 1 Reservation association 0..* MenuItem
+ 1 MenuItem association 1..* FoodItem
+ 1 FoodItem association 1..* Ingredient
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'Ingredient(enum)'	-	'Ingredient(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'FoodItem(enum):description '	-	'description'
+ 'Ingredient(enum):quantity '	-	'quantity'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):Manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):Waiter'	-	'waiter'
+ 'EmployeeRole(enum):Bartender'	-	'bartender'
+ 'EmployeeRole(enum):Chef'	-	'chef'
+ 'EmployeeRole(enum):Cook'	-	'cook'
+ 'EmployeeRole(enum):BusPerson'	-	'busPerson'
+ 'EmployeeRole(enum):Dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+ ' 1 FoodItem association 1..* Ingredient'	-	' 1 FoodItem association * Ingredient'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  12                  17                  
+Attributes          79                  38                  51                  
+Associations        5                   2                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SeatingPreference(insde, patio)
+2. SmokingPreference(smoking, nonsmoking)
+3. ReservationCategory(individual, banquet)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeRole(manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+6. MenuCategory(appetizer, entree, dessert, beverage)
+7. UnitOfMeasure(each, ounce, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : string, date : string, numberOfPeople : int, name : string, phoneNumber : string, category : ReservationCategory, seatingPreference : SeatingPreference, smokingPreference : SmokingPreference, groupname : string, paymentMethod : string)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : string, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : string, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : string, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : string, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : string, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : string, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : string, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : string, driverLicenseNumber : string)
+11. MenuItem(itemNumber : int, description : string, prepTime : string, category : MenuCategory, priceLunch : double, priceDinner : double, priceHappyHour : double)
+12. FoodItem(itemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+13. Relationship(parentItemNumber : int, childItemNumber : int, quantityUsed : int)
+
+Relationships:
+1. 1..* Reservation associate 0..* Table
+2. Manager, Maitre, Waiter, Bartender, Chef, Cook, Bus Person, Dishwasher inherit EmployeeRole
+3. 1..* Reservation associate 1 Waiter
+4. 1..* MenuItem associate 1..* Reservation
+5. 1..* FoodItem associate 1..* MenuItem
+6. 1..* FoodItem contain 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [insde, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: ReservationCategory (enum) - Enum Attributes: [individual, banquet], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuCategory (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , category , seatingPreference , smokingPreference , groupname , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber , description , prepTime , category , priceLunch , priceDinner , priceHappyHour ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 0..* Table
+ 1..* Reservation association 1 Waiter
+ 1..* MenuItem association 1..* Reservation
+ 1..* FoodItem association 1..* MenuItem
+ 1..* FoodItem aggregation 1..* FoodItem
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'MenuCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):insde'	-	'inside'
+ 'SeatingPreference(enum):patio'	-	'patio'
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):waiter'	-	'waiter'
+ 'EmployeeRole(enum):bartender'	-	'bartender'
+ 'EmployeeRole(enum):chef'	-	'chef'
+ 'EmployeeRole(enum):cook'	-	'cook'
+ 'EmployeeRole(enum):dishwasher'	-	'dishwasher'
+ 'MenuCategory(enum):appetizer'	-	'appetizer'
+ 'MenuCategory(enum):entree'	-	'entree'
+ 'MenuCategory(enum):dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          76                  36                  51                  
+Associations        5                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, Nonsmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeType(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemCategory(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : unique, time : DateTime, date : Date, numberOfPeople : Integer, name : String, phoneNumber : String, type : ReservationType, seatingPreference : SeatingPreference, smokingPreference : SmokingPreference, groupname : String, paymentMethod : String)
+2. Table(tableNumber : unique, description : String, size : TableSize)
+3. Manager(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+4. Maitre(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+5. Waiter(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+6. Bartender(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+7. Chef(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+8. Cook(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+9. BusPerson(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+10. Dishwasher(name : String, dateOfBirth : Date, driverLicenseNumber : String)
+11. MenuItem(itemNumber : unique, description : String, prepTime : Integer, category : MenuItemCategory, price : Decimal)
+12. FoodItem(itemNumber : unique, description : String, purchaseFlag : Boolean, unitOfMeasure : UnitOfMeasure)
+
+Relationships:
+1..* Reservation associate 1..* Table
+1 Manager contain 1..* Maitre
+1 Manager contain 1..* Chef
+1 Maitre contain 1..* Waiter
+1 Maitre contain 1..* Bartender
+1 Maitre contain 1..* BusPerson
+1 Chef contain 1..* Cook
+1 Chef contain 1..* Dishwasher
+1 Reservation associate 1 Waiter
+1 Reservation associate 1..* MenuItem
+1 MenuItem associate 1..* FoodItem
+1 FoodItem associate 1..* FoodItem (as ingredient, with quantity)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemCategory (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , type , seatingPreference , smokingPreference , groupname , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber , description , prepTime , category , price ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 1..* Table
+ 1 Manager aggregation 1..* Maitre
+ 1 Manager aggregation 1..* Chef
+ 1 Maitre aggregation 1..* Waiter
+ 1 Maitre aggregation 1..* Bartender
+ 1 Maitre aggregation 1..* BusPerson
+ 1 Chef aggregation 1..* Cook
+ 1 Chef aggregation 1..* Dishwasher
+ 1 Reservation association 1 Waiter
+ 1 Reservation association 1..* MenuItem
+ 1 MenuItem association 1..* FoodItem
+ 1 FoodItem association 1..* FoodItem
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'MenuItemCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'MenuItemCategory(enum):Appetizer'	-	'appetizer'
+ 'MenuItemCategory(enum):Entree'	-	'entree'
+ 'MenuItemCategory(enum):Dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          74                  37                  51                  
+Associations        12                  1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType (Individual, Banquet)
+2. SeatingPreference (Inside, Patio)
+3. SmokingPreference (Smoking, NonSmoking)
+4. TableSize (2-person, 4-person, 6-person)
+5. EmployeeRole (Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemCategory (Appetizer, Entree, Dessert, Beverage)
+7. TimeOfDay (Lunch, Dinner, HappyHour)
+8. UnitOfMeasure (Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber: unique, date: Date, time: Time, numberOfPeople: int, name: String, phoneNumber: String, type: ReservationType, seatingPreference: SeatingPreference, smokingPreference: SmokingPreference, groupName: String, paymentMethod: String)
+2. Table(tableNumber: unique, description: String, size: TableSize)
+3. Manager(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+4. Maitre(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+5. Waiter(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+6. Bartender(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+7. Chef(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+8. Cook(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+9. BusPerson(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+10. Dishwasher(name: String, dateOfBirth: Date, driverLicenseNumber: String)
+11. MenuItem(itemNumber: unique, description: String, prepTime: int, category: MenuItemCategory)
+12. FoodItem(itemNumber: unique, description: String, purchaseFlag: boolean)
+13. Ingredient(parentItemNumber: unique, childItemNumber: unique, quantityUsed: int)
+
+Relationships:
+- Reservation associates 1..* Table
+- Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher inherit from EmployeeRole
+- Manager, Maitre manage 1..* Waiter, Bartender, BusPerson
+- Chef manages 1..* Cook, Dishwasher
+- Reservation is associated with 1 Waiter
+- Reservation is associated with 1..* MenuItem
+- MenuItem is associated with 1..* FoodItem
+- MenuItem vary in price based on TimeOfDay
+- FoodItem is used by 1..* MenuItem
+- FoodItem can be comprised of 1..* Ingredient
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemCategory (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: TimeOfDay (enum) - Enum Attributes: [Lunch, Dinner, HappyHour], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber, date, time, numberOfPeople, name, phoneNumber, type, seatingPreference, smokingPreference, groupName, paymentMethod], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber, description, size], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber, description, prepTime, category], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber, description, purchaseFlag], Class Attributes: []
+Class: Ingredient (enum) - Enum Attributes: [parentItemNumber, childItemNumber, quantityUsed], Class Attributes: []
+Relationships:
+ 1 Reservation association 1..* Table
+ 1 Chef association 1..* Cook
+ 1 Reservation association 1 associated
+ 1 Reservation association 1 associated
+ 1 MenuItem association 1 associated
+ 1 MenuItem association 1 in
+ 1 FoodItem association 1 used
+ 1 FoodItem association 1 be
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'Ingredient(enum)'	-	'Ingredient(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'MenuItemCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber'	-	'reservationNumber'
+ 'Reservation(enum):date'	-	'date'
+ 'Reservation(enum):time'	-	'time'
+ 'Reservation(enum):numberOfPeople'	-	'numberOfPeople'
+ 'Reservation(enum):name'	-	'name'
+ 'Reservation(enum):phoneNumber'	-	'phoneNumber'
+ 'Table(enum):tableNumber'	-	'tableNumber'
+ 'Table(enum):description'	-	'description'
+ 'MenuItem(enum):description'	-	'description'
+ 'MenuItem(enum):prepTime'	-	'prepTime'
+ 'FoodItem(enum):description'	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):Manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):Waiter'	-	'waiter'
+ 'EmployeeRole(enum):Bartender'	-	'bartender'
+ 'EmployeeRole(enum):Chef'	-	'chef'
+ 'EmployeeRole(enum):Cook'	-	'cook'
+ 'EmployeeRole(enum):BusPerson'	-	'busPerson'
+ 'EmployeeRole(enum):Dishwasher'	-	'dishwasher'
+ 'MenuItemCategory(enum):Appetizer'	-	'appetizer'
+ 'MenuItemCategory(enum):Entree'	-	'entree'
+ 'MenuItemCategory(enum):Dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name'	-	'name'
+ 'Manager(enum):dateOfBirth'	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber'	-	'driverLicenseNumber'
+-Relationships:
+ ' 1 Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             21                  12                  17                  
+Attributes          78                  37                  51                  
+Associations        2                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Romano:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. SeatingPreference (inside, patio)
+2. SmokingPreference (smoking, nonsmoking)
+3. TableSize (2-person, 4-person, 6-person)
+4. EmployeeType (manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+5. MenuItemType (appetizer, entree, dessert, beverage)
+6. UnitOfMeasure (each, ounce, sheet, pound, gram, dozen)
+
+Classes:
+1. Reservation(reservationNumber: unique, time: time, date: date, numberOfPeople: int, name: string, phoneNumber: string)
+2. IndividualReservation(seatingPreference: SeatingPreference, smokingPreference: SmokingPreference) extends Reservation
+3. BanquetReservation(groupName: string, paymentMethod: string) extends Reservation
+4. Table(tableNumber: unique, description: string, size: TableSize)
+5. Manager(name: string, dateOfBirth: date, driverLicenseNumber: string)
+6. Maitre(name: string, dateOfBirth: date, driverLicenseNumber: string)
+7. Waiter(name: string, dateOfBirth: date, driverLicenseNumber: string)
+8. Bartender(name: string, dateOfBirth: date, driverLicenseNumber: string)
+9. Chef(name: string, dateOfBirth: date, driverLicenseNumber: string)
+10. Cook(name: string, dateOfBirth: date, driverLicenseNumber: string)
+11. BusPerson(name: string, dateOfBirth: date, driverLicenseNumber: string)
+12. Dishwasher(name: string, dateOfBirth: date, driverLicenseNumber: string)
+13. MenuItem(menuItemNumber: unique, description: string, prepTime: time, type: MenuItemType)
+14. FoodItem(foodItemNumber: unique, description: string, purchaseFlag: boolean)
+15. Relationship(parentFoodItemNumber: unique, childFoodItemNumber: unique, quantityUsed: int)
+
+Relationships:
+1. Reservation contains 0..* Table
+2. Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher inherit from Employee
+3. Employee has 1..* Relationship
+4. Reservation associate 0..* MenuItem
+5. MenuItem associate 0..* FoodItem
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [inside, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (class) - Enum Attributes: [], Class Attributes: [reservationNumber:unique,time:time,date:date,numberOfPeople:int,name:string,phoneNumber:string]
+Class: IndividualReservation (class) - Enum Attributes: [], Class Attributes: [seatingPreference:SeatingPreference,smokingPreference:SmokingPreference]
+Class: BanquetReservation (class) - Enum Attributes: [], Class Attributes: [groupName:string,paymentMethod:string]
+Class: Table (class) - Enum Attributes: [], Class Attributes: [tableNumber:unique,description:string,size:TableSize]
+Class: Manager (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Maitre (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Waiter (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Bartender (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Chef (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Cook (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: BusPerson (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Dishwasher (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: MenuItem (class) - Enum Attributes: [], Class Attributes: [menuItemNumber:unique,description:string,prepTime:time,type:MenuItemType]
+Class: FoodItem (class) - Enum Attributes: [], Class Attributes: [foodItemNumber:unique,description:string,purchaseFlag:boolean]
+Relationships:
+ 1 Reservation association 0..* Table
+ 4 Reservation association 0..* MenuItem
+ 5 MenuItem association 0..* FoodItem
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(class)'	-	'Reservation(class)'
+ 'IndividualReservation(class)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(class)'	-	'BanquetReservation(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'MenuItem(class)'	-	'MenuItem(class)'
+ 'FoodItem(class)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(class)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):inside'	-	'inside'
+ 'SeatingPreference(enum):patio'	-	'patio'
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):appetizer'	-	'appetizer'
+ 'MenuItemType(enum):entree'	-	'entree'
+ 'MenuItemType(enum):dessert'	-	'dessert'
+ 'Reservation(class):reservationNumber'	-	'reservationNumber'
+ 'Reservation(class):time'	-	'time'
+ 'Reservation(class):date'	-	'date'
+ 'Reservation(class):numberOfPeople'	-	'numberOfPeople'
+ 'Reservation(class):name'	-	'name'
+ 'Reservation(class):phoneNumber'	-	'phoneNumber'
+ 'IndividualReservation(class):seatingPreference'	-	'seatingPreference'
+ 'IndividualReservation(class):smokingPreference'	-	'smokingPreference'
+ 'BanquetReservation(class):groupName'	-	'groupName'
+ 'BanquetReservation(class):paymentMethod'	-	'paymentMethod'
+ 'Table(class):tableNumber'	-	'tableNumber'
+ 'Table(class):description'	-	'description'
+ 'MenuItem(class):description'	-	'description'
+ 'MenuItem(class):prepTime'	-	'prepTime'
+ 'MenuItem(class):type'	-	'type'
+ 'FoodItem(class):description'	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):waiter'	-	'waiter'
+ 'EmployeeType(enum):bartender'	-	'bartender'
+ 'EmployeeType(enum):chef'	-	'chef'
+ 'EmployeeType(enum):cook'	-	'cook'
+ 'EmployeeType(enum):dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'Manager(class):name'	-	'name'
+ 'Manager(class):dateOfBirth'	-	'dateOfBirth'
+ 'Manager(class):driverLicenseNumber'	-	'driverLicenseNumber'
+-Relationships:
+ ' 1 Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  13                  17                  
+Attributes          69                  41                  51                  
+Associations        3                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SeatingPreference(inside, patio)
+2. SmokingPreference(smoking, nonsmoking)
+3. TableSize(2-person, 4-person, 6-person)
+4. EmployeeRole(manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+5. MenuItemType(appetizer, entree, dessert, beverage)
+6. UnitOfMeasure(each, ounce, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber : unique, time : string, date : string, numberOfPeople : integer, name : string, phoneNumber : string)
+2. IndividualReservation(seatingPreference : SeatingPreference, smokingPreference : SmokingPreference)
+3. BanquetReservation(groupName : string, paymentMethod : string)
+4. Table(tableNumber : unique, description : string, size : TableSize)
+5. Manager
+6. Maitre
+7. Waiter
+8. Bartender
+9. Chef
+10. Cook
+11. BusPerson
+12. Dishwasher
+13. Menu(menuItemNumber : unique, description : string, prepTime : string, type : MenuItemType, price : float)
+14. FoodItem(foodItemNumber : unique, description : string, purchaseFlag : boolean)
+15. MenuFoodItem(quantity : integer)
+16. RelationshipFoodItems(parentFoodItemNumber : unique, childFoodItemNumber : unique, quantityUsed : integer)
+
+Relationships:
+1. Reservation contains 0..* Table
+2. Reservation associate 1..* Menu by MenuFoodItem
+3. Table contain overlapping 0..* Reservation
+4. Manager inherit from EmployeeRole
+5. Maitre inherit from EmployeeRole
+6. Waiter inherit from EmployeeRole
+7. Bartender inherit from EmployeeRole
+8. Chef inherit from EmployeeRole
+9. Cook inherit from EmployeeRole
+10. BusPerson inherit from EmployeeRole
+11. Dishwasher inherit from EmployeeRole
+12. Manager associate 1..* Maitre
+13. Manager associate 1..* Chef
+14. Maitre associate 1..* Waiter
+15. Maitre associate 1..* Bartender
+16. Maitre associate 1..* BusPerson
+17. Chef associate 1..* Cook
+18. Chef associate 1..* Dishwasher
+19. Menu associate 1..* FoodItem by MenuFoodItem
+20. FoodItem contain 0..* RelationshipFoodItems
+21. RelationshipFoodItems contain 1 ParentFoodItem and 1 ChildFoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [inside, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber ], Class Attributes: []
+Class: IndividualReservation (enum) - Enum Attributes: [seatingPreference , smokingPreference ], Class Attributes: []
+Class: BanquetReservation (enum) - Enum Attributes: [groupName , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , type , price ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag ], Class Attributes: []
+Class: MenuFoodItem (enum) - Enum Attributes: [quantity ], Class Attributes: []
+Relationships:
+ 1 Reservation association 0..* Table
+ 2 Reservation association 1..* Menu
+ 3 Table aggregation 1 overlapping
+ False Manager inheritance False from
+ False Maitre inheritance False from
+ False Waiter inheritance False from
+ False Bartender inheritance False from
+ False Chef inheritance False from
+ False Cook inheritance False from
+ False BusPerson inheritance False from
+ False Dishwasher inheritance False from
+ 12 Manager association 1..* Maitre
+ 13 Manager association 1..* Chef
+ 14 Maitre association 1..* Waiter
+ 15 Maitre association 1..* Bartender
+ 16 Maitre association 1..* BusPerson
+ 17 Chef association 1..* Cook
+ 18 Chef association 1..* Dishwasher
+ 19 Menu association 1..* FoodItem
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'IndividualReservation(enum)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(enum)'	-	'BanquetReservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'MenuFoodItem(enum)'	-	'Ingredient(class)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):inside'	-	'inside'
+ 'SeatingPreference(enum):patio'	-	'patio'
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):appetizer'	-	'appetizer'
+ 'MenuItemType(enum):entree'	-	'entree'
+ 'MenuItemType(enum):dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'IndividualReservation(enum):seatingPreference '	-	'seatingPreference'
+ 'IndividualReservation(enum):smokingPreference '	-	'smokingPreference'
+ 'BanquetReservation(enum):groupName '	-	'groupName'
+ 'BanquetReservation(enum):paymentMethod '	-	'paymentMethod'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):waiter'	-	'waiter'
+ 'EmployeeRole(enum):bartender'	-	'bartender'
+ 'EmployeeRole(enum):chef'	-	'chef'
+ 'EmployeeRole(enum):cook'	-	'cook'
+ 'EmployeeRole(enum):dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'MenuFoodItem(enum):quantity '	-	'quantity'
+-Relationships:
+ ' 1 Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             21                  14                  17                  
+Attributes          47                  36                  51                  
+Associations        10                  1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SeatingPreference(inside, patio)
+2. SmokingPreference(smoking, nonsmoking)
+3. TableSize(2-person, 4-person, 6-person)
+4. EmployeeRole(manager, Maitre, waiter, bartender, chef, cook, bus person, dishwasher)
+5. MenuItemType(appetizer, entree, dessert, beverage)
+6. UnitOfMeasure(each, ounce, sheet, pound, gram, dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string, category : string)
+2. IndividualReservation(seatingPreference : SeatingPreference, smokingPreference : SmokingPreference)
+3. BanquetReservation(groupName : string, paymentMethod : string)
+4. Table(tableNumber : int, description : string, size : TableSize)
+5. RestaurantManager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Menu(menuItemNumber : int, description : string, prepTime : int, type : MenuItemType, priceLunch : float, priceDinner : float, priceHappyHour : float)
+9. FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean)
+10. RelationshipFoodItem(parentFoodItemNumber : int, childFoodItemNumber : int, quantity : int)
+
+Relationships:
+1..* Reservation associate 1..* Table
+1..* RestaurantManager report to 1 Romano
+1..* Maitre manage 1..* Waiter
+1..* Chef manage 1..* Cook
+1..* Waiter assign 1..* Reservation
+1..* MenuItems can be associated with 1..* Reservation
+1..* MenuItems utilize 1..* FoodItem
+1..* FoodItem is utilized by 1..* MenuItems
+1..* FoodItem comprise of 1..* FoodItem
+1..* FoodItem is used as ingredient in 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [inside, patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [smoking, nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [manager, Maitre, waiter, bartender, chef, cook, person, dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [appetizer, entree, dessert, beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [each, ounce, sheet, pound, gram, dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , category ], Class Attributes: []
+Class: IndividualReservation (enum) - Enum Attributes: [seatingPreference , smokingPreference ], Class Attributes: []
+Class: BanquetReservation (enum) - Enum Attributes: [groupName , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: RestaurantManager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , type , priceLunch , priceDinner , priceHappyHour ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 1..* Table
+ 1..* RestaurantManager association 1 to
+ 1..* Maitre association 1..* Waiter
+ 1..* Chef association 1..* Cook
+ 1..* Waiter association 1..* Reservation
+ 1..* MenuItems association 1 be
+ 1..* MenuItems association 1..* FoodItem
+ 1..* FoodItem association 1 utilized
+ 1..* FoodItem association 1 of
+ 1..* FoodItem association 1 used
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'IndividualReservation(enum)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(enum)'	-	'BanquetReservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'RestaurantManager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):inside'	-	'inside'
+ 'SeatingPreference(enum):patio'	-	'patio'
+ 'SmokingPreference(enum):smoking'	-	'smoking'
+ 'SmokingPreference(enum):nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):appetizer'	-	'appetizer'
+ 'MenuItemType(enum):entree'	-	'entree'
+ 'MenuItemType(enum):dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'IndividualReservation(enum):seatingPreference '	-	'seatingPreference'
+ 'IndividualReservation(enum):smokingPreference '	-	'smokingPreference'
+ 'BanquetReservation(enum):groupName '	-	'groupName'
+ 'BanquetReservation(enum):paymentMethod '	-	'paymentMethod'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):waiter'	-	'waiter'
+ 'EmployeeRole(enum):bartender'	-	'bartender'
+ 'EmployeeRole(enum):chef'	-	'chef'
+ 'EmployeeRole(enum):cook'	-	'cook'
+ 'EmployeeRole(enum):dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):pound'	-	'pound'
+ 'UnitOfMeasure(enum):gram'	-	'gram'
+ 'UnitOfMeasure(enum):dozen'	-	'dozen'
+ 'RestaurantManager(enum):name '	-	'name'
+ 'RestaurantManager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'RestaurantManager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             15                  13                  17                  
+Attributes          58                  38                  51                  
+Associations        1                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Class:
+Reservation(reservationNumber : int, time : Time, date : Date, numberOfPeople : int, name : string, phoneNumber : string)
+IndividualReservation(seatingPreference : string, smokingPreference : string)
+BanquetReservation(groupName : string, paymentMethod : string)
+Table(tableNumber : int, description : string, capacity : int)
+Manager(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Maitre(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Waiter(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Bartender(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Chef(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Cook(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+BusPerson(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+Dishwasher(name : string, dateOfBirth : Date, driverLicenseNumber : string)
+MenuItem(menuItemNumber : int, description : string, prepTime : Time, category : string, price : float)
+FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : string)
+
+Enumerations:
+Time (Morning, Afternoon, Evening)
+Date
+UnitOfMeasure (Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Relationships:
+1 Reservation contain 1 Table (1..1)
+1 Table can be associated with 0..* Reservations (0..*)
+Manager inherit from Employee
+Maitre inherit from Employee
+Waiter inherit from Employee
+Bartender inherit from Employee
+Chef inherit from Employee
+Cook inherit from Employee
+BusPerson inherit from Employee
+Dishwasher inherit from Employee
+Reservation associate 1 Waiter (1..1)
+Menu Item utilize 0..* Food Items (0..*)
+Food Item can be utilized by 0..* Menu Items (0..*)
+Food Item comprise 0..* Food Items (0..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Reservation (class) - Enum Attributes: [], Class Attributes: [reservationNumber :int,time :Time,date :Date,numberOfPeople :int,name :string,phoneNumber :string]
+Class: IndividualReservation (class) - Enum Attributes: [], Class Attributes: [seatingPreference :string,smokingPreference :string]
+Class: BanquetReservation (class) - Enum Attributes: [], Class Attributes: [groupName :string,paymentMethod :string]
+Class: Table (class) - Enum Attributes: [], Class Attributes: [tableNumber :int,description :string,capacity :int]
+Class: Manager (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Maitre (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Waiter (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Bartender (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Chef (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Cook (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: BusPerson (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: Dishwasher (class) - Enum Attributes: [], Class Attributes: [name :string,dateOfBirth :Date,driverLicenseNumber :string]
+Class: MenuItem (class) - Enum Attributes: [], Class Attributes: [menuItemNumber :int,description :string,prepTime :Time,category :string,price :float]
+Class: FoodItem (class) - Enum Attributes: [], Class Attributes: [foodItemNumber :int,description :string,purchaseFlag :boolean,unitOfMeasure :string]
+Class: Time (enum) - Enum Attributes: [Morning, Afternoon, Evening], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Relationships:
+ 1 Reservation aggregation 1 Table
+ 1 Table association 1 be
+ False Manager inheritance False from
+ False Maitre inheritance False from
+ False Waiter inheritance False from
+ False Bartender inheritance False from
+ False Chef inheritance False from
+ False Cook inheritance False from
+ False BusPerson inheritance False from
+ False Dishwasher inheritance False from
+ 1 Reservation association 1 Waiter
+ 1 Menu association 1 utilize
+ 1 Food association 1 can
+ 1 Food association 1 comprise
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Reservation(class)'	-	'Reservation(class)'
+ 'IndividualReservation(class)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(class)'	-	'BanquetReservation(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'MenuItem(class)'	-	'MenuItem(class)'
+ 'FoodItem(class)'	-	'FoodItem(class)'
+ 'Manager(class)'	-	'Employee(class)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+-Attributes:
+ 'Reservation(class):reservationNumber '	-	'reservationNumber'
+ 'Reservation(class):time '	-	'time'
+ 'Reservation(class):date '	-	'date'
+ 'Reservation(class):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(class):name '	-	'name'
+ 'Reservation(class):phoneNumber '	-	'phoneNumber'
+ 'IndividualReservation(class):seatingPreference '	-	'seatingPreference'
+ 'IndividualReservation(class):smokingPreference '	-	'smokingPreference'
+ 'BanquetReservation(class):groupName '	-	'groupName'
+ 'BanquetReservation(class):paymentMethod '	-	'paymentMethod'
+ 'Table(class):tableNumber '	-	'tableNumber'
+ 'Table(class):description '	-	'description'
+ 'MenuItem(class):description '	-	'description'
+ 'MenuItem(class):prepTime '	-	'prepTime'
+ 'FoodItem(class):description '	-	'description'
+ 'Manager(class):name '	-	'name'
+ 'Manager(class):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(class):driverLicenseNumber '	-	'driverLicenseNumber'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+-Relationships:
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             16                  8                   17                  
+Attributes          55                  23                  51                  
+Associations        2                   0                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType (Individual, Banquet)
+2. SeatingPreference (Inside, Patio)
+3. SmokingPreference (Smoking, Nonsmoking)
+4. TableSize (2-person, 4-person, 6-person)
+5. EmployeeRole (Manager, Maitre, Waiter, Bartender, Chef, Cook, Bus Person, Dishwasher)
+6. MenuItemCategory (Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure (Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber: unique, time: DateTime, date: Date, numberOfPeople: int, name: string, phoneNumber: string)
+2. Table(tableNumber: unique, description: string, size: TableSize)
+3. Manager(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+4. Maitre(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+5. Waiter(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+6. Bartender(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+7. Chef(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+8. Cook(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+9. BusPerson(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+10. Dishwasher(name: string, dateOfBirth: Date, driverLicenseNumber: string)
+11. MenuItem(itemNumber: unique, description: string, prepTime: int, category: MenuItemCategory)
+12. FoodItem(itemNumber: unique, description: string, purchaseFlag: boolean, unitOfMeasure: UnitOfMeasure)
+
+Relationships:
+- Reservation has 1 Table (0..1) Table
+- ReservationType (Individual, Banquet) has 0..* Reservations
+- Table has 0..* Reservations
+- Manager manages 1..* Employees
+- Maitre manages 1..* Employees
+- Chef manages 1..* Employees
+- Waiter serves 1..* Reservations
+- MenuItem is comprised of 0..* FoodItems
+- FoodItem is used by 0..* MenuItems
+- FoodItem has 0..* ChildFoodItems
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, Person, Dishwasher], Class Attributes: []
+Class: MenuItemCategory (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber, time, date, numberOfPeople, name, phoneNumber], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber, description, size], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name, dateOfBirth, driverLicenseNumber], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber, description, prepTime, category], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber, description, purchaseFlag, unitOfMeasure], Class Attributes: []
+Relationships:
+ 1 Reservation association 1 Table
+ 1 ReservationType association 1 Banquet
+ 1 Table association 0..* Reservations
+ 1 Manager association 1..* Employees
+ 1 Maitre association 1..* Employees
+ 1 Chef association 1..* Employees
+ 1 Waiter association 1..* Reservations
+ 1 MenuItem association 1 comprised
+ 1 FoodItem association 1 used
+ 1 FoodItem association 0..* ChildFoodItems
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'MenuItemCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber'	-	'reservationNumber'
+ 'Reservation(enum):time'	-	'time'
+ 'Reservation(enum):date'	-	'date'
+ 'Reservation(enum):numberOfPeople'	-	'numberOfPeople'
+ 'Reservation(enum):name'	-	'name'
+ 'Reservation(enum):phoneNumber'	-	'phoneNumber'
+ 'Table(enum):tableNumber'	-	'tableNumber'
+ 'Table(enum):description'	-	'description'
+ 'MenuItem(enum):description'	-	'description'
+ 'MenuItem(enum):prepTime'	-	'prepTime'
+ 'FoodItem(enum):description'	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):Manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):Waiter'	-	'waiter'
+ 'EmployeeRole(enum):Bartender'	-	'bartender'
+ 'EmployeeRole(enum):Chef'	-	'chef'
+ 'EmployeeRole(enum):Cook'	-	'cook'
+ 'EmployeeRole(enum):Dishwasher'	-	'dishwasher'
+ 'MenuItemCategory(enum):Appetizer'	-	'appetizer'
+ 'MenuItemCategory(enum):Entree'	-	'entree'
+ 'MenuItemCategory(enum):Dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name'	-	'name'
+ 'Manager(enum):dateOfBirth'	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber'	-	'driverLicenseNumber'
+-Relationships:
+ ' 1 Reservation association 1 Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          68                  36                  51                  
+Associations        1                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. SeatingPreference(Inside, Patio)
+2. SmokingPreference(Smoking, Nonsmoking)
+3. GroupPaymentMethod(Cash, CreditCard)
+
+Class:
+1. Reservation(reservationNumber : int, time : string, date : string, numberOfPeople : int, name : string, phoneNumber : string)
+2. IndividualReservation(seatingPreference : SeatingPreference, smokingPreference : SmokingPreference) 
+3. BanquetReservation(groupName : string, paymentMethod : GroupPaymentMethod)
+4. Table(tableNumber : int, description : string, size : int)
+5. Person(name : string, dateOfBirth : string, driverLicenseNumber : string)
+6. Employee(role : string)
+7. Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher
+8. Menu(menuItemNumber : int, description : string, prepTime : string, category : string, priceLunch : float, priceDinner : float, priceHappyHour : float)
+9. FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : string)
+10. MenuFoodItem(quantity : int)
+11. Ingredient(parentFoodItemNumber : int, childFoodItemNumber : int, quantityUsed : int)
+
+Relationships:
+1. Reservation contain 1..* Table
+2. Reservation associate 1 Waiter
+3. IndividualReservation inherit Reservation
+4. BanquetReservation inherit Reservation
+5. Employee inherit Person
+6. Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher inherit Employee
+7. Manager report to Manager
+8. Manager manage Maitre, Chef
+9. Maitre manage Waiter, Bartender, BusPerson
+10. Chef manage Cook, Dishwasher
+11. Menu associate 1..* MenuFoodItem
+12. FoodItem contain 1..* Ingredient
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: GroupPaymentMethod (enum) - Enum Attributes: [Cash, CreditCard], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber ], Class Attributes: []
+Class: IndividualReservation (enum) - Enum Attributes: [seatingPreference , smokingPreference ], Class Attributes: []
+Class: BanquetReservation (enum) - Enum Attributes: [groupName , paymentMethod ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [role ], Class Attributes: []
+Class: Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher (enum) - Enum Attributes: [], Class Attributes: []
+Class: Menu (enum) - Enum Attributes: [menuItemNumber , description , prepTime , category , priceLunch , priceDinner , priceHappyHour ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Class: MenuFoodItem (enum) - Enum Attributes: [quantity ], Class Attributes: []
+Class: Ingredient (enum) - Enum Attributes: [parentFoodItemNumber , childFoodItemNumber , quantityUsed ], Class Attributes: []
+Relationships:
+ 1 Reservation aggregation 1..* Table
+ 2 Reservation association 1 Waiter
+ False IndividualReservation inheritance False Reservation
+ False BanquetReservation inheritance False Reservation
+ False Employee inheritance False Person
+ 7 Manager association 1 to
+ 8 Manager association 1 Maitre
+ 9 Maitre association 1 Waiter
+ 10 Chef association 1 Cook
+ 11 Menu association 1..* MenuFoodItem
+ 12 FoodItem aggregation 1..* Ingredient
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'IndividualReservation(enum)'	-	'IndividualReservation(class)'
+ 'BanquetReservation(enum)'	-	'BanquetReservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Menu(enum)'	-	'Menu(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'Ingredient(enum)'	-	'Ingredient(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'IndividualReservation(enum):seatingPreference '	-	'seatingPreference'
+ 'IndividualReservation(enum):smokingPreference '	-	'smokingPreference'
+ 'BanquetReservation(enum):groupName '	-	'groupName'
+ 'BanquetReservation(enum):paymentMethod '	-	'paymentMethod'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'Employee(enum):role '	-	'role'
+ 'FoodItem(enum):description '	-	'description'
+-Relationships:
+ ' False IndividualReservation inheritance False Reservation'	-	' False IndividualReservation inheritance False Reservation'
+ ' False BanquetReservation inheritance False Reservation'	-	' False BanquetReservation inheritance False Reservation'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  10                  17                  
+Attributes          38                  18                  51                  
+Associations        3                   0                   13                  
+Inheritances        3                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType (Individual, Banquet)
+2. SeatingPreference (Inside, Patio)
+3. SmokingPreference (Smoking, Nonsmoking)
+4. TableSize (2, 4, 6)
+5. EmployeeType (Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemType (Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure (Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string, type : ReservationType)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : date, driverLicenseNumber : string)
+11. MenuItem(itemNumber : int, description : string, prepTime : time, type : MenuItemType)
+12. FoodItem(itemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+
+Relationships:
+1..* Reservation associate 1..* Table
+1 Manager contain 1..* Maitre
+1 Manager contain 1..* Chef
+1 Maitre contain 1..* Waiter
+1 Maitre contain 1..* Bartender
+1 Maitre contain 1..* BusPerson
+1 Chef contain 1..* Cook
+1 Chef contain 1..* Dishwasher
+1 Reservation associate 1 Waiter
+1..* Reservation associate 1..* MenuItem
+1..* MenuItem associate 1..* Reservation
+1..* MenuItem associate 1..* FoodItem
+1..* FoodItem associate 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2, 4, 6], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , type ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber , description , prepTime , type ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 1..* Table
+ 1 Manager aggregation 1..* Maitre
+ 1 Manager aggregation 1..* Chef
+ 1 Maitre aggregation 1..* Waiter
+ 1 Maitre aggregation 1..* Bartender
+ 1 Maitre aggregation 1..* BusPerson
+ 1 Chef aggregation 1..* Cook
+ 1 Chef aggregation 1..* Dishwasher
+ 1 Reservation association 1 Waiter
+ 1..* Reservation association 1..* MenuItem
+ 1..* MenuItem association 1..* Reservation
+ 1..* MenuItem association 1..* FoodItem
+ 1..* FoodItem association 1..* FoodItem
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'MenuItem(enum):type '	-	'type'
+ 'FoodItem(enum):description '	-	'description'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          69                  35                  51                  
+Associations        13                  1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Romano:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ReservationType (Individual, Banquet)
+2. SeatingPreference (Inside, Patio)
+3. SmokingPreference (Smoking, Nonsmoking)
+4. TableSize (2-person, 4-person, 6-person)
+5. EmployeeRole (Manager, Maitre, Waiter, Bartender, Chef, Cook, Bus Person, Dishwasher)
+6. MenuItemType (Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure (Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Classes:
+1. Reservation(reservationNumber: int, time: datetime, date: date, numberOfPeople: int, name: string, phoneNumber: string, type: ReservationType)
+2. Table(tableNumber: int, description: string, size: TableSize)
+3. Manager(name: string, dateOfBirth: date, driverLicenseNumber: string)
+4. Maitre(name: string, dateOfBirth: date, driverLicenseNumber: string)
+5. Waiter(name: string, dateOfBirth: date, driverLicenseNumber: string)
+6. Bartender(name: string, dateOfBirth: date, driverLicenseNumber: string)
+7. Chef(name: string, dateOfBirth: date, driverLicenseNumber: string)
+8. Cook(name: string, dateOfBirth: date, driverLicenseNumber: string)
+9. BusPerson(name: string, dateOfBirth: date, driverLicenseNumber: string)
+10. Dishwasher(name: string, dateOfBirth: date, driverLicenseNumber: string)
+11. MenuItem(itemNumber: int, description: string, prepTime: int, type: MenuItemType)
+12. FoodItem(itemNumber: int, description: string, purchaseFlag: boolean, unitOfMeasure: UnitOfMeasure)
+
+Relationships:
+1. Reservation contains 1..* Table
+2. Reservation is assigned to 1 Waiter
+3. Reservation is associated with 1..* MenuItem
+4. MenuItem is associated with 1..* Reservation
+5. MenuItem utilizes 1..* FoodItem
+6. FoodItem is utilized by 1..* MenuItem
+7. FoodItem is comprised of 1..* FoodItem with quantity
+8. EmployeeRole is hierarchical (Manager -> Maitre -> Waiter/Bartender/BusPerson -> Chef/Cook/Dishwasher)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, Nonsmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeRole (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, Person, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (class) - Enum Attributes: [], Class Attributes: [reservationNumber:int,time:datetime,date:date,numberOfPeople:int,name:string,phoneNumber:string,type:ReservationType]
+Class: Table (class) - Enum Attributes: [], Class Attributes: [tableNumber:int,description:string,size:TableSize]
+Class: Manager (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Maitre (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Waiter (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Bartender (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Chef (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Cook (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: BusPerson (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: Dishwasher (class) - Enum Attributes: [], Class Attributes: [name:string,dateOfBirth:date,driverLicenseNumber:string]
+Class: MenuItem (class) - Enum Attributes: [], Class Attributes: [itemNumber:int,description:string,prepTime:int,type:MenuItemType]
+Class: FoodItem (class) - Enum Attributes: [], Class Attributes: [itemNumber:int,description:string,purchaseFlag:boolean,unitOfMeasure:UnitOfMeasure]
+Relationships:
+ 1 Reservation association 1..* Table
+ 2 Reservation association 1 assigned
+ 3 Reservation association 1 associated
+ 4 MenuItem association 1 associated
+ 5 MenuItem association 1..* FoodItem
+ 6 FoodItem association 1 utilized
+ 7 FoodItem association 1 comprised
+ 8 EmployeeRole association 1 hierarchical
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(class)'	-	'Reservation(class)'
+ 'Table(class)'	-	'Table(class)'
+ 'MenuItem(class)'	-	'MenuItem(class)'
+ 'FoodItem(class)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeRole(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(class)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):Nonsmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(class):reservationNumber'	-	'reservationNumber'
+ 'Reservation(class):time'	-	'time'
+ 'Reservation(class):date'	-	'date'
+ 'Reservation(class):numberOfPeople'	-	'numberOfPeople'
+ 'Reservation(class):name'	-	'name'
+ 'Reservation(class):phoneNumber'	-	'phoneNumber'
+ 'Table(class):tableNumber'	-	'tableNumber'
+ 'Table(class):description'	-	'description'
+ 'MenuItem(class):description'	-	'description'
+ 'MenuItem(class):prepTime'	-	'prepTime'
+ 'MenuItem(class):type'	-	'type'
+ 'FoodItem(class):description'	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeRole(enum):Manager'	-	'manager'
+ 'EmployeeRole(enum):Maitre'	-	'Maitre'
+ 'EmployeeRole(enum):Waiter'	-	'waiter'
+ 'EmployeeRole(enum):Bartender'	-	'bartender'
+ 'EmployeeRole(enum):Chef'	-	'chef'
+ 'EmployeeRole(enum):Cook'	-	'cook'
+ 'EmployeeRole(enum):Dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(class):name'	-	'name'
+ 'Manager(class):dateOfBirth'	-	'dateOfBirth'
+ 'Manager(class):driverLicenseNumber'	-	'driverLicenseNumber'
+-Relationships:
+ ' 1 Reservation association 1..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          69                  37                  51                  
+Associations        2                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, NonSmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeType(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemType(Appetizer, Entree, Dessert, Beverage)
+7. TimeOfDay(Lunch, Dinner, HappyHour)
+8. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : datetime, date : date, numberOfPeople : int, name : string, phone : string, type : ReservationType)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : date, driverLicenseNumber : string)
+11. MenuItem(menuItemNumber : int, description : string, prepTime : int, type : MenuItemType)
+12. MenuFoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+13. Relationship(parentFoodItemNumber : int, childFoodItemNumber : int, quantity : int)
+
+Relationships:
+1. 0..* Reservation associate 0..* Table
+2. 0..* Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher inherit Employee
+3. 1 Reservation contain 0..* MenuItem
+4. 0..* MenuItem associate 1..* MenuFoodItem
+5. 0..* MenuFoodItem associate 0..* FoodItem
+6. 1..* FoodItem inherit FoodItem
+7. 0..* FoodItem associate 0..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: TimeOfDay (enum) - Enum Attributes: [Lunch, Dinner, HappyHour], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phone , type ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [menuItemNumber , description , prepTime , type ], Class Attributes: []
+Class: MenuFoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 0..* Reservation association 0..* Table
+ 1 Reservation aggregation 0..* MenuItem
+ 0..* MenuItem association 1..* MenuFoodItem
+ 0..* MenuFoodItem association 0..* FoodItem
+ False FoodItem inheritance False FoodItem
+ 0..* FoodItem association 0..* FoodItem
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+ 'MenuFoodItem(enum)'	-	'Ingredient(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'MenuItem(enum):type '	-	'type'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 0..* Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+ ' 0..* MenuItem association 1..* MenuFoodItem'	-	' 1 MenuItem association * Ingredient'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  11                  17                  
+Attributes          72                  36                  51                  
+Associations        3                   2                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, NonSmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeType(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemType(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string, reservationType : ReservationType)
+2. Table(tableNumber : int, description : string, tableSize : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : date, driverLicenseNumber : string)
+11. MenuItem(menuItemNumber : int, description : string, prepTime : time, menuItemType : MenuItemType)
+12. FoodItem(foodItemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+
+Relationships:
+1..* Reservation associate 0..* Table
+Manager inherit Employee
+Maitre inherit Employee
+Waiter inherit Employee
+Bartender inherit Employee
+Chef inherit Employee
+Cook inherit Employee
+BusPerson inherit Employee
+Dishwasher inherit Employee
+Reservation associate 1..* MenuItem
+MenuItem associate 1..* FoodItem
+FoodItem contain 0..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemType (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , time , date , numberOfPeople , name , phoneNumber , reservationType ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , tableSize ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [menuItemNumber , description , prepTime , menuItemType ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [foodItemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation association 0..* Table
+ False Manager inheritance False Employee
+ False Maitre inheritance False Employee
+ False Waiter inheritance False Employee
+ False Bartender inheritance False Employee
+ False Chef inheritance False Employee
+ False Cook inheritance False Employee
+ False BusPerson inheritance False Employee
+ False Dishwasher inheritance False Employee
+ 1 Reservation association 1..* MenuItem
+ 1 MenuItem association 1..* FoodItem
+ 1 FoodItem aggregation 0..* FoodItem
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'MenuItemType(enum)'	-	'MenuItemType(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'MenuItemType(enum):Appetizer'	-	'appetizer'
+ 'MenuItemType(enum):Entree'	-	'entree'
+ 'MenuItemType(enum):Dessert'	-	'dessert'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+ ' 1..* Reservation association 0..* Table'	-	' 1 Reservation association 0..* Table'
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          69                  37                  51                  
+Associations        4                   1                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Romano:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ReservationType(Individual, Banquet)
+2. SeatingPreference(Inside, Patio)
+3. SmokingPreference(Smoking, NonSmoking)
+4. TableSize(2-person, 4-person, 6-person)
+5. EmployeeType(Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher)
+6. MenuItemCategory(Appetizer, Entree, Dessert, Beverage)
+7. UnitOfMeasure(Each, Ounce, Sheet, Pound, Gram, Dozen)
+
+Class:
+1. Reservation(reservationNumber : int, reservationType : ReservationType, time : time, date : date, numberOfPeople : int, name : string, phoneNumber : string)
+2. Table(tableNumber : int, description : string, size : TableSize)
+3. Manager(name : string, dateOfBirth : date, driverLicenseNumber : string)
+4. Maitre(name : string, dateOfBirth : date, driverLicenseNumber : string)
+5. Waiter(name : string, dateOfBirth : date, driverLicenseNumber : string)
+6. Bartender(name : string, dateOfBirth : date, driverLicenseNumber : string)
+7. Chef(name : string, dateOfBirth : date, driverLicenseNumber : string)
+8. Cook(name : string, dateOfBirth : date, driverLicenseNumber : string)
+9. BusPerson(name : string, dateOfBirth : date, driverLicenseNumber : string)
+10. Dishwasher(name : string, dateOfBirth : date, driverLicenseNumber : string)
+11. MenuItem(itemNumber : int, description : string, prepTime : time, category : MenuItemCategory)
+12. FoodItem(itemNumber : int, description : string, purchaseFlag : boolean, unitOfMeasure : UnitOfMeasure)
+
+Relationships:
+1..* Reservation contain 1..* Table
+1 Manager inherit Employee
+1 Maitre inherit Employee
+1 Waiter inherit Employee
+1 Bartender inherit Employee
+1 Chef inherit Employee
+1 Cook inherit Employee
+1 BusPerson inherit Employee
+1 Dishwasher inherit Employee
+1 Reservation associate 1 Waiter
+1..* MenuItem associate 1..* Reservation
+1..* MenuItem utilize 1..* FoodItem
+1..* FoodItem comprise 1..* FoodItem
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ReservationType (enum) - Enum Attributes: [Individual, Banquet], Class Attributes: []
+Class: SeatingPreference (enum) - Enum Attributes: [Inside, Patio], Class Attributes: []
+Class: SmokingPreference (enum) - Enum Attributes: [Smoking, NonSmoking], Class Attributes: []
+Class: TableSize (enum) - Enum Attributes: [2-person, 4-person, 6-person], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Manager, Maitre, Waiter, Bartender, Chef, Cook, BusPerson, Dishwasher], Class Attributes: []
+Class: MenuItemCategory (enum) - Enum Attributes: [Appetizer, Entree, Dessert, Beverage], Class Attributes: []
+Class: UnitOfMeasure (enum) - Enum Attributes: [Each, Ounce, Sheet, Pound, Gram, Dozen], Class Attributes: []
+Class: Reservation (enum) - Enum Attributes: [reservationNumber , reservationType , time , date , numberOfPeople , name , phoneNumber ], Class Attributes: []
+Class: Table (enum) - Enum Attributes: [tableNumber , description , size ], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Maitre (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Waiter (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Bartender (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Chef (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Cook (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: BusPerson (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: Dishwasher (enum) - Enum Attributes: [name , dateOfBirth , driverLicenseNumber ], Class Attributes: []
+Class: MenuItem (enum) - Enum Attributes: [itemNumber , description , prepTime , category ], Class Attributes: []
+Class: FoodItem (enum) - Enum Attributes: [itemNumber , description , purchaseFlag , unitOfMeasure ], Class Attributes: []
+Relationships:
+ 1..* Reservation aggregation 1..* Table
+ False Manager inheritance False Employee
+ False Maitre inheritance False Employee
+ False Waiter inheritance False Employee
+ False Bartender inheritance False Employee
+ False Chef inheritance False Employee
+ False Cook inheritance False Employee
+ False BusPerson inheritance False Employee
+ False Dishwasher inheritance False Employee
+ 1 Reservation association 1 Waiter
+ 1..* MenuItem association 1..* Reservation
+ 1..* MenuItem association 1..* FoodItem
+ 1..* FoodItem association 1..* FoodItem
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'SeatingPreference(enum)'	-	'SeatingPreference(enum)'
+ 'SmokingPreference(enum)'	-	'SmokingPreference(enum)'
+ 'Reservation(enum)'	-	'Reservation(class)'
+ 'Table(enum)'	-	'Table(class)'
+ 'MenuItem(enum)'	-	'MenuItem(class)'
+ 'FoodItem(enum)'	-	'FoodItem(class)'
+ 'TableSize(enum)'	-	'TableType(enum)'
+ 'EmployeeType(enum)'	-	'Role(enum)'
+ 'MenuItemCategory(enum)'	-	'MenuItemType(enum)'
+ 'UnitOfMeasure(enum)'	-	'Unit(enum)'
+ 'Manager(enum)'	-	'Employee(class)'
+-Attributes:
+ 'SeatingPreference(enum):Inside'	-	'inside'
+ 'SeatingPreference(enum):Patio'	-	'patio'
+ 'SmokingPreference(enum):Smoking'	-	'smoking'
+ 'SmokingPreference(enum):NonSmoking'	-	'nonsmoking'
+ 'Reservation(enum):reservationNumber '	-	'reservationNumber'
+ 'Reservation(enum):time '	-	'time'
+ 'Reservation(enum):date '	-	'date'
+ 'Reservation(enum):numberOfPeople '	-	'numberOfPeople'
+ 'Reservation(enum):name '	-	'name'
+ 'Reservation(enum):phoneNumber '	-	'phoneNumber'
+ 'Table(enum):tableNumber '	-	'tableNumber'
+ 'Table(enum):description '	-	'description'
+ 'MenuItem(enum):description '	-	'description'
+ 'MenuItem(enum):prepTime '	-	'prepTime'
+ 'FoodItem(enum):description '	-	'description'
+ 'TableSize(enum):2-person'	-	'2person'
+ 'TableSize(enum):4-person'	-	'4person'
+ 'TableSize(enum):6-person'	-	'6person'
+ 'EmployeeType(enum):Manager'	-	'manager'
+ 'EmployeeType(enum):Maitre'	-	'Maitre'
+ 'EmployeeType(enum):Waiter'	-	'waiter'
+ 'EmployeeType(enum):Bartender'	-	'bartender'
+ 'EmployeeType(enum):Chef'	-	'chef'
+ 'EmployeeType(enum):Cook'	-	'cook'
+ 'EmployeeType(enum):BusPerson'	-	'busPerson'
+ 'EmployeeType(enum):Dishwasher'	-	'dishwasher'
+ 'MenuItemCategory(enum):Appetizer'	-	'appetizer'
+ 'MenuItemCategory(enum):Entree'	-	'entree'
+ 'MenuItemCategory(enum):Dessert'	-	'dessert'
+ 'UnitOfMeasure(enum):Ounce'	-	'ounce'
+ 'UnitOfMeasure(enum):Sheet'	-	'sheet'
+ 'UnitOfMeasure(enum):Pound'	-	'pound'
+ 'UnitOfMeasure(enum):Gram'	-	'gram'
+ 'UnitOfMeasure(enum):Dozen'	-	'dozen'
+ 'Manager(enum):name '	-	'name'
+ 'Manager(enum):dateOfBirth '	-	'dateOfBirth'
+ 'Manager(enum):driverLicenseNumber '	-	'driverLicenseNumber'
+-Relationships:
+--------------------------------------------------------------------------------
+Romano, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             19                  11                  17                  
+Attributes          69                  37                  51                  
+Associations        5                   0                   13                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+Romano, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.628          0.665          0.646          0.657
+Attributes          0.532          0.674          0.595          0.640
+Associations        0.191          0.065          0.097          0.075
+Inheritances        0.400          0.050          0.089          0.061
+--------------------------------------------------------------------------------

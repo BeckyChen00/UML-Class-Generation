@@ -1,0 +1,1409 @@
+------------------------------------------------------------
+---------------------1/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes:
+Event(EventTypes type)
+Venue(VenueTypes type)
+Seat(int number)
+Section(SectionTypes type)
+Show(Date date, Time time)
+
+Relationships:
+1 Event is of 1 EventTypes
+1 Venue is of 1 VenueTypes
+1 Venue contains * Seat
+1 Venue contains * Section
+1 Show is of 1 Date
+1 Show is of 1 Time
+* Venue contains * Show
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventTypes]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueTypes]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionTypes]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Relationships:
+ 1 Event association 1 EventTypes
+ 1 Venue association 1 VenueTypes
+ 1 Venue association * Seat
+ 1 Venue association * Section
+ 1 Show association 1 Date
+ 1 Show association 1 Time
+ * Venue association * Show
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   7                   
+Attributes          12                  7                   11                  
+Associations        5                   1                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Time time)
+Venue(VenueType type, List<Section> sections)
+Section(SectionType type, List<Seat> seats)
+Seat(int number)
+Show(Event event, Venue venue)
+
+Relationships:
+* Event belongs to one EventType
+* Event belongs to one Date
+* Venue belongs to one VenueType
+* Venue has many Sections
+* Section belongs to one SectionType
+* Section has many Seats
+* Seat has one number
+* Show has one Event
+* Show has one Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,sections:List<Section>]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue]
+Relationships:
+ * Event association 1 EventType
+ * Event association 1 Date
+ * Venue association 1 VenueType
+ * Venue association 1 Sections
+ * Section association 1 SectionType
+ * Section association 1 Seats
+ * Seat association 1 number
+ * Show association 1 Event
+ * Show association 1 Venue
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' * Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   7                   
+Attributes          16                  6                   11                  
+Associations        2                   1                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SeatSection(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Time time)
+Venue(VenueType type)
+Seat(int number)
+Section(SeatSection type)
+
+  Relationships:
+* Event associate 1 Venue
+* Venue contain * Seat
+* Seat associate 1 Section
+* Event organized multiple shows at 9 pm
+* Each show associate 1 date
+* Each show organized in a Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SeatSection (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SeatSection]
+Relationships:
+ * Event association 1 Venue
+ * Venue association * Seat
+ * Seat association 1 Section
+ * Event association 9 pm
+ * Each association 1 date
+ * Each association 1 Venue
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' * Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' * Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   7                   
+Attributes          12                  6                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes: 
+Event(EventType type, Date date, Time time)
+Venue(VenueType type, Set<Section> sections)
+Section(SectionType type, int number)
+Seat(int number)
+Show(Event event, Venue venue)
+
+  Relationships:
+1 Event has 1 EventType
+1 Event has 1 Date
+1 Event has 1 Time
+1 Venue has * Section
+1 Section has * Seat
+1 Show associate 1 Event
+1 Show associate 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,sections:Set<Section>]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType,number:int]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Date
+ 1 Event association 1 Time
+ 1 Venue association * Section
+ 1 Section association * Seat
+ 1 Show association 1 Event
+ 1 Show association 1 Venue
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' 1 Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   7                   
+Attributes          16                  6                   11                  
+Associations        5                   1                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes: 
+Event(EventType type, Date date, Venue venue, Show show)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType section)
+Show(Date date, Time time)
+
+Relationships:
+* Event associates 1 Venue
+* Event associates 1 Show
+* Venue contain * Seats
+
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,venue:Venue,show:Show]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Relationships:
+ * Event association 1 Venue
+ * Event association 1 Show
+ * Venue association * Seats
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' * Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' * Event association 1 Show'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          16                  8                   11                  
+Associations        2                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Time time)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType section)
+Show(Event event, Venue venue, Time time)
+
+  Relationships:
+* Event associates 1 Show
+* Venue contains * Seat
+* Show associates 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue,time:Time]
+Relationships:
+ * Event association 1 Show
+ * Venue association * Seat
+ * Show association 1 Venue
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' * Event association 1 Show'	-	' 1 Event association 0..* Showing'
+ ' * Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          16                  7                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Venue venue)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType sectionType)
+Show(Date date, Time time)
+
+Relationships:
+1 Event associated with 1 Venue
+1 Venue contain * Seat
+1 Show associated with 1 Event
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,venue:Venue]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Relationships:
+ 1 Event association 1 Venue
+ 1 Venue association * Seat
+ 1 Show association 1 Event
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' 1 Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' 1 Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        3                   3                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Classes:
+- Event
+- ConcertEvent
+- TheatricalEvent
+- Venue
+- OpenVenue
+- ClosedVenue
+- Seat
+- Section
+
+Enumerations:
+- EventType(CONCERT, THEATRICAL)
+- VenueType(OPEN, CLOSED)
+- SectionType(parquet center, balcony center, ...)
+
+Relationships:
+- Event is associated with one EventType
+- Event is organized in one Venue
+- Venue can be of one VenueType
+- Venue contains multiple Seats
+- Seat is part of one Section
+- Show is linked to one Event
+- Show has one Date
+- Show happens at 9 pm
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Event (class) - Enum Attributes: [], Class Attributes: []
+Class: ConcertEvent (class) - Enum Attributes: [], Class Attributes: []
+Class: TheatricalEvent (class) - Enum Attributes: [], Class Attributes: []
+Class: Venue (class) - Enum Attributes: [], Class Attributes: []
+Class: OpenVenue (class) - Enum Attributes: [], Class Attributes: []
+Class: ClosedVenue (class) - Enum Attributes: [], Class Attributes: []
+Class: Seat (class) - Enum Attributes: [], Class Attributes: []
+Class: Section (class) - Enum Attributes: [], Class Attributes: []
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center, ...], Class Attributes: []
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Venue
+ 1 Venue association 1 VenueType
+ 1 Venue association 1 Seats
+ 1 Seat association 1 Section
+ 1 Show association 1 Event
+ 1 Show association 1 Date
+ 1 Show association 9 pm
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+-Relationships:
+ ' 1 Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  6                   7                   
+Attributes          7                   4                   11                  
+Associations        4                   1                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center, ...)
+
+Classes: 
+Event(EventType type, Show show, Venue venue)
+Show(Date date, Time time)
+Venue(VenueType type, List<Section> sections)
+Section(SectionType type, List<Seat> seats)
+Seat(int number)
+
+Relationships:
+1 Event has 1 EventType
+1 Event has 1 Show
+1 Event has 1 Venue
+1 Show has 1 Date
+1 Show has 1 Time
+1 Venue has 1 VenueType
+1 Venue has * Section
+1 Section has * Seat
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center, ...], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,show:Show,venue:Venue]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,sections:List<Section>]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [type:SectionType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Show
+ 1 Event association 1 Venue
+ 1 Show association 1 Date
+ 1 Show association 1 Time
+ 1 Venue association 1 VenueType
+ 1 Venue association * Section
+ 1 Section association * Seat
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' 1 Event association 1 Show'	-	' 1 Event association 0..* Showing'
+ ' 1 Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   7                   
+Attributes          17                  7                   11                  
+Associations        6                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes: 
+Event(EventType type, Date date)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType sectionType)
+Show(Date showDate, Time showTime)
+ShowEvent(Event event, Show show)
+
+Relationships:
+1 Event is of EventType
+1 Event is associated with 1 ShowEvent
+1 Venue is of VenueType
+1 Venue contains * Seats
+1 Show is on Date
+1 Show is at Time
+1 ShowEvent is associated with 1 Event
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [showDate:Date,showTime:Time]
+Class: ShowEvent (class) - Enum Attributes: [], Class Attributes: [event:Event,show:Show]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 ShowEvent
+ 1 Venue association 1 VenueType
+ 1 Venue association * Seats
+ 1 Show association 1 Date
+ 1 Show association 1 Time
+ 1 ShowEvent association 1 Event
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   7                   
+Attributes          16                  6                   11                  
+Associations        4                   0                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes:
+Event(EventTypes type, Date showDate, Venue venue)
+Venue(VenueTypes type, List<Seat> seats)
+Seat(int number, SectionTypes section)
+Show(Date showDate, Time showTime)
+
+Relationships:
+* Event is associated with 1 Venue
+* Venue contains * Seats
+* Show is associated with 1 Event
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventTypes,showDate:Date,venue:Venue]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueTypes,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionTypes]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [showDate:Date,showTime:Time]
+Relationships:
+ * Event association 1 Venue
+ * Venue association * Seats
+ * Show association 1 Event
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' * Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' * Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        2                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes: 
+Event(EventTypes eventType, Date showDate)
+Venue(VenueTypes venueType)
+Seat(int number)
+Section(SectionTypes sectionType)
+
+Relationships:
+1 Event is of 1 EventTypes
+1 Event is in 1 Venue
+1 Venue has * Seat
+1 Venue has * Section
+1 Show is at 1 Date
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventType:EventTypes,showDate:Date]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [venueType:VenueTypes]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int]
+Class: Section (class) - Enum Attributes: [], Class Attributes: [sectionType:SectionTypes]
+Relationships:
+ 1 Event association 1 EventTypes
+ 1 Event association 1 Venue
+ 1 Venue association * Seat
+ 1 Venue association * Section
+ 1 Show association 1 Date
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' 1 Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   7                   
+Attributes          11                  5                   11                  
+Associations        4                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes:
+Event(EventType eventType, Date date, Time time)
+Venue(VenueType venueType)
+Seat(int number, SectionType sectionType, Venue venue)
+Show(Event event, Venue venue)
+
+Relationships:
+* Event is of 1 EventType
+* Venue is of 1 VenueType
+* Venue has * Seat
+* Show is associated with 1 Event
+* Show is associated with 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [eventType:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [venueType:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType,venue:Venue]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue]
+Relationships:
+ * Event association 1 EventType
+ * Venue association 1 VenueType
+ * Venue association * Seat
+ * Show association 1 Event
+ * Show association 1 Venue
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' * Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' * Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  5                   11                  
+Associations        5                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center, ...)
+
+Classes:
+Event(EventType type, ShowTime showTime, Date date)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType sectionType, Venue venue)
+ShowTime(LocalTime time)
+
+Relationships:
+1 Event has 1 EventType
+1 Event has 1 ShowTime
+1 Event has 1 Date
+1 Venue has * Seat
+1 Seat has 1 SectionType
+1 Seat is in 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center, ...], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,showTime:ShowTime,date:Date]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType,venue:Venue]
+Class: ShowTime (class) - Enum Attributes: [], Class Attributes: [time:LocalTime]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 ShowTime
+ 1 Event association 1 Date
+ 1 Venue association * Seat
+ 1 Seat association 1 SectionType
+ 1 Seat association 1 Venue
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+-Relationships:
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   7                   
+Attributes          16                  6                   11                  
+Associations        3                   1                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date)
+Venue(VenueType type)
+Seat(int number, SectionType sectionType)
+Show(Date date, Time time)
+
+Relationships:
+* Event is organized in 1 Venue
+* Venue contains * Seat
+* Show is organized in 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Relationships:
+ * Event association 1 Venue
+ * Venue association * Seat
+ * Show association 1 Venue
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' * Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' * Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          13                  7                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes: 
+Event(EventType type, Date showDate, Time showTime)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType sectionType)
+Show(Date date, Time time)
+
+Relationships:
+1 Event has 1 EventType
+1 Event has 1 Venue
+1 Venue has * Seat
+1 Show has * Event
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,showDate:Date,showTime:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,sectionType:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Venue
+ 1 Venue association * Seat
+ 1 Show association * Event
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Show(class):date'	-	'date'
+-Relationships:
+ ' 1 Event association 1 Venue'	-	' 1 Event association 0..* Venue'
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' 1 Show association * Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        4                   3                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Time time)
+Venue(VenueType type)
+Seat(int number, SectionType section)
+Show(Event event, Venue venue, Time time)
+
+Relationships:
+1 Event is of 1 EventType
+1 Event is on 1 Date
+1 Event is at 1 Time
+1 Venue is of 1 VenueType
+1 Venue has * Seat
+1 Show is of 1 Event
+1 Show is at 1 Venue
+1 Show is at 1 Time
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue,time:Time]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Date
+ 1 Event association 1 Time
+ 1 Venue association 1 VenueType
+ 1 Venue association * Seat
+ 1 Show association 1 Event
+ 1 Show association 1 Venue
+ 1 Show association 1 Time
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' 1 Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center...)
+
+Classes: 
+Event(EventType type, Date date, Time time)
+Venue(VenueType type)
+Seat(int number, SectionType section)
+Show(Event event, Venue venue, Time time)
+
+Relationships:
+1 Event has 1 EventType
+1 Event has 1 Date
+1 Event has 1 Time
+1 Venue has 1 VenueType
+1 Venue contain * Seat
+1 Show associate 1 Event
+1 Show associate 1 Venue
+1 Show associate 1 Time
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center...], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue,time:Time]
+Relationships:
+ 1 Event association 1 EventType
+ 1 Event association 1 Date
+ 1 Event association 1 Time
+ 1 Venue association 1 VenueType
+ 1 Venue association * Seat
+ 1 Show association 1 Event
+ 1 Show association 1 Venue
+ 1 Show association 1 Time
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' 1 Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        5                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+EventType(CONCERT, THEATRICAL)
+VenueType(OPEN, CLOSED)
+SectionType(parquet center, balcony center)
+
+Classes: 
+Event(EventType type, Date showDate, Time showTime)
+Venue(VenueType type)
+Seat(int number, SectionType section)
+Show(Event event, Venue venue)
+
+Relationships:
+1 Event is of * Show
+1 Venue has * Seat
+1 Show is in * Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventType (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueType (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionType (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,showDate:Date,showTime:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue]
+Relationships:
+ 1 Event association * Show
+ 1 Venue association * Seat
+ 1 Show association * Venue
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'EventType(enum)'	-	'EventType(enum)'
+ 'VenueType(enum)'	-	'VenueType(enum)'
+ 'SectionType(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventType(enum):CONCERT'	-	'concert'
+ 'EventType(enum):THEATRICAL'	-	'theatrical'
+ 'VenueType(enum):OPEN'	-	'open'
+ 'VenueType(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' 1 Event association * Show'	-	' 1 Event association 0..* Showing'
+ ' 1 Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          14                  7                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Event Management System (EMS):
+------------------------------------------------------------
+AI:
+Enumeration:
+EventTypes(CONCERT, THEATRICAL)
+VenueTypes(OPEN, CLOSED)
+SectionTypes(parquet center, balcony center)
+
+Classes:
+Event(EventType type, Date date, Time time)
+Venue(VenueType type, List<Seat> seats)
+Seat(int number, SectionType section)
+Show(Event event, Venue venue)
+
+Relationships:
+* Event is of type EventType
+* Venue is of type VenueType
+* Venue has * Seat
+* Show associates 1 Event
+* Show associates 1 Venue
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EventTypes (enum) - Enum Attributes: [CONCERT, THEATRICAL], Class Attributes: []
+Class: VenueTypes (enum) - Enum Attributes: [OPEN, CLOSED], Class Attributes: []
+Class: SectionTypes (enum) - Enum Attributes: [center, center], Class Attributes: []
+Class: Event (class) - Enum Attributes: [], Class Attributes: [type:EventType,date:Date,time:Time]
+Class: Venue (class) - Enum Attributes: [], Class Attributes: [type:VenueType,seats:List<Seat>]
+Class: Seat (class) - Enum Attributes: [], Class Attributes: [number:int,section:SectionType]
+Class: Show (class) - Enum Attributes: [], Class Attributes: [event:Event,venue:Venue]
+Relationships:
+ * Event association 1 EventType
+ * Venue association 1 VenueType
+ * Venue association * Seat
+ * Show association 1 Event
+ * Show association 1 Venue
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'EventTypes(enum)'	-	'EventType(enum)'
+ 'VenueTypes(enum)'	-	'VenueType(enum)'
+ 'SectionTypes(enum)'	-	'SectionType(enum)'
+ 'Event(class)'	-	'Event(class)'
+ 'Venue(class)'	-	'Venue(class)'
+ 'Seat(class)'	-	'Seat(class)'
+ 'Show(class)'	-	'Showing(class)'
+-Attributes:
+ 'EventTypes(enum):CONCERT'	-	'concert'
+ 'EventTypes(enum):THEATRICAL'	-	'theatrical'
+ 'VenueTypes(enum):OPEN'	-	'open'
+ 'VenueTypes(enum):CLOSED'	-	'closed'
+ 'Event(class):type'	-	'type'
+ 'Seat(class):number'	-	'number'
+ 'Seat(class):section'	-	'section'
+-Relationships:
+ ' * Venue association * Seat'	-	' 1 Venue association 0..* Seat'
+ ' * Show association 1 Event'	-	' 1 Event association 0..* Showing'
+--------------------------------------------------------------------------------
+Event Management System (EMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   7                   7                   
+Attributes          15                  7                   11                  
+Associations        3                   2                   4                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+Event Management System (EMS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.906          0.964          0.934          0.952
+Attributes          0.449          0.586          0.509          0.553
+Associations        0.486          0.438          0.461          0.446
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

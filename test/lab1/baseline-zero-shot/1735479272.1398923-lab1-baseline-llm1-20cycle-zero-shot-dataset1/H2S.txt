@@ -1,0 +1,1730 @@
+------------------------------------------------------------
+---------------------1/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ItemCategory(baby clothing, women's winter boots, fridge, microwave, ...)
+(only one enumeration)
+
+Classes:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+2. PickupVehicle(storageSpace: int, availableDays: string)
+3. VolunteerDriver(availableDays: string)
+4. H2SEmployee
+(4 classes in total)
+
+Relationships:
+1 PickupVehicle contain 1..* VolunteerDriver
+2 Resident associate 1 PickupRequest
+3 PickupRequest associate 1 PickupVehicle
+4 PickupVehicle associate 1 PickupRoute
+5 PickupRoute associate 1 PickupRequest
+6 PickupVehicle contain 0..* ScheduledItem
+7 ScheduledItem associate 1 ItemCategory
+8 PickupRoute contain 1..* ScheduledItem
+9 H2SEmployee inherit H2SEmployeeExamine
+10 H2SEmployeeExamine associate 0..* TaggedItem
+11 H2SEmployeeExamine associate 1 ItemCategory
+12 H2SEmployeeExamine associate 0..* Correction
+13 DistributionCenter contain 0..* ScheduledItem
+14 DistributionCenter associate 0..* Client
+15 Client associate 1..* ItemCategory
+(15 associations in total)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ItemCategory (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:string,streetAddress:string,phoneNumber:string,emailAddress:string,itemsDescription:string]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [storageSpace:int,availableDays:string]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays:string]
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 PickupVehicle aggregation 1..* VolunteerDriver
+ 2 Resident association 1 PickupRequest
+ 3 PickupRequest association 1 PickupVehicle
+ 4 PickupVehicle association 1 PickupRoute
+ 5 PickupRoute association 1 PickupRequest
+ 6 PickupVehicle aggregation 0..* ScheduledItem
+ 7 ScheduledItem association 1 ItemCategory
+ 8 PickupRoute aggregation 1..* ScheduledItem
+ False H2SEmployee inheritance False H2SEmployeeExamine
+ 10 H2SEmployeeExamine association 0..* TaggedItem
+ 11 H2SEmployeeExamine association 1 ItemCategory
+ 12 H2SEmployeeExamine association 0..* Correction
+ 13 DistributionCenter aggregation 0..* ScheduledItem
+ 14 DistributionCenter association 0..* Client
+ 15 Client association 1..* ItemCategory
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'ItemCategory(enum)'	-	'ItemCategory(enum)'
+ 'Resident(class)'	-	'Resident(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'ItemCategory(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   13                  
+Attributes          13                  1                   17                  
+Associations        1                   0                   13                  
+Inheritances        0                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave, ...)
+2. Day(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+1. Resident(name : String, streetAddress : String, phoneNumber : String, email : String, itemsDescription : String)
+2. PickupVehicle(storageSpace : Integer, availableDays : List<Day>)
+3. VolunteerDriver(name : String, availableDays : List<Day>)
+4. SecondHandArticle(RFID : String, description : String, category : CategoryType)
+5. FoodBank
+
+Relationships:
+1..* Resident associate 1 PickupRequest
+1 PickupRequest associate 1 PickupVehicle
+1 PickupVehicle contain 1..* PickupRoute
+1 PickupRoute contain 1..* ScheduledPickup
+1 ScheduledPickup associate 1 Resident
+1 PickupVehicle associate 1 VolunteerDriver
+1..* ScheduledPickup associate 1 SecondHandArticle
+1 SecondHandArticle inherit SecondHandArticleQualityCheck
+1 SecondHandArticle associate 1 CategoryType
+1 PickupRoute associate 1 DistributionCenter
+1 DistributionCenter inherit AdditionalService
+1 AdditionalService associate 0..* Client
+0..* Client associate 1 Delivery
+1 Delivery associate 1 VolunteerDriver
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Day (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name , streetAddress , phoneNumber , email , itemsDescription ], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [storageSpace , availableDays ], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [name , availableDays ], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [RFID , description , category ], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Resident association 1 PickupRequest
+ 1 PickupRequest association 1 PickupVehicle
+ 1 PickupVehicle aggregation 1..* PickupRoute
+ 1 PickupRoute aggregation 1..* ScheduledPickup
+ 1 ScheduledPickup association 1 Resident
+ 1 PickupVehicle association 1 VolunteerDriver
+ 1..* ScheduledPickup association 1 SecondHandArticle
+ False SecondHandArticle inheritance False SecondHandArticleQualityCheck
+ 1 SecondHandArticle association 1 CategoryType
+ 1 PickupRoute association 1 DistributionCenter
+ False DistributionCenter inheritance False AdditionalService
+ 1 AdditionalService association 0..* Client
+ 0..* Client association 1 Delivery
+ 1 Delivery association 1 VolunteerDriver
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(enum):description '	-	'description'
+ 'SecondHandArticle(enum):category '	-	'category'
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   13                  
+Attributes          22                  3                   17                  
+Associations        2                   0                   13                  
+Inheritances        0                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name: String, streetAddress: String, phoneNumber: String, emailAddress: String, itemsDescription: String)
+2.PickupVehicle(vehicleNumber: String, storageSpace: Integer)
+3.VolunteerDriver(name: String, availableDays: String)
+4.Article(description: String, RFIDTag: Boolean, category: String)
+5.FoodBank()
+6.H2SEmployee()
+7.DistributionCenter()
+
+Enumerations:
+1.ItemCategory(baby clothing, women's winter boots, fridge, microwave, ...)
+
+Relationships:
+1.Resident contain 1..* Article
+2.Resident associate 1 PickupVehicle
+3.PickupVehicle associate 0..* VolunteerDriver
+4.PickupVehicle contain 0..* Resident
+5.PickupVehicle associate 1 DistributionCenter
+6.Article inherit ItemCategory
+7.Article associate 1 H2SEmployee
+8.H2SEmployee associate 0..* Article
+9.H2SEmployee associate 1 DistributionCenter
+10.DistributionCenter contain 1..* Article
+11.DistributionCenter associate 0..* H2SEmployee
+12.DistributionCenter inherit FoodBank
+13.FoodBank contain 0..* Article
+14.FoodBank associate 1 DistributionCenter
+15.DistributionCenter contain 0..* Resident
+16.Resident associate 1..* Article
+17.Resident contain 0..* Article
+18.Resident associate 1 DistributionCenter
+19.DistributionCenter associate 0..* Resident
+20.DistributionCenter contain 0..* VolunteerDriver
+21.VolunteerDriver associate 1..* DistributionCenter
+22.VolunteerDriver contain 0..* PickupVehicle
+23.PickupVehicle associate 1 VolunteerDriver
+24.PickupVehicle inherit Vehicle
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:String,streetAddress:String,phoneNumber:String,emailAddress:String,itemsDescription:String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [vehicleNumber:String,storageSpace:Integer]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [name:String,availableDays:String]
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:String,RFIDTag:Boolean,category:String]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Class: ItemCategory (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Relationships:
+ 1 Resident aggregation 1..* Article
+ 2 Resident association 1 PickupVehicle
+ 3 PickupVehicle association 0..* VolunteerDriver
+ 4 PickupVehicle aggregation 0..* Resident
+ 5 PickupVehicle association 1 DistributionCenter
+ False Article inheritance False ItemCategory
+ 7 Article association 1 H2SEmployee
+ 8 H2SEmployee association 0..* Article
+ 9 H2SEmployee association 1 DistributionCenter
+ 10 DistributionCenter aggregation 1..* Article
+ 11 DistributionCenter association 0..* H2SEmployee
+ False DistributionCenter inheritance False FoodBank
+ 13 FoodBank aggregation 0..* Article
+ 14 FoodBank association 1 DistributionCenter
+ 15 DistributionCenter aggregation 0..* Resident
+ 16 Resident association 1..* Article
+ 17 Resident aggregation 0..* Article
+ 18 Resident association 1 DistributionCenter
+ 19 DistributionCenter association 0..* Resident
+ 20 DistributionCenter aggregation 0..* VolunteerDriver
+ 21 VolunteerDriver association 1..* DistributionCenter
+ 22 VolunteerDriver aggregation 0..* PickupVehicle
+ 23 PickupVehicle association 1 VolunteerDriver
+ False PickupVehicle inheritance False Vehicle
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'ItemCategory(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'ItemCategory(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   4                   13                  
+Attributes          17                  1                   17                  
+Associations        21                  0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. PickupTime(8:00, 9:00, 10:00, 11:00, 12:00, 13:00, 14:00)
+2. Category(baby clothing, women's winter boots, fridge, microwave, ...)
+3. DayOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, email: string, itemsDescription: string)
+2. PickupVehicle(storageSpace: int, availableDays: list<DayOfWeek>)
+3. VolunteerDriver(availableDays: list<DayOfWeek>)
+4. SecondHandArticle(description: string, quality: enum{usable, notUsable}, RFIDTag: string, category: Category)
+5. FoodBank
+6. DistributionCenter
+7. Client
+8. H2SEmployee
+
+Relationships:
+1..* PickupVehicle associate 0..* Resident
+1..* VolunteerDriver associate 0..* PickupVehicle
+1 PickupVehicle contain 1 PickupRoute
+1 PickupRoute associate 0..* Resident
+1 PickupRoute associate 0..* SecondHandArticle
+1 VolunteerDriver inherit H2SEmployee
+1 SecondHandArticle inherit Item
+1 Resident contain 0..* SecondHandArticle
+1 DistributionCenter inherit H2SEmployee
+1 DistributionCenter contain 1..* SecondHandArticle
+1 DistributionCenter contain 0..* Client
+1 Client associate 0..* Category
+1 Client inherit Resident
+1 H2SEmployee contain 0..* SecondHandArticle
+1 H2SEmployee contain 0..* Client
+1 H2SEmployee contain 0..* PickupRoute
+1 H2SEmployee contain 1 FoodBank
+1 H2SEmployee associate 0..* Client
+1 H2SEmployee associate 0..* SecondHandArticle
+1 H2SEmployee associate 0..* PickupVehicle
+1 H2SEmployee associate 0..* VolunteerDriver
+1 H2SEmployee associate 0..* DistributionCenter
+1 H2SEmployee associate 0..* Resident
+1 Client contain 0..* Category
+1 Client associate 0..* SecondHandArticle
+1 Client associate 0..* PickupRoute
+1 Client associate 0..* VolunteerDriver
+1 Client inherit Resident
+1 Client associate 0..* SecondHandArticle
+1 H2SEmployee inherit Resident
+1 H2SEmployee associate 0..* PickupRoute
+1 H2SEmployee associate 0..* VolunteerDriver
+1 H2SEmployee associate 0..* Resident
+1 H2SEmployee associate 0..* SecondHandArticle
+1 Client inherit Resident
+1 Client associate 0..* PickupRoute
+1 Client associate 0..* VolunteerDriver
+1 Client associate 0..* SecondHandArticle
+1 SecondHandArticle associate 0..* Category
+1 SecondHandArticle associate 0..* Resident
+1 SecondHandArticle associate 0..* H2SEmployee
+1 SecondHandArticle associate 0..* PickupRoute
+1 SecondHandArticle associate 0..* VolunteerDriver
+1 SecondHandArticle associate 0..* Client
+1 Resident contain 0..* SecondHandArticle
+1 Resident associate 0..* PickupRoute
+1 Resident associate 0..* VolunteerDriver
+1 Resident associate 0..* Client
+
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PickupTime (enum) - Enum Attributes: [8, 9, 10, 11, 12, 13, 14], Class Attributes: []
+Class: Category (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: DayOfWeek (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, email, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [storageSpace, availableDays], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [availableDays], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [description, quality, notUsable}, RFIDTag, category], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Client (enum) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* PickupVehicle association 0..* Resident
+ 1..* VolunteerDriver association 0..* PickupVehicle
+ 1 PickupVehicle aggregation 1 PickupRoute
+ 1 PickupRoute association 0..* Resident
+ 1 PickupRoute association 0..* SecondHandArticle
+ False VolunteerDriver inheritance False H2SEmployee
+ False SecondHandArticle inheritance False Item
+ 1 Resident aggregation 0..* SecondHandArticle
+ False DistributionCenter inheritance False H2SEmployee
+ 1 DistributionCenter aggregation 1..* SecondHandArticle
+ 1 DistributionCenter aggregation 0..* Client
+ 1 Client association 0..* Category
+ False Client inheritance False Resident
+ 1 H2SEmployee aggregation 0..* SecondHandArticle
+ 1 H2SEmployee aggregation 0..* Client
+ 1 H2SEmployee aggregation 0..* PickupRoute
+ 1 H2SEmployee aggregation 1 FoodBank
+ 1 H2SEmployee association 0..* Client
+ 1 H2SEmployee association 0..* SecondHandArticle
+ 1 H2SEmployee association 0..* PickupVehicle
+ 1 H2SEmployee association 0..* VolunteerDriver
+ 1 H2SEmployee association 0..* DistributionCenter
+ 1 H2SEmployee association 0..* Resident
+ 1 Client aggregation 0..* Category
+ 1 Client association 0..* SecondHandArticle
+ 1 Client association 0..* PickupRoute
+ 1 Client association 0..* VolunteerDriver
+ False H2SEmployee inheritance False Resident
+ 1 H2SEmployee association 0..* PickupRoute
+ 1 SecondHandArticle association 0..* Category
+ 1 SecondHandArticle association 0..* Resident
+ 1 SecondHandArticle association 0..* H2SEmployee
+ 1 SecondHandArticle association 0..* PickupRoute
+ 1 SecondHandArticle association 0..* VolunteerDriver
+ 1 SecondHandArticle association 0..* Client
+ 1 Resident association 0..* PickupRoute
+ 1 Resident association 0..* VolunteerDriver
+ 1 Resident association 0..* Client
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'Client(enum)'	-	'Client(class)'
+ 'Category(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(enum):description'	-	'description'
+ 'SecondHandArticle(enum):category'	-	'category'
+ 'Category(enum):fridge'	-	'Fridge'
+-Relationships:
+ ' 1 Client association 0..* SecondHandArticle'	-	' 0..1 Client association * SecondHandArticle'
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  6                   13                  
+Attributes          30                  3                   17                  
+Associations        25                  1                   13                  
+Inheritances        4                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------H2S:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ItemCategory(baby clothing, women's winter boots, fridge, microwave, etc.)
+
+Class:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, email: string, itemsDescription: string)
+2. PickupVehicle(storageSpace: int, availableDays: list of strings)
+3. VolunteerDriver(name: string, availableDays: list of strings)
+4. SecondHandArticle(description: string, quality: string)
+5. FoodBank
+6. DistributionCenter
+7. H2SEmployee
+8. Client
+
+Relationships:
+1. Resident contain 1..* SecondHandArticle
+2. Resident associate 0..* PickupVehicle
+3. PickupVehicle associate 1 VolunteerDriver
+4. PickupVehicle contain 0..* Resident
+5. PickupVehicle contain 0..* SecondHandArticle
+6. VolunteerDriver inherit H2SEmployee
+7. SecondHandArticle associate 1 ItemCategory
+8. DistributionCenter contain 1..* Resident
+9. DistributionCenter contain 0..* SecondHandArticle
+10. DistributionCenter contain 0..* Client
+11. Client associate 0..* ItemCategory
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ItemCategory (enum) - Enum Attributes: [clothing, winter, fridge, microwave, etc.], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, email, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [storageSpace, availableDays], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [name, availableDays], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [description, quality], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (enum) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (enum) - Enum Attributes: [], Class Attributes: []
+Class: Client (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident aggregation 1..* SecondHandArticle
+ 2 Resident association 0..* PickupVehicle
+ 3 PickupVehicle association 1 VolunteerDriver
+ 4 PickupVehicle aggregation 0..* Resident
+ 5 PickupVehicle aggregation 0..* SecondHandArticle
+ False VolunteerDriver inheritance False H2SEmployee
+ 7 SecondHandArticle association 1 ItemCategory
+ 8 DistributionCenter aggregation 1..* Resident
+ 9 DistributionCenter aggregation 0..* SecondHandArticle
+ 10 DistributionCenter aggregation 0..* Client
+ 11 Client association 0..* ItemCategory
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'ItemCategory(enum)'	-	'ItemCategory(enum)'
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'Client(enum)'	-	'Client(class)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'ItemCategory(enum):fridge'	-	'Fridge'
+ 'SecondHandArticle(enum):description'	-	'description'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   13                  
+Attributes          16                  2                   17                  
+Associations        10                  0                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------H2S:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. PickupDay(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Classes:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, email: string, itemsDescription: string)
+2. Vehicle(storageSpace: string, dimensions: string, weight: string)
+3. VolunteerDriver(availableDays: string)
+4. Article(description: string, RFIDTag: string, category: string)
+5. FoodBank
+
+Relationships:
+- Resident associate 1 Vehicle (Resident schedules pickups with a Vehicle)
+- Vehicle contain * Resident (Vehicle collects items from Residents)
+- Vehicle associate 1 VolunteerDriver (Vehicle is driven by a VolunteerDriver)
+- VolunteerDriver associate * Vehicle (VolunteerDriver drives one or more Vehicles)
+- Vehicle contain * Article (Vehicle collects Articles from Residents)
+- Article inherit 1 Resident (Article is described by a Resident)
+- Article inherit 1 Category (Article is assigned a Category)
+- Category contain * Article (Category can have multiple Articles)
+- DistributionCenter contain * Article (DistributionCenter receives Articles)
+- DistributionCenter inherit FoodBank (DistributionCenter drops off non-perishable Foods at FoodBank)
+- DistributionCenter associate * Client (DistributionCenter provides service to Clients)
+- Client contain * Category (Client indicates needed Categories)
+- Client associate * Article (Client receives Articles)
+- VolunteerDriver inherit Resident (VolunteerDriver can also be a Resident)
+- Article associate 1 Client (Article is delivered to a Client)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: PickupDay (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:string,streetAddress:string,phoneNumber:string,email:string,itemsDescription:string]
+Class: Vehicle (class) - Enum Attributes: [], Class Attributes: [storageSpace:string,dimensions:string,weight:string]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays:string]
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:string,RFIDTag:string,category:string]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident association 1 Vehicle
+ 1 Vehicle aggregation * Resident
+ 1 Vehicle association 1 VolunteerDriver
+ 1 VolunteerDriver association * Vehicle
+ 1 Vehicle aggregation * Article
+ False Article inheritance False Resident
+ False Article inheritance False Category
+ 1 Category aggregation * Article
+ 1 DistributionCenter aggregation * Article
+ False DistributionCenter inheritance False FoodBank
+ 1 DistributionCenter association * Client
+ 1 Client aggregation * Category
+ 1 Client association * Article
+ False VolunteerDriver inheritance False Resident
+ 1 Article association 1 Client
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'Vehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'Vehicle(class):dimensions'	-	'dimension'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   3                   13                  
+Attributes          17                  1                   17                  
+Associations        5                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(baby clothing, women's winter boots, fridge, microwave, ...)
+2. Weekday(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Classes:
+1. Resident(name : string, streetAddress : string, phoneNumber : string, emailAddress : string, itemsDescription : string)
+2. PickupVehicle(storageSpace : int, availableDays : Weekday[], driver : string)
+3. SecondHandArticle(description : string, RFIDTag : string, category : Category)
+4. FoodBank
+5. H2SEmployee
+6. Client
+
+Relationships:
+1. 1 Resident associate 1 PickupRequest
+2. 1 PickupVehicle contain * PickupRequest
+3. 1 PickupVehicle associate 1 VolunteerDriver
+4. 1 PickupRequest associate 1 PickupSlot
+5. 1 PickupSlot contain * PickupRequest
+6. 1 PickupSlot associate 1 PickupRoute
+7. 1 PickupRoute contain * PickupSlot
+8. 1 PickupRoute associate 1 VolunteerDriver
+9. 1 PickupRoute connect 1 DistributionCenter
+10. 1 SecondHandArticle associate 1 H2SEmployee
+11. 1 SecondHandArticle associate 1 Category
+12. 1 DistributionCenter associate * SecondHandArticle
+13. 1 DistributionCenter associate * Client
+14. 1 Client inherit 1 Resident
+15. 1 Client contain * Category
+16. 1 H2SEmployee inherit 1 Resident
+17. 1 PickupRoute connect 1 DeliveryRoute
+18. 1 DeliveryRoute associate * Client
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Weekday (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name :string,streetAddress :string,phoneNumber :string,emailAddress :string,itemsDescription :string]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [storageSpace :int,availableDays :Weekday[],driver :string]
+Class: SecondHandArticle (class) - Enum Attributes: [], Class Attributes: [description :string,RFIDTag :string,category :Category]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: Client (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupRequest
+ 1 PickupVehicle aggregation * PickupRequest
+ 1 PickupVehicle association 1 VolunteerDriver
+ 1 PickupRequest association 1 PickupSlot
+ 1 PickupSlot aggregation * PickupRequest
+ 1 PickupSlot association 1 PickupRoute
+ 1 PickupRoute aggregation * PickupSlot
+ 1 PickupRoute association 1 VolunteerDriver
+ 9 1 association 1 connect
+ 1 SecondHandArticle association 1 H2SEmployee
+ 1 SecondHandArticle association 1 Category
+ 1 DistributionCenter association * SecondHandArticle
+ 1 DistributionCenter association * Client
+ False Client inheritance False Resident
+ 1 Client aggregation * Category
+ False H2SEmployee inheritance False Resident
+ 17 1 association 1 connect
+ 1 DeliveryRoute association * Client
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'SecondHandArticle(class)'	-	'SecondHandArticle(class)'
+ 'Client(class)'	-	'Client(class)'
+ 'Category(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+-Attributes:
+ 'SecondHandArticle(class):description '	-	'description'
+ 'SecondHandArticle(class):category '	-	'category'
+ 'Category(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   13                  
+Attributes          21                  3                   17                  
+Associations        3                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name : String, streetAddress : String, phoneNumber : String, email : String, itemsDescription : String)
+2.PickupVehicle
+3.VolunteerDriver(availableDays : List<String>)
+4.DistributionCenter
+5.H2SEmployee
+6.SecondHandArticle
+7.FoodBank
+8.RFIDDevice
+9.Category
+
+Relationships:
+1.Resident contain 1 PickupRequest
+2.PickupRequest associate 1 PickupVehicle
+3.PickupVehicle associate 0..* PickupRequest
+4.PickupVehicle associate 1 VolunteerDriver
+5.VolunteerDriver inherit H2SEmployee
+6.PickupVehicle contain 0..* SecondHandArticle
+7.DistributionCenter contain 1..* SecondHandArticle
+8.SecondHandArticle associate 1 RFIDDevice
+9.SecondHandArticle associate 1 Category
+10.DistributionCenter inherit H2SEmployee
+11.DistributionCenter associate 0..* ClientRequest
+12.ClientRequest associate 1..* Category
+13.ClientRequest associate 1 Resident
+14.ClientRequest associate 1 VolunteerDriver
+15.VolunteerDriver contain 0..* ClientRequest
+16.ClientRequest associate 1 PickupRequest
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name :String,streetAddress :String,phoneNumber :String,email :String,itemsDescription :String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: []
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays :List<String>]
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: SecondHandArticle (class) - Enum Attributes: [], Class Attributes: []
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: RFIDDevice (class) - Enum Attributes: [], Class Attributes: []
+Class: Category (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident aggregation 1 PickupRequest
+ 2 PickupRequest association 1 PickupVehicle
+ 3 PickupVehicle association 0..* PickupRequest
+ 4 PickupVehicle association 1 VolunteerDriver
+ False VolunteerDriver inheritance False H2SEmployee
+ 6 PickupVehicle aggregation 0..* SecondHandArticle
+ 7 DistributionCenter aggregation 1..* SecondHandArticle
+ 8 SecondHandArticle association 1 RFIDDevice
+ 9 SecondHandArticle association 1 Category
+ False DistributionCenter inheritance False H2SEmployee
+ 11 DistributionCenter association 0..* ClientRequest
+ 12 ClientRequest association 1..* Category
+ 13 ClientRequest association 1 Resident
+ 14 ClientRequest association 1 VolunteerDriver
+ 15 VolunteerDriver aggregation 0..* ClientRequest
+ 16 ClientRequest association 1 PickupRequest
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'SecondHandArticle(class)'	-	'SecondHandArticle(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+ 'Category(class)'	-	'ItemCategory(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   13                  
+Attributes          6                   0                   17                  
+Associations        5                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave, ...)
+(only one enumeration)
+
+Classes:
+1. Resident(name: String, streetAddress: String, phoneNumber: String, emailAddress: String, itemsDescription: String)
+2. PickupVehicle(vehicleID: String, availableStorageSpace: int)
+3. VolunteerDriver(driverID: String, availableDays: String)
+4. H2SEmployee(employeeID: String)
+5. Article(description: String, RFIDTagged: boolean, category: CategoryType)
+6. FoodBank
+7. DistributionCenter
+
+Relationships:
+1. Resident associate 1 PickupRequest (0..* to 1)
+2. PickupRequest associate 1 PickupVehicle (1 to 1)
+3. PickupVehicle associate 1 VolunteerDriver (1 to 1)
+4. VolunteerDriver associate 1 PickupRoute (1 to 1)
+5. PickupRoute associate 1 DistributionCenter (1 to 1)
+6. DistributionCenter contain 0..* Article (1 to 0..*)
+7. DistributionCenter inherit FoodBank
+8. DistributionCenter associate 0..* ClientDeliveryRequest (1 to 0..*)
+9. ClientDeliveryRequest associate 1 Article (1 to 1)
+10. ClientDeliveryRequest associate 1 Resident (1 to 1)
+11. ClientDeliveryRequest associate 1 VolunteerDriver (1 to 1)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:String,streetAddress:String,phoneNumber:String,emailAddress:String,itemsDescription:String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [vehicleID:String,availableStorageSpace:int]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [driverID:String,availableDays:String]
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: [employeeID:String]
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:String,RFIDTagged:boolean,category:CategoryType]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupRequest
+ 2 PickupRequest association 1 PickupVehicle
+ 3 PickupVehicle association 1 VolunteerDriver
+ 4 VolunteerDriver association 1 PickupRoute
+ 5 PickupRoute association 1 DistributionCenter
+ 6 DistributionCenter aggregation 0..* Article
+ False DistributionCenter inheritance False FoodBank
+ 8 DistributionCenter association 0..* ClientDeliveryRequest
+ 9 ClientDeliveryRequest association 1 Article
+ 10 ClientDeliveryRequest association 1 Resident
+ 11 ClientDeliveryRequest association 1 VolunteerDriver
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   4                   13                  
+Attributes          18                  1                   17                  
+Associations        2                   0                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave, ...)
+2. DayOfWeek(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+1. Resident(name: String, streetAddress: String, phoneNumber: String, email: String, itemsDescription: String)
+2. PickupVehicle(vehicleId: String, storageSpace: float)
+3. VolunteerDriver(driverId: String, availableDays: List<DayOfWeek>)
+4. SecondHandArticle(articleId: String, description: String, quality: String, RFIDTag: Boolean, category: CategoryType)
+5. FoodBank
+6. H2SEmployee(employeeId: String)
+7. Client(name: String, deliveryAddress: String, neededCategories: List<CategoryType>)
+
+Relationships:
+1. Resident associate 1 PickupVehicle (0..* to 1)
+2. PickupVehicle contain 1 VolunteerDriver (1 to 1)
+3. PickupVehicle contain 0..* ScheduledPickup (1 to 0..*)
+4. ScheduledPickup associate 1 Resident (1 to 1)
+5. ScheduledPickup associate 1 PickupVehicle (1 to 1)
+6. VolunteerDriver associate 1 H2SEmployee (1 to 1)
+7. H2SEmployee contain 0..* SecondHandArticle (1 to 0..*)
+8. H2SEmployee inherit FoodBank
+9. DistributionCenter inherit H2SEmployee
+10. DistributionCenter associate 0..* Client (1 to 0..*)
+11. Client associate 0..* SecondHandArticle (0..* to 0..*)
+12. Client associate 0..* ScheduledDelivery (0..* to 0..*)
+13. ScheduledDelivery associate 1 Client (1 to 1)
+14. ScheduledDelivery associate 1 VolunteerDriver (1 to 1)
+15. ScheduledDelivery associate 1 SecondHandArticle (1 to 1)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: DayOfWeek (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, email, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [vehicleId, storageSpace], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [driverId, availableDays], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [articleId, description, quality, RFIDTag, category], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (enum) - Enum Attributes: [employeeId], Class Attributes: []
+Class: Client (enum) - Enum Attributes: [name, deliveryAddress, neededCategories], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupVehicle
+ 2 PickupVehicle aggregation 1 VolunteerDriver
+ 3 PickupVehicle aggregation 0..* ScheduledPickup
+ 4 ScheduledPickup association 1 Resident
+ 5 ScheduledPickup association 1 PickupVehicle
+ 6 VolunteerDriver association 1 H2SEmployee
+ 7 H2SEmployee aggregation 0..* SecondHandArticle
+ False H2SEmployee inheritance False FoodBank
+ False DistributionCenter inheritance False H2SEmployee
+ 10 DistributionCenter association 0..* Client
+ 11 Client association 0..* SecondHandArticle
+ 12 Client association 0..* ScheduledDelivery
+ 13 ScheduledDelivery association 1 Client
+ 14 ScheduledDelivery association 1 VolunteerDriver
+ 15 ScheduledDelivery association 1 SecondHandArticle
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'Client(enum)'	-	'Client(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(enum):description'	-	'description'
+ 'SecondHandArticle(enum):category'	-	'category'
+ 'Client(enum):neededCategories'	-	'neededCategories'
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+ ' 11 Client association 0..* SecondHandArticle'	-	' 0..1 Client association * SecondHandArticle'
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   13                  
+Attributes          28                  4                   17                  
+Associations        5                   1                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+2.PickupVehicle
+3.VolunteerDriver(availableDays: string)
+4.Article(description: string)
+5.FoodBank
+6.Employee
+7.RFIDTag
+8.Category(name: string)
+9.DistributionCenter
+10.Client
+
+Relationships:
+1.Resident associate 1 PickupVehicle (0..* to 1)
+2.PickupVehicle contain 1 VolunteerDriver (1 to 1)
+3.PickupVehicle contain 0..* Resident (1 to 0..*)
+4.VolunteerDriver inherit Employee
+5.Article associate 1 RFIDTag (1 to 1)
+6.Article associate 1 Category (1 to 1)
+7.DistributionCenter inherit Employee
+8.DistributionCenter contain 0..* Client (1 to 0..*)
+9.Client associate 0..* Category (0..* to 0..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:string,streetAddress:string,phoneNumber:string,emailAddress:string,itemsDescription:string]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: []
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays:string]
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:string]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: RFIDTag (class) - Enum Attributes: [], Class Attributes: []
+Class: Category (class) - Enum Attributes: [], Class Attributes: [name:string]
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Class: Client (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupVehicle
+ 2 PickupVehicle aggregation 1 VolunteerDriver
+ 3 PickupVehicle aggregation 0..* Resident
+ False VolunteerDriver inheritance False Employee
+ 5 Article association 1 RFIDTag
+ 6 Article association 1 Category
+ False DistributionCenter inheritance False Employee
+ 8 DistributionCenter aggregation 0..* Client
+ 9 Client association 0..* Category
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'Client(class)'	-	'Client(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+ 'Category(class)'	-	'ItemCategory(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  5                   13                  
+Attributes          8                   0                   17                  
+Associations        7                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(baby clothing, women's winter boots, fridge, microwave, ...)
+2. Day(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+1. Resident(name : String, streetAddress : String, phoneNumber : String, emailAddress : String, itemsDescription : String)
+2. PickupVehicle(storageSpace : int, availableDays : List<Day>)
+3. VolunteerDriver(name : String, availableDays : List<Day>)
+4. SecondHandArticle(description : String, quality : String, RFIDTag : boolean, category : Category)
+5. ClientRequest(categoriesNeeded : List<Category>)
+
+Relationships:
+1..* Resident associate 1 PickupRequest
+1 PickupRequest contain 1..* SecondHandArticle
+0..* PickupVehicle associate 1 PickupRoute
+1 PickupRoute contain 1..* PickupRequest
+1 PickupRoute associate 1 VolunteerDriver
+1 PickupRoute associate 1 DistributionCenter
+1 DistributionCenter inherit 1 PickupCenter
+1 PickupCenter contain 1..* SecondHandArticle
+1 DistributionCenter inherit 1 FoodBank
+1 DistributionCenter contain 1..* NonPerishableFood
+1 PickupRoute associate 1 PickupTime
+1 PickupRoute associate 1 PickupVehicle
+1 PickupTime associate 1 PickupRoute
+1 PickupTime inherit 1 TimeFrame
+1 TimeFrame include 1 MorningTimeFrame
+1 TimeFrame include 1 AfternoonTimeFrame
+1 MorningTimeFrame contain 1 PickupTime
+1 AfternoonTimeFrame contain 1 PickupTime
+1 PickupRequest associate 1 PickupTime
+1 PickupTime associate 1 VolunteerDriver
+1 DistributionCenter associate 1 ClientRequest
+1 ClientRequest associate 1 Delivery
+1 Delivery associate 1 VolunteerDriver
+1 Delivery associate 1 ClientRequest
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Day (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name , streetAddress , phoneNumber , emailAddress , itemsDescription ], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [storageSpace , availableDays ], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [name , availableDays ], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [description , quality , RFIDTag , category ], Class Attributes: []
+Class: ClientRequest (enum) - Enum Attributes: [categoriesNeeded ], Class Attributes: []
+Relationships:
+ 1..* Resident association 1 PickupRequest
+ 1 PickupRequest aggregation 1..* SecondHandArticle
+ 0..* PickupVehicle association 1 PickupRoute
+ 1 PickupRoute aggregation 1..* PickupRequest
+ 1 PickupRoute association 1 VolunteerDriver
+ 1 PickupRoute association 1 DistributionCenter
+ False DistributionCenter inheritance False PickupCenter
+ 1 PickupCenter aggregation 1..* SecondHandArticle
+ False DistributionCenter inheritance False FoodBank
+ 1 DistributionCenter aggregation 1..* NonPerishableFood
+ 1 PickupRoute association 1 PickupTime
+ 1 PickupRoute association 1 PickupVehicle
+ 1 PickupTime association 1 PickupRoute
+ False PickupTime inheritance False TimeFrame
+ 1 TimeFrame association 1 MorningTimeFrame
+ 1 TimeFrame association 1 AfternoonTimeFrame
+ 1 MorningTimeFrame aggregation 1 PickupTime
+ 1 AfternoonTimeFrame aggregation 1 PickupTime
+ 1 PickupRequest association 1 PickupTime
+ 1 PickupTime association 1 VolunteerDriver
+ 1 DistributionCenter association 1 ClientRequest
+ 1 ClientRequest association 1 Delivery
+ 1 Delivery association 1 VolunteerDriver
+ 1 Delivery association 1 ClientRequest
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'Category(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(enum):description '	-	'description'
+ 'SecondHandArticle(enum):category '	-	'category'
+ 'Category(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   13                  
+Attributes          24                  3                   17                  
+Associations        0                   0                   13                  
+Inheritances        0                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(baby clothing, women's winter boots, fridge, microwave, ...)
+(only one enumeration in this description)
+
+Classes:
+1. Resident(name : String, streetAddress : String, phoneNumber : String, emailAddress : String, itemsDescription : String)
+2. PickupVehicle(storageSpace : int, availableDays : List<String>)
+3. VolunteerDriver(availableDays : List<String>)
+4. SecondHandArticle(description : String, quality : String, RFIDTag : boolean, category : Category)
+5. FoodBank
+6. DistributionCenter
+
+Relationships:
+1..* PickupVehicle associate 1..* VolunteerDriver
+1..* PickupVehicle contain 1..* ScheduledPickup
+1..* ScheduledPickup associate 1 Resident
+1 DistributionCenter inherit FoodBank
+1 DistributionCenter contain 1..* SecondHandArticle
+1 DistributionCenter contain 1..* ClientRequest
+1..* ClientRequest associate 1 Resident
+1..* ClientRequest associate 0..* SecondHandArticle
+1..* VolunteerDriver associate 0..* ScheduledDelivery
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name :String,streetAddress :String,phoneNumber :String,emailAddress :String,itemsDescription :String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [storageSpace :int,availableDays :List<String>]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays :List<String>]
+Class: SecondHandArticle (class) - Enum Attributes: [], Class Attributes: [description :String,quality :String,RFIDTag :boolean,category :Category]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* PickupVehicle association 1..* VolunteerDriver
+ 1..* PickupVehicle aggregation 1..* ScheduledPickup
+ 1..* ScheduledPickup association 1 Resident
+ False DistributionCenter inheritance False FoodBank
+ 1 DistributionCenter aggregation 1..* SecondHandArticle
+ 1 DistributionCenter aggregation 1..* ClientRequest
+ 1..* ClientRequest association 1 Resident
+ 1..* ClientRequest association 0..* SecondHandArticle
+ 1..* VolunteerDriver association 0..* ScheduledDelivery
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'SecondHandArticle(class)'	-	'SecondHandArticle(class)'
+ 'Category(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(class):description '	-	'description'
+ 'SecondHandArticle(class):category '	-	'category'
+ 'Category(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   13                  
+Attributes          17                  3                   17                  
+Associations        2                   0                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave, ...)
+(One enumeration for the standard list of 134 categories)
+
+Class:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+2. PickupVehicle(vehicleID: string, storageSpace: int)
+3. VolunteerDriver(name: string, availableDays: string)
+4. H2SEmployee(name: string)
+5. Article(description: string, RFIDTag: string, category: CategoryType)
+6. Client(name: string, address: string, requestedCategories: list<CategoryType>)
+(Classes representing entities mentioned in the description)
+
+Relationships:
+1..* Resident contain 1 PickupRequest
+1 PickupRequest associate 1 PickupVehicle
+1 PickupVehicle contain 1..* PickupRequest
+1 PickupVehicle associate 1 VolunteerDriver
+1 PickupVehicle contain 1 Route
+1 Route contain 1..* PickupRequest
+1 PickupRequest associate 1 Article
+1 Article inherit 1 CategoryType
+1 Article associate 1 H2SEmployee
+1 H2SEmployee associate 1 Client
+1 Client contain 1..* Article
+1 DistributionCenter contain 1..* H2SEmployee
+1 DistributionCenter contain 1..* Client
+1 Client associate 1 Article
+1 Article associate 1 VolunteerDriver
+1 Delivery associate 1 Article
+1 Delivery associate 1 Client
+1 Delivery associate 1 VolunteerDriver
+(Representing the relationships between the classes mentioned in the description)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, emailAddress, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [vehicleID, storageSpace], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [name, availableDays], Class Attributes: []
+Class: H2SEmployee (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Article (enum) - Enum Attributes: [description, RFIDTag, category], Class Attributes: []
+Class: Client (enum) - Enum Attributes: [name, address, requestedCategories], Class Attributes: []
+Relationships:
+ 1..* Resident aggregation 1 PickupRequest
+ 1 PickupRequest association 1 PickupVehicle
+ 1 PickupVehicle aggregation 1..* PickupRequest
+ 1 PickupVehicle association 1 VolunteerDriver
+ 1 PickupVehicle aggregation 1 Route
+ 1 Route aggregation 1..* PickupRequest
+ 1 PickupRequest association 1 Article
+ False Article inheritance False CategoryType
+ 1 Article association 1 H2SEmployee
+ 1 H2SEmployee association 1 Client
+ 1 Client aggregation 1..* Article
+ 1 DistributionCenter aggregation 1..* H2SEmployee
+ 1 DistributionCenter aggregation 1..* Client
+ 1 Client association 1 Article
+ 1 Article association 1 VolunteerDriver
+ 1 Delivery association 1 Article
+ 1 Delivery association 1 Client
+ 1 Delivery association 1 VolunteerDriver
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'Client(enum)'	-	'Client(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   13                  
+Attributes          21                  1                   17                  
+Associations        6                   0                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name : String, streetAddress : String, phoneNumber : String, emailAddress : String, itemsDescription : String)
+2.PickupVehicle(storageSpace : int, availableDays : List<String>)
+3.VolunteerDriver(availableDays : List<String>)
+4.Article(description : String, category : String, quality : String, RFIDTag : boolean)
+5.Client(name : String, address : String, neededCategories : List<String>)
+
+Enumerations:
+1.Quality {good, fair, poor}
+
+Relationships:
+1.Resident associate 1 PickupRequest (0..* to 1)
+2.PickupRequest associate 1 PickupVehicle (1 to 1)
+3.PickupVehicle associate 1 VolunteerDriver (1 to 1)
+4.VolunteerDriver inherit Resident
+5.Article contain Resident (0..* to 1)
+6.Article associate 1 Category (1 to 1)
+7.PickupVehicle contain Article (0..* to 1)
+8.Article inherit RFIDTag
+9.DistributionCenter contain Article (0..* to 1)
+10.DistributionCenter inherit PickupCenter
+11.Client associate 1 Category (0..* to 1)
+12.Client associate 1 Article (0..* to 1)
+13.Client inherit Resident
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name :String,streetAddress :String,phoneNumber :String,emailAddress :String,itemsDescription :String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [storageSpace :int,availableDays :List<String>]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays :List<String>]
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description :String,category :String,quality :String,RFIDTag :boolean]
+Class: Client (class) - Enum Attributes: [], Class Attributes: [name :String,address :String,neededCategories :List<String>]
+Class: Quality (enum) - Enum Attributes: [good, fair, poor], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupRequest
+ 2 PickupRequest association 1 PickupVehicle
+ 3 PickupVehicle association 1 VolunteerDriver
+ False VolunteerDriver inheritance False Resident
+ 5 Article aggregation 1 Resident
+ 6 Article association 1 Category
+ 7 PickupVehicle aggregation 1 Article
+ False Article inheritance False RFIDTag
+ 9 DistributionCenter aggregation 1 Article
+ False DistributionCenter inheritance False PickupCenter
+ 11 Client association 1 Category
+ 12 Client association 1 Article
+ False Client inheritance False Resident
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'Client(class)'	-	'Client(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'Client(class):neededCategories '	-	'neededCategories'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   13                  
+Attributes          18                  1                   17                  
+Associations        4                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Category(baby clothing, women's winter boots, fridge, microwave, ...)
+2. Weekday(Monday, Tuesday, Wednesday, Thursday, Friday)
+
+Class:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+2. PickupVehicle(vehicleID: int, availableStorageSpace: float)
+3. VolunteerDriver(driverID: int, availableDays: Weekday[])
+4. SecondHandArticle(articleID: int, description: string, quality: string, RFIDTagged: boolean, category: Category)
+5. FoodBank
+6. DistributionCenter
+7. Client(name: string, address: string, neededCategories: Category[])
+
+Relationships:
+1..* PickupVehicle contain 1 PickupRoute
+1 PickupRoute assign 1 VolunteerDriver
+1 PickupRoute pickup 0..* Resident
+1 PickupRoute deliver 1 DistributionCenter or 1 FoodBank
+1 DistributionCenter process 0..* SecondHandArticle
+1 SecondHandArticle belong 1 Category
+1 DistributionCenter offer 1 AdditionalService
+1 AdditionalService provide 0..* ClientDelivery
+1 ClientDelivery deliver 1 Client
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Category (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: Weekday (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, emailAddress, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [vehicleID, availableStorageSpace], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [driverID, availableDays], Class Attributes: []
+Class: SecondHandArticle (enum) - Enum Attributes: [articleID, description, quality, RFIDTagged, category], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (enum) - Enum Attributes: [], Class Attributes: []
+Class: Client (enum) - Enum Attributes: [name, address, neededCategories], Class Attributes: []
+Relationships:
+ 1..* PickupVehicle aggregation 1 PickupRoute
+ 1 PickupRoute association 1 VolunteerDriver
+ 1 PickupRoute association 0..* Resident
+ 1 PickupRoute association 1 DistributionCenter
+ 1 DistributionCenter association 0..* SecondHandArticle
+ 1 SecondHandArticle association 1 Category
+ 1 DistributionCenter association 1 AdditionalService
+ 1 AdditionalService association 0..* ClientDelivery
+ 1 ClientDelivery association 1 Client
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'SecondHandArticle(enum)'	-	'SecondHandArticle(class)'
+ 'Client(enum)'	-	'Client(class)'
+ 'Category(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'SecondHandArticle(enum):description'	-	'description'
+ 'SecondHandArticle(enum):category'	-	'category'
+ 'Client(enum):neededCategories'	-	'neededCategories'
+ 'Category(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   6                   13                  
+Attributes          27                  4                   17                  
+Associations        2                   0                   13                  
+Inheritances        0                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave, ...)
+2. PickupTime(8:00, 9:00, 10:00, 11:00, 12:00, 13:00, 14:00)
+
+Classes:
+1. Resident(name: String, streetAddress: String, phoneNumber: String, emailAddress: String, itemsDescription: String)
+2. PickupVehicle(storageCapacity: Integer, availableDays: String[])
+3. VolunteerDriver(availableDays: String[])
+4. H2SEmployee
+5. Article(description: String, category: CategoryType, RFIDTag: String)
+6. FoodBank
+7. DistributionCenter
+
+Relationships:
+Resident associate 1 PickupRequest associate PickupVehicle (0..1, 0..*)
+PickupVehicle contain 1 PickupRoute (0..1, 1)
+PickupRoute associate 1 VolunteerDriver (1, 1)
+VolunteerDriver inherit H2SEmployee
+PickupRoute contain 1..* PickupStop (1, 0..*)
+PickupStop associate 1 Resident (1, 1)
+PickupStop associate 1 PickupTime (1, 1)
+PickupStop associate 1 PickupRequest (1, 1)
+PickupStop associate 1 PickupVehicle (1, 1)
+PickupStop contain 1..* ScheduledItem (1, 0..*)
+ScheduledItem associate 1 Article (1, 1)
+ScheduledItem associate 1 PickupRequest (1, 1)
+ScheduledItem associate 1 PickupStop (1, 1)
+Article inherit Item
+Article associate 1 CategoryType (1, 1)
+Article associate 0..* Resident (0..*, 1)
+DistributionCenter inherit H2SEmployee
+DistributionCenter contain 1..* PickupRequest (1, 0..*)
+DistributionCenter contain 1..* Article (1, 0..*)
+DistributionCenter contain 0..* ClientRequest (0..*, 1)
+ClientRequest associate 1 Resident (1, 1)
+ClientRequest associate 0..* CategoryType (0..*, 1)
+ClientRequest associate 0..* Article (0..*, 1)
+ClientRequest associate 1 DistributionCenter (1, 1)
+ClientRequest associate 1 Resident (1, 1)
+ClientRequest associate 1 PickupRequest (1, 1)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Class: PickupTime (enum) - Enum Attributes: [8, 9, 10, 11, 12, 13, 14], Class Attributes: []
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:String,streetAddress:String,phoneNumber:String,emailAddress:String,itemsDescription:String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: [storageCapacity:Integer,availableDays:String[]]
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: [availableDays:String[]]
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:String,category:CategoryType,RFIDTag:String]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Resident association 1 PickupRequest
+ 1 PickupVehicle aggregation 1 PickupRoute
+ 1 PickupRoute association 1 VolunteerDriver
+ False VolunteerDriver inheritance False H2SEmployee
+ 1 PickupRoute aggregation 1..* PickupStop
+ 1 PickupStop association 1 Resident
+ 1 PickupStop association 1 PickupTime
+ 1 PickupStop association 1 PickupRequest
+ 1 PickupStop association 1 PickupVehicle
+ 1 PickupStop aggregation 1..* ScheduledItem
+ 1 ScheduledItem association 1 Article
+ 1 ScheduledItem association 1 PickupRequest
+ 1 ScheduledItem association 1 PickupStop
+ False Article inheritance False Item
+ 1 Article association 1 CategoryType
+ 1 Article association 0..* Resident
+ False DistributionCenter inheritance False H2SEmployee
+ 1 DistributionCenter aggregation 1..* PickupRequest
+ 1 DistributionCenter aggregation 1..* Article
+ 1 DistributionCenter aggregation 0..* ClientRequest
+ 1 ClientRequest association 1 Resident
+ 1 ClientRequest association 0..* CategoryType
+ 1 ClientRequest association 0..* Article
+ 1 ClientRequest association 1 DistributionCenter
+ 1 ClientRequest association 1 PickupRequest
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   4                   13                  
+Attributes          23                  1                   17                  
+Associations        3                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name : string, streetAddress : string, phoneNumber : string, emailAddress : string, itemsDescription : string)
+2.PickupVehicle
+3.VolunteerDriver
+4.H2SEmployee
+5.Article(description : string, category : string, RFIDTag : boolean)
+6.FoodBank
+7.DistributionCenter
+
+Enumerations:
+1.ArticleCategory(baby clothing, women's winter boots, fridge, microwave, ...)
+    
+Relationships:
+1.Resident associate 1..* Article
+2.Resident contain 1 PickupService
+3.PickupService inherit PickupVehicle
+4.PickupService associate 1 VolunteerDriver
+5.PickupService contain 1..* ScheduledPickup
+6.VolunteerDriver associate 1..* ScheduledPickup
+7.ScheduledPickup associate 1 PickupVehicle
+8.PickupService contain 1 DistributionCenter
+9.FoodBank contain 1..* NonPerishableFood
+10.DistributionCenter associate 1..* Article
+11.Article inherit ArticleCategory
+12.DistributionCenter inherit ServiceCenter
+13.ServiceCenter associate 1..* Client
+14.Client associate 1..* ArticleCategory
+15.Client associate 1..* Article
+16.Client contain 1 DeliveryAddress
+17.VolunteerDriver contain 1..* Delivery
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name :string,streetAddress :string,phoneNumber :string,emailAddress :string,itemsDescription :string]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: []
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description :string,category :string,RFIDTag :boolean]
+Class: FoodBank (class) - Enum Attributes: [], Class Attributes: []
+Class: DistributionCenter (class) - Enum Attributes: [], Class Attributes: []
+Class: ArticleCategory (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Relationships:
+ 1 Resident association 1..* Article
+ 2 Resident aggregation 1 PickupService
+ False PickupService inheritance False PickupVehicle
+ 4 PickupService association 1 VolunteerDriver
+ 5 PickupService aggregation 1..* ScheduledPickup
+ 6 VolunteerDriver association 1..* ScheduledPickup
+ 7 ScheduledPickup association 1 PickupVehicle
+ 8 PickupService aggregation 1 DistributionCenter
+ 9 FoodBank aggregation 1..* NonPerishableFood
+ 10 DistributionCenter association 1..* Article
+ False Article inheritance False ArticleCategory
+ False DistributionCenter inheritance False ServiceCenter
+ 13 ServiceCenter association 1..* Client
+ 14 Client association 1..* ArticleCategory
+ 15 Client association 1..* Article
+ 16 Client aggregation 1 DeliveryAddress
+ 17 VolunteerDriver aggregation 1..* Delivery
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+ 'ArticleCategory(enum)'	-	'ItemCategory(enum)'
+-Attributes:
+ 'ArticleCategory(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   4                   13                  
+Attributes          13                  1                   17                  
+Associations        2                   0                   13                  
+Inheritances        1                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Resident(name: String, streetAddress: String, phoneNumber: String, emailAddress: String, itemsDescription: String)
+2.PickupVehicle
+3.VolunteerDriver
+4.H2SEmployee
+5.Article(description: String, RFIDTag: Boolean, category: String)
+
+Enumerations:
+1.Days(Monday, Tuesday, Wednesday, Thursday, Friday)
+2.Categories(baby clothing, women's winter boots, fridge, microwave, ...)
+
+Relationships:
+1.Resident contain 1..* Article
+2.Resident associate 1 PickupVehicle
+3.PickupVehicle associate 1..* Resident
+4.PickupVehicle inherit VolunteerDriver
+5.PickupVehicle contain 1..* Article
+6.PickupVehicle associate 1 H2SEmployee
+7.H2SEmployee inherit VolunteerDriver
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Resident (class) - Enum Attributes: [], Class Attributes: [name:String,streetAddress:String,phoneNumber:String,emailAddress:String,itemsDescription:String]
+Class: PickupVehicle (class) - Enum Attributes: [], Class Attributes: []
+Class: VolunteerDriver (class) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (class) - Enum Attributes: [], Class Attributes: []
+Class: Article (class) - Enum Attributes: [], Class Attributes: [description:String,RFIDTag:Boolean,category:String]
+Class: Days (enum) - Enum Attributes: [Monday, Tuesday, Wednesday, Thursday, Friday], Class Attributes: []
+Class: Categories (enum) - Enum Attributes: [clothing, winter, fridge, microwave, ...], Class Attributes: []
+Relationships:
+ 1 Resident aggregation 1..* Article
+ 2 Resident association 1 PickupVehicle
+ 3 PickupVehicle association 1..* Resident
+ False PickupVehicle inheritance False VolunteerDriver
+ 5 PickupVehicle aggregation 1..* Article
+ 6 PickupVehicle association 1 H2SEmployee
+ False H2SEmployee inheritance False VolunteerDriver
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(class)'	-	'Resident(class)'
+ 'PickupVehicle(class)'	-	'Vehicle(class)'
+ 'VolunteerDriver(class)'	-	'Volunteer(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   3                   13                  
+Attributes          18                  0                   17                  
+Associations        5                   0                   13                  
+Inheritances        2                   0                   5                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------H2S:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. CategoryType(baby clothing, women's winter boots, fridge, microwave...)
+
+Class:
+1. Resident(name: string, streetAddress: string, phoneNumber: string, emailAddress: string, itemsDescription: string)
+2. PickupVehicle(vehicleNumber: string, availableStorageSpace: int)
+3. VolunteerDriver(name: string, availableDays: string)
+4. Article(description: string, quality: string, RFIDTag: string)
+5. FoodBank()
+6. H2SEmployee(name: string)
+
+Relationships:
+1..* PickupVehicle contain 1 H2SEmployee
+1 PickupVehicle contain 1..* Article
+1 Resident associate 1 PickupVehicle
+1 VolunteerDriver associate 0..* PickupVehicle
+1 PickupVehicle associate 1 DistributionCenter
+1 DistributionCenter inherit FoodBank
+1 DistributionCenter contain 1..* H2SEmployee
+1 H2SEmployee associate 1..* Article
+1 DistributionCenter associate 0..* Client
+1 Client associate 0..* CategoryType
+1 H2SEmployee associate 0..* Client
+1 Client associate 0..* Article
+1 VolunteerDriver associate 0..* Client
+1 Client associate 1 Article
+1 VolunteerDriver associate 0..* Article
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: CategoryType (enum) - Enum Attributes: [clothing, winter, fridge, microwave...], Class Attributes: []
+Class: Resident (enum) - Enum Attributes: [name, streetAddress, phoneNumber, emailAddress, itemsDescription], Class Attributes: []
+Class: PickupVehicle (enum) - Enum Attributes: [vehicleNumber, availableStorageSpace], Class Attributes: []
+Class: VolunteerDriver (enum) - Enum Attributes: [name, availableDays], Class Attributes: []
+Class: Article (enum) - Enum Attributes: [description, quality, RFIDTag], Class Attributes: []
+Class: FoodBank (enum) - Enum Attributes: [], Class Attributes: []
+Class: H2SEmployee (enum) - Enum Attributes: [name], Class Attributes: []
+Relationships:
+ 1..* PickupVehicle aggregation 1 H2SEmployee
+ 1 PickupVehicle aggregation 1..* Article
+ 1 Resident association 1 PickupVehicle
+ 1 VolunteerDriver association 0..* PickupVehicle
+ 1 PickupVehicle association 1 DistributionCenter
+ False DistributionCenter inheritance False FoodBank
+ 1 DistributionCenter aggregation 1..* H2SEmployee
+ 1 H2SEmployee association 1..* Article
+ 1 DistributionCenter association 0..* Client
+ 1 Client association 0..* CategoryType
+ 1 H2SEmployee association 0..* Client
+ 1 Client association 0..* Article
+ 1 VolunteerDriver association 0..* Client
+ 1 Client association 1 Article
+ 1 VolunteerDriver association 0..* Article
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Resident(enum)'	-	'Resident(class)'
+ 'CategoryType(enum)'	-	'ItemCategory(enum)'
+ 'PickupVehicle(enum)'	-	'Vehicle(class)'
+ 'VolunteerDriver(enum)'	-	'Volunteer(class)'
+-Attributes:
+ 'CategoryType(enum):fridge'	-	'Fridge'
+-Relationships:
+--------------------------------------------------------------------------------
+H2S, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   13                  
+Attributes          17                  1                   17                  
+Associations        6                   0                   13                  
+Inheritances        0                   0                   5                   
+--------------------------------------------------------------------------------
+H2S, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.592          0.358          0.446          0.388
+Attributes          0.091          0.076          0.083          0.079
+Associations        0.017          0.008          0.011          0.009
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

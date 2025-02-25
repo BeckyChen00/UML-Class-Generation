@@ -1,0 +1,1739 @@
+------------------------------------------------------------
+---------------------1/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(mathematics, science, literature)
+ExpertiseLevel(primary school level, high school level, university level)
+SessionStatus(pending, confirmed, cancelled)
+
+Classes:
+OTS()
+User(string name, string email)
+Student() extends User
+Tutor() extends User
+TutorProfile(double hourlyPrice, WeeklyAvailability availability, List<SubjectExpertise> subjectExpertises)
+SubjectExpertise(Subject subject, ExpertiseLevel level)
+TutorSession(Date date, Time time, SessionStatus status, Tutor tutor, Student student)
+Payment(double amount, string method)
+CancellationPolicy(Tutor tutor, Student student, double tutorPenalty, double studentPenalty)
+
+Relationships:
+1 OTS contain * User
+1 OTS contain * TutorSession
+1 OTS contain * Payment
+1 OTS contain * CancellationPolicy
+
+* TutorProfile associate 1 Tutor
+* TutorProfile contain * SubjectExpertise
+
+* TutorSession associate 1 Tutor
+* TutorSession associate 1 Student
+* TutorSession associate 1 Subject
+* TutorSession contain 1 Payment
+
+* CancellationPolicy associate 1 Tutor
+* CancellationPolicy associate 1 Student
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: ExpertiseLevel (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: SessionStatus (enum) - Enum Attributes: [pending, confirmed, cancelled], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: []
+Class: TutorProfile (class) - Enum Attributes: [], Class Attributes: [hourlyPrice:double,availability:WeeklyAvailability,subjectExpertises:List<SubjectExpertise>]
+Class: SubjectExpertise (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:ExpertiseLevel]
+Class: TutorSession (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time,status:SessionStatus,tutor:Tutor,student:Student]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:double,method:string]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,student:Student,tutorPenalty:double,studentPenalty:double]
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * TutorSession
+ 1 OTS association * Payment
+ 1 OTS association * CancellationPolicy
+ * TutorProfile association 1 Tutor
+ * TutorProfile association * SubjectExpertise
+ * TutorSession association 1 Tutor
+ * TutorSession association 1 Student
+ * TutorSession association 1 Subject
+ * TutorSession association 1 Payment
+ * CancellationPolicy association 1 Tutor
+ * CancellationPolicy association 1 Student
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'SessionStatus(enum)'	-	'SessionStatus(enum)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'ExpertiseLevel(enum)'	-	'LevelOfTutoring(enum)'
+-Attributes:
+ 'SessionStatus(enum):confirmed'	-	'Confirmed'
+ 'SessionStatus(enum):cancelled'	-	'Cancelled'
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  8                   16                  
+Attributes          27                  4                   24                  
+Associations        12                  1                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(mathematics, science, literature, etc.)
+Level(primary school, high school, university)
+PaymentMethod(credit card, wire transfer)
+
+Classes:
+OTS()
+Person(string name, string email)
+Tutor(Person tutor, string bankAccount)
+Student(Person student)
+TutoringOffer(Subject subject, Level expertise, double hourlyPrice, string weeklyAvailability)
+TutoringRequest(Student student, Tutor tutor, Subject subject, Level level, Date targetDate, Time targetTime)
+TutoringSession(Tutor tutor, Student student, Subject subject, Date date, Time startTime, Time endTime, PaymentMethod paymentMethod)
+CancellationPolicy()
+Cancellation(student, tutor, double penaltyPercentage)
+FollowUpSession(TutoringSession initialSession, Date date, Time time)
+Payment(double amount, PaymentMethod method)
+
+Relationships:
+1 OTS contain * Person
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * CancellationPolicy
+1 OTS contain * FollowUpSession
+1 OTS contain * Payment
+
+* TutoringOffer associate 1 Tutor
+* TutoringRequest associate 1 Tutor and 1 Student
+* TutoringSession associate 1 Tutor and 1 Student
+* CancellationPolicy associate 1 Cancellation
+* FollowUpSession associate 1 TutoringSession
+* Payment associate 1 Payment
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature, etc.], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, university], Class Attributes: []
+Class: PaymentMethod (enum) - Enum Attributes: [card, transfer], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [tutor:Person,bankAccount:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [student:Person]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:Subject,expertise:Level,hourlyPrice:double,weeklyAvailability:string]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [student:Student,tutor:Tutor,subject:Subject,level:Level,targetDate:Date,targetTime:Time]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,student:Student,subject:Subject,date:Date,startTime:Time,endTime:Time,paymentMethod:PaymentMethod]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Class: Cancellation (class) - Enum Attributes: [], Class Attributes: [student:,tutor:,penaltyPercentage:double]
+Class: FollowUpSession (class) - Enum Attributes: [], Class Attributes: [initialSession:TutoringSession,date:Date,time:Time]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:double,method:PaymentMethod]
+Relationships:
+ 1 OTS association * Person
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * CancellationPolicy
+ 1 OTS association * FollowUpSession
+ 1 OTS association * Payment
+ * TutoringOffer association 1 Tutor
+ * TutoringRequest association 1 Tutor
+ * TutoringSession association 1 Tutor
+ * CancellationPolicy association 1 Cancellation
+ * FollowUpSession association 1 TutoringSession
+ * Payment association 1 Payment
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'Person(class)'	-	'User(class)'
+ 'PaymentMethod(enum)'	-	'PaymentKind(enum)'
+-Attributes:
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringOffer(class):hourlyPrice'	-	'hourlyPrice'
+ 'Person(class):name'	-	'name'
+ 'Person(class):email'	-	'email'
+-Relationships:
+ ' 1 OTS association * Person'	-	' 1 OTS association * User'
+ ' * TutoringOffer association 1 Tutor'	-	' 1 Tutor association * TutoringOffer'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  10                  16                  
+Attributes          39                  4                   24                  
+Associations        15                  2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+Subject(mathematics, science, literature)
+Level(primary school level, high school level, university level)
+Classes: 
+OTS()
+User(string name, string email)
+Tutor(User user, string bankAccount)
+Student(User user)
+TutoringOffer(Subject subject, Level level, double hourlyPrice, string weeklyAvailability)
+TutoringRequest(Tutor tutor, Subject subject, Level level, DateTime targetDateTime)
+TutoringSession(Tutor tutor, Student student, DateTime dateTime, double price)
+CancellationPolicy()
+Payment()
+
+  Relationships:
+1 OTS contain * User
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * CancellationPolicy
+1 OTS contain * Payment
+
+* TutoringOffer associate 1 Tutor
+* TutoringRequest associate 1 Tutor, 1 Student
+* TutoringSession associate 1 Tutor, 1 Student
+* CancellationPolicy associate 1 Tutor, 1 Student
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [user:User,bankAccount:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [user:User]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,hourlyPrice:double,weeklyAvailability:string]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,subject:Subject,level:Level,targetDateTime:DateTime]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,student:Student,dateTime:DateTime,price:double]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Class: Payment (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * CancellationPolicy
+ 1 OTS association * Payment
+ * TutoringOffer association 1 Tutor
+ * TutoringRequest association 1 Tutor
+ * TutoringSession association 1 Tutor
+ * CancellationPolicy association 1 Tutor
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringOffer(class):hourlyPrice'	-	'hourlyPrice'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+ ' * TutoringOffer association 1 Tutor'	-	' 1 Tutor association * TutoringOffer'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   16                  
+Attributes          23                  4                   24                  
+Associations        12                  2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+1. OTS
+2. User (name, email address)
+3. Tutor (extends User, bank account, hourly price)
+4. Student (extends User)
+5. Subject
+6. TutoringSession (date, time, level)
+7. Payment (credit card, wire transfer)
+8. CancellationPolicy
+
+Associations:
+- OTS manages multiple Users
+- OTS manages multiple TutoringSessions
+- User can be a Tutor or a Student
+- Tutor offers TutoringSessions
+- Tutor specifies availability for TutoringSessions
+- Student makes TutoringRequests
+- Tutor can confirm or offer alternative TutoringSessions
+- Tutor and Student participate in TutoringSessions
+- Tutor and Student may schedule follow-up sessions
+- Student pays for TutoringSession
+- Tutor or Student can cancel TutoringSession
+- CancellationPolicy defines rules for cancellations and penalties
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,address:email]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [User:extends,account:bank,price:hourly]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [User:extends]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:,level:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [card:credit,transfer:wire]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association 1 Users
+ 1 OTS association 1 TutoringSessions
+ 1 User association 1 Student
+ 1 Tutor association 1 TutoringSessions
+ 1 Tutor association 1 TutoringSessions
+ 1 Student association 1 TutoringRequests
+ 1 Tutor association 1 TutoringSessions
+ 1 Tutor association 1 TutoringSessions
+ 1 Tutor association 1 sessions
+ 1 Student association 1 TutoringSession
+ 1 Tutor association 1 TutoringSession
+ 1 CancellationPolicy association 1 penalties
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   7                   16                  
+Attributes          11                  1                   24                  
+Associations        3                   0                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes: 
+1. User(name, email)
+2. Tutor(name, email, bankAccount)
+3. Student(name, email)
+4. Subject(name)
+5. TutoringSession(date, time)
+6. Payment(amount, method)
+7. TutoringRequest(date, time)
+8. Availability(day, time)
+9. TutoringOffer(subject, level, price)
+10. FollowUpTutoringSession(date, time)
+11. CancellationPolicy
+
+Enumerations:
+1. LevelOfExpertise(primary school level, high school level, university level)
+2. TutoringMethod(credit card, wire transfer)
+
+Relationships: 
+1. User can be a Tutor
+2. User can be a Student
+3. Tutor can offer TutoringOffer
+4. Student can make TutoringRequest
+5. TutoringRequest is for TutoringOffer
+6. TutoringSession involves Tutor and Student
+7. TutoringSession has FollowUpTutoringSession
+8. TutoringSession has Payment
+9. TutoringSession has CancellationPolicy
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [name:,email:,bankAccount:]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: [name:]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:,method:]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: Availability (class) - Enum Attributes: [], Class Attributes: [day:,time:]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:,level:,price:]
+Class: FollowUpTutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Class: LevelOfExpertise (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: TutoringMethod (enum) - Enum Attributes: [card, transfer], Class Attributes: []
+Relationships:
+ 1 User association 1 Tutor
+ 1 User association 1 Student
+ 1 Tutor association 1 TutoringOffer
+ 1 Student association 1 TutoringRequest
+ 1 TutoringRequest association 1 TutoringOffer
+ 1 TutoringSession association 1 Student
+ 1 TutoringSession association 1 FollowUpTutoringSession
+ 1 TutoringSession association 1 Payment
+ 1 TutoringSession association 1 CancellationPolicy
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'Availability(class)'	-	'TutorAvailability(class)'
+ 'LevelOfExpertise(enum)'	-	'LevelOfTutoring(enum)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Subject(class):name'	-	'name'
+-Relationships:
+ ' 1 Tutor association 1 TutoringOffer'	-	' 1 Tutor association * TutoringOffer'
+ ' 1 Student association 1 TutoringRequest'	-	' 1 Student association * TutoringRequest'
+ ' 1 TutoringRequest association 1 TutoringOffer'	-	' 0..1 TutoringOffer association * TutoringRequest'
+ ' 1 TutoringSession association 1 Payment'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  10                  16                  
+Attributes          26                  4                   24                  
+Associations        9                   4                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+- User(name, email)
+- Tutor(extends User, bankAccount)
+- Student(extends User)
+- Subject(name)
+- TutoringOffer(subject, level, price)
+- Availability(day, time)
+- TutoringRequest(student, tutor, subject, level, dateTime)
+- Session(tutor, student, dateTime)
+- PaymentMethod(type)
+- Payment(session, amount, method)
+- CancellationPolicy 
+
+Relationships:
+- Tutor has * TutoringOffer
+- Tutor has * Availability
+- Student makes * TutoringRequest
+- Tutor can accept * TutoringRequest
+- Session belongs to 1 Tutor and 1 Student
+- Session has 1 Payment
+- User can have 1 PaymentMethod
+- CancellationPolicy applies to TutoringRequest's cancellation
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [User:extends,bankAccount:]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [User:extends]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: [name:]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:,level:,price:]
+Class: Availability (class) - Enum Attributes: [], Class Attributes: [day:,time:]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [student:,tutor:,subject:,level:,dateTime:]
+Class: Session (class) - Enum Attributes: [], Class Attributes: [tutor:,student:,dateTime:]
+Class: PaymentMethod (class) - Enum Attributes: [], Class Attributes: [type:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [session:,amount:,method:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Tutor association * TutoringOffer
+ 1 Tutor association * Availability
+ 1 Student association * TutoringRequest
+ 1 Tutor association * TutoringRequest
+ 1 Session association 1 Tutor
+ 1 Session association 1 Payment
+ 1 User association 1 PaymentMethod
+ 1 CancellationPolicy association 1 cancellation
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'Availability(class)'	-	'TutorAvailability(class)'
+ 'PaymentMethod(class)'	-	'PaymentKind(enum)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Subject(class):name'	-	'name'
+-Relationships:
+ ' 1 Tutor association * TutoringOffer'	-	' 1 Tutor association * TutoringOffer'
+ ' 1 Tutor association * Availability'	-	' 1 Tutor association * TutorAvailability'
+ ' 1 Student association * TutoringRequest'	-	' 1 Student association * TutoringRequest'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   16                  
+Attributes          23                  4                   24                  
+Associations        7                   3                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+Subject(mathematics, science, literature, etc.)
+Level(primary school, high school, university)
+Classes: 
+OTS()
+User(string name, string email)
+Tutor(string bankAccount, int hourlyPrice)
+Student()
+TutoringSession(Date date, Time time, string status, int price)
+PaymentMethod(creditCard, wireTransfer)
+CancellationPolicy()
+
+  Relationships:
+1 OTS contain * User
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringSession
+1 OTS contain * CancellationPolicy
+
+* Tutor associate 1 User
+* Student associate 1 User
+* TutoringSession associate 1 Tutor
+* TutoringSession associate 1 Student
+* TutoringSession associate 1 Subject
+* TutoringSession associate 1 Level
+* TutoringSession associate 1 PaymentMethod
+* TutoringSession associate 1 CancellationPolicy
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature, etc.], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, university], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [bankAccount:string,hourlyPrice:int]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time,status:string,price:int]
+Class: PaymentMethod (class) - Enum Attributes: [], Class Attributes: [creditCard:,wireTransfer:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringSession
+ 1 OTS association * CancellationPolicy
+ * Tutor association 1 User
+ * Student association 1 User
+ * TutoringSession association 1 Tutor
+ * TutoringSession association 1 Student
+ * TutoringSession association 1 Subject
+ * TutoringSession association 1 Level
+ * TutoringSession association 1 PaymentMethod
+ * TutoringSession association 1 CancellationPolicy
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'PaymentMethod(class)'	-	'PaymentKind(enum)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'PaymentMethod(class):creditCard'	-	'CreditCard'
+ 'PaymentMethod(class):wireTransfer'	-	'WireTransfer'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   16                  
+Attributes          17                  5                   24                  
+Associations        13                  1                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+1. User
+2. Tutor
+3. Student
+4. Subject
+5. TutoringSession
+6. Availability
+
+Relationships:
+- Tutor can be a User
+- Student can be a User
+- Tutor offers * Subject
+- Tutor sets * Availability
+- Tutor can have many TutoringSession
+- Student can have many TutoringSession
+- TutoringSession is associated with one Tutor and one Student
+
+Attributes:
+User: name, email
+Tutor: bank account, hourly price
+Student: -
+Subject: name
+TutoringSession: date, time, status, price, payment method
+Availability: day, time slots
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: []
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: Subject (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: []
+Class: Availability (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Tutor association 1 User
+ 1 Student association 1 User
+ 1 Tutor association * Subject
+ 1 Tutor association * Availability
+ 1 Tutor association 1 TutoringSession
+ 1 Student association 1 TutoringSession
+ 1 TutoringSession association 1 Student
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Availability(class)'	-	'TutorAvailability(class)'
+-Attributes:
+-Relationships:
+ ' 1 Tutor association * Availability'	-	' 1 Tutor association * TutorAvailability'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          0                   0                   24                  
+Associations        7                   1                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+Subject(mathematics, science, literature)
+Level(primary school level, high school level, university level)
+Classes: 
+OTS()
+User(string name, string email)
+Tutor(User user, string bankAccount)
+TutoringOffer(Subject subject, Level level, double hourlyPrice, Tutor tutor, string weeklyAvailability)
+Student(User user)
+TutoringRequest(Student student, Tutor tutor, Subject subject, Level level, Date targetDate, Time targetTime)
+TutoringSession(Tutor tutor, Student student, Subject subject, Level level, Date date, Time startTime, Time endTime, boolean confirmed)
+Payment(double amount, string paymentMethod)
+CancellationPolicy(double studentCancellationPenalty, double tutorCancellationDiscount)
+
+  Relationships:
+1 OTS contain * User 
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * Payment
+1 OTS contain * CancellationPolicy
+
+* Tutor associate 1 User
+* TutoringOffer associate 1 Tutor
+* TutoringRequest associate 1 Student
+* TutoringRequest associate 1 Tutor
+* TutoringSession associate 1 Tutor
+* TutoringSession associate 1 Student
+* Payment associate 1 TutoringSession
+* Payment associate 1 Student
+* CancellationPolicy associate 1 Tutor
+* CancellationPolicy associate 1 Student
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [user:User,bankAccount:string]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,hourlyPrice:double,tutor:Tutor,weeklyAvailability:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [user:User]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [student:Student,tutor:Tutor,subject:Subject,level:Level,targetDate:Date,targetTime:Time]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,student:Student,subject:Subject,level:Level,date:Date,startTime:Time,endTime:Time,confirmed:boolean]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:double,paymentMethod:string]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: [studentCancellationPenalty:double,tutorCancellationDiscount:double]
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * Payment
+ 1 OTS association * CancellationPolicy
+ * Tutor association 1 User
+ * TutoringOffer association 1 Tutor
+ * TutoringRequest association 1 Student
+ * TutoringRequest association 1 Tutor
+ * TutoringSession association 1 Tutor
+ * TutoringSession association 1 Student
+ * Payment association 1 TutoringSession
+ * Payment association 1 Student
+ * CancellationPolicy association 1 Tutor
+ * CancellationPolicy association 1 Student
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringOffer(class):hourlyPrice'	-	'hourlyPrice'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+ ' * TutoringOffer association 1 Tutor'	-	' 1 Tutor association * TutoringOffer'
+ ' * TutoringRequest association 1 Student'	-	' 1 Student association * TutoringRequest'
+ ' * Payment association 1 TutoringSession'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   16                  
+Attributes          34                  4                   24                  
+Associations        18                  4                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+- OTS
+- Tutor
+- Student
+- Subject
+- TutoringOffer
+- TutoringRequest
+- TutoringSession
+
+Enumerations:
+- LevelOfExpertise (primary school level, high school level, university level)
+
+Relationships:
+- OTS contains * Tutor
+- OTS contains * Student
+- Tutor has 1 Subject
+- Tutor has * TutoringOffer
+- Tutor has * TutoringSession
+- Student has * TutoringRequest
+- Student has * TutoringSession
+
+Attributes:
+- TutoringOffer has LevelOfExpertise
+- TutoringOffer has hourlyPrice
+- TutoringOffer has weeklyAvailability
+- TutoringRequest has targetDateTime
+- TutoringSession has actualDateTime
+- TutoringSession has paymentStatus
+
+Additional behaviors:
+- TutoringSession may have a cancelationPolicy
+- TutoringSession may have a reschedulingPolicy
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: []
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: Subject (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: []
+Class: LevelOfExpertise (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Relationships:
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 Tutor association 1 Subject
+ 1 Tutor association * TutoringOffer
+ 1 Tutor association * TutoringSession
+ 1 Student association * TutoringRequest
+ 1 Student association * TutoringSession
+ 1 TutoringOffer association 1 LevelOfExpertise
+ 1 TutoringOffer association 1 hourlyPrice
+ 1 TutoringOffer association 1 weeklyAvailability
+ 1 TutoringRequest association 1 targetDateTime
+ 1 TutoringSession association 1 actualDateTime
+ 1 TutoringSession association 1 paymentStatus
+ 1 TutoringSession association 1 cancelationPolicy
+ 1 TutoringSession association 1 reschedulingPolicy
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'OTS(class)'	-	'OTS(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'LevelOfExpertise(enum)'	-	'LevelOfTutoring(enum)'
+-Attributes:
+-Relationships:
+ ' 1 Tutor association * TutoringOffer'	-	' 1 Tutor association * TutoringOffer'
+ ' 1 Student association * TutoringRequest'	-	' 1 Student association * TutoringRequest'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   8                   16                  
+Attributes          3                   0                   24                  
+Associations        8                   2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+1. User()
+2. Tutor(name, email, bankAccount)
+3. Student(name, email)
+4. Subject(name)
+5. Expertise(subject, level, hourlyPrice, weeklyAvailability)
+6. TutoringRequest(student, tutor, subject, level, targetDateTime)
+7. TutoringSession(tutor, student, subject, level, dateTime)
+8. Payment(student, amount, paymentMethod)
+9. CancellationPolicy()
+
+Enumerations:
+1. Level(primarySchool, highSchool, university)
+2. PaymentMethod(creditCard, wireTransfer)
+
+Relationships:
+- User can be either a Tutor or a Student
+- Tutor can have many Expertise records
+- Tutor can have many TutoringRequest records
+- Student can have many TutoringSession records
+- TutoringSession is associated with one Payment record
+- CancellationPolicy defines rules for session cancellation and penalties
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [name:,email:,bankAccount:]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: [name:]
+Class: Expertise (class) - Enum Attributes: [], Class Attributes: [subject:,level:,hourlyPrice:,weeklyAvailability:]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [student:,tutor:,subject:,level:,targetDateTime:]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [tutor:,student:,subject:,level:,dateTime:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [student:,amount:,paymentMethod:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [primarySchool, highSchool, university], Class Attributes: []
+Class: PaymentMethod (enum) - Enum Attributes: [creditCard, wireTransfer], Class Attributes: []
+Relationships:
+ 1 User association 1 Student
+ 1 Tutor association 1 records
+ 1 Tutor association 1 records
+ 1 Student association 1 records
+ 1 TutoringSession association 1 record
+ 1 CancellationPolicy association 1 penalties
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'PaymentMethod(enum)'	-	'PaymentKind(enum)'
+-Attributes:
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Subject(class):name'	-	'name'
+ 'PaymentMethod(enum):creditCard'	-	'CreditCard'
+ 'PaymentMethod(enum):wireTransfer'	-	'WireTransfer'
+-Relationships:
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   16                  
+Attributes          28                  4                   24                  
+Associations        1                   0                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes: 
+1. User(name, email)
+2. Tutor(name, email, bankAccount, subjects: list, expertiseLevel: list, hourlyPrice: list, weeklyAvailability: list, tutoringSessions: list)
+3. Student(name, email, tutoringRequests: list, tutoringSessions: list, paymentMethod)
+4. Subject(name)
+5. TutoringSession(date, time, status, paymentStatus)
+6. Payment(amount, method)
+
+Relationships:
+1. User can be either a Tutor or a Student
+2. Tutor can offer tutoring in multiple Subjects
+3. Tutor can have multiple TutoringSessions
+4. Student can have multiple TutoringSessions
+5. Student can make multiple TutoringRequests
+6. TutoringSession is associated with one Tutor and one Student
+7. TutoringSession has one Payment
+8. Payment is associated with one TutoringSession
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [name:,email:,bankAccount:,subjects:list,expertiseLevel:list,hourlyPrice:list,weeklyAvailability:list,tutoringSessions:list]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [name:,email:,tutoringRequests:list,tutoringSessions:list,paymentMethod:]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: [name:]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:,status:,paymentStatus:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:,method:]
+Relationships:
+ 1 User association 1 Student
+ 1 Tutor association 1 Subjects
+ 1 Tutor association 1 TutoringSessions
+ 1 Student association 1 TutoringSessions
+ 1 Student association 1 TutoringRequests
+ 1 TutoringSession association 1 Student
+ 1 TutoringSession association 1 Payment
+ 1 Payment association 1 TutoringSession
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Subject(class):name'	-	'name'
+-Relationships:
+ ' 1 TutoringSession association 1 Payment'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   16                  
+Attributes          22                  4                   24                  
+Associations        4                   1                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes: 
+1. User(name, email)
+2. Tutor(name, email, bankAccount, hourlyPrice)
+3. Student(name, email)
+4. Subject(name)
+5. Availability(day, time)
+6. TutoringRequest(date, time)
+7. TutoringSession(date, time)
+8. Payment(amount, method)
+9. CancellationPolicy()
+
+Associations:
+- User can be a Tutor or a Student
+- Tutor can offer TutoringSessions in different Subjects
+- Tutor can have multiple Availabilities
+- TutoringRequest is made by a Student to a Tutor for a specific Subject
+- TutoringSession is conducted between a Tutor and a Student
+- TutoringSession can have follow-up sessions
+- Payment is made for a TutoringSession
+- CancellationPolicy applies to TutoringSession cancellations
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [name:,email:,bankAccount:,hourlyPrice:]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Subject (class) - Enum Attributes: [], Class Attributes: [name:]
+Class: Availability (class) - Enum Attributes: [], Class Attributes: [day:,time:]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:,method:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 Student
+ 1 Tutor association 1 Subjects
+ 1 Tutor association 1 Availabilities
+ 1 TutoringRequest association 1 Subject
+ 1 TutoringSession association 1 Student
+ 1 TutoringSession association 1 sessions
+ 1 Payment association 1 TutoringSession
+ 1 CancellationPolicy association 1 cancellations
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'Availability(class)'	-	'TutorAvailability(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Subject(class):name'	-	'name'
+-Relationships:
+ ' 1 TutoringRequest association 1 Subject'	-	' 1 Subject association * TutoringRequest'
+ ' 1 Payment association 1 TutoringSession'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          17                  4                   24                  
+Associations        4                   2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+Subject(mathematics, science, literature)
+Level(primary school, high school, university)
+Classes: 
+OTS()
+Person(string name, string email)
+Tutor(Person bankAccount, double hourlyPrice)
+Student()
+TutoringOffer(Subject subject, Level level, double hourlyPrice, string weeklyAvailability)
+TutoringRequest(Subject subject, Level level, DateTime requestedTime)
+TutoringSession(DateTime scheduledTime)
+PaymentMethod(creditCard, wireTransfer)
+CancellationPolicy()
+
+  Relationships:
+1 OTS contain * Person
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * PaymentMethod
+1 OTS contain * CancellationPolicy
+
+* TutoringOffer associate 1 Tutor
+* TutoringRequest associate 1 Tutor
+* TutoringSession associate 1 Tutor and 1 Student
+* PaymentMethod associate 1 Student
+
+
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, university], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [bankAccount:Person,hourlyPrice:double]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,hourlyPrice:double,weeklyAvailability:string]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,requestedTime:DateTime]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [scheduledTime:DateTime]
+Class: PaymentMethod (class) - Enum Attributes: [], Class Attributes: [creditCard:,wireTransfer:]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association * Person
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * PaymentMethod
+ 1 OTS association * CancellationPolicy
+ * TutoringOffer association 1 Tutor
+ * TutoringRequest association 1 Tutor
+ * TutoringSession association 1 Tutor
+ * PaymentMethod association 1 Student
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Person(class)'	-	'User(class)'
+ 'PaymentMethod(class)'	-	'PaymentKind(enum)'
+-Attributes:
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringOffer(class):hourlyPrice'	-	'hourlyPrice'
+ 'Person(class):name'	-	'name'
+ 'Person(class):email'	-	'email'
+ 'PaymentMethod(class):creditCard'	-	'CreditCard'
+ 'PaymentMethod(class):wireTransfer'	-	'WireTransfer'
+-Relationships:
+ ' 1 OTS association * Person'	-	' 1 OTS association * User'
+ ' * TutoringOffer association 1 Tutor'	-	' 1 Tutor association * TutoringOffer'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   16                  
+Attributes          20                  6                   24                  
+Associations        12                  2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(mathematics, science, literature)
+Level(primary school, high school, university)
+Day(Thursday)
+Classes:
+OTS()
+User(string name, string email)
+Tutor(User, string bankAccount)
+Student(User)
+TutoringOffer(Subject, Level, int hourlyPrice, List<Day> availability)
+TutoringRequest(Tutor, Subject, Level, Date targetDate, Time targetTime)
+TutoringSession(Tutor, Student, Subject, Level, Date sessionDate, Time sessionTime)
+Payment(int amount, string paymentMethod)
+CancellationPolicy()
+
+Relationships:
+1 OTS contain * User
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * Payment
+1 OTS contain * CancellationPolicy
+
+* Tutor associate 1 User
+* Student associate 1 User
+* TutoringOffer associate 1 Tutor
+* TutoringRequest associate 1 Tutor
+* TutoringRequest associate 1 Student
+* TutoringSession associate 1 Tutor
+* TutoringSession associate 1 Student
+* Payment associate 1 TutoringSession
+* CancellationPolicy associate 1 TutoringSession
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, university], Class Attributes: []
+Class: Day (enum) - Enum Attributes: [Thursday], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [User:,bankAccount:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [User:]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [Subject:,Level:,hourlyPrice:int,availability:List<Day>]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [Tutor:,Subject:,Level:,targetDate:Date,targetTime:Time]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [Tutor:,Student:,Subject:,Level:,sessionDate:Date,sessionTime:Time]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:int,paymentMethod:string]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * Payment
+ 1 OTS association * CancellationPolicy
+ * Tutor association 1 User
+ * Student association 1 User
+ * TutoringOffer association 1 Tutor
+ * TutoringRequest association 1 Tutor
+ * TutoringRequest association 1 Student
+ * TutoringSession association 1 Tutor
+ * TutoringSession association 1 Student
+ * Payment association 1 TutoringSession
+ * CancellationPolicy association 1 TutoringSession
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringOffer(class):hourlyPrice'	-	'hourlyPrice'
+ 'TutoringSession(class):sessionDate'	-	'sessionDate'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+ ' * TutoringOffer association 1 Tutor'	-	' 1 Tutor association * TutoringOffer'
+ ' * TutoringRequest association 1 Student'	-	' 1 Student association * TutoringRequest'
+ ' * Payment association 1 TutoringSession'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  9                   16                  
+Attributes          29                  5                   24                  
+Associations        15                  4                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Classes:
+1. User (name, email)
+2. Tutor (bank account, expertiseLevel, hourlyPrice)
+3. Student
+4. Subject
+5. TutoringSession (date, time)
+6. Payment (method)
+7. TutoringRequest
+8. Availability (day, time)
+9. SessionCancellationPolicy
+
+Associations:
+1. User 1-----1 Tutor
+2. Tutor 1-----* Subject
+3. Tutor 1-----* Availability
+4. Tutor 1-----* TutoringSession
+5. Student 1-----* TutoringRequest
+6. TutoringSession 1-----1 Payment
+7. TutoringSession 1-----1 Subject
+8. TutoringSession 1-----1 Tutor
+9. TutoringSession *-----* TutoringSession (for follow-up sessions)
+10. SessionCancellationPolicy 1-----1 TutoringSession
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:,email:]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [account:bank,expertiseLevel:,hourlyPrice:]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: Subject (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:,time:]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [method:]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: []
+Class: Availability (class) - Enum Attributes: [], Class Attributes: [day:,time:]
+Class: SessionCancellationPolicy (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 Tutor
+ 1 Tutor association 1 Subject
+ 1 Tutor association 1 Availability
+ 1 Tutor association 1 TutoringSession
+ 1 Student association 1 TutoringRequest
+ 1 TutoringSession association 1 Payment
+ 1 TutoringSession association 1 Subject
+ 1 TutoringSession association 1 Tutor
+ 1 TutoringSession association 1 TutoringSession
+ 1 SessionCancellationPolicy association 1 TutoringSession
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'Subject(class)'	-	'Subject(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'Availability(class)'	-	'TutorAvailability(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+-Relationships:
+ ' 1 Tutor association 1 Availability'	-	' 1 Tutor association * TutorAvailability'
+ ' 1 Student association 1 TutoringRequest'	-	' 1 Student association * TutoringRequest'
+ ' 1 TutoringSession association 1 Payment'	-	' 1 TutoringSession association 0..1 Payment'
+ ' 1 TutoringSession association 1 TutoringSession'	-	' 1 TutoringSession association 0..1 TutoringSession'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          10                  2                   24                  
+Associations        10                  4                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration: 
+Subject(mathematics, science, literature, etc.)
+Level(primary school level, high school level, university level)
+Classes:
+OTS()
+User(string name, string email)
+Tutor(string bankAccount, double hourlyPrice)
+Student()
+TutoringRequest(Date targetDate, Time targetTime)
+TutoringSession(Date sessionDate, Time sessionTime)
+Payment(string paymentMethod, double amount)
+
+Relationships:
+1 OTS contain * User
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * Payment
+
+* Tutor associate 1 User
+* Student associate 1 User
+* TutoringRequest associate 1 Tutor
+* TutoringRequest associate 1 Student
+* TutoringSession associate 1 Tutor
+* TutoringSession associate 1 Student
+* Payment associate 1 TutoringSession
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature, etc.], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [bankAccount:string,hourlyPrice:double]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [targetDate:Date,targetTime:Time]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [sessionDate:Date,sessionTime:Time]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [paymentMethod:string,amount:double]
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * Payment
+ * Tutor association 1 User
+ * Student association 1 User
+ * TutoringRequest association 1 Tutor
+ * TutoringRequest association 1 Student
+ * TutoringSession association 1 Tutor
+ * TutoringSession association 1 Student
+ * Payment association 1 TutoringSession
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'Payment(class)'	-	'Payment(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'TutoringSession(class):sessionDate'	-	'sessionDate'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+ ' * TutoringRequest association 1 Student'	-	' 1 Student association * TutoringRequest'
+ ' * Payment association 1 TutoringSession'	-	' 1 TutoringSession association 0..1 Payment'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   16                  
+Attributes          17                  4                   24                  
+Associations        13                  3                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(mathematics, science, literature)
+Level(primary school level, high school level, university level)
+
+Classes:
+OTS()
+User(string name, string email)
+Tutor(User user, string bankAccount)
+Student(User user)
+TutoringOffer(Subject subject, Level level, double price, string availability)
+TutoringRequest(TutoringOffer offer, Student student, Date targetDate, Time targetTime)
+TutoringSession(Tutor tutor, Student student, Date date, Time time, boolean confirmed, boolean paid)
+CancellationPolicy(double studentCancelFee, double tutorCancelDiscount)
+
+Relationships:
+1 OTS contain * User
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringOffer
+1 OTS contain * TutoringRequest
+1 OTS contain * TutoringSession
+1 OTS contain * CancellationPolicy
+
+* Tutor associate 1 TutoringOffer
+* Tutor associate 1 TutoringRequest
+* Tutor associate 1 TutoringSession
+* Student associate 1 TutoringRequest
+* Student associate 1 TutoringSession
+* TutoringRequest associate 1 TutoringOffer
+* TutoringRequest associate 1 Student
+* TutoringSession associate 1 TutoringRequest
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, level], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [user:User,bankAccount:string]
+Class: Student (class) - Enum Attributes: [], Class Attributes: [user:User]
+Class: TutoringOffer (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,price:double,availability:string]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [offer:TutoringOffer,student:Student,targetDate:Date,targetTime:Time]
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [tutor:Tutor,student:Student,date:Date,time:Time,confirmed:boolean,paid:boolean]
+Class: CancellationPolicy (class) - Enum Attributes: [], Class Attributes: [studentCancelFee:double,tutorCancelDiscount:double]
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringOffer
+ 1 OTS association * TutoringRequest
+ 1 OTS association * TutoringSession
+ 1 OTS association * CancellationPolicy
+ * Tutor association 1 TutoringOffer
+ * Tutor association 1 TutoringRequest
+ * Tutor association 1 TutoringSession
+ * Student association 1 TutoringRequest
+ * Student association 1 TutoringSession
+ * TutoringRequest association 1 TutoringOffer
+ * TutoringRequest association 1 Student
+ * TutoringSession association 1 TutoringRequest
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringOffer(class)'	-	'TutoringOffer(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+ ' * Tutor association 1 TutoringOffer'	-	' 1 Tutor association * TutoringOffer'
+ ' * Student association 1 TutoringRequest'	-	' 1 Student association * TutoringRequest'
+ ' * TutoringRequest association 1 TutoringOffer'	-	' 0..1 TutoringOffer association * TutoringRequest'
+ ' * TutoringSession association 1 TutoringRequest'	-	' 1 TutoringRequest association * TutoringSession'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  8                   16                  
+Attributes          27                  3                   24                  
+Associations        15                  5                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(Mathematics, Science, Literature)
+Level(Primary school, High school, University)
+
+Classes:
+OTS()
+User(string name, string email)
+Tutor(string bankAccount, double hourlyPrice)
+Student()
+
+Relationships:
+1 OTS contain * User
+1 OTS contain * Tutor
+1 OTS contain * Student
+* Tutor offer * Subject
+* Tutor offer * Level
+* Tutor offer * WeeklyAvailability
+* Student browse * Tutor
+* Student make * Tutor
+* Tutor confirm * Student
+* Tutor suggest * Tutor
+* Tutor schedule * Tutor
+* Student pay * Tutor
+* Tutor cancel * Student
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [Mathematics, Science, Literature], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, University], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [bankAccount:string,hourlyPrice:double]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 OTS association * User
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ * Tutor association * Subject
+ * Tutor association * Level
+ * Tutor association * WeeklyAvailability
+ * Student association * Tutor
+ * Student association * Tutor
+ * Tutor association * Student
+ * Tutor association * Tutor
+ * Tutor association * Tutor
+ * Student association * Tutor
+ * Tutor association * Student
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'User(class)'	-	'User(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+-Attributes:
+ 'User(class):name'	-	'name'
+ 'User(class):email'	-	'email'
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+-Relationships:
+ ' 1 OTS association * User'	-	' 1 OTS association * User'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   16                  
+Attributes          10                  3                   24                  
+Associations        12                  1                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Online Tutoring System (OTS):
+------------------------------------------------------------
+AI:
+Enumeration:
+Subject(mathematics, science, literature, etc.)
+Level(primary school, high school, university)
+Availability(Thursday 10:00-11:30)
+
+Classes:
+OTS()
+Person(string name, string email)
+Tutor(Person bankAccount, int hourlyPrice)
+Student()
+
+TutoringSession(Date date, Time time, boolean confirmed)
+TutoringRequest(Subject subject, Level level, TutoringSession firstSession)
+FollowUpSession(Date date, Time time)
+PaymentMethod(creditCard, wireTransfer)
+
+Relationships:
+1 OTS contain * Person
+1 OTS contain * Tutor
+1 OTS contain * Student
+1 OTS contain * TutoringSession
+1 OTS contain * TutoringRequest
+1 OTS contain * FollowUpSession
+1 OTS contain * PaymentMethod
+
+* Tutor associate 1 Person
+* TutoringSession associate 1 Tutor
+* TutoringSession associate 1 Student
+* TutoringRequest associate 1 Tutor
+* TutoringRequest associate 1 Student
+* FollowUpSession associate 1 Tutor
+* FollowUpSession associate 1 Student
+* PaymentMethod associate 1 Student
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Subject (enum) - Enum Attributes: [mathematics, science, literature, etc.], Class Attributes: []
+Class: Level (enum) - Enum Attributes: [school, school, university], Class Attributes: []
+Class: Availability (enum) - Enum Attributes: [Thursday 10:00-11], Class Attributes: []
+Class: OTS (class) - Enum Attributes: [], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [name:string,email:string]
+Class: Tutor (class) - Enum Attributes: [], Class Attributes: [bankAccount:Person,hourlyPrice:int]
+Class: Student (class) - Enum Attributes: [], Class Attributes: []
+Class: TutoringSession (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time,confirmed:boolean]
+Class: TutoringRequest (class) - Enum Attributes: [], Class Attributes: [subject:Subject,level:Level,firstSession:TutoringSession]
+Class: FollowUpSession (class) - Enum Attributes: [], Class Attributes: [date:Date,time:Time]
+Class: PaymentMethod (class) - Enum Attributes: [], Class Attributes: [creditCard:,wireTransfer:]
+Relationships:
+ 1 OTS association * Person
+ 1 OTS association * Tutor
+ 1 OTS association * Student
+ 1 OTS association * TutoringSession
+ 1 OTS association * TutoringRequest
+ 1 OTS association * FollowUpSession
+ 1 OTS association * PaymentMethod
+ * Tutor association 1 Person
+ * TutoringSession association 1 Tutor
+ * TutoringSession association 1 Student
+ * TutoringRequest association 1 Tutor
+ * TutoringRequest association 1 Student
+ * FollowUpSession association 1 Tutor
+ * FollowUpSession association 1 Student
+ * PaymentMethod association 1 Student
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Subject(enum)'	-	'Subject(class)'
+ 'OTS(class)'	-	'OTS(class)'
+ 'Tutor(class)'	-	'Tutor(class)'
+ 'Student(class)'	-	'Student(class)'
+ 'TutoringSession(class)'	-	'TutoringSession(class)'
+ 'TutoringRequest(class)'	-	'TutoringRequest(class)'
+ 'Person(class)'	-	'User(class)'
+ 'PaymentMethod(class)'	-	'PaymentKind(enum)'
+ 'Availability(enum)'	-	'TutorAvailability(class)'
+-Attributes:
+ 'Tutor(class):bankAccount'	-	'bankAccount'
+ 'Person(class):name'	-	'name'
+ 'Person(class):email'	-	'email'
+ 'PaymentMethod(class):creditCard'	-	'CreditCard'
+ 'PaymentMethod(class):wireTransfer'	-	'WireTransfer'
+-Relationships:
+ ' 1 OTS association * Person'	-	' 1 OTS association * User'
+ ' * TutoringRequest association 1 Student'	-	' 1 Student association * TutoringRequest'
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   16                  
+Attributes          22                  5                   24                  
+Associations        15                  2                   16                  
+Inheritances        0                   0                   4                   
+--------------------------------------------------------------------------------
+Online Tutoring System (OTS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.817          0.503          0.623          0.545
+Attributes          0.173          0.150          0.161          0.154
+Associations        0.215          0.138          0.168          0.148
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

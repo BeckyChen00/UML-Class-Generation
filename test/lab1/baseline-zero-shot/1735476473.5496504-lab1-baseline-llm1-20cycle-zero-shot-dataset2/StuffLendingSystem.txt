@@ -1,0 +1,1484 @@
+------------------------------------------------------------
+---------------------1/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Classes:
+1. User
+2. Member
+3. Item
+4. LendingContract
+5. Administrator
+
+Relationships:
+1. User contain 1 UserRole
+2. User inherit Member
+3. Member associate 0..* Item
+4. Member associate 0..* LendingContract
+5. Administrator inherit User
+6. Administrator contain 0..* Item
+7. Administrator contain 0..* Member
+8. LendingContract associate 1 Member as Borrower
+9. LendingContract associate 1 Member as Lender
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: []
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 UserRole
+ False User inheritance False Member
+ 3 Member association 0..* Item
+ 4 Member association 0..* LendingContract
+ False Administrator inheritance False User
+ 6 Administrator aggregation 0..* Item
+ 7 Administrator aggregation 0..* Member
+ 8 LendingContract association 1 Member
+ 9 LendingContract association 1 Member
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'LendingContract(class)'	-	'LendingContract(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+-Attributes:
+-Relationships:
+ ' 3 Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 4 Member association 0..* LendingContract'	-	' 1 LendingContract association 1 Member'
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+ ' 8 LendingContract association 1 Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        7                   3                   9                   
+Inheritances        2                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+
+1. UserRole (Member, System Administrator)
+
+Class:
+1. Member(username : String, password : String, email : String, phone : String, memberID : String, dateCreated : Date)
+2. Item(category : String, name : String, description : String, registrationDate : Date, lendingCost : Integer)
+
+Relationships:
+1. Member contain 0..* Item
+2. Member inherit UserRole
+3. Administrator inherit UserRole
+4. Administrator manage 0..* Item
+5. Administrator remove 0..* Member
+
+Composition:
+1. Member contain 0..* LendingContract
+2. Item contain 0..* LendingContract
+
+Class:
+1. LendingContract(startDate : Date, endDate : Date, creditTransfer : Integer, status : String)
+
+Relationships:
+1. Member lend 0..* Item
+2. Member borrow 0..* Item
+3. LendingContract associate 1 Member as lender
+4. LendingContract associate 1 Member as borrower
+
+Composition:
+1. Administrator manage 0..* LendingContract
+
+Notifications:
+1. Notification(source : String, destination : String, message : String, timestamp : Date)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username , password , email , phone , memberID , dateCreated ], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category , name , description , registrationDate , lendingCost ], Class Attributes: []
+Relationships:
+ 1 Member aggregation 0..* Item
+ False Member inheritance False UserRole
+ False Administrator inheritance False UserRole
+ 4 Administrator association 0..* Item
+ 5 Administrator association 0..* Member
+ 1 Member aggregation 0..* LendingContract
+ 2 Item aggregation 0..* LendingContract
+ 1 Member association 0..* Item
+ 2 Member association 0..* Item
+ 3 LendingContract association 1 Member
+ 4 LendingContract association 1 Member
+ 1 Administrator association 0..* LendingContract
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+-Attributes:
+ 'Member(enum):username '	-	'username'
+ 'Member(enum):password '	-	'password'
+ 'Member(enum):email '	-	'email'
+ 'Member(enum):memberID '	-	'memberID'
+ 'Item(enum):name '	-	'name'
+-Relationships:
+ ' 1 Member association 0..* Item'	-	' 1 Member association * Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   2                   8                   
+Attributes          13                  5                   15                  
+Associations        3                   1                   9                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. Member(username : String, password : String, email : String, phoneNum : String, memberID : String, dateOfCreation : Date, credits : Integer)
+2. Item(category : String, name : String, description : String, registeredDate : Date, lendingCost : Integer, availability : Boolean)
+3. Administrator
+
+Relationships:
+1 Member register 1..* Item
+1 Member lend 1..* Item
+1 Member initiate 1..* Request
+1 Administrator manage 1..* Member
+1 Administrator manage 1..* Item
+1 Administrator trigger 1 AdvanceDayCountCommand
+1 AdvanceDayCountCommand trigger 1..* LendingContract
+1 Member/ Administrator request 1 RemoveItem
+
+Composition:
+1 Member contain 1..* Item
+1 Administrator contain 1..* Member
+1 Administrator contain 1..* Item
+1 Item contain 1..* Request
+
+Inheritance:
+Member inherit UserRole
+Administrator inherit UserRole
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username , password , email , phoneNum , memberID , dateOfCreation , credits ], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category , name , description , registeredDate , lendingCost , availability ], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Member association 1..* Item
+ 1 Member association 1..* Item
+ 1 Member association 1..* Request
+ 1 Administrator association 1..* Member
+ 1 Administrator association 1..* Item
+ 1 Administrator association 1 AdvanceDayCountCommand
+ 1 AdvanceDayCountCommand association 1..* LendingContract
+ 1 1 association 1 Administrator
+ 1 Member aggregation 1..* Item
+ 1 Administrator aggregation 1..* Member
+ 1 Administrator aggregation 1..* Item
+ 1 Item aggregation 1..* Request
+ False Member inheritance False UserRole
+ False Administrator inheritance False UserRole
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+-Attributes:
+ 'Member(enum):username '	-	'username'
+ 'Member(enum):password '	-	'password'
+ 'Member(enum):email '	-	'email'
+ 'Member(enum):memberID '	-	'memberID'
+ 'Member(enum):dateOfCreation '	-	'dateOfCreation'
+ 'Member(enum):credits '	-	'credits'
+ 'Item(enum):name '	-	'name'
+-Relationships:
+ ' 1 Member association 1..* Item'	-	' 1 Member association * Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          15                  7                   15                  
+Associations        7                   1                   9                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Classes:
+1. User
+2. Member
+3. Item
+4. Contract
+5. Administrator
+
+Relationships:
+1. User contain 1 UserRole
+2. User inherit Member
+3. Member associate 0..* Item
+4. Member associate 0..* Contract
+5. Administrator inherit User
+6. Administrator associate 0..* Member
+7. Administrator associate 0..* Item
+8. Contract associate 1 Member
+9. Contract associate 1 Member
+
+Composition:
+1. Member contain 1 UserRole
+2. Member contain 0..* Item
+3. Member contain 0..* Contract
+4. Administrator contain 1 UserRole
+5. Administrator contain 0..* Member
+6. Administrator contain 0..* Item
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: []
+Class: Contract (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 UserRole
+ False User inheritance False Member
+ 3 Member association 0..* Item
+ 4 Member association 0..* Contract
+ False Administrator inheritance False User
+ 6 Administrator association 0..* Member
+ 7 Administrator association 0..* Item
+ 8 Contract association 1 Member
+ 9 Contract association 1 Member
+ 1 Member aggregation 1 UserRole
+ 2 Member aggregation 0..* Item
+ 3 Member aggregation 0..* Contract
+ 4 Administrator aggregation 1 UserRole
+ 5 Administrator aggregation 0..* Member
+ 6 Administrator aggregation 0..* Item
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Contract(class)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' 3 Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 4 Member association 0..* Contract'	-	' 1 LendingContract association 1 Member'
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+ ' 8 Contract association 1 Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        13                  3                   9                   
+Inheritances        2                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. User
+2. Member
+3. SystemAdministrator
+4. Item
+5. Contract
+6. Notification
+
+Enumerations:
+1. UserRole (Member, SystemAdministrator)
+
+Relationships:
+1 User contain 1 UserRole
+1 Member inherit 1 User
+1 SystemAdministrator inherit 1 User
+1 Member associate 0..* Item
+1 Member associate 1..* Contract
+1 SystemAdministrator associate 0..* Item
+1 SystemAdministrator associate 0..* Member
+1 Item associate 0..* Contract
+1 Contract associate 1 Member
+1 Contract associate 1 Item
+1 Notification associate 1 User
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: SystemAdministrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: []
+Class: Contract (class) - Enum Attributes: [], Class Attributes: []
+Class: Notification (class) - Enum Attributes: [], Class Attributes: []
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 UserRole
+ False Member inheritance False User
+ False SystemAdministrator inheritance False User
+ 1 Member association 0..* Item
+ 1 Member association 1..* Contract
+ 1 SystemAdministrator association 0..* Item
+ 1 SystemAdministrator association 0..* Member
+ 1 Item association 0..* Contract
+ 1 Contract association 1 Member
+ 1 Contract association 1 Item
+ 1 Notification association 1 User
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'Notification(class)'	-	'Notification(class)'
+ 'SystemAdministrator(class)'	-	'Administrator(class)'
+ 'Contract(class)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' False Member inheritance False User'	-	' False Member inheritance False User'
+ ' False SystemAdministrator inheritance False User'	-	' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 1 Member association 1..* Contract'	-	' 1 LendingContract association 1 Member'
+ ' 1 Item association 0..* Contract'	-	' 1 LendingContract association 1 Item'
+ ' 1 Contract association 1 Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   8                   
+Attributes          2                   0                   15                  
+Associations        9                   4                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. Member(username : String, password : String, email : String, phone : String, memberID : String, dateOfCreation : Date, credits : int)
+2. Item(category : String, name : String, description : String, registrationDate : Date, lendingCost : int)
+3. Contract(contractID : String, lendingDate : Date, returnDate : Date, lendingCost : int, status : String)
+4. Notification(content : String, date : Date)
+
+Relationships:
+1 Member register 0..* Item
+1 Member lend 0..* Item
+1 Member initiate 1 Notification
+1 Member initiate 0..* Contract
+
+1 System Administrator manage 0..* Member
+1 System Administrator manage 0..* Item
+1 System Administrator trigger 1 Notification
+
+1 Notification send 1 Member
+1 Notification send 1 System Administrator
+1 Notification send 0..* Member
+
+1 System increase 1 DayCounter
+1 DayCounter trigger 0..* Contract
+1 DayCounter trigger 1 Notification
+
+1 Member remove 0..* Item
+1 System Administrator remove 0..* Item
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username , password , email , phone , memberID , dateOfCreation , credits ], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category , name , description , registrationDate , lendingCost ], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [contractID , lendingDate , returnDate , lendingCost , status ], Class Attributes: []
+Class: Notification (enum) - Enum Attributes: [content , date ], Class Attributes: []
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* Item
+ 1 Member association 1 Notification
+ 1 Member association 0..* Contract
+ 1 System association 1 manage
+ 1 System association 1 manage
+ 1 System association 1 trigger
+ 1 Notification association 1 Member
+ 1 Notification association 1 System
+ 1 Notification association 0..* Member
+ 1 System association 1 DayCounter
+ 1 DayCounter association 0..* Contract
+ 1 DayCounter association 1 Notification
+ 1 Member association 0..* Item
+ 1 System association 1 remove
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Notification(enum)'	-	'Notification(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(enum):username '	-	'username'
+ 'Member(enum):password '	-	'password'
+ 'Member(enum):email '	-	'email'
+ 'Member(enum):memberID '	-	'memberID'
+ 'Member(enum):dateOfCreation '	-	'dateOfCreation'
+ 'Member(enum):credits '	-	'credits'
+ 'Item(enum):name '	-	'name'
+ 'Notification(enum):content '	-	'content'
+ 'Notification(enum):date '	-	'date'
+-Relationships:
+ ' 1 Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 1 Member association 1 Notification'	-	' 1 Member aggregation * Notification'
+ ' 1 Member association 0..* Contract'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          21                  9                   15                  
+Associations        7                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. Contract
+5. Administrator
+
+Relationships:
+1..* User contain 1 UserRole
+1 Member inherit 1 User
+1..* Item associate 1 Member
+1 Contract associate 1 Item
+1 Contract associate 1 Member
+1 Administrator inherit 1 User
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* User aggregation 1 UserRole
+ False Member inheritance False User
+ 1..* Item association 1 Member
+ 1 Contract association 1 Item
+ 1 Contract association 1 Member
+ False Administrator inheritance False User
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' False Member inheritance False User'	-	' False Member inheritance False User'
+ ' 1..* Item association 1 Member'	-	' 1 Member association * Item'
+ ' 1 Contract association 1 Item'	-	' 1 LendingContract association 1 Item'
+ ' 1 Contract association 1 Member'	-	' 1 LendingContract association 1 Member'
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        4                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. Contract
+5. Notification
+6. Administrator
+
+Relationships:
+1. User contain 1 Member (0..1)
+2. Member associate * Item
+3. Member associate * Contract
+4. Member associate * Notification
+5. Administrator inherit User
+6. Administrator associate * Member
+7. Administrator associate * Item
+8. Administrator associate * Contract
+9. Administrator associate * Notification
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Notification (enum) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 Member
+ 2 Member association * Item
+ 3 Member association * Contract
+ 4 Member association * Notification
+ False Administrator inheritance False User
+ 6 Administrator association * Member
+ 7 Administrator association * Item
+ 8 Administrator association * Contract
+ 9 Administrator association * Notification
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Notification(enum)'	-	'Notification(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' 2 Member association * Item'	-	' 1 Member association * Item'
+ ' 3 Member association * Contract'	-	' 1 LendingContract association 1 Member'
+ ' 4 Member association * Notification'	-	' 1 Member aggregation * Notification'
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   8                   
+Attributes          2                   0                   15                  
+Associations        8                   3                   9                   
+Inheritances        1                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Class:
+1. Person(username: String, password: String, email: String, phone: String)
+2. Member(memberID: String, dateOfCreation: Date, credits: Int)
+3. Item(category: String, name: String, description: String, lendingCost: Int)
+4. Contract(contractID: String, lendingCost: Int, lendingDate: Date, returnDate: Date)
+5. Administrator
+
+Relationships:
+1..* Person contain 1 UserRole
+1 Member inherit Person
+0..* Item associate 1 Member
+1 Member contain 0..* Item
+1..* Contract associate 1 Member
+1 Administrator inherit Person
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password, email, phone], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [memberID, dateOfCreation, credits], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category, name, description, lendingCost], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [contractID, lendingCost, lendingDate, returnDate], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Person aggregation 1 UserRole
+ False Member inheritance False Person
+ 0..* Item association 1 Member
+ 1 Member aggregation 0..* Item
+ 1..* Contract association 1 Member
+ False Administrator inheritance False Person
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+ 'Person(enum)'	-	'User(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(enum):memberID'	-	'memberID'
+ 'Member(enum):dateOfCreation'	-	'dateOfCreation'
+ 'Member(enum):credits'	-	'credits'
+ 'Item(enum):name'	-	'name'
+ 'Person(enum):username'	-	'username'
+ 'Person(enum):password'	-	'password'
+ 'Person(enum):email'	-	'email'
+-Relationships:
+ ' False Member inheritance False Person'	-	' False Member inheritance False User'
+ ' 0..* Item association 1 Member'	-	' 1 Member association * Item'
+ ' 1..* Contract association 1 Member'	-	' 1 LendingContract association 1 Member'
+ ' False Administrator inheritance False Person'	-	' False Administrator inheritance False User'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          17                  7                   15                  
+Associations        4                   2                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. Member(username: string, password: string, email: string, phoneNumber: string, memberID: string, dateOfCreation: date, credits: int)
+2. Item(category: string, name: string, description: string, registrationDate: date, lendingCost: int)
+3. Contract(contractID: string, lendingDate: date, returnDate: date)
+
+Relationships:
+1. Member registers 0..* Item
+2. Member lends 0..* Item
+3. Member has 0..* Contract
+4. Member requests 0..* Update
+5. Member requests 0..* View
+6. Administrator manages 0..* Member
+7. Administrator manages 0..* Item
+8. Administrator triggers Advance Day count
+9. System triggers 0..* Contract
+10. Member/ Administrator removes 0..* Item
+
+Inheritance:
+- Member inherits from UserRole
+
+Composition:
+- Administrator contain 0..* Member
+- Administrator contain 0..* Item
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username, password, email, phoneNumber, memberID, dateOfCreation, credits], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category, name, description, registrationDate, lendingCost], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [contractID, lendingDate, returnDate], Class Attributes: []
+Relationships:
+ 1 Member association 0..* Item
+ 2 Member association 0..* Item
+ 3 Member association 0..* Contract
+ 4 Member association 0..* Update
+ 5 Member association 0..* View
+ 6 Administrator association 0..* Member
+ 7 Administrator association 0..* Item
+ 8 Administrator association 1 Advance
+ 9 System association 0..* Contract
+ 1 Member association 1 from
+ 1 Administrator aggregation 0..* Member
+ 1 Administrator aggregation 0..* Item
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(enum):username'	-	'username'
+ 'Member(enum):password'	-	'password'
+ 'Member(enum):email'	-	'email'
+ 'Member(enum):phoneNumber'	-	'phoneNumber'
+ 'Member(enum):memberID'	-	'memberID'
+ 'Member(enum):dateOfCreation'	-	'dateOfCreation'
+ 'Member(enum):credits'	-	'credits'
+ 'Item(enum):name'	-	'name'
+-Relationships:
+ ' 1 Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 3 Member association 0..* Contract'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          17                  8                   15                  
+Associations        3                   2                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Classes:
+1. Member(userName : String, password : String, email : String, phoneNumber : String, memberID : String, dateOfCreation : Date, credits : int)
+2. Item(category : String, name : String, description : String, lendingCost : int, available : boolean, registrationDate : Date)
+3. Contract(contractID : String, lendingDate : Date, returnDate : Date)
+
+Relationships:
+1..* Member register 1..* Item
+1..* Member lend 1..* Item
+1..* Member request 1..* Contract
+1 System Administrator manage 1..* Member
+1 System Administrator manage 1..* Item
+1..* Contract trigger 1
+Member inherit UserRole
+System Administrator inherit UserRole
+1..* Member contain 1..* Item
+1..* Item belong to 1..* Member
+1..* System Administrator contain 1..* Member
+1..* System Administrator contain 1..* Item
+1..* System trigger 1..* Contract
+1..* Contract transfer 1..* Member
+1..* Item trigger 1
+1..* Member initiate 1..* Contract
+1..* Member/ Administrator request 1..* Item
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [userName :String,password :String,email :String,phoneNumber :String,memberID :String,dateOfCreation :Date,credits :int]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category :String,name :String,description :String,lendingCost :int,available :boolean,registrationDate :Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [contractID :String,lendingDate :Date,returnDate :Date]
+Relationships:
+ 1..* Member association 1..* Item
+ 1..* Member association 1..* Item
+ 1..* Member association 1..* Contract
+ 1 System association 1 manage
+ 1 System association 1 manage
+ 1..* Contract association 1 1
+ False Member inheritance False UserRole
+ 1 System association 1 inherit
+ 1..* Member aggregation 1..* Item
+ 1..* Item association 1 to
+ 1..* System association 1 contain
+ 1..* System association 1 contain
+ 1..* System association 1..* Contract
+ 1..* Contract association 1..* Member
+ 1..* Item association 1 1
+ 1..* Member association 1..* Contract
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'Contract(class)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(class):userName '	-	'username'
+ 'Member(class):password '	-	'password'
+ 'Member(class):email '	-	'email'
+ 'Member(class):phoneNumber '	-	'phoneNumber'
+ 'Member(class):memberID '	-	'memberID'
+ 'Member(class):dateOfCreation '	-	'dateOfCreation'
+ 'Member(class):credits '	-	'credits'
+ 'Item(class):name '	-	'name'
+-Relationships:
+ ' 1..* Member association 1..* Item'	-	' 1 Member association * Item'
+ ' 1..* Member association 1..* Contract'	-	' 1 LendingContract association 1 Member'
+ ' 1..* Contract association 1..* Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          18                  8                   15                  
+Associations        6                   3                   9                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Classes:
+1. Member(username: string, password: string, email: string, phone: string, memberID: string, dateOfCreation: date, credits: int)
+2. Item(category: string, name: string, description: string, registrationDate: date, lendingCost: int)
+3. LendingContract(contractID: string, lendingDate: date, returnDate: date)
+
+Relationships:
+1. Member register 1..* Item
+2. Member lend 1..* Item
+3. LendingContract involves 1 Member as borrower and 1 Member as lender
+4. Administrator manages 1..* Member
+5. Administrator manages 1..* Item
+
+Composition:
+1. Member contains 0..* Item
+2. Administrator contains 0..* Member
+3. Administrator contains 0..* Item
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:string,password:string,email:string,phone:string,memberID:string,dateOfCreation:date,credits:int]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:string,name:string,description:string,registrationDate:date,lendingCost:int]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractID:string,lendingDate:date,returnDate:date]
+Relationships:
+ 1 Member association 1..* Item
+ 2 Member association 1..* Item
+ 3 LendingContract association 1 Member
+ 4 Administrator association 1..* Member
+ 5 Administrator association 1..* Item
+ 1 Member association 0..* Item
+ 2 Administrator association 0..* Member
+ 3 Administrator association 0..* Item
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'LendingContract(class)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(class):username'	-	'username'
+ 'Member(class):password'	-	'password'
+ 'Member(class):email'	-	'email'
+ 'Member(class):memberID'	-	'memberID'
+ 'Member(class):dateOfCreation'	-	'dateOfCreation'
+ 'Member(class):credits'	-	'credits'
+ 'Item(class):name'	-	'name'
+-Relationships:
+ ' 1 Member association 1..* Item'	-	' 1 Member association * Item'
+ ' 3 LendingContract association 1 Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          17                  7                   15                  
+Associations        4                   2                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. Contract
+5. Administrator
+
+Relationships:
+1 User contain 1 UserRole
+User inherit Member
+User inherit Administrator
+
+1 Member contain 0..* Item
+1 Member contain 0..* Contract
+
+1 Item associate 1 Member
+1 Contract associate 1 Item
+1 Contract associate 1 Member
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 UserRole
+ False User inheritance False Member
+ False User inheritance False Administrator
+ 1 Member aggregation 0..* Item
+ 1 Member aggregation 0..* Contract
+ 1 Item association 1 Member
+ 1 Contract association 1 Item
+ 1 Contract association 1 Member
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' 1 Item association 1 Member'	-	' 1 Member association * Item'
+ ' 1 Contract association 1 Item'	-	' 1 LendingContract association 1 Item'
+ ' 1 Contract association 1 Member'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        6                   3                   9                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date, creditAmount: Int)
+2. Item(category: String, name: String, description: String, registrationDate: Date, lendingCost: Int)
+3. Contract(contractID: String, lendingDate: Date, returnDate: Date)
+
+Relationships:
+1..* Member register 0..* Item
+1..* Member lend 1..* Item through Contract
+1 System Administrator manage 1..* Member
+1 System Administrator manage 1..* Item
+1 System Administrator trigger 1..* Contract
+1..* Member initiate 1..* Contract
+
+Inheritance:
+Member inherit UserRole
+System Administrator inherit UserRole
+
+Composition:
+1 System contains 1..* Member
+1 System contains 1..* Item
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username, password, email, phoneNumber, memberID, dateOfCreation, creditAmount], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category, name, description, registrationDate, lendingCost], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [contractID, lendingDate, returnDate], Class Attributes: []
+Relationships:
+ 1..* Member association 0..* Item
+ 1..* Member association 1..* Item
+ 1 System association 1 manage
+ 1 System association 1 manage
+ 1 System association 1 trigger
+ 1..* Member association 1..* Contract
+ False Member inheritance False UserRole
+ 1 System association 1 inherit
+ 1 System association 1..* Member
+ 1 System association 1..* Item
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(enum):username'	-	'username'
+ 'Member(enum):password'	-	'password'
+ 'Member(enum):email'	-	'email'
+ 'Member(enum):phoneNumber'	-	'phoneNumber'
+ 'Member(enum):memberID'	-	'memberID'
+ 'Member(enum):dateOfCreation'	-	'dateOfCreation'
+ 'Item(enum):name'	-	'name'
+-Relationships:
+ ' 1..* Member association 0..* Item'	-	' 1 Member association * Item'
+ ' 1..* Member association 1..* Contract'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          17                  7                   15                  
+Associations        3                   2                   9                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Classes:
+1. Member(username: String, password: String, email: String, phone: String, memberID: String, dateOfCreation: Date, credits: Integer)
+2. Item(category: String, name: String, description: String, registrationDate: Date, lendingCost: Integer)
+3. Administrator
+
+Relationships:
+1..* Member associate 0..* Item
+1 Member inherit UserRole
+1 Administrator inherit UserRole
+1 Administrator contain 0..* Member
+1 Member contain 0..* Item
+0..* Member associate 0..* Item
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phone:String,memberID:String,dateOfCreation:Date,credits:Integer]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date,lendingCost:Integer]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Member association 0..* Item
+ False Member inheritance False UserRole
+ False Administrator inheritance False UserRole
+ 1 Administrator aggregation 0..* Member
+ 1 Member aggregation 0..* Item
+ 0..* Member association 0..* Item
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+-Attributes:
+ 'Member(class):username'	-	'username'
+ 'Member(class):password'	-	'password'
+ 'Member(class):email'	-	'email'
+ 'Member(class):memberID'	-	'memberID'
+ 'Member(class):dateOfCreation'	-	'dateOfCreation'
+ 'Member(class):credits'	-	'credits'
+ 'Item(class):name'	-	'name'
+-Relationships:
+ ' 1..* Member association 0..* Item'	-	' 1 Member association * Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          14                  7                   15                  
+Associations        4                   1                   9                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. Contract
+5. Administrator
+
+Relationships:
+1. User inherit Member
+2. User contain Contract
+3. Member contain Item
+4. Administrator inherit User
+5. Administrator contain Member
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: Contract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False User inheritance False Member
+ 2 User aggregation 1 Contract
+ 3 Member aggregation 1 Item
+ False Administrator inheritance False User
+ 5 Administrator aggregation 1 Member
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+ 'Contract(enum)'	-	'LendingContract(class)'
+-Attributes:
+-Relationships:
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        3                   0                   9                   
+Inheritances        2                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Role (Member, System Administrator)
+
+Classes:
+1. Member(username : string, password : string, email : string, phone : string, memberID : string, dateOfCreation : date)
+2. Item(category : string, name : string, description : string, creditsEarned : int, registrationDate : date)
+3. Contract(lendingCost : int, lendingDate : date, returnDate : date)
+
+Relationships:
+1. Member register 1..* Item
+2. Member lend 1..* Item through Contract
+3. Member initiate 0..* Request
+4. Administrator manage 1..* Item
+5. Administrator trigger 1..* Contract
+6. Administrator remove 1..* Member
+
+Composition:
+1. Member contains 1..* Contract
+2. Administrator contain 1..* Member
+3. Item belong to 1..* Member
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username :string,password :string,email :string,phone :string,memberID :string,dateOfCreation :date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category :string,name :string,description :string,creditsEarned :int,registrationDate :date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [lendingCost :int,lendingDate :date,returnDate :date]
+Relationships:
+ 1 Member association 1..* Item
+ 2 Member association 1..* Item
+ 3 Member association 0..* Request
+ 4 Administrator association 1..* Item
+ 5 Administrator association 1..* Contract
+ 6 Administrator association 1..* Member
+ 1 Member association 1..* Contract
+ 2 Administrator aggregation 1..* Member
+ 3 Item association 1 to
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Item(class)'	-	'Item(class)'
+ 'Contract(class)'	-	'LendingContract(class)'
+-Attributes:
+ 'Member(class):username '	-	'username'
+ 'Member(class):password '	-	'password'
+ 'Member(class):email '	-	'email'
+ 'Member(class):memberID '	-	'memberID'
+ 'Member(class):dateOfCreation '	-	'dateOfCreation'
+ 'Item(class):name '	-	'name'
+-Relationships:
+ ' 1 Member association 1..* Item'	-	' 1 Member association * Item'
+ ' 1 Member association 1..* Contract'	-	' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             4                   3                   8                   
+Attributes          16                  6                   15                  
+Associations        3                   2                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. Member(username : String, password : String, email : String, phone : String, memberID : String, dateOfCreation : Date, credits : Integer)
+2. Item(category : String, name : String, description : String, registrationDate : Date, lendingCost : Integer, availability : Boolean)
+
+Relationships:
+1..* Member registers 0..* Item
+1..* Member borrows 0..* Item
+1 Member creates 1 UserRole
+1 System Administrator inherits 1 UserRole
+1..* Member requests 1 System Administrator
+1 System Administrator manages 1 System Functionality
+1 System Functionality contains 0..* Item Listings
+1 System Functionality contains 0..* Membership Records
+1 System Functionality contains 1 Day Counter
+1..* Item belongs to 1 System Functionality
+1..* Member owns 1..* Item
+1..* Member initiates 0..* Request
+1..* Contract refers to 1 Member
+1..* Contract refers to 1 Item
+1..* Contract refers to 2 Members
+1..* Contract refers to 1 Day Counter
+1..* Contract refers to 1 System Functionality
+1..* Credit Transfer refers to 1 Contract
+1..* Credit Transfer refers to 2 Members
+1..* Credit Transfer refers to 1 System Functionality
+1..* Notification refers to 1 Member
+1..* Notification refers to 1 System Functionality
+1 Notification is sent to 1 Member
+1 Notification is sent based on 1 Notification Type
+
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [username , password , email , phone , memberID , dateOfCreation , credits ], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [category , name , description , registrationDate , lendingCost , availability ], Class Attributes: []
+Relationships:
+ 1..* Member association 0..* Item
+ 1..* Member association 0..* Item
+ 1 Member association 1 UserRole
+ 1 System association 1 inherits
+ 1..* Member association 1 System
+ 1 System association 1 manages
+ 1 System association 1 contains
+ 1 System association 1 contains
+ 1 System association 1 contains
+ 1..* Item association 1 to
+ 1..* Member association 1..* Item
+ 1..* Member association 0..* Request
+ 1..* Contract association 1 to
+ 1..* Contract association 1 to
+ 1..* Contract association 1 to
+ 1..* Contract association 1 to
+ 1..* Contract association 1 to
+ 1..* Credit association 1 refers
+ 1..* Credit association 1 refers
+ 1..* Credit association 1 refers
+ 1..* Notification association 1 to
+ 1..* Notification association 1 to
+ 1 Notification association 1 sent
+ 1 Notification association 1 sent
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+-Attributes:
+ 'Member(enum):username '	-	'username'
+ 'Member(enum):password '	-	'password'
+ 'Member(enum):email '	-	'email'
+ 'Member(enum):memberID '	-	'memberID'
+ 'Member(enum):dateOfCreation '	-	'dateOfCreation'
+ 'Member(enum):credits '	-	'credits'
+ 'Item(enum):name '	-	'name'
+-Relationships:
+ ' 1..* Member association 0..* Item'	-	' 1 Member association * Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             3                   2                   8                   
+Attributes          15                  7                   15                  
+Associations        4                   1                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole (Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. LendingContract
+5. Notification
+
+Relationships:
+1. User contain 1 UserRole
+2. User inherit Member
+3. Member contain * Item
+4. Member associate * LendingContract
+5. Item associate 1 Member
+6. LendingContract associate 1 Member
+7. Notification associate 1 Member
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: LendingContract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Notification (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User aggregation 1 UserRole
+ False User inheritance False Member
+ 3 Member aggregation * Item
+ 4 Member association * LendingContract
+ 5 Item association 1 Member
+ 6 LendingContract association 1 Member
+ 7 Notification association 1 Member
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'LendingContract(enum)'	-	'LendingContract(class)'
+ 'Notification(enum)'	-	'Notification(class)'
+-Attributes:
+-Relationships:
+ ' 4 Member association * LendingContract'	-	' 1 LendingContract association 1 Member'
+ ' 5 Item association 1 Member'	-	' 1 Member association * Item'
+ ' 6 LendingContract association 1 Member'	-	' 1 LendingContract association 1 Member'
+ ' 7 Notification association 1 Member'	-	' 1 Member aggregation * Notification'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        6                   4                   9                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------StuffLendingSystem:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserRole(Member, System Administrator)
+
+Class:
+1. User
+2. Member
+3. Item
+4. LendingContract
+5. Administrator
+
+Relationships:
+1. User inherit Member
+2. Member contain Item (0..*)
+3. Member associate LendingContract (0..*)
+4. LendingContract associate Item
+5. Administrator inherit User
+6. Administrator contain Member (0..*)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Item (enum) - Enum Attributes: [], Class Attributes: []
+Class: LendingContract (enum) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False User inheritance False Member
+ 2 Member aggregation 1 Item
+ 3 Member association 1 LendingContract
+ 4 LendingContract association 1 Item
+ False Administrator inheritance False User
+ 6 Administrator aggregation 1 Member
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'User(enum)'	-	'User(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Item(enum)'	-	'Item(class)'
+ 'LendingContract(enum)'	-	'LendingContract(class)'
+ 'Administrator(enum)'	-	'Administrator(class)'
+-Attributes:
+-Relationships:
+ ' 3 Member association 1 LendingContract'	-	' 1 LendingContract association 1 Member'
+ ' 4 LendingContract association 1 Item'	-	' 1 LendingContract association 1 Item'
+ ' False Administrator inheritance False User'	-	' False Administrator inheritance False User'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          2                   0                   15                  
+Associations        4                   2                   9                   
+Inheritances        2                   1                   2                   
+--------------------------------------------------------------------------------
+StuffLendingSystem, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.802          0.506          0.621          0.547
+Attributes          0.394          0.087          0.142          0.103
+Associations        0.417          0.250          0.312          0.272
+Inheritances        0.440          0.275          0.338          0.297
+--------------------------------------------------------------------------------

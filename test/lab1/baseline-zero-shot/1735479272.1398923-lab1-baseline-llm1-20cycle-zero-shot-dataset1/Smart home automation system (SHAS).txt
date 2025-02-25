@@ -1,0 +1,1961 @@
+------------------------------------------------------------
+---------------------1/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: string)
+2. Room(roomNumber: int)
+3. Device(deviceId: int, deviceType: DeviceType)
+4. SensorReading(value: float, timestamp: datetime)
+5. ControlCommand(command: string, timestamp: datetime, status: CommandStatus)
+6. ActivityLog
+7. AutomationRule
+8. RuleCondition
+9. RuleAction
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* Device
+- Device have 1 SensorReading (1..* periodic readings)
+- Device have 1 ControlCommand (when activated/deactivated)
+- SmartHome have 1 ActivityLog (containing all sensor readings and control commands)
+- SmartHome have 1..* AutomationRule
+- AutomationRule have 1 RuleCondition
+- AutomationRule have 1 RuleAction
+- AutomationRule can depend on or conflict with other AutomationRules
+- AutomationRule can be activated or deactivated
+- ActivityLog records when an active rule was triggered
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:string]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [roomNumber:int]
+Class: Device (class) - Enum Attributes: [], Class Attributes: [deviceId:int,deviceType:DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:float,timestamp:datetime]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:string,timestamp:datetime,status:CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* Device
+ 1 Device association 1 SensorReading
+ 1 Device association 1 ControlCommand
+ 1 SmartHome association 1 ActivityLog
+ 1 SmartHome association 1..* AutomationRule
+ 1 AutomationRule association 1 RuleCondition
+ 1 AutomationRule association 1 RuleAction
+ 1 AutomationRule association 1 depend
+ 1 AutomationRule association 1 be
+ 1 ActivityLog association 1 when
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'Device(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  8                   23                  
+Attributes          16                  5                   26                  
+Associations        8                   1                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Status (requested, completed, failed)
+2. BooleanOperator (AND, OR, NOT)
+
+Classes:
+1. SmartHome
+2. Room
+3. Device
+4. Sensor
+5. Actuator
+6. SensorReading
+7. ControlCommand
+8. ActivityLog
+9. Alert
+10. AutomationRule
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* Device
+- Device inherit Sensor, Actuator
+- Sensor and Actuator have 1 unique deviceIdentifier
+- Sensor provides 1..* SensorReading
+- Actuator receives 1..* ControlCommand
+- SmartHome records 1..* ActivityLog
+- SmartHome can have 1..* Alert
+- Owner create, edit, activate, deactivate 1..* AutomationRule
+- AutomationRule has 1 precondition and 1 action
+- Precondition constructed from BooleanOperator connected relational terms
+- Action is a sequence of ControlCommand
+- AutomationRule can depend on, conflict with other rules
+- SHAS records active rule trigger using timestamp
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Status (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: BooleanOperator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: []
+Class: Room (class) - Enum Attributes: [], Class Attributes: []
+Class: Device (class) - Enum Attributes: [], Class Attributes: []
+Class: Sensor (class) - Enum Attributes: [], Class Attributes: []
+Class: Actuator (class) - Enum Attributes: [], Class Attributes: []
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: []
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: []
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: Alert (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* Device
+ False Device inheritance False Sensor
+ 1 Sensor association 1 Actuator
+ 1 Sensor association 1..* SensorReading
+ 1 Actuator association 1..* ControlCommand
+ 1 SmartHome association 1..* ActivityLog
+ 1 SmartHome association 1 have
+ 1 Owner association 1 edit
+ 1 AutomationRule association 1 precondition
+ 1 Precondition association 1 from
+ 1 Action association 1 a
+ 1 AutomationRule association 1 depend
+ 1 SHAS association 1 active
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'Status(enum)'	-	'CommandStatus(enum)'
+ 'BooleanOperator(enum)'	-	'BinaryOp(enum)'
+ 'Sensor(class)'	-	'SensorDevice(class)'
+ 'Actuator(class)'	-	'ActuatorDevice(class)'
+ 'Alert(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'Status(enum):requested'	-	'Requested'
+ 'Status(enum):completed'	-	'Completed'
+ 'Status(enum):failed'	-	'Failed'
+ 'BooleanOperator(enum):AND'	-	'AND'
+ 'BooleanOperator(enum):OR'	-	'OR'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Sensor association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 Actuator association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  23                  
+Attributes          6                   5                   26                  
+Associations        6                   3                   24                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. SensorDevice(deviceId: String, deviceType: DeviceType)
+4. ActuatorDevice(deviceId: String, deviceType: DeviceType)
+5. SensorReading(value: Double, timestamp: Timestamp)
+6. ControlCommand(command: String, timestamp: Timestamp, status: CommandStatus)
+7. ActivityLog
+8. AutomationRule
+9. RuleAction
+10. RulePrecondition
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* SensorDevice
+- Room contain 0..* ActuatorDevice
+- SensorDevice associate 1 SmartHome
+- ActuatorDevice associate 1 SmartHome
+- SensorDevice associate 1..* SensorReading
+- ActuatorDevice associate 1..* ControlCommand
+- ActivityLog associate 1 SmartHome
+- ActivityLog associate 1..* SensorReading
+- ActivityLog associate 1..* ControlCommand
+- SmartHome contain 1..* AutomationRule
+- AutomationRule have 1 RuleAction
+- AutomationRule have 1 RulePrecondition
+- RuleAction contain 1..* ControlCommand
+- RulePrecondition contain 1..* AtomicTerm
+- AtomicTerm associate 1 Room
+- AtomicTerm associate 1 SensorDevice
+- AtomicTerm associate 1 ActuatorDevice
+- AtomicTerm associate 1 SensorReading
+- AtomicTerm associate 1 ControlCommand
+- AutomationRule depend on 1..* AutomationRule
+- AutomationRule conflict with 1..* AutomationRule
+- SmartHome record 1..* Timestamp
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:String]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [name:String]
+Class: SensorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,deviceType:DeviceType]
+Class: ActuatorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,deviceType:DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:Double,timestamp:Timestamp]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:String,timestamp:Timestamp,status:CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Class: RulePrecondition (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* SensorDevice
+ 1 Room aggregation 0..* ActuatorDevice
+ 1 SensorDevice association 1 SmartHome
+ 1 ActuatorDevice association 1 SmartHome
+ 1 SensorDevice association 1..* SensorReading
+ 1 ActuatorDevice association 1..* ControlCommand
+ 1 ActivityLog association 1 SmartHome
+ 1 ActivityLog association 1..* SensorReading
+ 1 ActivityLog association 1..* ControlCommand
+ 1 SmartHome aggregation 1..* AutomationRule
+ 1 AutomationRule association 1 RuleAction
+ 1 AutomationRule association 1 RulePrecondition
+ 1 RuleAction aggregation 1..* ControlCommand
+ 1 RulePrecondition aggregation 1..* AtomicTerm
+ 1 AtomicTerm association 1 Room
+ 1 AtomicTerm association 1 SensorDevice
+ 1 AtomicTerm association 1 ActuatorDevice
+ 1 AtomicTerm association 1 SensorReading
+ 1 AtomicTerm association 1 ControlCommand
+ 1 AutomationRule association 1 on
+ 1 AutomationRule association 1 with
+ 1 SmartHome association 1..* Timestamp
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'SensorDevice(class)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(class)'	-	'ActuatorDevice(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'SensorDevice(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1 Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1 SensorDevice association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 ActuatorDevice association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  9                   23                  
+Attributes          18                  5                   26                  
+Associations        14                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+3. RuleStatus(Active, Deactivated)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. Device(identifier: String, type: DeviceType)
+4. SensorDevice(identifier: String)
+5. ActuatorDevice(identifier: String)
+6. SensorReading(value: Float, timestamp: DateTime)
+7. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+8. ActivityLog
+9. AutomationRule(precondition: String, action: String, status: RuleStatus)
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* SensorDevice
+1..* Room contain 0..* ActuatorDevice
+0..* SensorDevice associate 1 SmartHome
+0..* ActuatorDevice associate 1 SmartHome
+0..* SensorDevice associate 0..* SensorReading
+0..* ActuatorDevice associate 0..* ControlCommand
+1 ActivityLog associate 1 SmartHome
+1..* AutomationRule associate 1 SmartHome
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: RuleStatus (enum) - Enum Attributes: [Active, Deactivated], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: SensorDevice (enum) - Enum Attributes: [identifier], Class Attributes: []
+Class: ActuatorDevice (enum) - Enum Attributes: [identifier], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [precondition, action, status], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* SensorDevice
+ 1..* Room aggregation 0..* ActuatorDevice
+ 0..* SensorDevice association 1 SmartHome
+ 0..* ActuatorDevice association 1 SmartHome
+ 0..* SensorDevice association 0..* SensorReading
+ 0..* ActuatorDevice association 0..* ControlCommand
+ 1 ActivityLog association 1 SmartHome
+ 1..* AutomationRule association 1 SmartHome
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'RuleStatus(enum)'	-	'RuleStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorDevice(enum)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(enum)'	-	'ActuatorDevice(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'RuleStatus(enum):Deactivated'	-	'activated'
+ 'SensorReading(enum):value'	-	'value'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1..* Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1..* Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 0..* SensorDevice association 0..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 0..* ActuatorDevice association 0..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  23                  
+Attributes          23                  5                   26                  
+Associations        9                   5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Status (requested, completed, failed)
+2. Command (lockDoor, turnOnHeating)
+
+Class:
+1. SmartHome(address : String)
+2. Room(roomNumber : int)
+3. Device(deviceID : String)
+4. Sensor(sensorID : String, type : String)
+5. Actuator(actuatorID : String, type : String)
+6. SensorReading(value : float, timestamp : DateTime)
+7. ControlCommand(command : Command, timestamp : DateTime, status : Status)
+8. ActivityLog
+9. AutomationRule
+10. RuleCondition
+11. RuleAction
+
+Relationships:
+1. 1 SmartHome contain 0..* Room
+2. 1 Room contain 0..* Device
+3. 1 Room inherit 1..* Sensor
+4. 1 Room inherit 1..* Actuator
+5. 1 Device inherit 1 Sensor and 1 Actuator
+6. 1 Sensor associate 0..* SensorReading
+7. 1 Actuator associate 0..* ControlCommand
+8. 1 SmartHome contain 1 ActivityLog
+9. 1 SmartHome contain 0..* AutomationRule
+10. 1 AutomationRule contain 1 RuleCondition and 1 RuleAction
+11. 1 RuleCondition associate 0..* Device
+12. 1 RuleCondition associate 0..* SensorReading
+13. 1 RuleCondition associate 0..* ControlCommand
+14. 1 RuleAction associate 0..* ControlCommand
+15. 1 AutomationRule associate 0..* AutomationRule
+16. 1 AutomationRule associate 0..* AutomationRule
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Status (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: Command (enum) - Enum Attributes: [lockDoor, turnOnHeating], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address ], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [roomNumber ], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [deviceID ], Class Attributes: []
+Class: Sensor (enum) - Enum Attributes: [sensorID , type ], Class Attributes: []
+Class: Actuator (enum) - Enum Attributes: [actuatorID , type ], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value , timestamp ], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command , timestamp , status ], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 0..* Room
+ 1 Room aggregation 0..* Device
+ False Room inheritance False Sensor
+ False Room inheritance False Actuator
+ False Device inheritance False Sensor
+ 1 Sensor association 0..* SensorReading
+ 1 Actuator association 0..* ControlCommand
+ 1 SmartHome aggregation 1 ActivityLog
+ 1 SmartHome aggregation 0..* AutomationRule
+ 1 AutomationRule aggregation 1 RuleCondition
+ 1 RuleCondition association 0..* Device
+ 1 RuleCondition association 0..* SensorReading
+ 1 RuleCondition association 0..* ControlCommand
+ 1 RuleAction association 0..* ControlCommand
+ 1 AutomationRule association 0..* AutomationRule
+ 1 AutomationRule association 0..* AutomationRule
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'Status(enum)'	-	'CommandStatus(enum)'
+ 'Command(enum)'	-	'CommandType(enum)'
+ 'Sensor(enum)'	-	'SensorDevice(class)'
+ 'Actuator(enum)'	-	'ActuatorDevice(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'Device(enum):deviceID '	-	'deviceID'
+ 'SensorReading(enum):value '	-	'value'
+ 'Status(enum):requested'	-	'Requested'
+ 'Status(enum):completed'	-	'Completed'
+ 'Status(enum):failed'	-	'Failed'
+ 'Command(enum):lockDoor'	-	'lockDoor'
+ 'Command(enum):turnOnHeating'	-	'turnOnHeating'
+-Relationships:
+ ' 1 SmartHome aggregation 0..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Sensor association 0..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 Actuator association 0..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  11                  23                  
+Attributes          17                  7                   26                  
+Associations        13                  3                   24                  
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: String)
+2. Room
+3. SensorDevice(deviceId: String, deviceType: DeviceType)
+4. ActuatorDevice(deviceId: String, deviceType: DeviceType)
+5. SensorReading(value: Double, timestamp: DateTime)
+6. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+7. ActivityLog
+8. AutomationRule
+9. RuleCondition
+10. RuleAction
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* SensorDevice
+1..* Room contain 0..* ActuatorDevice
+0..* SensorDevice associate 1 SmartHome
+0..* ActuatorDevice associate 1 SmartHome
+0..* SensorReading associate 1 SensorDevice
+0..* ControlCommand associate 1 ActuatorDevice
+0..* SensorReading associate 1 SmartHome
+0..* ControlCommand associate 1 SmartHome
+1 ActivityLog associate 1 SmartHome
+1..* AutomationRule associate 1 SmartHome
+1 AutomationRule contain 1 RuleCondition
+1 AutomationRule contain 1 RuleAction
+1 RuleCondition associate 1 Room
+1 RuleCondition associate 1 SensorDevice
+1 RuleCondition associate 1 SensorReading
+1 RuleCondition associate 1 ControlCommand
+1 RuleAction associate 1 Room
+1 RuleAction associate 1 ActuatorDevice
+1 AutomationRule depend on 1..* AutomationRule
+1 AutomationRule conflict with 1..* AutomationRule
+1..* AutomationRule associate 1 ActivityLog
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:String]
+Class: Room (class) - Enum Attributes: [], Class Attributes: []
+Class: SensorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,deviceType:DeviceType]
+Class: ActuatorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,deviceType:DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:Double,timestamp:DateTime]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:String,timestamp:DateTime,status:CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* SensorDevice
+ 1..* Room aggregation 0..* ActuatorDevice
+ 0..* SensorDevice association 1 SmartHome
+ 0..* ActuatorDevice association 1 SmartHome
+ 0..* SensorReading association 1 SensorDevice
+ 0..* ControlCommand association 1 ActuatorDevice
+ 0..* SensorReading association 1 SmartHome
+ 0..* ControlCommand association 1 SmartHome
+ 1 ActivityLog association 1 SmartHome
+ 1..* AutomationRule association 1 SmartHome
+ 1 AutomationRule aggregation 1 RuleCondition
+ 1 AutomationRule aggregation 1 RuleAction
+ 1 RuleCondition association 1 Room
+ 1 RuleCondition association 1 SensorDevice
+ 1 RuleCondition association 1 SensorReading
+ 1 RuleCondition association 1 ControlCommand
+ 1 RuleAction association 1 Room
+ 1 RuleAction association 1 ActuatorDevice
+ 1 AutomationRule association 1 on
+ 1 AutomationRule association 1 with
+ 1..* AutomationRule association 1 ActivityLog
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'SensorDevice(class)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(class)'	-	'ActuatorDevice(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'SensorDevice(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1..* Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1..* Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 0..* SensorReading association 1 SensorDevice'	-	' * SensorReading association 1 SensorDevice'
+ ' 0..* ControlCommand association 1 ActuatorDevice'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  9                   23                  
+Attributes          17                  5                   26                  
+Associations        20                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType (TEMPERATURE_SENSOR, MOVEMENT_SENSOR, LIGHT_CONTROLLER, LOCK_CONTROLLER)
+2. CommandStatus (REQUESTED, COMPLETED, FAILED)
+3. BooleanOperator (AND, OR, NOT)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. Device(deviceId: String, deviceType: DeviceType)
+4. SensorReading(value: Float, timestamp: DateTime)
+5. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+6. ActivityLog
+7. AutomationRule
+
+Relationships:
+1. SmartHome contain 0..* Room
+2. Room contain 0..* Device
+3. Device inherit SensorReading
+4. Device inherit ControlCommand
+5. SmartHome contain 1 ActivityLog
+6. SmartHome contain 0..* AutomationRule
+7. AutomationRule have 1..* AutomationRule (for rule dependencies/conflicts)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TEMPERATURE_SENSOR, MOVEMENT_SENSOR, LIGHT_CONTROLLER, LOCK_CONTROLLER], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [REQUESTED, COMPLETED, FAILED], Class Attributes: []
+Class: BooleanOperator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [deviceId, deviceType], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 0..* Room
+ 2 Room aggregation 0..* Device
+ False Device inheritance False SensorReading
+ False Device inheritance False ControlCommand
+ 5 SmartHome aggregation 1 ActivityLog
+ 6 SmartHome aggregation 0..* AutomationRule
+ 7 AutomationRule association 1..* AutomationRule
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'BooleanOperator(enum)'	-	'BinaryOp(enum)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):REQUESTED'	-	'Requested'
+ 'CommandStatus(enum):COMPLETED'	-	'Completed'
+ 'CommandStatus(enum):FAILED'	-	'Failed'
+ 'Device(enum):deviceId'	-	'deviceID'
+ 'SensorReading(enum):value'	-	'value'
+ 'BooleanOperator(enum):AND'	-	'AND'
+ 'BooleanOperator(enum):OR'	-	'OR'
+-Relationships:
+ ' 1 SmartHome aggregation 0..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   23                  
+Attributes          19                  7                   26                  
+Associations        5                   1                   24                  
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+3. BooleanOperator (AND, OR, NOT)
+
+Class:
+1. SmartHome(address: string)
+2. Room(name: string)
+3. Device(identifier: string, type: DeviceType)
+4. SensorDevice(identifier: string, type: DeviceType)
+5. ActuatorDevice(identifier: string, type: DeviceType)
+6. SensorReading(value: float, timestamp: datetime)
+7. ControlCommand(command: string, timestamp: datetime, status: CommandStatus)
+8. ActivityLog
+9. AutomationRule
+10. AutomationAction
+11. RuleTrigger(timestamp: datetime)
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* SensorDevice
+1..* Room contain 0..* ActuatorDevice
+1..* SensorDevice associate * SensorReading
+1..* ActuatorDevice associate * ControlCommand
+1 SmartHome inherit ActivityLog
+1..* SmartHome contain 1..* AutomationRule
+1 AutomationRule contain 1 AutomationAction
+1..* AutomationRule associate 1..* RuleTrigger
+1..* AutomationRule depend on 1..* AutomationRule
+1..* AutomationRule conflict with 1..* AutomationRule
+```  
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: BooleanOperator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: SensorDevice (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: ActuatorDevice (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationAction (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleTrigger (enum) - Enum Attributes: [timestamp], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* SensorDevice
+ 1..* Room aggregation 0..* ActuatorDevice
+ 1..* SensorDevice association * SensorReading
+ 1..* ActuatorDevice association * ControlCommand
+ False SmartHome inheritance False ActivityLog
+ 1..* SmartHome aggregation 1..* AutomationRule
+ 1 AutomationRule aggregation 1 AutomationAction
+ 1..* AutomationRule association 1..* RuleTrigger
+ 1..* AutomationRule association 1 on
+ 1..* AutomationRule association 1 with
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorDevice(enum)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(enum)'	-	'ActuatorDevice(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'BooleanOperator(enum)'	-	'BinaryOp(enum)'
+ 'RuleTrigger(enum)'	-	'RuntimeElement(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'SensorReading(enum):value'	-	'value'
+ 'BooleanOperator(enum):AND'	-	'AND'
+ 'BooleanOperator(enum):OR'	-	'OR'
+ 'RuleTrigger(enum):timestamp'	-	'timestamp'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1..* Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1..* Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1..* SensorDevice association * SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1..* ActuatorDevice association * ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  12                  23                  
+Attributes          24                  7                   26                  
+Associations        8                   5                   24                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. SensorDevice(deviceId: String, type: DeviceType)
+4. ActuatorDevice(deviceId: String, type: DeviceType)
+5. SensorReading(value: Float, timestamp: DateTime)
+6. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+7. ActivityLog
+8. Alert
+9. AutomationRule
+10. RuleCondition
+11. RuleAction
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* SensorDevice
+- Room contain 0..* ActuatorDevice
+- SensorDevice associate 1 SmartHome
+- ActuatorDevice associate 1 SmartHome
+- SensorDevice has 1..* SensorReading
+- ActuatorDevice has 1..* ControlCommand
+- SmartHome has 1 ActivityLog
+- SmartHome has 1..* Alert
+- SmartHome has 1..* AutomationRule
+- AutomationRule has 1 RuleCondition
+- AutomationRule has 1 RuleAction
+- AutomationRule depend on 0..* AutomationRule
+- AutomationRule conflict with 0..* AutomationRule
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:String]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [name:String]
+Class: SensorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,type:DeviceType]
+Class: ActuatorDevice (class) - Enum Attributes: [], Class Attributes: [deviceId:String,type:DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:Float,timestamp:DateTime]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:String,timestamp:DateTime,status:CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: Alert (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* SensorDevice
+ 1 Room aggregation 0..* ActuatorDevice
+ 1 SensorDevice association 1 SmartHome
+ 1 ActuatorDevice association 1 SmartHome
+ 1 SensorDevice association 1..* SensorReading
+ 1 ActuatorDevice association 1..* ControlCommand
+ 1 SmartHome association 1 ActivityLog
+ 1 SmartHome association 1..* Alert
+ 1 SmartHome association 1..* AutomationRule
+ 1 AutomationRule association 1 RuleCondition
+ 1 AutomationRule association 1 RuleAction
+ 1 AutomationRule association 1 on
+ 1 AutomationRule association 1 with
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'SensorDevice(class)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(class)'	-	'ActuatorDevice(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'Alert(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'SensorDevice(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1 Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1 SensorDevice association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 ActuatorDevice association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  9                   23                  
+Attributes          18                  5                   26                  
+Associations        12                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. Device(identifier: String, type: DeviceType)
+4. SensorReading(value: Float, timestamp: DateTime)
+5. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+6. ActivityLog
+7. AutomationRule
+8. Precondition
+9. Action
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* Device
+1..* Device associate 1 SensorReading
+1..* Device associate 1 ControlCommand
+1 SmartHome associate 1 ActivityLog
+1 SmartHome contain 1..* AutomationRule
+1 AutomationRule contain 1 Precondition
+1 AutomationRule contain 1 Action
+1 AutomationRule depend 0..* AutomationRule
+1 AutomationRule conflict 0..* AutomationRule
+1..* AutomationRule trigger 1 ActivityLog
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Precondition (enum) - Enum Attributes: [], Class Attributes: []
+Class: Action (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* Device
+ 1..* Device association 1 SensorReading
+ 1..* Device association 1 ControlCommand
+ 1 SmartHome association 1 ActivityLog
+ 1 SmartHome aggregation 1..* AutomationRule
+ 1 AutomationRule aggregation 1 Precondition
+ 1 AutomationRule aggregation 1 Action
+ 1 AutomationRule association 0..* AutomationRule
+ 1 AutomationRule association 0..* AutomationRule
+ 1..* AutomationRule association 1 ActivityLog
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+ 'Precondition(enum)'	-	'BinaryExpression(class)'
+ 'Action(enum)'	-	'CommandSequence(class)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'SensorReading(enum):value'	-	'value'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 AutomationRule aggregation 1 Action'	-	' 1 AlertRule aggregation * CommandSequence'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  23                  
+Attributes          16                  4                   26                  
+Associations        11                  2                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. SensorDevice(deviceId: String, deviceType: DeviceType)
+4. ActuatorDevice(deviceId: String, deviceType: DeviceType)
+5. SensorReading(value: String, timestamp: DateTime)
+6. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+7. ActivityLog
+8. AutomationRule
+9. RuleCondition
+10. RuleAction
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* SensorDevice
+- Room contain 0..* ActuatorDevice
+- SensorDevice associate 1 SmartHome
+- ActuatorDevice associate 1 SmartHome
+- SensorDevice provide 1..* SensorReading
+- ActuatorDevice receive 1..* ControlCommand
+- SmartHome record 1..* ActivityLog
+- SmartHome manage 1..* AutomationRule
+- AutomationRule have 1 RuleCondition
+- AutomationRule have 1 RuleAction
+- AutomationRule depend on 0..* AutomationRule
+- AutomationRule conflict with 0..* AutomationRule
+- AutomationRule trigger 1..* ActivityLog
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: SensorDevice (enum) - Enum Attributes: [deviceId, deviceType], Class Attributes: []
+Class: ActuatorDevice (enum) - Enum Attributes: [deviceId, deviceType], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* SensorDevice
+ 1 Room aggregation 0..* ActuatorDevice
+ 1 SensorDevice association 1 SmartHome
+ 1 ActuatorDevice association 1 SmartHome
+ 1 SensorDevice association 1..* SensorReading
+ 1 ActuatorDevice association 1..* ControlCommand
+ 1 SmartHome association 1..* ActivityLog
+ 1 SmartHome association 1..* AutomationRule
+ 1 AutomationRule association 1 RuleCondition
+ 1 AutomationRule association 1 RuleAction
+ 1 AutomationRule association 1 on
+ 1 AutomationRule association 1 with
+ 1 AutomationRule association 1..* ActivityLog
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'SensorDevice(enum)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(enum)'	-	'ActuatorDevice(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'SensorDevice(enum):deviceId'	-	'deviceID'
+ 'SensorReading(enum):value'	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 1 Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1 SensorDevice association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 ActuatorDevice association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  9                   23                  
+Attributes          18                  5                   26                  
+Associations        12                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Status (requested, completed, failed)
+2. BooleanOperator (AND, OR, NOT)
+
+Class:
+1. SmartHome(address : string)
+2. Room(roomNumber : int)
+3. Device(deviceId : int, deviceType : string)
+4. Sensor(deviceId : int, deviceType : string)
+5. Actuator(deviceId : int, deviceType : string, status : Status)
+6. SensorReading(value : float, timestamp : datetime)
+7. ControlCommand(commandName : string, timestamp : datetime, status : Status)
+8. ActivityLog
+9. AutomationRule
+10. RuleCondition
+11. RuleAction
+12. TriggeredRule(timestamp : datetime)
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* Device
+1..* Room contain 0..* Sensor
+1..* Room contain 0..* Actuator
+1..* SmartHome associate 1 ActivityLog
+1..* Sensor provide 1..* SensorReading
+1..* Actuator accept 1..* ControlCommand
+1..* AutomationRule contain 1 RuleCondition
+1..* AutomationRule contain 1 RuleAction
+1..* AutomationRule trigger 1..* TriggeredRule
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Status (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: BooleanOperator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address ], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [roomNumber ], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [deviceId , deviceType ], Class Attributes: []
+Class: Sensor (enum) - Enum Attributes: [deviceId , deviceType ], Class Attributes: []
+Class: Actuator (enum) - Enum Attributes: [deviceId , deviceType , status ], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value , timestamp ], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [commandName , timestamp , status ], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (enum) - Enum Attributes: [], Class Attributes: []
+Class: TriggeredRule (enum) - Enum Attributes: [timestamp ], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* Device
+ 1..* Room aggregation 0..* Sensor
+ 1..* Room aggregation 0..* Actuator
+ 1..* SmartHome association 1 ActivityLog
+ 1..* Sensor association 1..* SensorReading
+ 1..* Actuator association 1..* ControlCommand
+ 1..* AutomationRule aggregation 1 RuleCondition
+ 1..* AutomationRule aggregation 1 RuleAction
+ 1..* AutomationRule association 1..* TriggeredRule
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'Status(enum)'	-	'CommandStatus(enum)'
+ 'BooleanOperator(enum)'	-	'BinaryOp(enum)'
+ 'TriggeredRule(enum)'	-	'RuntimeElement(class)'
+ 'Sensor(enum)'	-	'SensorDevice(class)'
+ 'Actuator(enum)'	-	'ActuatorDevice(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'Device(enum):deviceId '	-	'deviceID'
+ 'SensorReading(enum):value '	-	'value'
+ 'Status(enum):requested'	-	'Requested'
+ 'Status(enum):completed'	-	'Completed'
+ 'Status(enum):failed'	-	'Failed'
+ 'BooleanOperator(enum):AND'	-	'AND'
+ 'BooleanOperator(enum):OR'	-	'OR'
+ 'TriggeredRule(enum):timestamp '	-	'timestamp'
+ 'Sensor(enum):deviceId '	-	'deviceID'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1..* Room aggregation 0..* Sensor'	-	' 1 Room aggregation * SensorDevice'
+ ' 1..* Room aggregation 0..* Actuator'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1..* Sensor association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1..* Actuator association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  12                  23                  
+Attributes          21                  9                   26                  
+Associations        10                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+3. RuleAction(TurnOnHeating, LockDoor)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. Device(identifier: String, type: DeviceType)
+4. Sensor(deviceID: String, reading: Float, timestamp: DateTime)
+5. Actuator(deviceID: String, command: RuleAction, timestamp: DateTime, status: CommandStatus)
+6. ActivityLog(home: SmartHome)
+7. AutomationRule(precondition: String, action: RuleAction, activated: Boolean)
+8. RuleDependency(rule1: AutomationRule, rule2: AutomationRule)
+
+Relationships:
+1. SmartHome contain * Room (1..*)
+2. Room contain * Device (0..*)
+3. Room inherit SmartHome
+4. Device inherit Room
+5. Sensor inherit Device
+6. Actuator inherit Device
+7. SmartHome associate 1 ActivityLog (1)
+8. Sensor associate * ActivityLog (0..*)
+9. Actuator associate * ActivityLog (0..*)
+10. AutomationRule associate * Room (0..*)
+11. AutomationRule associate * Sensor (0..*)
+12. AutomationRule associate * Actuator (0..*)
+13. AutomationRule contain * RuleDependency (1..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: RuleAction (enum) - Enum Attributes: [TurnOnHeating, LockDoor], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [identifier, type], Class Attributes: []
+Class: Sensor (enum) - Enum Attributes: [deviceID, reading, timestamp], Class Attributes: []
+Class: Actuator (enum) - Enum Attributes: [deviceID, command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [home], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [precondition, action, activated], Class Attributes: []
+Class: RuleDependency (enum) - Enum Attributes: [rule1, rule2], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation * Room
+ 2 Room aggregation * Device
+ False Room inheritance False SmartHome
+ False Device inheritance False Room
+ False Sensor inheritance False Device
+ False Actuator inheritance False Device
+ 7 SmartHome association 1 ActivityLog
+ 8 Sensor association * ActivityLog
+ 9 Actuator association * ActivityLog
+ 10 AutomationRule association * Room
+ 11 AutomationRule association * Sensor
+ 12 AutomationRule association * Actuator
+ 13 AutomationRule aggregation * RuleDependency
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'RuleAction(enum)'	-	'CommandType(enum)'
+ 'Sensor(enum)'	-	'SensorDevice(class)'
+ 'Actuator(enum)'	-	'ActuatorDevice(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'RuleAction(enum):TurnOnHeating'	-	'turnOnHeating'
+ 'RuleAction(enum):LockDoor'	-	'lockDoor'
+ 'Sensor(enum):deviceID'	-	'deviceID'
+-Relationships:
+ ' 1 SmartHome aggregation * Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' False Sensor inheritance False Device'	-	' False SensorDevice inheritance False Device'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   23                  
+Attributes          26                  6                   26                  
+Associations        9                   1                   24                  
+Inheritances        4                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: string)
+2. Room(name: string)
+3. Device(deviceId: string, type: DeviceType)
+4. Sensor(deviceId: string, type: DeviceType)
+5. Actuator(deviceId: string, type: DeviceType)
+6. SensorReading(value: float, timestamp: datetime)
+7. ControlCommand(command: string, timestamp: datetime, status: CommandStatus)
+8. ActivityLog
+9. AutomationRule
+10. RuleCondition
+11. RuleAction
+12. RuleTrigger(timestamp: datetime)
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* Sensor
+- Room contain 0..* Actuator
+- Sensor associate 1 SensorReading
+- Actuator associate 1 ControlCommand
+- SmartHome contain 1 ActivityLog
+- SmartHome contain 1..* AutomationRule
+- AutomationRule have 1 RuleCondition
+- AutomationRule have 1 RuleAction
+- AutomationRule have 0..* RuleTrigger
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:string]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [name:string]
+Class: Device (class) - Enum Attributes: [], Class Attributes: [deviceId:string,type:DeviceType]
+Class: Sensor (class) - Enum Attributes: [], Class Attributes: [deviceId:string,type:DeviceType]
+Class: Actuator (class) - Enum Attributes: [], Class Attributes: [deviceId:string,type:DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:float,timestamp:datetime]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:string,timestamp:datetime,status:CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleTrigger (class) - Enum Attributes: [], Class Attributes: [timestamp:datetime]
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* Sensor
+ 1 Room aggregation 0..* Actuator
+ 1 Sensor association 1 SensorReading
+ 1 Actuator association 1 ControlCommand
+ 1 SmartHome aggregation 1 ActivityLog
+ 1 SmartHome aggregation 1..* AutomationRule
+ 1 AutomationRule association 1 RuleCondition
+ 1 AutomationRule association 1 RuleAction
+ 1 AutomationRule association 0..* RuleTrigger
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'RuleTrigger(class)'	-	'RuntimeElement(class)'
+ 'Sensor(class)'	-	'SensorDevice(class)'
+ 'Actuator(class)'	-	'ActuatorDevice(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+ 'RuleAction(class)'	-	'CommandType(enum)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'Device(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+ 'RuleTrigger(class):timestamp'	-	'timestamp'
+ 'Sensor(class):deviceId'	-	'deviceID'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 1 Room aggregation 0..* Sensor'	-	' 1 Room aggregation * SensorDevice'
+ ' 1 Room aggregation 0..* Actuator'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 1 Sensor association 1 SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 1 Actuator association 1 ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  12                  23                  
+Attributes          21                  7                   26                  
+Associations        10                  5                   24                  
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+
+Class:
+1. SmartHome(address : String)
+2. Room(name : String)
+3. Device(id : String, type : DeviceType)
+4. SensorReading(value : String, timestamp : DateTime)
+5. ControlCommand(command : String, status : String, timestamp : DateTime)
+6. ActivityLog
+7. AutomationRule
+8. AutomationPrecondition
+9. AutomationAction
+
+Relationships:
+1. SmartHome contain 0..* Room
+2. Room contain 0..* Device
+3. Device inherit SensorReading
+4. Device inherit ControlCommand
+5. SmartHome has 1 ActivityLog
+6. SmartHome has 0..* AutomationRule
+7. AutomationRule has 1 AutomationPrecondition
+8. AutomationRule has 1 AutomationAction
+9. AutomationRule depend on 0..* AutomationRule
+10. AutomationRule conflict with 0..* AutomationRule
+11. AutomationRule record 0..* timestamp
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address ], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [id , type ], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value , timestamp ], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command , status , timestamp ], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationPrecondition (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationAction (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 0..* Room
+ 2 Room aggregation 0..* Device
+ False Device inheritance False SensorReading
+ False Device inheritance False ControlCommand
+ 5 SmartHome association 1 ActivityLog
+ 6 SmartHome association 0..* AutomationRule
+ 7 AutomationRule association 1 AutomationPrecondition
+ 8 AutomationRule association 1 AutomationAction
+ 9 AutomationRule association 1 on
+ 10 AutomationRule association 1 with
+ 11 AutomationRule association 0..* timestamp
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+-Attributes:
+ 'SensorReading(enum):value '	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 0..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   23                  
+Attributes          13                  1                   26                  
+Associations        6                   1                   24                  
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Status (requested, completed, failed)
+2. Operator (AND, OR, NOT)
+
+Classes:
+1. SmartHome
+2. Room
+3. Device
+4. Sensor
+5. Actuator
+6. SensorReading
+7. ControlCommand
+8. ActivityLog
+9. AutomationRule
+
+Relationships:
+- SmartHome contains Room (1..*)
+- Room contain Device (0..*)
+- Room inherit Device
+- Device inherit Sensor
+- Device inherit Actuator
+- Device has SensorReading (0..*)
+- Device has ControlCommand (0..*)
+- SmartHome has ActivityLog
+- SmartHome has AutomationRule (0..*)
+- AutomationRule has Precondition
+- AutomationRule has Action
+- AutomationRule depends on AutomationRule
+- AutomationRule conflicts with AutomationRule
+- AutomationRule records TriggeredLog using Timestamp
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Status (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: Operator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: []
+Class: Room (class) - Enum Attributes: [], Class Attributes: []
+Class: Device (class) - Enum Attributes: [], Class Attributes: []
+Class: Sensor (class) - Enum Attributes: [], Class Attributes: []
+Class: Actuator (class) - Enum Attributes: [], Class Attributes: []
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: []
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: []
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 SmartHome association 1 Room
+ 1 Room aggregation 1 Device
+ False Room inheritance False Device
+ False Device inheritance False Sensor
+ False Device inheritance False Actuator
+ 1 Device association 1 SensorReading
+ 1 Device association 1 ControlCommand
+ 1 SmartHome association 1 ActivityLog
+ 1 SmartHome association 1 AutomationRule
+ 1 AutomationRule association 1 Precondition
+ 1 AutomationRule association 1 Action
+ 1 AutomationRule association 1 on
+ 1 AutomationRule association 1 with
+ 1 AutomationRule association 1 TriggeredLog
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'Status(enum)'	-	'CommandStatus(enum)'
+ 'Operator(enum)'	-	'BinaryOp(enum)'
+ 'Sensor(class)'	-	'SensorDevice(class)'
+ 'Actuator(class)'	-	'ActuatorDevice(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'Status(enum):requested'	-	'Requested'
+ 'Status(enum):completed'	-	'Completed'
+ 'Status(enum):failed'	-	'Failed'
+ 'Operator(enum):AND'	-	'AND'
+ 'Operator(enum):OR'	-	'OR'
+-Relationships:
+ ' 1 SmartHome association 1 Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  11                  23                  
+Attributes          6                   5                   26                  
+Associations        6                   1                   24                  
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. DeviceType (temperature sensor, movement sensor, light controller, lock controller)
+2. CommandStatus (requested, completed, failed)
+
+Classes:
+1. SmartHome(address: String)
+2. Room(roomNumber: int, smartHome: SmartHome)
+3. Device(deviceId: int, deviceType: DeviceType, room: Room)
+4. SensorReading(value: double, timestamp: datetime, device: Device)
+5. ControlCommand(command: String, timestamp: datetime, status: CommandStatus, device: Device)
+6. ActivityLog(smartHome: SmartHome)
+7. AutomationRule(precondition: String, action: String, isActive: boolean)
+8. RuleActivation(rule: AutomationRule, timestamp: datetime)
+
+Relationships:
+- SmartHome contain 1..* Room
+- Room contain 0..* Device
+- Device have 1..* SensorReading
+- Device have 1..* ControlCommand
+- SmartHome have 1 ActivityLog
+- SmartHome contain 0..* AutomationRule
+- AutomationRule inherit RuleActivation
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [sensor, sensor, controller, controller], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [requested, completed, failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address:String]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [roomNumber:int,smartHome:SmartHome]
+Class: Device (class) - Enum Attributes: [], Class Attributes: [deviceId:int,deviceType:DeviceType,room:Room]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value:double,timestamp:datetime,device:Device]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command:String,timestamp:datetime,status:CommandStatus,device:Device]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: [smartHome:SmartHome]
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: [precondition:String,action:String,isActive:boolean]
+Class: RuleActivation (class) - Enum Attributes: [], Class Attributes: [rule:AutomationRule,timestamp:datetime]
+Relationships:
+ 1 SmartHome aggregation 1..* Room
+ 1 Room aggregation 0..* Device
+ 1 Device association 1..* SensorReading
+ 1 Device association 1..* ControlCommand
+ 1 SmartHome association 1 ActivityLog
+ 1 SmartHome aggregation 0..* AutomationRule
+ False AutomationRule inheritance False RuleActivation
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+-Attributes:
+ 'CommandStatus(enum):requested'	-	'Requested'
+ 'CommandStatus(enum):completed'	-	'Completed'
+ 'CommandStatus(enum):failed'	-	'Failed'
+ 'Device(class):deviceId'	-	'deviceID'
+ 'SensorReading(class):value'	-	'value'
+-Relationships:
+ ' 1 SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  8                   23                  
+Attributes          26                  5                   26                  
+Associations        6                   1                   24                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+3. SensorReadingStatus(Activated, Deactivated)
+4. BooleanOperator(AND, OR, NOT)
+
+Class:
+1. SmartHome(address: String)
+2. Room(roomNumber: Integer)
+3. Device(deviceId: Integer, deviceType: DeviceType)
+4. SensorReading(deviceId: Integer, timestamp: DateTime, value: Float)
+5. ControlCommand(deviceId: Integer, timestamp: DateTime, command: String, status: CommandStatus)
+6. ActivityLog(logId: Integer, smartHome: SmartHome)
+7. AutomationRule(ruleId: Integer, precondition: String, action: String, isActive: Boolean)
+8. RuleTrigger(timestamp: DateTime, ruleId: Integer)
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* Device
+1..* Room inherit 1 SmartHome
+0..* Device inherit 1 Room
+1 SensorReading associate 1 Device
+1 ControlCommand associate 1 Device
+1..* SensorReading associate 1 ActivityLog
+1..* ControlCommand associate 1 ActivityLog
+1..* AutomationRule associate 1 SmartHome
+1..* RuleTrigger associate 1 AutomationRule
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: SensorReadingStatus (enum) - Enum Attributes: [Activated, Deactivated], Class Attributes: []
+Class: BooleanOperator (enum) - Enum Attributes: [AND, OR, NOT], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [roomNumber], Class Attributes: []
+Class: Device (enum) - Enum Attributes: [deviceId, deviceType], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [deviceId, timestamp, value], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [deviceId, timestamp, command, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [logId, smartHome], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [ruleId, precondition, action, isActive], Class Attributes: []
+Class: RuleTrigger (enum) - Enum Attributes: [timestamp, ruleId], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* Device
+ False Room inheritance False SmartHome
+ False Device inheritance False Room
+ 1 SensorReading association 1 Device
+ 1 ControlCommand association 1 Device
+ 1..* SensorReading association 1 ActivityLog
+ 1..* ControlCommand association 1 ActivityLog
+ 1..* AutomationRule association 1 SmartHome
+ 1..* RuleTrigger association 1 AutomationRule
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'Device(enum)'	-	'Device(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'SensorReadingStatus(enum)'	-	'DeviceStatus(enum)'
+ 'BooleanOperator(enum)'	-	'BinaryOp(enum)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+ 'RuleTrigger(enum)'	-	'RuntimeElement(class)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'Device(enum):deviceId'	-	'deviceID'
+ 'SensorReading(enum):value'	-	'value'
+ 'SensorReadingStatus(enum):Activated'	-	'Activated'
+ 'SensorReadingStatus(enum):Deactivated'	-	'Activated'
+ 'BooleanOperator(enum):AND'	-	'AND'
+ 'BooleanOperator(enum):OR'	-	'OR'
+ 'RuleTrigger(enum):timestamp'	-	'timestamp'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  23                  
+Attributes          31                  10                  26                  
+Associations        8                   1                   24                  
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+
+Classes:
+1. SmartHome(address : String)
+2. Room(name : String)
+3. Device(identifier : String, type : DeviceType)
+4. SensorReading(value : Float, timestamp : DateTime)
+5. ControlCommand(command : String, timestamp : DateTime, status : CommandStatus)
+6. ActivityLog
+7. AutomationRule
+8. RuleCondition
+9. RuleAction
+
+Relationships:
+1..* SmartHome contain 1..* Room
+1..* Room contain 0..* Device
+1..* SmartHome associate 0..* SensorReading
+1..* SmartHome associate 0..* ControlCommand
+1 SmartHome inherit ActivityLog
+1..* SmartHome associate 1..* AutomationRule
+1..* AutomationRule associate 1 RuleCondition
+1..* AutomationRule associate 1 RuleAction
+1..* AutomationRule depend 1..* AutomationRule
+1..* AutomationRule conflict 1..* AutomationRule
+1..* AutomationRule associate 0..* TriggerLog
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: SmartHome (class) - Enum Attributes: [], Class Attributes: [address :String]
+Class: Room (class) - Enum Attributes: [], Class Attributes: [name :String]
+Class: Device (class) - Enum Attributes: [], Class Attributes: [identifier :String,type :DeviceType]
+Class: SensorReading (class) - Enum Attributes: [], Class Attributes: [value :Float,timestamp :DateTime]
+Class: ControlCommand (class) - Enum Attributes: [], Class Attributes: [command :String,timestamp :DateTime,status :CommandStatus]
+Class: ActivityLog (class) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleCondition (class) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* SmartHome aggregation 1..* Room
+ 1..* Room aggregation 0..* Device
+ 1..* SmartHome association 0..* SensorReading
+ 1..* SmartHome association 0..* ControlCommand
+ False SmartHome inheritance False ActivityLog
+ 1..* SmartHome association 1..* AutomationRule
+ 1..* AutomationRule association 1 RuleCondition
+ 1..* AutomationRule association 1 RuleAction
+ 1..* AutomationRule association 1..* AutomationRule
+ 1..* AutomationRule association 1..* AutomationRule
+ 1..* AutomationRule association 0..* TriggerLog
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(class)'	-	'SmartHome(class)'
+ 'Room(class)'	-	'Room(class)'
+ 'Device(class)'	-	'Device(class)'
+ 'SensorReading(class)'	-	'SensorReading(class)'
+ 'ControlCommand(class)'	-	'ControlCommand(class)'
+ 'ActivityLog(class)'	-	'ActvityLog(class)'
+ 'AutomationRule(class)'	-	'AlertRule(class)'
+ 'RuleAction(class)'	-	'CommandType(enum)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'SensorReading(class):value '	-	'value'
+-Relationships:
+ ' 1..* SmartHome aggregation 1..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  9                   23                  
+Attributes          16                  4                   26                  
+Associations        9                   1                   24                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Smart home automation system (SHAS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. DeviceType(TemperatureSensor, MovementSensor, LightController, LockController)
+2. CommandStatus(Requested, Completed, Failed)
+
+Class:
+1. SmartHome(address: String)
+2. Room(name: String)
+3. SensorDevice(deviceId: String, type: DeviceType)
+4. ActuatorDevice(deviceId: String, type: DeviceType)
+5. SensorReading(value: Float, timestamp: DateTime)
+6. ControlCommand(command: String, timestamp: DateTime, status: CommandStatus)
+7. ActivityLog
+8. AutomationRule
+9. RelationalTerm
+10. RuleAction
+11. RuleTrigger(timestamp: DateTime)
+
+Relationships:
+1. SmartHome contain 0..* Room
+2. Room contain 0..* SensorDevice
+3. Room contain 0..* ActuatorDevice
+4. SensorDevice associate 1..* SensorReading
+5. ActuatorDevice associate 1..* ControlCommand
+6. AutomationRule contain 1..* RelationalTerm
+7. AutomationRule contain 1 RuleAction
+8. SmartHome contain 1..* AutomationRule
+9. AutomationRule inherit 0..1 AutomationRule
+10. AutomationRule associate 0..* AutomationRule through dependency
+11. AutomationRule associate 0..* AutomationRule through conflict
+12. SmartHome associate 1..* RuleTrigger
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: DeviceType (enum) - Enum Attributes: [TemperatureSensor, MovementSensor, LightController, LockController], Class Attributes: []
+Class: CommandStatus (enum) - Enum Attributes: [Requested, Completed, Failed], Class Attributes: []
+Class: SmartHome (enum) - Enum Attributes: [address], Class Attributes: []
+Class: Room (enum) - Enum Attributes: [name], Class Attributes: []
+Class: SensorDevice (enum) - Enum Attributes: [deviceId, type], Class Attributes: []
+Class: ActuatorDevice (enum) - Enum Attributes: [deviceId, type], Class Attributes: []
+Class: SensorReading (enum) - Enum Attributes: [value, timestamp], Class Attributes: []
+Class: ControlCommand (enum) - Enum Attributes: [command, timestamp, status], Class Attributes: []
+Class: ActivityLog (enum) - Enum Attributes: [], Class Attributes: []
+Class: AutomationRule (enum) - Enum Attributes: [], Class Attributes: []
+Class: RelationalTerm (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleAction (enum) - Enum Attributes: [], Class Attributes: []
+Class: RuleTrigger (enum) - Enum Attributes: [timestamp], Class Attributes: []
+Relationships:
+ 1 SmartHome aggregation 0..* Room
+ 2 Room aggregation 0..* SensorDevice
+ 3 Room aggregation 0..* ActuatorDevice
+ 4 SensorDevice association 1..* SensorReading
+ 5 ActuatorDevice association 1..* ControlCommand
+ 6 AutomationRule aggregation 1..* RelationalTerm
+ 7 AutomationRule aggregation 1 RuleAction
+ 8 SmartHome aggregation 1..* AutomationRule
+ False AutomationRule inheritance False AutomationRule
+ 10 AutomationRule association 0..* AutomationRule
+ 11 AutomationRule association 0..* AutomationRule
+ 12 SmartHome association 1..* RuleTrigger
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'CommandStatus(enum)'	-	'CommandStatus(enum)'
+ 'SmartHome(enum)'	-	'SmartHome(class)'
+ 'Room(enum)'	-	'Room(class)'
+ 'SensorDevice(enum)'	-	'SensorDevice(class)'
+ 'ActuatorDevice(enum)'	-	'ActuatorDevice(class)'
+ 'SensorReading(enum)'	-	'SensorReading(class)'
+ 'ControlCommand(enum)'	-	'ControlCommand(class)'
+ 'ActivityLog(enum)'	-	'ActvityLog(class)'
+ 'RelationalTerm(enum)'	-	'RelationalTerm(class)'
+ 'RuleTrigger(enum)'	-	'RuntimeElement(class)'
+ 'AutomationRule(enum)'	-	'AlertRule(class)'
+ 'RuleAction(enum)'	-	'CommandType(enum)'
+-Attributes:
+ 'CommandStatus(enum):Requested'	-	'Requested'
+ 'CommandStatus(enum):Completed'	-	'Completed'
+ 'CommandStatus(enum):Failed'	-	'Failed'
+ 'SensorDevice(enum):deviceId'	-	'deviceID'
+ 'SensorReading(enum):value'	-	'value'
+ 'RuleTrigger(enum):timestamp'	-	'timestamp'
+-Relationships:
+ ' 1 SmartHome aggregation 0..* Room'	-	' 1 SmartHome aggregation 0..* Room'
+ ' 2 Room aggregation 0..* SensorDevice'	-	' 1 Room aggregation * SensorDevice'
+ ' 3 Room aggregation 0..* ActuatorDevice'	-	' 1 Room aggregation * ActuatorDevice'
+ ' 4 SensorDevice association 1..* SensorReading'	-	' * SensorReading association 1 SensorDevice'
+ ' 5 ActuatorDevice association 1..* ControlCommand'	-	' * ControlCommand association * ActuatorDevice'
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  12                  23                  
+Attributes          19                  6                   26                  
+Associations        11                  5                   24                  
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+Smart home automation system (SHAS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.836          0.433          0.570          0.479
+Attributes          0.305          0.200          0.241          0.215
+Associations        0.316          0.127          0.181          0.144
+Inheritances        0.048          0.025          0.033          0.028
+--------------------------------------------------------------------------------

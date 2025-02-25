@@ -1,0 +1,2316 @@
+------------------------------------------------------------
+---------------------1/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. Phone(phoneNumber: string, phoneType: string)
+4. EmployeeType(typeID: int, typeName: string)
+5. Title(titleID: int, name: string, runTime: int, rating: string)
+6. Distributor(distributorID: int, name: string, phone: string)
+7. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+8. Customer(customerID: int, name: string, phone: string)
+9. Rental(rentalID: int, rentalDate: date, totalAmount: double)
+10. RentalTransactionDetail(cartridgeID: int, dueDate: date, returnDate: date)
+
+Enumerations:
+1. EmployeeTypeEnumeration(manager, cashier, stocker)
+2. CartridgeStatusEnumeration(Available, Rented, Broken)
+
+Relationships:
+1. Employee contains 0..* Phone
+2. Employee has 1 EmployeeType
+3. Store employs 1..* Employee
+4. Title is available from 1 Distributor
+5. Distributor provides 1..* Title
+6. Store carries 0..* Title
+7. Title can be carried by many Store
+8. Store sets rental price for Title
+9. Store can stock 0..* Cartridge
+10. Title can have multiple Cartridge
+11. Cartridge has 1 CartridgeStatus
+12. CartridgeStatus can apply to 0..* Cartridge
+13. Customer is associated with 1 Store
+14. Customer can rent from 0..* Store
+15. Rental is associated with 1 Customer
+16. Rental is associated with 1 Store
+17. Rental is associated with 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string]
+Class: Phone (class) - Enum Attributes: [], Class Attributes: [phoneNumber:string,phoneType:string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [typeID:int,typeName:string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string]
+Class: Rental (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:double]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,returnDate:date]
+Relationships:
+ 1 Employee association 0..* Phone
+ 2 Employee association 1 EmployeeType
+ 3 Store association 1..* Employee
+ 4 Title association 1 available
+ 5 Distributor association 1..* Title
+ 6 Store association 0..* Title
+ 7 Title association 1 be
+ 8 Store association 1 rental
+ 9 Store association 1 stock
+ 10 Title association 1 have
+ 11 Cartridge association 1 CartridgeStatus
+ 12 CartridgeStatus association 1 apply
+ 13 Customer association 1 associated
+ 14 Customer association 1 rent
+ 15 Rental association 1 associated
+ 16 Rental association 1 associated
+ 17 Rental association 1 associated
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Rental(class)'	-	'Rental(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'Phone(class)'	-	'PhoneNumber(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'Rental(class):rentalDate'	-	'rentalDate'
+ 'Rental(class):totalAmount'	-	'totalAmount'
+ 'Title(class):name'	-	'name'
+ 'Title(class):runTime'	-	'runtime'
+ 'Title(class):rating'	-	'rating'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1 Employee association 0..* Phone'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 3 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 5 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  10                  13                  
+Attributes          29                  13                  35                  
+Associations        5                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Class:
+1. Store(storeID: string, address: string, phoneNumber: string)
+2. Employee(employeeID: string, name: string, address: string)
+3. PhoneNumber(phoneNumber: string, type: PhoneNumberType)
+4. Title(titleID: string, name: string, runTime: int, rating: string)
+5. Distributor(distributorID: string, name: string, phoneNumber: string)
+6. Cartridge(cartridgeID: string, utilizationCount: int, status: string)
+7. Customer(customerID: string, name: string, phoneNumber: string)
+8. RentalTransaction(rentalID: string, rentalDate: date, totalAmount: float)
+9. RentalTransactionDetail(cartridgeID: string, dueDate: date, returnDate: date)
+
+Relationships:
+1..* Store employs 0..* Employee
+Employee is classified as 1 EmployeeType
+EmployeeType classifies 1..* Employee
+Store can carry 0..* Title
+Title is available from 1 Distributor
+Distributor provides 1..* Title
+Store carries 1..* Cartridge
+Cartridge has status 1..* CartridgeStatus
+Customer is associated with 1 Store
+Customer can rent from any Store
+RentalTransaction is associated with 1 Customer
+RentalTransaction is associated with 1 Store
+RentalTransaction has 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID, address, phoneNumber], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID, name, address], Class Attributes: []
+Class: PhoneNumber (enum) - Enum Attributes: [phoneNumber, type], Class Attributes: []
+Class: Title (enum) - Enum Attributes: [titleID, name, runTime, rating], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID, name, phoneNumber], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID, utilizationCount, status], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID, name, phoneNumber], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID, rentalDate, totalAmount], Class Attributes: []
+Class: RentalTransactionDetail (enum) - Enum Attributes: [cartridgeID, dueDate, returnDate], Class Attributes: []
+Relationships:
+ 1..* Store association 0..* Employee
+ 1 Employee association 1 classified
+ 1 EmployeeType association 1..* Employee
+ 1 Store association 1 carry
+ 1 Title association 1 available
+ 1 Distributor association 1..* Title
+ 1 Store association 1..* Cartridge
+ 1 Cartridge association 1 status
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1..* RentalTransactionDetail
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'PhoneNumber(enum)'	-	'PhoneNumber(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Title(enum)'	-	'VideoTitle(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+ 'RentalTransactionDetail(enum)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(enum):address'	-	'address'
+ 'Store(enum):phoneNumber'	-	'phoneNumber'
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):address'	-	'address'
+ 'PhoneNumber(enum):type'	-	'type'
+ 'Distributor(enum):name'	-	'name'
+ 'Distributor(enum):phoneNumber'	-	'phoneNumber'
+ 'Cartridge(enum):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(enum):status'	-	'status'
+ 'Customer(enum):name'	-	'name'
+ 'Customer(enum):phoneNumber'	-	'phoneNumber'
+ 'Title(enum):name'	-	'name'
+ 'Title(enum):runTime'	-	'runtime'
+ 'Title(enum):rating'	-	'rating'
+ 'RentalTransaction(enum):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(enum):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(enum):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1..* Store association 0..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 RentalTransaction association 1..* RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          33                  20                  35                  
+Associations        5                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Class:
+1. Store(storeID : int, address : string, phone : string)
+2. Employee(employeeID : int, name : string, address : string)
+3. PhoneNumber(phoneNumber : string, type : PhoneNumberType)
+4. Title(titleID : int, name : string, runTime : int, rating : string)
+5. Distributor(distributorID : int, name : string, phone : string)
+6. Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+7. Customer(customerID : int, name : string, phone : string)
+8. RentalTransaction(rentalID : int, rentalDate : date, totalAmount : float)
+9. RentalTransactionDetail(cartridgeID : int, dueDate : date, returnDate : date)
+
+Relationships:
+1..* Store employ 1..* Employee
+Employee is classified as 1 EmployeeType
+1 EmployeeType classifies many Employees
+
+1 Distributor provides 1..* Title
+1 Store carries 1..* Title
+1 Title is available from 1 Distributor
+
+1 Store sets 1..* RentalRate for 1..* Title
+1 Store stocks 0..* Cartridge of 1 Title
+1 Cartridge has 1 CartridgeStatus
+1 CartridgeStatus applies to 1..* Cartridge
+
+1 Customer is associated with 1 Store
+1 Customer can rent from any Store
+1 RentalTransaction is associated with 1 Customer
+1 RentalTransaction is associated with 1 Store
+1 RentalTransaction has 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID , address , phone ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID , name , address ], Class Attributes: []
+Class: PhoneNumber (enum) - Enum Attributes: [phoneNumber , type ], Class Attributes: []
+Class: Title (enum) - Enum Attributes: [titleID , name , runTime , rating ], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID , name , phone ], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID , utilizationCount , status ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID , name , phone ], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID , rentalDate , totalAmount ], Class Attributes: []
+Class: RentalTransactionDetail (enum) - Enum Attributes: [cartridgeID , dueDate , returnDate ], Class Attributes: []
+Relationships:
+ 1..* Store association 1..* Employee
+ 1 Employee association 1 classified
+ 1 EmployeeType association 1 many
+ 1 Distributor association 1..* Title
+ 1 Store association 1..* Title
+ 1 Title association 1 available
+ 1 Store association 1..* RentalRate
+ 1 Store association 0..* Cartridge
+ 1 Cartridge association 1 CartridgeStatus
+ 1 CartridgeStatus association 1 to
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1..* RentalTransactionDetail
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'PhoneNumber(enum)'	-	'PhoneNumber(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Title(enum)'	-	'VideoTitle(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+ 'RentalTransactionDetail(enum)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(enum):address '	-	'address'
+ 'Employee(enum):name '	-	'name'
+ 'Employee(enum):address '	-	'address'
+ 'PhoneNumber(enum):type '	-	'type'
+ 'Distributor(enum):name '	-	'name'
+ 'Cartridge(enum):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(enum):status '	-	'status'
+ 'Customer(enum):name '	-	'name'
+ 'Title(enum):name '	-	'name'
+ 'Title(enum):runTime '	-	'runtime'
+ 'Title(enum):rating '	-	'rating'
+ 'RentalTransaction(enum):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(enum):totalAmount '	-	'totalAmount'
+ 'RentalTransactionDetail(enum):cartridgeID '	-	'cartridge'
+-Relationships:
+ ' 1..* Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 RentalTransaction association 1..* RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          33                  17                  35                  
+Associations        5                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Class:
+1. Store(storeID : int, address : string, phoneNumber : string)
+2. Employee(employeeID : int, name : string, address : string, phoneNumbers : list, employeeType : EmployeeType, storeID : int)
+3. VideoTitle(titleID : int, name : string, runTime : int, rating : string)
+4. Distributor(distributorID : int, name : string, phoneNumber : string)
+5. Cartridge(cartridgeID : int, utilizationCount : int, status : string, titleID : int, storeID : int)
+6. Customer(customerID : int, name : string, phoneNumber : string, storeID : int)
+7. RentalTransaction(rentalID : int, customerID : int, storeID : int, rentalDate : date, totalAmount : float)
+
+Relationships:
+1..* Store employs 0..* Employee
+Employee is classified as 1 EmployeeType
+EmployeeType classifies 1..* Employee
+Store carries 0..* VideoTitle
+VideoTitle is available from 1 Distributor
+Distributor provides 0..* VideoTitle
+Store sets rental price for 0..* VideoTitle
+Store stocks 0..* Cartridge
+Cartridge has 1 status
+Status applies to 0..* Cartridge
+Customer is associated with 1 Store
+Customer can rent from 0..* Store
+RentalTransaction is associated with 1 Customer
+RentalTransaction is associated with 1 Store
+RentalTransaction captures 1..* RentalTransactionDetailLine
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID , address , phoneNumber ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID , name , address , phoneNumbers , employeeType , storeID ], Class Attributes: []
+Class: VideoTitle (enum) - Enum Attributes: [titleID , name , runTime , rating ], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID , name , phoneNumber ], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID , utilizationCount , status , titleID , storeID ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID , name , phoneNumber , storeID ], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID , customerID , storeID , rentalDate , totalAmount ], Class Attributes: []
+Relationships:
+ 1..* Store association 0..* Employee
+ 1 Employee association 1 classified
+ 1 EmployeeType association 1..* Employee
+ 1 Store association 0..* VideoTitle
+ 1 VideoTitle association 1 available
+ 1 Distributor association 0..* VideoTitle
+ 1 Store association 1 rental
+ 1 Store association 0..* Cartridge
+ 1 Cartridge association 1 status
+ 1 Status association 1 to
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1..* RentalTransactionDetailLine
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'VideoTitle(enum)'	-	'VideoTitle(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(enum):address '	-	'address'
+ 'Store(enum):phoneNumber '	-	'phoneNumber'
+ 'Employee(enum):name '	-	'name'
+ 'Employee(enum):address '	-	'address'
+ 'VideoTitle(enum):name '	-	'name'
+ 'VideoTitle(enum):runTime '	-	'runtime'
+ 'VideoTitle(enum):rating '	-	'rating'
+ 'Distributor(enum):name '	-	'name'
+ 'Distributor(enum):phoneNumber '	-	'phoneNumber'
+ 'Cartridge(enum):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(enum):status '	-	'status'
+ 'Customer(enum):name '	-	'name'
+ 'Customer(enum):phoneNumber '	-	'phoneNumber'
+ 'RentalTransaction(enum):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(enum):totalAmount '	-	'totalAmount'
+-Relationships:
+ ' 1..* Store association 0..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 0..* VideoTitle'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   13                  
+Attributes          36                  18                  35                  
+Associations        5                   2                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneType(office, home, beeper)
+
+Classes:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. PhoneNumber(phoneNumber: string, phoneType: PhoneType)
+4. EmployeeTypeClassification(employeeType: EmployeeType)
+5. VideoTitle(titleID: int, name: string, runTime: int, rating: string)
+6. Distributor(distributorID: int, name: string, phone: string)
+7. StoreTitle(storeID: int, titleID: int, rentalRate: float)
+8. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+9. CartridgeStatusClassification(cartridgeStatus: string)
+10. Customer(customerID: int, name: string, phone: string)
+11. RentalTransaction(rentalID: int, rentalDate: date, totalAmount: float)
+12. RentalTransactionDetail(cartridgeID: int, dueDate: date, returnDate: date)
+
+Relationships:
+1..* Store employs 0..* Employee
+Employee inherit EmployeeTypeClassification
+StoreTitle associate Store with VideoTitle
+Distributor provides 1..* VideoTitle
+StoreTitle contain 1..* Cartridge
+Cartridge contain CartridgeStatusClassification
+Customer enroll 1 Store
+Customer rent 1..* VideoTitle
+RentalTransaction associate Customer
+RentalTransaction associate Store
+RentalTransaction contain 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumber:string,phoneType:PhoneType]
+Class: EmployeeTypeClassification (class) - Enum Attributes: [], Class Attributes: [employeeType:EmployeeType]
+Class: VideoTitle (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: StoreTitle (class) - Enum Attributes: [], Class Attributes: [storeID:int,titleID:int,rentalRate:float]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: CartridgeStatusClassification (class) - Enum Attributes: [], Class Attributes: [cartridgeStatus:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,returnDate:date]
+Relationships:
+ 1..* Store association 0..* Employee
+ False Employee inheritance False EmployeeTypeClassification
+ 1 StoreTitle association 1 Store
+ 1 Distributor association 1..* VideoTitle
+ 1 StoreTitle aggregation 1..* Cartridge
+ 1 Cartridge aggregation 1 CartridgeStatusClassification
+ 1 Customer association 1 Store
+ 1 Customer association 1..* VideoTitle
+ 1 RentalTransaction association 1 Customer
+ 1 RentalTransaction association 1 Store
+ 1 RentalTransaction aggregation 1..* RentalTransactionDetail
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'VideoTitle(class)'	-	'VideoTitle(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'VideoTitle(class):name'	-	'name'
+ 'VideoTitle(class):runTime'	-	'runtime'
+ 'VideoTitle(class):rating'	-	'rating'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1..* Store association 0..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 1..* VideoTitle'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 Customer association 1 Store'	-	' 1 Customer association 1 Store'
+ ' 1 RentalTransaction association 1 Customer'	-	' 1 Rental association 1 Customer'
+ ' 1 RentalTransaction association 1 Store'	-	' 1 Rental association 1 Store'
+ ' 1 RentalTransaction aggregation 1..* RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             14                  10                  13                  
+Attributes          38                  16                  35                  
+Associations        10                  6                   17                  
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Classes:
+1. Store(storeID : int, address : string, phone : string)
+2. Employee(employeeID : int, name : string, address : string, phoneNumbers : List<PhoneNumber>, type : EmployeeType)
+3. PhoneNumber(number : string, type : PhoneNumberType)
+4. Title(titleID : int, name : string, runTime : int, rating : string)
+5. Distributor(distributorID : int, name : string, phone : string)
+6. Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+7. Customer(customerID : int, name : string, phone : string)
+8. RentalTransaction(rentalID : int, rentalDate : date, totalAmount : float)
+9. RentalTransactionDetail(cartridgeID : int, dueDate : date, actualReturnDate : date)
+
+Relationships:
+1..* Employee has 1..* PhoneNumber
+EmployeeType classifies 1..* Employees
+Store employs 1..* Employees
+Title is available from 1 Distributor
+Distributor provides 1..* Titles
+Store carries 0..* Titles
+Store sets rental price for 0..* Titles
+Store stocks 0..* Cartridges of a Title
+Cartridge has 1 Status
+Customer is associated with 1 Store
+Customer can rent from 0..* Stores
+RentalTransaction is associated with 1 Customer
+RentalTransaction is associated with 1 Store
+RentalTransaction has 1..* RentalTransactionDetails
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :int,address :string,phone :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,address :string,phoneNumbers :List<PhoneNumber>,type :EmployeeType]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [number :string,type :PhoneNumberType]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID :int,name :string,runTime :int,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :int,name :string,phone :string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,utilizationCount :int,status :string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :int,name :string,phone :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :int,rentalDate :date,totalAmount :float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,dueDate :date,actualReturnDate :date]
+Relationships:
+ 1..* Employee association 1..* PhoneNumber
+ 1 EmployeeType association 1..* Employees
+ 1 Store association 1..* Employees
+ 1 Title association 1 available
+ 1 Distributor association 1..* Titles
+ 1 Store association 0..* Titles
+ 1 Store association 1 rental
+ 1 Store association 0..* Cartridges
+ 1 Cartridge association 1 Status
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1..* RentalTransactionDetails
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(class):address '	-	'address'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'Employee(class):type '	-	'type'
+ 'PhoneNumber(class):number '	-	'number'
+ 'PhoneNumber(class):type '	-	'type'
+ 'Distributor(class):name '	-	'name'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'Title(class):name '	-	'name'
+ 'Title(class):runTime '	-	'runtime'
+ 'Title(class):rating '	-	'rating'
+ 'RentalTransaction(class):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount '	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID '	-	'cartridge'
+ 'RentalTransactionDetail(class):actualReturnDate '	-	'actualReturnDate'
+-Relationships:
+ ' 1..* Employee association 1..* PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          35                  20                  35                  
+Associations        1                   1                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID : string, address : string, phone : string)
+2. Employee(employeeID : string, name : string, address : string, phoneNumbers : List<PhoneNumber>)
+3. PhoneNumber(number : string, type : PhoneType)
+4. EmployeeType(name : string)
+5. VideoTitle(titleID : string, name : string, runTime : string, rating : string)
+6. Distributor(distributorID : string, name : string, phone : string)
+7. Cartridge(cartridgeID : string, utilizationCount : int, status : CartridgeStatus)
+8. Customer(customerID : string, name : string, phone : string)
+9. RentalTransaction(rentalID : string, rentalDate : date, totalAmount : double)
+10. RentalTransactionDetail(cartridgeID : string, dueDate : date, returnDate : date)
+
+Enumerations:
+1. PhoneType(office, home, beeper)
+2. CartridgeStatus(Available, Rented, Broken)
+3. EmployeeTypeName(manager, cashier, stocker)
+
+Relationships:
+1. Employee - PhoneNumbers (1..* Employee contains 1..* PhoneNumber)
+2. Employee - EmployeeType (1 Employee is classified as 1 EmployeeType)
+3. Store - Employee (1 Store employs 0..* Employees)
+4. VideoTitle - Distributor (1 VideoTitle is available from 1 Distributor)
+5. Store - VideoTitle (0..* Titles can be carried by 0..* Stores)
+6. Store - RentalRate (0..* Stores set rental rate for 0..* Titles)
+7. Store - Cartridge (0..* Cartridges can be stocked by 1 Store)
+8. Cartridge - CartridgeStatus (1 Cartridge has 1 CartridgeStatus)
+9. Customer - Store (1 Customer is associated with 1 Store)
+10. RentalTransaction - Customer (1 RentalTransaction is associated with 1 Customer)
+11. RentalTransaction - Store (1 RentalTransaction is associated with 1 Store)
+12. RentalTransaction - RentalTransactionDetail (1 RentalTransaction has 1..* RentalTransactionDetail)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :string,address :string,phone :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :string,name :string,address :string,phoneNumbers :List<PhoneNumber>]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [number :string,type :PhoneType]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [name :string]
+Class: VideoTitle (class) - Enum Attributes: [], Class Attributes: [titleID :string,name :string,runTime :string,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :string,name :string,phone :string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :string,utilizationCount :int,status :CartridgeStatus]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :string,name :string,phone :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :string,rentalDate :date,totalAmount :double]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID :string,dueDate :date,returnDate :date]
+Class: PhoneType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: CartridgeStatus (enum) - Enum Attributes: [Available, Rented, Broken], Class Attributes: []
+Class: EmployeeTypeName (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Relationships:
+ 1 Employee association 1 PhoneNumbers
+ 2 Employee association 1 EmployeeType
+ 3 Store association 1 Employee
+ 4 VideoTitle association 1 Distributor
+ 5 Store association 1 VideoTitle
+ 6 Store association 1 RentalRate
+ 7 Store association 1 Cartridge
+ 8 Cartridge association 1 CartridgeStatus
+ 9 Customer association 1 Store
+ 10 RentalTransaction association 1 Customer
+ 11 RentalTransaction association 1 Store
+ 12 RentalTransaction association 1 RentalTransactionDetail
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'VideoTitle(class)'	-	'VideoTitle(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'CartridgeStatus(enum)'	-	'CartridgeStatus(enum)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address '	-	'address'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'PhoneNumber(class):number '	-	'number'
+ 'PhoneNumber(class):type '	-	'type'
+ 'VideoTitle(class):name '	-	'name'
+ 'VideoTitle(class):runTime '	-	'runtime'
+ 'VideoTitle(class):rating '	-	'rating'
+ 'Distributor(class):name '	-	'name'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'CartridgeStatus(enum):Available'	-	'Available'
+ 'CartridgeStatus(enum):Rented'	-	'Rented'
+ 'CartridgeStatus(enum):Broken'	-	'Broken'
+ 'RentalTransaction(class):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount '	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID '	-	'cartridge'
+-Relationships:
+ ' 3 Store association 1 Employee'	-	' 1 Store aggregation * Employee'
+ ' 4 VideoTitle association 1 Distributor'	-	' 1 VideoTitle association 1 Distributor'
+ ' 9 Customer association 1 Store'	-	' 1 Customer association 1 Store'
+ ' 10 RentalTransaction association 1 Customer'	-	' 1 Rental association 1 Customer'
+ ' 11 RentalTransaction association 1 Store'	-	' 1 Rental association 1 Store'
+ ' 12 RentalTransaction association 1 RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  11                  13                  
+Attributes          38                  18                  35                  
+Associations        10                  6                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneType(office, home, beeper, etc.)
+3. Rating(G, PG, R)
+4. CartridgeStatus(Available, Rented, Broken)
+
+Class:
+1. Store(storeID: int, address: string, phoneNumber: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. Phone(phoneNumber: string, phoneType: PhoneType)
+4. Title(titleID: int, name: string, runTime: int, rating: Rating)
+5. Distributor(distributorID: int, name: string, phoneNumber: string)
+6. Cartridge(cartridgeID: int, utilizationCount: int, status: CartridgeStatus)
+7. Customer(customerID: int, name: string, phoneNumber: string)
+8. RentalTransaction(rentalID: int, rentalDate: date, totalRentalAmount: float)
+9. RentalTransactionDetail(id: int, dueDate: date, returnDate: date)
+
+Relationships:
+1..* Store employs 1..* Employee
+Employee is classified as 1 EmployeeType
+Employee can have 1..* Phone
+Employee is employed by 1 Store
+EmployeeType classifies 1..* Employee
+Distributor provides 1..* Title
+Title is available from 1 Distributor
+Store carries 1..* Title
+Title can be carried by 1..* Store
+Store sets rental price for Title
+Store stocks 1..* Cartridge
+Cartridge is associated with 1 Title
+Cartridge can have 1 CartridgeStatus
+CartridgeStatus can apply to 1..* Cartridge
+Customer is associated with 1 Store
+Customer can rent from 1..* Store
+RentalTransaction is associated with 1 Customer
+RentalTransaction is associated with 1 Store
+RentalTransaction is associated with 1..* RentalTransactionDetail
+RentalTransactionDetail captures 1 Cartridge being rented
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneType (enum) - Enum Attributes: [office, home, beeper, etc.], Class Attributes: []
+Class: Rating (enum) - Enum Attributes: [G, PG, R], Class Attributes: []
+Class: CartridgeStatus (enum) - Enum Attributes: [Available, Rented, Broken], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID, address, phoneNumber], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID, name, address], Class Attributes: []
+Class: Phone (enum) - Enum Attributes: [phoneNumber, phoneType], Class Attributes: []
+Class: Title (enum) - Enum Attributes: [titleID, name, runTime, rating], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID, name, phoneNumber], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID, utilizationCount, status], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID, name, phoneNumber], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID, rentalDate, totalRentalAmount], Class Attributes: []
+Class: RentalTransactionDetail (enum) - Enum Attributes: [id, dueDate, returnDate], Class Attributes: []
+Relationships:
+ 1..* Store association 1..* Employee
+ 1 Employee association 1 classified
+ 1 Employee association 1 have
+ 1 Employee association 1 employed
+ 1 EmployeeType association 1..* Employee
+ 1 Distributor association 1..* Title
+ 1 Title association 1 available
+ 1 Store association 1..* Title
+ 1 Title association 1 be
+ 1 Store association 1 rental
+ 1 Store association 1..* Cartridge
+ 1 Cartridge association 1 associated
+ 1 Cartridge association 1 have
+ 1 CartridgeStatus association 1 apply
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransactionDetail association 1 Cartridge
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'CartridgeStatus(enum)'	-	'CartridgeStatus(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Title(enum)'	-	'VideoTitle(class)'
+ 'Phone(enum)'	-	'PhoneNumber(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+ 'RentalTransactionDetail(enum)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'CartridgeStatus(enum):Available'	-	'Available'
+ 'CartridgeStatus(enum):Rented'	-	'Rented'
+ 'CartridgeStatus(enum):Broken'	-	'Broken'
+ 'Store(enum):address'	-	'address'
+ 'Store(enum):phoneNumber'	-	'phoneNumber'
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):address'	-	'address'
+ 'Distributor(enum):name'	-	'name'
+ 'Distributor(enum):phoneNumber'	-	'phoneNumber'
+ 'Cartridge(enum):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(enum):status'	-	'status'
+ 'Customer(enum):name'	-	'name'
+ 'Customer(enum):phoneNumber'	-	'phoneNumber'
+ 'Title(enum):name'	-	'name'
+ 'Title(enum):runTime'	-	'runtime'
+ 'Title(enum):rating'	-	'rating'
+ 'RentalTransaction(enum):rentalDate'	-	'rentalDate'
+-Relationships:
+ ' 1..* Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 RentalTransactionDetail association 1 Cartridge'	-	' 1 DetailLine association 1 Cartridge'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  11                  13                  
+Attributes          40                  20                  35                  
+Associations        6                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Class:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. PhoneNumber(phoneNumber: string, type: PhoneNumberType)
+4. EmployeeType(employeeType: EmployeeType)
+5. VideoTitle(titleID: int, name: string, runTime: string, rating: string)
+6. Distributor(distributorID: int, name: string, phone: string)
+7. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+8. Customer(customerID: int, name: string, phone: string)
+9. RentalTransaction(rentalID: int, rentalDate: date, totalAmount: double)
+10. RentalTransactionDetail(cartridgeID: int, dueDate: date, returnDate: date)
+
+Relationships:
+1. Employee has 0..* PhoneNumbers (Employee 0..* PhoneNumber)
+2. Employee is classified as 1 EmployeeType (Employee 1 EmployeeType)
+3. EmployeeType classifies 1..* Employees (EmployeeType 1..* Employee)
+4. Store employs 1..* Employees (Store 1..* Employee)
+5. VideoTitle is available from 1 Distributor (VideoTitle 1 Distributor)
+6. Distributor provides 1..* VideoTitles (Distributor 1..* VideoTitle)
+7. Store carries 1..* VideoTitles (Store 1..* VideoTitle)
+8. Store sets rental price for each Title (Store 1..* VideoTitle)
+9. Store can stock 1..* Cartridges (Store 1..* Cartridge)
+10. Cartridge has 1..* StatusTypes (Cartridge 1..* string)
+11. Customer is associated with 1 Store (Customer 1 Store)
+12. Customer can rent from 1..* Stores (Customer 1..* Store)
+13. RentalTransaction is associated with 1 Customer (RentalTransaction 1 Customer)
+14. RentalTransaction is associated with 1 Store (RentalTransaction 1 Store)
+15. RentalTransaction has 1..* RentalTransactionDetailLines (RentalTransaction 1..* RentalTransactionDetail)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID, address, phone], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID, name, address], Class Attributes: []
+Class: PhoneNumber (enum) - Enum Attributes: [phoneNumber, type], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [employeeType], Class Attributes: []
+Class: VideoTitle (enum) - Enum Attributes: [titleID, name, runTime, rating], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID, name, phone], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID, utilizationCount, status], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID, name, phone], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID, rentalDate, totalAmount], Class Attributes: []
+Class: RentalTransactionDetail (enum) - Enum Attributes: [cartridgeID, dueDate, returnDate], Class Attributes: []
+Relationships:
+ 1 Employee association 0..* PhoneNumbers
+ 2 Employee association 1 classified
+ 3 EmployeeType association 1..* Employees
+ 4 Store association 1..* Employees
+ 5 VideoTitle association 1 available
+ 6 Distributor association 1..* VideoTitles
+ 7 Store association 1..* VideoTitles
+ 8 Store association 1 rental
+ 9 Store association 1 stock
+ 10 Cartridge association 1..* StatusTypes
+ 11 Customer association 1 associated
+ 12 Customer association 1 rent
+ 13 RentalTransaction association 1 associated
+ 14 RentalTransaction association 1 associated
+ 15 RentalTransaction association 1..* RentalTransactionDetailLines
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'PhoneNumber(enum)'	-	'PhoneNumber(class)'
+ 'VideoTitle(enum)'	-	'VideoTitle(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+ 'RentalTransactionDetail(enum)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(enum):address'	-	'address'
+ 'Employee(enum):name'	-	'name'
+ 'Employee(enum):address'	-	'address'
+ 'PhoneNumber(enum):type'	-	'type'
+ 'VideoTitle(enum):name'	-	'name'
+ 'VideoTitle(enum):runTime'	-	'runtime'
+ 'VideoTitle(enum):rating'	-	'rating'
+ 'Distributor(enum):name'	-	'name'
+ 'Cartridge(enum):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(enum):status'	-	'status'
+ 'Customer(enum):name'	-	'name'
+ 'RentalTransaction(enum):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(enum):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(enum):cartridgeID'	-	'cartridge'
+-Relationships:
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  10                  13                  
+Attributes          34                  17                  35                  
+Associations        0                   0                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID : int, address : string, phone : string)
+2. Employee(employeeID : int, name : string, address : string)
+3. Phone(phoneNumber : string, type : string)
+4. EmployeeType(type : string)
+5. Title(titleID : int, name : string, runTime : int, rating : string)
+6. Distributor(distributorID : int, name : string, phone : string)
+7. Rental(storeID : int, titleID : int, rentalRate : float)
+8. Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+9. Customer(customerID : int, name : string, phone : string)
+10. RentalTransaction(rentalID : int, rentalDate : date, totalAmount : float)
+11. RentalTransactionDetail(cartridgeID : int, dueDate : date, returnDate : date)
+
+Enumerations:
+1. EmployeeType("manager", "cashier", "stocker")
+2. PhoneType("office", "home", "beeper")
+
+Relationships:
+1. Employee contain 1..* Phone
+2. Employee associate 1 EmployeeType
+3. Store employ 1..* Employee
+4. Title associate 1 Distributor
+5. Store carry 0..* Title
+6. Store set 1..* Rental
+7. Store stock 1..* Cartridge
+8. Cartridge classify 1 Status
+9. Customer associate 1 Store
+10. Customer rent 1..* RentalTransaction
+11. RentalTransaction associate 1 Customer
+12. RentalTransaction associate 1 Store
+13. RentalTransaction contain 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :int,address :string,phone :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,address :string]
+Class: Phone (class) - Enum Attributes: [], Class Attributes: [phoneNumber :string,type :string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [type :string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID :int,name :string,runTime :int,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :int,name :string,phone :string]
+Class: Rental (class) - Enum Attributes: [], Class Attributes: [storeID :int,titleID :int,rentalRate :float]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,utilizationCount :int,status :string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :int,name :string,phone :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :int,rentalDate :date,totalAmount :float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,dueDate :date,returnDate :date]
+Class: EmployeeType (enum) - Enum Attributes: ["manager", "cashier", "stocker"], Class Attributes: []
+Class: PhoneType (enum) - Enum Attributes: ["office", "home", "beeper"], Class Attributes: []
+Relationships:
+ 1 Employee aggregation 1..* Phone
+ 2 Employee association 1 EmployeeType
+ 3 Store association 1..* Employee
+ 4 Title association 1 Distributor
+ 5 Store association 0..* Title
+ 6 Store association 1..* Rental
+ 7 Store association 1..* Cartridge
+ 8 Cartridge association 1 Status
+ 9 Customer association 1 Store
+ 10 Customer association 1..* RentalTransaction
+ 11 RentalTransaction association 1 Customer
+ 12 RentalTransaction association 1 Store
+ 13 RentalTransaction aggregation 1..* RentalTransactionDetail
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Rental(class)'	-	'Rental(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'Phone(class)'	-	'PhoneNumber(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address '	-	'address'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'Distributor(class):name '	-	'name'
+ 'Rental(class):rentalRate '	-	'rentalDate'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'Title(class):name '	-	'name'
+ 'Title(class):runTime '	-	'runtime'
+ 'Title(class):rating '	-	'rating'
+ 'Phone(class):type '	-	'type'
+ 'RentalTransactionDetail(class):cartridgeID '	-	'cartridge'
+-Relationships:
+ ' 1 Employee aggregation 1..* Phone'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 3 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 4 Title association 1 Distributor'	-	' 1 VideoTitle association 1 Distributor'
+ ' 6 Store association 1..* Rental'	-	' 1 Rental association 1 Store'
+ ' 9 Customer association 1 Store'	-	' 1 Customer association 1 Store'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  10                  13                  
+Attributes          37                  13                  35                  
+Associations        12                  5                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+- Store(storeID: int, address: string, phoneNumber: string)
+- Employee(employeeID: int, name: string, address: string)
+- Phone(phoneNumberID: int, phoneNumber: string, phoneType: string)
+- EmployeeType(typeID: int, typeName: string)
+- Title(titleID: int, name: string, runTime: int, rating: string)
+- Distributor(distributorID: int, name: string, phoneNumber: string)
+- RentalRate(storeID: int, titleID: int, rate: float)
+- Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+- Customer(customerID: int, name: string, phoneNumber: string)
+- RentalTransaction(rentalID: int, rentalDate: date, totalAmount: float)
+- RentalTransactionDetail(cartridgeID: int, dueDate: date, returnDate: date)
+
+Enumerations:
+- EmployeeTypeEnum(manager, cashier, stocker)
+- CartridgeStatusEnum(Available, Rented, Broken)
+
+Relationships:
+- Store employs 1..* Employee
+- Employee has 1..* Phone
+- Employee is classified as 1 EmployeeType
+- EmployeeType classifies 1..* Employee
+- Store carries 0..* Title
+- Title available from 1 Distributor
+- Distributor provides 1..* Title
+- Store sets rental rate for 0..* Title
+- Store stocks 0..* Cartridge
+- Cartridge has 1 CartridgeStatus
+- CartridgeStatus applies to 1..* Cartridge
+- Customer is associated with 1 Store
+- Customer can rent from 0..* Store
+- RentalTransaction is associated with 1 Customer
+- RentalTransaction is associated with 1 Store
+- RentalTransaction is associated with 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phoneNumber:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string]
+Class: Phone (class) - Enum Attributes: [], Class Attributes: [phoneNumberID:int,phoneNumber:string,phoneType:string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [typeID:int,typeName:string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phoneNumber:string]
+Class: RentalRate (class) - Enum Attributes: [], Class Attributes: [storeID:int,titleID:int,rate:float]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phoneNumber:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,returnDate:date]
+Class: EmployeeTypeEnum (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: CartridgeStatusEnum (enum) - Enum Attributes: [Available, Rented, Broken], Class Attributes: []
+Relationships:
+ 1 Store association 1..* Employee
+ 1 Employee association 1..* Phone
+ 1 Employee association 1 classified
+ 1 EmployeeType association 1..* Employee
+ 1 Store association 0..* Title
+ 1 Title association 1 from
+ 1 Distributor association 1..* Title
+ 1 Store association 1 rental
+ 1 Store association 0..* Cartridge
+ 1 Cartridge association 1 CartridgeStatus
+ 1 CartridgeStatus association 1 to
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'CartridgeStatusEnum(enum)'	-	'CartridgeStatus(enum)'
+ 'Phone(class)'	-	'PhoneNumber(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Store(class):phoneNumber'	-	'phoneNumber'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'Distributor(class):name'	-	'name'
+ 'Distributor(class):phoneNumber'	-	'phoneNumber'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'Customer(class):phoneNumber'	-	'phoneNumber'
+ 'Title(class):name'	-	'name'
+ 'Title(class):runTime'	-	'runtime'
+ 'Title(class):rating'	-	'rating'
+ 'CartridgeStatusEnum(enum):Available'	-	'Available'
+ 'CartridgeStatusEnum(enum):Rented'	-	'Rented'
+ 'CartridgeStatusEnum(enum):Broken'	-	'Broken'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Employee association 1..* Phone'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 1 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  11                  13                  
+Attributes          39                  19                  35                  
+Associations        6                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Store(storeID : int, address : string, phoneNumber : string)
+2.Employee(employeeID : int, name : string, address : string)
+3.PhoneNumber(phoneNumberID : int, number : string, type : string)
+4.EmployeeType(name : string)
+5.VideoTitle(titleID : int, name : string, runTime : int, rating : string)
+6.Distributor(distributorID : int, name : string, phoneNumber : string)
+7.RentalTransaction(rentalID : int, rentalDate : date, totalAmount : decimal)
+8.Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+9.Customer(customerID : int, name : string, phoneNumber : string)
+
+Enumerations:
+1.EmployeeTypeName("manager", "cashier", "stocker")
+2.CartridgeStatus("Available", "Rented", "Broken")
+
+Relationships:
+1. 1..* EmployeePhoneNumbers associate 1 Employee
+2. 1 EmployeeType classify 1..* Employees
+3. 1 Store employ 1..* Employees
+4. 1 Distributor provide 1..* VideoTitles
+5. 1 Store carry 0..* VideoTitles
+6. 1 VideoTitle setRentalPrice 1 Store
+7. 1 Store stock 0..* Cartridges
+8. 1..* Cartridges applyStatus 1 CartridgeStatus
+9. 1 Customer enrollAt 1 Store
+10. 1 RentalTransaction associatedWith 1 Customer
+11. 1 RentalTransaction rentedFrom 1 Store
+12. 1..* RentalTransactionDetailLines within 1 RentalTransaction
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :int,address :string,phoneNumber :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,address :string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumberID :int,number :string,type :string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [name :string]
+Class: VideoTitle (class) - Enum Attributes: [], Class Attributes: [titleID :int,name :string,runTime :int,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :int,name :string,phoneNumber :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :int,rentalDate :date,totalAmount :decimal]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,utilizationCount :int,status :string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :int,name :string,phoneNumber :string]
+Class: EmployeeTypeName (enum) - Enum Attributes: ["manager", "cashier", "stocker"], Class Attributes: []
+Class: CartridgeStatus (enum) - Enum Attributes: ["Available", "Rented", "Broken"], Class Attributes: []
+Relationships:
+ 1..* EmployeePhoneNumbers association 1 Employee
+ 2 1 association 1 classify
+ 3 1 association 1 employ
+ 4 1 association 1 provide
+ 5 1 association 1 carry
+ 6 1 association 1 setRentalPrice
+ 7 1 association 1 stock
+ 1..* Cartridges association 1 CartridgeStatus
+ 9 1 association 1 enrollAt
+ 10 1 association 1 associatedWith
+ 11 1 association 1 rentedFrom
+ 1..* RentalTransactionDetailLines association 1 RentalTransaction
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'VideoTitle(class)'	-	'VideoTitle(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'CartridgeStatus(enum)'	-	'CartridgeStatus(enum)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+-Attributes:
+ 'Store(class):address '	-	'address'
+ 'Store(class):phoneNumber '	-	'phoneNumber'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'PhoneNumber(class):number '	-	'number'
+ 'PhoneNumber(class):type '	-	'type'
+ 'VideoTitle(class):name '	-	'name'
+ 'VideoTitle(class):runTime '	-	'runtime'
+ 'VideoTitle(class):rating '	-	'rating'
+ 'Distributor(class):name '	-	'name'
+ 'Distributor(class):phoneNumber '	-	'phoneNumber'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'Customer(class):phoneNumber '	-	'phoneNumber'
+ 'CartridgeStatus(enum):"Available"'	-	'Available'
+ 'RentalTransaction(class):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount '	-	'totalAmount'
+-Relationships:
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          32                  18                  35                  
+Associations        0                   0                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID: string, address: string, phoneNumber: string)
+2. Employee(employeeID: string, name: string, address: string)
+3. Phone(phoneNumber: string, phoneType: string)
+4. EmployeeType(type: string)
+5. Title(titleID: string, name: string, runTime: int, rating: string)
+6. Distributor(distributorID: string, name: string, phoneNumber: string)
+7. Cartridge(cartridgeID: string, utilizationCount: int, status: string)
+8. Customer(customerID: string, name: string, phoneNumber: string)
+9. RentalTransaction(rentalID: string, rentalDate: date, totalAmount: float)
+10. RentalTransactionDetail(cartridgeID: string, dueDate: date, returnDate: date)
+
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneType(office, home, beeper)
+
+Relationships:
+1. Store employs 1..* Employee
+2. Employee has 1..* Phone
+3. Employee is classified as 1 EmployeeType
+4. EmployeeType classifies 1..* Employee
+5. Title is available from 1 Distributor
+6. Distributor provides 1..* Title
+7. Store carries 0..* Title
+8. Title can be carried by many Store
+9. Store sets rental price for Title
+10. Store stocks 0..* Cartridge
+11. Cartridge has 1 Status
+12. Status applies to many Cartridge
+13. Customer is associated with 1 Store
+14. Customer can rent from 0..* Store
+15. RentalTransaction is associated with 1 Customer
+16. RentalTransaction is associated with 1 Store
+17. RentalTransaction is associated with 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:string,address:string,phoneNumber:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:string,name:string,address:string]
+Class: Phone (class) - Enum Attributes: [], Class Attributes: [phoneNumber:string,phoneType:string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [type:string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID:string,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:string,name:string,phoneNumber:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:string,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:string,name:string,phoneNumber:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:string,rentalDate:date,totalAmount:float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:string,dueDate:date,returnDate:date]
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Relationships:
+ 1 Store association 1..* Employee
+ 2 Employee association 1..* Phone
+ 3 Employee association 1 classified
+ 4 EmployeeType association 1..* Employee
+ 5 Title association 1 available
+ 6 Distributor association 1..* Title
+ 7 Store association 0..* Title
+ 8 Title association 1 be
+ 9 Store association 1 rental
+ 10 Store association 0..* Cartridge
+ 11 Cartridge association 1 Status
+ 12 Status association 1 to
+ 13 Customer association 1 associated
+ 14 Customer association 1 rent
+ 15 RentalTransaction association 1 associated
+ 16 RentalTransaction association 1 associated
+ 17 RentalTransaction association 1 associated
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'Phone(class)'	-	'PhoneNumber(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Store(class):phoneNumber'	-	'phoneNumber'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'Distributor(class):name'	-	'name'
+ 'Distributor(class):phoneNumber'	-	'phoneNumber'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'Customer(class):phoneNumber'	-	'phoneNumber'
+ 'Title(class):name'	-	'name'
+ 'Title(class):runTime'	-	'runtime'
+ 'Title(class):rating'	-	'rating'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 2 Employee association 1..* Phone'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 6 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  10                  13                  
+Attributes          34                  16                  35                  
+Associations        6                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. PhoneNumber(phoneNumber: string, type: string)
+4. EmployeeType(type: string)
+5. VideoTitle(titleID: int, name: string, runTime: int, rating: string)
+6. Distributor(distributorID: int, name: string, phone: string)
+7. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+8. Customer(customerID: int, name: string, phone: string)
+9. RentalTransaction(rentalID: int, rentalDate: date, totalAmount: double)
+10. RentalTransactionDetail(cartridgeID: int, dueDate: date, actualReturnDate: date)
+
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. CartridgeStatus(Available, Rented, Broken)
+
+Relationships:
+1. Store employs 1..* Employee
+2. Employee has 1..* PhoneNumber
+3. Employee is classified as 1 EmployeeType
+4. EmployeeType classifies 1..* Employee
+5. VideoTitle is available from 1 Distributor
+6. Distributor provides 1..* VideoTitle
+7. Store carries 0..* VideoTitle
+8. VideoTitle can be carried by 1..* Store
+9. Store sets rental price for 0..* VideoTitle
+10. Store stocks 0..* Cartridge
+11. Cartridge has 1..* RentalTransactionDetail
+12. Cartridge is classified as 1 CartridgeStatus
+13. CartridgeStatus applies to 1..* Cartridge
+14. Customer is associated with 1 Store
+15. Customer can rent 1..* VideoTitle
+16. RentalTransaction is associated with 1 Customer
+17. RentalTransaction is associated with 1 Store
+18. RentalTransaction is associated with 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumber:string,type:string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [type:string]
+Class: VideoTitle (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:double]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,actualReturnDate:date]
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: CartridgeStatus (enum) - Enum Attributes: [Available, Rented, Broken], Class Attributes: []
+Relationships:
+ 1 Store association 1..* Employee
+ 2 Employee association 1..* PhoneNumber
+ 3 Employee association 1 classified
+ 4 EmployeeType association 1..* Employee
+ 5 VideoTitle association 1 available
+ 6 Distributor association 1..* VideoTitle
+ 7 Store association 0..* VideoTitle
+ 8 VideoTitle association 1 be
+ 9 Store association 1 rental
+ 10 Store association 0..* Cartridge
+ 11 Cartridge association 1..* RentalTransactionDetail
+ 12 Cartridge association 1 classified
+ 13 CartridgeStatus association 1 to
+ 14 Customer association 1 associated
+ 15 Customer association 1 rent
+ 16 RentalTransaction association 1 associated
+ 17 RentalTransaction association 1 associated
+ 18 RentalTransaction association 1 associated
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'VideoTitle(class)'	-	'VideoTitle(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'CartridgeStatus(enum)'	-	'CartridgeStatus(enum)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'PhoneNumber(class):type'	-	'type'
+ 'VideoTitle(class):name'	-	'name'
+ 'VideoTitle(class):runTime'	-	'runtime'
+ 'VideoTitle(class):rating'	-	'rating'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'CartridgeStatus(enum):Available'	-	'Available'
+ 'CartridgeStatus(enum):Rented'	-	'Rented'
+ 'CartridgeStatus(enum):Broken'	-	'Broken'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+ 'RentalTransactionDetail(class):actualReturnDate'	-	'actualReturnDate'
+-Relationships:
+ ' 1 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 2 Employee association 1..* PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 6 Distributor association 1..* VideoTitle'	-	' 1 VideoTitle association 1 Distributor'
+ ' 11 Cartridge association 1..* RentalTransactionDetail'	-	' 1 DetailLine association 1 Cartridge'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  13                  
+Attributes          34                  18                  35                  
+Associations        7                   4                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID : int, address : string, phone : string)
+2. Employee(employeeID : int, name : string, address : string)
+3. PhoneNumber(phoneNumberID : int, number : string, type : string)
+4. EmployeeType(typeID : int, typeName : string)
+5. Title(titleID : int, name : string, runTime : int, rating : string)
+6. Distributor(distributorID : int, name : string, phone : string)
+7. Rental(storeID : int, titleID : int, rentalRate : float)
+8. Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+9. Customer(customerID : int, name : string, phone : string)
+10. RentalTransaction(rentalID : int, rentalDate : date, totalAmount : float)
+11. RentalTransactionDetailLine(cartridgeID : int, dueDate : date, returnDate : date)
+
+Enumerations:
+1. EmployeeTypeEnumeration(manager, cashier, stocker)
+2. CartridgeStatusEnumeration(Available, Rented, Broken)
+
+Relationships:
+1. Store employ 1..* Employee
+2. Employee have 1..* PhoneNumber
+3. Employee have 1 EmployeeType
+4. Employee belong 1 Store
+5. EmployeeType classify 1..* Employee
+6. Title providedBy 1 Distributor
+7. Distributor provide 1..* Title
+8. Store carry 0..* Title
+9. Title availableAt 1..* Store
+10. Store setPriceFor 1..* Title
+11. Store stock 0..* Cartridge
+12. Cartridge classifiedBy 1 CartridgeStatusEnumeration
+13. Cartridge statusTypeAppliesTo 1..* CartridgeStatusEnumeration
+14. Customer enrolledAt 1 Store
+15. Customer rent 0..* RentalTransaction
+16. RentalTransaction associatedWith 1 Customer
+17. RentalTransaction rentedFrom 1 Store
+18. RentalTransaction hasRentalTransactionDetailLine 1..* RentalTransactionDetailLine
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :int,address :string,phone :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,address :string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumberID :int,number :string,type :string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [typeID :int,typeName :string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID :int,name :string,runTime :int,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :int,name :string,phone :string]
+Class: Rental (class) - Enum Attributes: [], Class Attributes: [storeID :int,titleID :int,rentalRate :float]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,utilizationCount :int,status :string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :int,name :string,phone :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :int,rentalDate :date,totalAmount :float]
+Class: RentalTransactionDetailLine (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,dueDate :date,returnDate :date]
+Class: Customer enrolledAt 1 Store (enum) - Enum Attributes: [], Class Attributes: []
+Class: Customer rent 0.. (enum) - Enum Attributes: [], Class Attributes: []
+Class: RentalTransaction associatedWith 1 Customer (enum) - Enum Attributes: [], Class Attributes: []
+Class: RentalTransaction rentedFrom 1 Store (enum) - Enum Attributes: [], Class Attributes: []
+Class: RentalTransaction hasRentalTransactionDetailLine 1.. (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Store association 1..* Employee
+ 2 Employee association 1..* PhoneNumber
+ 3 Employee association 1 EmployeeType
+ 4 Employee association 1 Store
+ 5 EmployeeType association 1..* Employee
+ 6 Title association 1 Distributor
+ 7 Distributor association 1..* Title
+ 8 Store association 0..* Title
+ 9 Title association 1..* Store
+ 10 Store association 1..* Title
+ 11 Store association 0..* Cartridge
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Rental(class)'	-	'Rental(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'RentalTransactionDetailLine(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address '	-	'address'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'PhoneNumber(class):number '	-	'number'
+ 'PhoneNumber(class):type '	-	'type'
+ 'Distributor(class):name '	-	'name'
+ 'Rental(class):rentalRate '	-	'rentalDate'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'Title(class):name '	-	'name'
+ 'Title(class):runTime '	-	'runtime'
+ 'Title(class):rating '	-	'rating'
+ 'RentalTransactionDetailLine(class):cartridgeID '	-	'cartridge'
+-Relationships:
+ ' 1 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 2 Employee association 1..* PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 6 Title association 1 Distributor'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             16                  10                  13                  
+Attributes          33                  14                  35                  
+Associations        11                  3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.Store(storeID : int, address : string, phoneNumber : string)
+2.Employee(employeeID : int, name : string, address : string)
+3.PhoneNumber(phoneNumberID : int, number : string, type : string)
+4.EmployeeType(typeID : int, typeName : string)
+5.Title(titleID : int, name : string, runTime : int, rating : string)
+6.Distributor(distributorID : int, name : string, phoneNumber : string)
+7.Cartridge(cartridgeID : int, utilizationCount : int, status : string)
+8.Customer(customerID : int, name : string, phoneNumber : string)
+9.RentalTransaction(rentalID : int, rentalDate : date, totalAmount : float)
+10.RentalTransactionDetail(cartridgeID : int, dueDate : date, returnDate : date)
+
+Relationships:
+1. Store employs 0..* Employee
+2. Employee has 1 EmployeeType
+3. Employee has 1..* PhoneNumber
+4. Employee works at 1 Store
+5. Title is available from 1 Distributor
+6. Distributor provides 1..* Title
+7. Store carries 0..* Title
+8. Title is carried by 1..* Store
+9. Store sets rental price for 0..* Title
+10. Store stocks 0..* Cartridge
+11. Cartridge has 1 status
+12. RentalTransaction is associated with 1 Customer
+13. RentalTransaction is associated with 1 Store
+14. RentalTransaction is associated with 1..* RentalTransactionDetail
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID :int,address :string,phoneNumber :string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID :int,name :string,address :string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumberID :int,number :string,type :string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [typeID :int,typeName :string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID :int,name :string,runTime :int,rating :string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID :int,name :string,phoneNumber :string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,utilizationCount :int,status :string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID :int,name :string,phoneNumber :string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID :int,rentalDate :date,totalAmount :float]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID :int,dueDate :date,returnDate :date]
+Relationships:
+ 1 Store association 0..* Employee
+ 2 Employee association 1 EmployeeType
+ 3 Employee association 1..* PhoneNumber
+ 4 Employee association 1 at
+ 5 Title association 1 available
+ 6 Distributor association 1..* Title
+ 7 Store association 0..* Title
+ 8 Title association 1 carried
+ 9 Store association 1 rental
+ 10 Store association 0..* Cartridge
+ 11 Cartridge association 1 status
+ 12 RentalTransaction association 1 associated
+ 13 RentalTransaction association 1 associated
+ 14 RentalTransaction association 1 associated
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address '	-	'address'
+ 'Store(class):phoneNumber '	-	'phoneNumber'
+ 'Employee(class):name '	-	'name'
+ 'Employee(class):address '	-	'address'
+ 'PhoneNumber(class):number '	-	'number'
+ 'PhoneNumber(class):type '	-	'type'
+ 'Distributor(class):name '	-	'name'
+ 'Distributor(class):phoneNumber '	-	'phoneNumber'
+ 'Cartridge(class):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(class):status '	-	'status'
+ 'Customer(class):name '	-	'name'
+ 'Customer(class):phoneNumber '	-	'phoneNumber'
+ 'Title(class):name '	-	'name'
+ 'Title(class):runTime '	-	'runtime'
+ 'Title(class):rating '	-	'rating'
+ 'RentalTransaction(class):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount '	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID '	-	'cartridge'
+-Relationships:
+ ' 1 Store association 0..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 3 Employee association 1..* PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 6 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  10                  13                  
+Attributes          30                  18                  35                  
+Associations        6                   3                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Classes:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string, phoneNumbers: list<PhoneNumber>, type: EmployeeType)
+3. PhoneNumber(number: string, type: PhoneNumberType)
+4. Title(titleID: int, name: string, runTime: int, rating: string)
+5. Distributor(distributorID: int, name: string, phone: string)
+6. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+7. Customer(customerID: int, name: string, phone: string)
+8. RentalTransaction(rentalID: int, rentalDate: date, totalAmount: double)
+9. RentalTransactionDetail(cartridgeID: int, dueDate: date, returnDate: date)
+
+Relationships:
+- Store employs Employee (1..* Store employs 1..* Employee)
+- Employee has PhoneNumber (1..* Employee has 0..1 PhoneNumber)
+- Employee is of EmployeeType (1 Employee is of 1 EmployeeType)
+- Employee is associated with Store (1 Employee is associated with 1 Store)
+- Distributor provides Title (1 Distributor provides 1..* Title)
+- Store carries Title (1 Store carries 1..* Title)
+- Store sets rental price for Title (1 Store sets rental price for 1 Title)
+- Store stocks Cartridge (1 Store stocks 0..* Cartridge)
+- Cartridge has Status (1 Cartridge has 1 Status)
+- Customer is associated with Store (1 Customer is associated with 1 Store)
+- Customer rents from Store (1 Customer rents from 1 Store)
+- RentalTransaction is associated with Customer (1 RentalTransaction is associated with 1 Customer)
+- RentalTransaction is associated with Store (1 RentalTransaction is associated with 1 Store)
+- RentalTransaction has RentalTransactionDetail (1 RentalTransaction has 1..* RentalTransactionDetail)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string,phoneNumbers:list<PhoneNumber>,type:EmployeeType]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [number:string,type:PhoneNumberType]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:double]
+Class: RentalTransactionDetail (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,returnDate:date]
+Relationships:
+ 1 Store association 1 Employee
+ 1 Employee association 1 PhoneNumber
+ 1 Employee association 1 of
+ 1 Employee association 1 associated
+ 1 Distributor association 1 Title
+ 1 Store association 1 Title
+ 1 Store association 1 rental
+ 1 Store association 1 Cartridge
+ 1 Cartridge association 1 Status
+ 1 Customer association 1 associated
+ 1 Customer association 1 from
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 RentalTransactionDetail
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetail(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'Employee(class):type'	-	'type'
+ 'PhoneNumber(class):number'	-	'number'
+ 'PhoneNumber(class):type'	-	'type'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'Title(class):name'	-	'name'
+ 'Title(class):runTime'	-	'runtime'
+ 'Title(class):rating'	-	'rating'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetail(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1 Store association 1 Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Employee association 1 PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 1 Distributor association 1 Title'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 RentalTransaction association 1 RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          35                  19                  35                  
+Associations        6                   4                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string, phoneNumbers: List<PhoneNumber>, employeeType: string, storeID: int)
+3. VideoTitle(titleID: int, name: string, runTime: int, rating: string, distributorID: int)
+4. Distributor(distributorID: int, name: string, phone: string)
+5. Cartridge(cartridgeID: int, utilizationCount: int, status: string, titleID: int, storeID: int)
+6. Customer(customerID: int, name: string, phone: string, storeID: int)
+7. RentalTransaction(rentalID: int, customerID: int, storeID: int, rentalDate: date, totalAmount: double)
+
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneType(office, home, beeper)
+
+Relationships:
+1..* Employee has 1..* PhoneNumber
+Employee - PhoneNumber
+1 Store employs 1..* Employee
+Store - Employee
+1 Distributor provides 1..* VideoTitle
+Distributor - VideoTitle
+1..* Store carries 1..* VideoTitle
+Store - VideoTitle
+1..* Store sets rental price for 1..* VideoTitle
+Store - VideoTitle
+1..* Store stocks 1..* Cartridge
+Store - Cartridge
+1..* Cartridge has 1 Status
+Cartridge - Status
+1 Customer is associated with 1 Store
+Customer - Store
+1 RentalTransaction is associated with 1 Customer
+RentalTransaction - Customer
+1 RentalTransaction is associated with 1 Store
+RentalTransaction - Store
+1 RentalTransaction has 1..* RentalTransactionDetailLine
+RentalTransaction - RentalTransactionDetailLine
+1 RentalTransactionDetailLine is associated with 1 Cartridge
+RentalTransactionDetailLine - Cartridge
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string,phoneNumbers:List<PhoneNumber>,employeeType:string,storeID:int]
+Class: VideoTitle (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string,distributorID:int]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string,titleID:int,storeID:int]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string,storeID:int]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,customerID:int,storeID:int,rentalDate:date,totalAmount:double]
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Relationships:
+ 1..* Employee association 1..* PhoneNumber
+ 1 Employee association 1 PhoneNumber
+ 1 Store association 1..* Employee
+ 1 Store association 1 Employee
+ 1 Distributor association 1..* VideoTitle
+ 1 Distributor association 1 VideoTitle
+ 1..* Store association 1..* VideoTitle
+ 1 Store association 1 VideoTitle
+ 1..* Store association 1 rental
+ 1..* Store association 1..* Cartridge
+ 1 Store association 1 Cartridge
+ 1..* Cartridge association 1 Status
+ 1 Cartridge association 1 Status
+ 1 Customer association 1 associated
+ 1 Customer association 1 Store
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 Customer
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 Store
+ 1 RentalTransaction association 1..* RentalTransactionDetailLine
+ 1 RentalTransaction association 1 RentalTransactionDetailLine
+ 1 RentalTransactionDetailLine association 1 associated
+ 1 RentalTransactionDetailLine association 1 Cartridge
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'VideoTitle(class)'	-	'VideoTitle(class)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'VideoTitle(class):name'	-	'name'
+ 'VideoTitle(class):runTime'	-	'runtime'
+ 'VideoTitle(class):rating'	-	'rating'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+-Relationships:
+ ' 1 Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1 Distributor association 1..* VideoTitle'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 Customer association 1 Store'	-	' 1 Customer association 1 Store'
+ ' 1 RentalTransaction association 1 Customer'	-	' 1 Rental association 1 Customer'
+ ' 1 RentalTransaction association 1 Store'	-	' 1 Rental association 1 Store'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   13                  
+Attributes          37                  15                  35                  
+Associations        11                  5                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Store(storeID: int, address: string, phone: string)
+2. Employee(employeeID: int, name: string, address: string)
+3. PhoneNumber(phoneNumberID: int, number: string, type: string)
+4. EmployeeType(typeID: int, type: string)
+5. Title(titleID: int, name: string, runTime: int, rating: string)
+6. Distributor(distributorID: int, name: string, phone: string)
+7. Cartridge(cartridgeID: int, utilizationCount: int, status: string)
+8. Customer(customerID: int, name: string, phone: string)
+9. RentalTransaction(rentalID: int, rentalDate: date, totalAmount: double)
+10. RentalTransactionDetailLine(cartridgeID: int, dueDate: date, returnDate: date)
+
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. CartridgeStatus(Available, Rented, Broken)
+
+Relationships:
+1..* Store employs 1..* Employee
+1..* Employee has 1..* PhoneNumber
+Employee has 1 EmployeeType
+1 Employee is classified as 1 EmployeeType
+Store carries 1..* Title
+Title is available from 1 Distributor
+Distributor provides 1..* Title
+Store sets rental price for 1..* Title
+Store stocks 1..* Cartridge
+Cartridge has 1 CartridgeStatus
+1 Customer is associated with 1 Store
+Customer can rent 1..* Cartridge
+RentalTransaction is associated with 1 Customer
+RentalTransaction is associated with 1 Store
+RentalTransaction has 1..* RentalTransactionDetailLine
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Store (class) - Enum Attributes: [], Class Attributes: [storeID:int,address:string,phone:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [employeeID:int,name:string,address:string]
+Class: PhoneNumber (class) - Enum Attributes: [], Class Attributes: [phoneNumberID:int,number:string,type:string]
+Class: EmployeeType (class) - Enum Attributes: [], Class Attributes: [typeID:int,type:string]
+Class: Title (class) - Enum Attributes: [], Class Attributes: [titleID:int,name:string,runTime:int,rating:string]
+Class: Distributor (class) - Enum Attributes: [], Class Attributes: [distributorID:int,name:string,phone:string]
+Class: Cartridge (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,utilizationCount:int,status:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [customerID:int,name:string,phone:string]
+Class: RentalTransaction (class) - Enum Attributes: [], Class Attributes: [rentalID:int,rentalDate:date,totalAmount:double]
+Class: RentalTransactionDetailLine (class) - Enum Attributes: [], Class Attributes: [cartridgeID:int,dueDate:date,returnDate:date]
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: CartridgeStatus (enum) - Enum Attributes: [Available, Rented, Broken], Class Attributes: []
+Relationships:
+ 1..* Store association 1..* Employee
+ 1..* Employee association 1..* PhoneNumber
+ 1 Employee association 1 EmployeeType
+ 1 Employee association 1 classified
+ 1 Store association 1..* Title
+ 1 Title association 1 available
+ 1 Distributor association 1..* Title
+ 1 Store association 1 rental
+ 1 Store association 1..* Cartridge
+ 1 Cartridge association 1 CartridgeStatus
+ 1 Customer association 1 associated
+ 1 Customer association 1 rent
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1 associated
+ 1 RentalTransaction association 1..* RentalTransactionDetailLine
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Store(class)'	-	'Store(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'PhoneNumber(class)'	-	'PhoneNumber(class)'
+ 'EmployeeType(class)'	-	'EmployeeType(enum)'
+ 'Distributor(class)'	-	'Distributor(class)'
+ 'Cartridge(class)'	-	'Cartridge(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'CartridgeStatus(enum)'	-	'CartridgeStatus(enum)'
+ 'Title(class)'	-	'VideoTitle(class)'
+ 'RentalTransaction(class)'	-	'Rental(class)'
+ 'RentalTransactionDetailLine(class)'	-	'DetailLine(class)'
+-Attributes:
+ 'Store(class):address'	-	'address'
+ 'Employee(class):name'	-	'name'
+ 'Employee(class):address'	-	'address'
+ 'PhoneNumber(class):number'	-	'number'
+ 'PhoneNumber(class):type'	-	'type'
+ 'Distributor(class):name'	-	'name'
+ 'Cartridge(class):utilizationCount'	-	'utilizationCount'
+ 'Cartridge(class):status'	-	'status'
+ 'Customer(class):name'	-	'name'
+ 'CartridgeStatus(enum):Available'	-	'Available'
+ 'CartridgeStatus(enum):Rented'	-	'Rented'
+ 'CartridgeStatus(enum):Broken'	-	'Broken'
+ 'Title(class):name'	-	'name'
+ 'Title(class):runTime'	-	'runtime'
+ 'Title(class):rating'	-	'rating'
+ 'RentalTransaction(class):rentalDate'	-	'rentalDate'
+ 'RentalTransaction(class):totalAmount'	-	'totalAmount'
+ 'RentalTransactionDetailLine(class):cartridgeID'	-	'cartridge'
+-Relationships:
+ ' 1..* Store association 1..* Employee'	-	' 1 Store aggregation * Employee'
+ ' 1..* Employee association 1..* PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 1 Distributor association 1..* Title'	-	' 1 VideoTitle association 1 Distributor'
+ ' 1 RentalTransaction association 1..* RentalTransactionDetailLine'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             12                  11                  13                  
+Attributes          36                  18                  35                  
+Associations        8                   4                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------SchlockBuster:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. EmployeeType(manager, cashier, stocker)
+2. PhoneNumberType(office, home, beeper)
+
+Class:
+1. Store(storeID : int, address : string, phone : string)
+2. Employee(employeeID : int, name : string, address : string, phoneNumbers : list<PhoneNumber>, type : EmployeeType, storeID : int)
+3. PhoneNumber(number : string, type : PhoneNumberType)
+4. Title(titleID : int, name : string, runTime : int, rating : string, distributorID : int)
+5. Distributor(distributorID : int, name : string, phone : string)
+6. Cartridge(cartridgeID : int, utilizationCount : int, status : string, titleID : int, storeID : int)
+7. Customer(customerID : int, name : string, phone : string, storeID : int)
+8. RentalTransaction(rentalID : int, customerID : int, storeID : int, rentalDate : date, totalAmount : double)
+9. RentalTransactionDetail(cartidgeID : int, dueDate : date, returnDate : date)
+
+Relationships:
+1. Employee - PhoneNumber (1..* - 1..1)
+2. Employee - EmployeeType (1 - 1..*)
+3. Employee - Store (1 - 1)
+4. Title - Distributor (1 - 1)
+5. Title - Store (0..* - 0..*)
+6. Store - Title (0..* - 0..*)
+7. Store - Cartridge (0..* - 0..*)
+8. Cartridge - CartridgeStatus (1 - 1..*)
+9. Cartridge - Title (1 - 1)
+10. Customer - Store (1 - 1)
+11. RentalTransaction - Customer (1 - 1)
+12. RentalTransaction - Store (1 - 1)
+13. RentalTransaction - RentalTransactionDetail (1..* - 1)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: EmployeeType (enum) - Enum Attributes: [manager, cashier, stocker], Class Attributes: []
+Class: PhoneNumberType (enum) - Enum Attributes: [office, home, beeper], Class Attributes: []
+Class: Store (enum) - Enum Attributes: [storeID , address , phone ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeID , name , address , phoneNumbers , type , storeID ], Class Attributes: []
+Class: PhoneNumber (enum) - Enum Attributes: [number , type ], Class Attributes: []
+Class: Title (enum) - Enum Attributes: [titleID , name , runTime , rating , distributorID ], Class Attributes: []
+Class: Distributor (enum) - Enum Attributes: [distributorID , name , phone ], Class Attributes: []
+Class: Cartridge (enum) - Enum Attributes: [cartridgeID , utilizationCount , status , titleID , storeID ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerID , name , phone , storeID ], Class Attributes: []
+Class: RentalTransaction (enum) - Enum Attributes: [rentalID , customerID , storeID , rentalDate , totalAmount ], Class Attributes: []
+Class: RentalTransactionDetail (enum) - Enum Attributes: [cartidgeID , dueDate , returnDate ], Class Attributes: []
+Relationships:
+ 1 Employee association 1 PhoneNumber
+ 2 Employee association 1 EmployeeType
+ 3 Employee association 1 Store
+ 4 Title association 1 Distributor
+ 5 Title association 1 Store
+ 6 Store association 1 Title
+ 7 Store association 1 Cartridge
+ 8 Cartridge association 1 CartridgeStatus
+ 9 Cartridge association 1 Title
+ 10 Customer association 1 Store
+ 11 RentalTransaction association 1 Customer
+ 12 RentalTransaction association 1 Store
+ 13 RentalTransaction association 1 RentalTransactionDetail
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'EmployeeType(enum)'	-	'EmployeeType(enum)'
+ 'Store(enum)'	-	'Store(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'PhoneNumber(enum)'	-	'PhoneNumber(class)'
+ 'Distributor(enum)'	-	'Distributor(class)'
+ 'Cartridge(enum)'	-	'Cartridge(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Title(enum)'	-	'VideoTitle(class)'
+ 'RentalTransaction(enum)'	-	'Rental(class)'
+ 'RentalTransactionDetail(enum)'	-	'DetailLine(class)'
+-Attributes:
+ 'EmployeeType(enum):manager'	-	'manager'
+ 'EmployeeType(enum):cashier'	-	'cashier'
+ 'EmployeeType(enum):stocker'	-	'stocker'
+ 'Store(enum):address '	-	'address'
+ 'Employee(enum):name '	-	'name'
+ 'Employee(enum):address '	-	'address'
+ 'Employee(enum):type '	-	'type'
+ 'PhoneNumber(enum):number '	-	'number'
+ 'PhoneNumber(enum):type '	-	'type'
+ 'Distributor(enum):name '	-	'name'
+ 'Cartridge(enum):utilizationCount '	-	'utilizationCount'
+ 'Cartridge(enum):status '	-	'status'
+ 'Customer(enum):name '	-	'name'
+ 'Title(enum):name '	-	'name'
+ 'Title(enum):runTime '	-	'runtime'
+ 'Title(enum):rating '	-	'rating'
+ 'RentalTransaction(enum):rentalDate '	-	'rentalDate'
+ 'RentalTransaction(enum):totalAmount '	-	'totalAmount'
+-Relationships:
+ ' 1 Employee association 1 PhoneNumber'	-	' 1 Employee aggregation * PhoneNumber'
+ ' 3 Employee association 1 Store'	-	' 1 Store aggregation * Employee'
+ ' 4 Title association 1 Distributor'	-	' 1 VideoTitle association 1 Distributor'
+ ' 9 Cartridge association 1 Title'	-	' 1 Cartridge association 1 VideoTitle'
+ ' 10 Customer association 1 Store'	-	' 1 Customer association 1 Store'
+ ' 11 RentalTransaction association 1 Customer'	-	' 1 Rental association 1 Customer'
+ ' 12 RentalTransaction association 1 Store'	-	' 1 Rental association 1 Store'
+ ' 13 RentalTransaction association 1 RentalTransactionDetail'	-	' 1 Rental aggregation * DetailLine'
+--------------------------------------------------------------------------------
+SchlockBuster, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  13                  
+Attributes          42                  18                  35                  
+Associations        12                  8                   17                  
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+SchlockBuster, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.859          0.773          0.814          0.789
+Attributes          0.489          0.493          0.491          0.492
+Associations        0.523          0.203          0.292          0.231
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

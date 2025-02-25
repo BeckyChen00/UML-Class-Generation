@@ -1,0 +1,2771 @@
+------------------------------------------------------------
+---------------------1/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. Contract(lender_member: string, lending_member: string, item: string, lending_cost: int, contract_status: enum(Status))
+4. Administrator
+
+Enumerations:
+1. Status(Active, Inactive, Pending, Denied)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+Item(category: string, name: string, description: string, registration_date: date)
+Contract(lender_member: string, lending_member: string, item: string, lending_cost: int, contract_status: enum(Status))
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + ContractStatus(Active, Inactive, Pending, Denied)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(lenderMember: String, lendingMember: String, item: String, lendingCost: int, contractStatus: Enum[ContractStatus])
+   + Administrator()
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [0..*] Member associate [1] Contract because Members can have multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [1] Administrator associate [0..*] Item because Administrator tracks item listings.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Members own multiple items.
+   + [1] Member contain [0..*] Contract because Members have multiple lending contracts.
+   + [1] Administrator contain [0..*] Member because Administrator manages member records.
+   + [1] Administrator contain [0..*] Item because Administrator tracks item listings.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+**Intermediate reasoning results:**
+   
+   + `Member` extends `User` because a `Member` is a kind of `User`, as they share common attributes like `username`, `password`, `email`, and `phoneNumber`.
+   + `Item` does not extend `Member` because an `Item` is not a kind of `Member`, but rather a separate entity that a `Member` can interact with.
+   + `Contract` does not extend `Item` because a `Contract` is not a type of `Item`, but rather a separate entity that connects `Member`s for lending purposes.
+   + `Administrator` does not extend `Member` because an `Administrator` is not a kind of `Member`, but rather a separate role with different functionalities.
+   
+```
+Final Inheritance Relationships:
+   + Member extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + ContractStatus(Active, Inactive, Pending, Denied)
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member extends User(memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(lenderMember: Member, lendingMember: Member, item: Item, lendingCost: int, contractStatus: Enum[ContractStatus])
+   + Administrator()
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [0..*] Member associate [1] Contract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] Contract
+   + [1] Administrator contain [0..*] Member
+   + [1] Administrator contain [0..*] Item
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: ContractStatus (enum) - Enum Attributes: [Active, Inactive, Pending, Denied], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [lenderMember:Member,lendingMember:Member,item:Item,lendingCost:int,contractStatus:Enum[ContractStatus]]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Member association 0..* Item
+ 0..* Member association 1 Contract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 0..* Member association 1 Contract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          17                  5                   15                  
+Associations        8                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+# Enumerations:
+1. UserRoles(Member, SystemAdministrator)
+
+# Classes:
+1. Member(userName: string, password: string, email: string, phoneNumber: string, memberID: int, dateOfCreation: date)
+2. Item(category: string, name: string, description: string, dayOfRegistration: date)
+3. LendingContract(lender: Member, borrower: Member, lendingCost: int, contractStatus: string)
+4. Administrator
+5. Notification(message: string)
+6. ItemRemovalRequest(itemID: int)
+
+# Attributes:
+- Member(userName: string, password: string, email: string, phoneNumber: string, memberID: int, dateOfCreation: date)
+- Item(category: string, name: string, description: string, dayOfRegistration: date)
+- LendingContract(lender: Member, borrower: Member, lendingCost: int, contractStatus: string)
+- Administrator
+- Notification(message: string)
+- ItemRemovalRequest(itemID: int)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRoles(Member, SystemAdministrator)
+Classes:
+   + Member(userName: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(lender: Member, borrower: Member, lendingCost: int, contractStatus: String)
+   + Administrator()
+   + Notification(message: String)
+   + ItemRemovalRequest(itemID: int)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items from other members.
+   + [1] Member associate [0..*] LendingContract because Member can initiate lending requests.
+   + [1] Member associate [0..*] Notification because Members need to receive notifications for various system activities.
+   + [1] Member associate [0..*] ItemRemovalRequest because Members can request to remove specific items from the system.
+
+   + [1] Administrator associate [0..*] Item because Administrator can view item details and manage item listings.
+   + [1] Administrator associate [0..*] Member because Administrator manages membership records.
+   + [1] Administrator associate [0..*] LendingContract because Administrator triggers lending contract executions.
+   + [1] Administrator associate [0..*] Notification because Administrator needs to send notifications to members for system updates.
+
+Final Composition Relationships:
+   + [1] Member contain [1..*] Item because Member can own multiple items.
+   + [1] Member contain [0..*] Notification because Members can receive multiple notifications.
+   + [1] Member contain [0..*] ItemRemovalRequest because Members can initiate multiple item removal requests.
+
+   + [1] Administrator contain [0..*] Notification because Administrator needs to manage and send multiple notifications.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermidiate reasoning results:
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because an Item is not a type of Member, delete this inheritance.
+   + LendingContract does not extend Member because a LendingContract is not a type of Member, delete this inheritance.
+   + Administrator does not extend Member because an Administrator is not a type of Member, delete this inheritance.
+   + Notification does not extend Member because a Notification is not a type of Member, delete this inheritance.
+   + ItemRemovalRequest does not extend Member because an ItemRemovalRequest is not a type of Member, delete this inheritance.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRoles(Member, SystemAdministrator)
+
+Classes:
+   + Member(userName: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(lender: Member, borrower: Member, lendingCost: int, contractStatus: String)
+   + Administrator()
+   + Notification(message: String)
+   + ItemRemovalRequest(itemID: int)
+   
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Member associate [0..*] Notification
+   + [1] Member associate [0..*] ItemRemovalRequest
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] LendingContract
+   + [1] Administrator associate [0..*] Notification
+
+# Final Composition Relationships:
+   + [1] Member contain [1..*] Item
+   + [1] Member contain [0..*] Notification
+   + [1] Member contain [0..*] ItemRemovalRequest
+   + [1] Administrator contain [0..*] Notification
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRoles (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [userName:String,password:String,email:String,phoneNumber:String,memberID:int,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [lender:Member,borrower:Member,lendingCost:int,contractStatus:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Notification (class) - Enum Attributes: [], Class Attributes: [message:String]
+Class: ItemRemovalRequest (class) - Enum Attributes: [], Class Attributes: [itemID:int]
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Member association 0..* Notification
+ 1 Member association 0..* ItemRemovalRequest
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* LendingContract
+ 1 Administrator association 0..* Notification
+ 1 Member association 1..* Item
+ 1 Member association 0..* Notification
+ 1 Member association 0..* ItemRemovalRequest
+ 1 Administrator association 0..* Notification
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Notification(class)' - 'Notification(class)'
+-Attributes:
+ 'Member(class):userName' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberID' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* Notification' - ' 1 Member association * Notification'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   8                   
+Attributes          18                  8                   15                  
+Associations        12                  3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Enumerations:
+- UserRole(Member, System Administrator)
+
+Classes:
+- Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+- Item(category: string, name: string, description: string, day_of_registration: date)
+- LendingContract
+- Notification
+
+Attributes:
+- Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+- Item(category: string, name: string, description: string, day_of_registration: date)
+- LendingContract
+- Notification
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract()
+   + Notification()
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items from other members.
+   + [1] Member associate [0..*] LendingContract because Member can initiate lending requests and view existing contract details.
+   + [1] Administrator associate [0..*] Member because Administrator manages membership records and can remove members from the system.
+   + [1] Administrator associate [0..*] Item because Administrator tracks item listings and can remove items from the system.
+   + [1] System associate [0..*] Notification because System needs to send notifications to members in various situations.
+
+Final Composition Relationships:
+   + [1] System contain [0..*] Member because System controls user authentication and member profiles.
+   + [1] Member contain [0..*] Item because Members can register their possessions to the system.
+   + [1] Member contain [0..*] LendingContract because Members can have multiple lending contracts.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermdiate reasoning results
+   + No inheritance relationship found between any classes.
+
+```
+Final Inheritance Relationships:
+   No inheritance relationship found.
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract()
+   + Notification()
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+   + [1] System associate [0..*] Notification
+   + [1] System contain [0..*] Member
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] LendingContract
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberId:String,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: []
+Class: Notification (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 System association 0..* Notification
+ 1 System association 0..* Member
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Notification(class)' - 'Notification(class)'
+-Attributes:
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          12                  8                   15                  
+Associations        4                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Enumerations:
+- UserRole(Member, System Administrator)
+
+Classes:
+- Member(userName: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date, ownedItems: List<Item>)
+- SystemAdministrator(userName: String, password: String)
+- Item(category: String, name: String, description: String, dayOfRegistration: Date, lendingCost: Integer)
+- Contract(lender: Member, borrower: Member, item: Item, lendingCost: Integer)
+
+Attributes:
+- Member(userName: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date, ownedItems: List<Item>)
+- SystemAdministrator(userName: String, password: String)
+- Item(category: String, name: String, description: String, dayOfRegistration: Date, lendingCost: Integer)
+- Contract(lender: Member, borrower: Member, item: Item, lendingCost: Integer)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+Classes:
+   + Member(userName: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date, ownedItems: List<Item>)
+   + SystemAdministrator(userName: String, password: String)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date, lendingCost: Integer)
+   + Contract(lender: Member, borrower: Member, item: Item, lendingCost: Integer)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [1] Member associate [0..*] Contract because Member can create lending contracts.
+   + [1] SystemAdministrator associate [0..*] Member because SystemAdministrator manages member details.
+   + [1] SystemAdministrator associate [0..*] Item because SystemAdministrator manages item listings.
+   + [1] Item associate [0..1] Member because an item can be registered by only one member.
+   + [1] Contract associate [1] Member because a contract is created by one member.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because a member can have multiple items.
+   + [1] Member contain [0..*] Contract because a member can have multiple contracts.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+## Intermediate reasoning results
+   + No inheritances found.
+
+```
+Final Inheritance Relationships:
+   No inheritances found.
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+
+Classes:
+   + Member(userName: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date, ownedItems: List<Item>)
+   + SystemAdministrator(userName: String, password: String)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date, lendingCost: Integer)
+   + Contract(lender: Member, borrower: Member, item: Item, lendingCost: Integer)
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] Contract
+   + [1] SystemAdministrator associate [0..*] Member
+   + [1] SystemAdministrator associate [0..*] Item
+   + [1] Item associate [0..1] Member
+   + [1] Contract associate [1] Member
+
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] Contract
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [userName:String,password:String,email:String,phoneNumber:String,memberID:String,dateOfCreation:Date,ownedItems:List<Item>]
+Class: SystemAdministrator (class) - Enum Attributes: [], Class Attributes: [userName:String,password:String]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date,lendingCost:Integer]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [lender:Member,borrower:Member,item:Item,lendingCost:Integer]
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 SystemAdministrator association 0..* Member
+ 1 SystemAdministrator association 0..* Item
+ 1 Item association 0..1 Member
+ 1 Contract association 1 Member
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'SystemAdministrator(class)' - 'Administrator(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'Member(class):userName' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberID' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+ 'SystemAdministrator(class):userName' - 'username'
+ 'SystemAdministrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+ ' 1 Contract association 1 Member' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          20                  10                  15                  
+Associations        8                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+2. Item(category: string, name: string, description: string, day_registered: date)
+3. LendingContract(item_id: int, lender_id: int, borrower_id: int, lending_cost: int, contract_status: enum)
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, Administrator)
+2. ContractStatus(Pending, Completed, Denied, Flagged)
+
+Attributes:
+- Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+- Item(category: string, name: string, description: string, day_registered: date)
+- LendingContract(item_id: int, lender_id: int, borrower_id: int, lending_cost: int, contract_status: enum)
+- Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+   + ContractStatus(Pending, Completed, Denied, Flagged)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, dayRegistered: Date)
+   + LendingContract(itemId: int, lenderId: int, borrowerId: int, lendingCost: int, contractStatus: ContractStatus)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Intermediate reasoning results:
+   + [1] Member associate [0..*] Item because a Member can have multiple Items listed.
+   + [1] Member associate [0..*] LendingContract because a Member can have multiple lending contracts.
+   + [0..*] Item contain [1] Member because an Item belongs to a specific Member.
+   + [1] LendingContract associate [1] Member because a LendingContract is between two Members.
+   + [1] Administrator contain [0..*] Member because an Administrator manages multiple Members.
+   + [0..*] LendingContract associate [1] Item because a LendingContract is related to a specific Item.
+   + [1] Administrator associate [0..*] LendingContract because an Administrator manages multiple lending contracts.
+
+Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] LendingContract associate [1] Member
+   + [1] Administrator associate [0..*] LendingContract
+
+Final Composition Relationships:
+   + [0..*] Item contain [1] Member
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermdiate reasoning results:
+   + Member extends User because a Member is-a-kind-of User.
+   + Item does not extend Member because Item is not a kind of Member.
+   + LendingContract does not extend Member because LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is-a-kind-of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+
+Classes:
+   + User(username: String, password: String)
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, dayRegistered: Date)
+   + LendingContract(itemId: int, lenderId: int, borrowerId: int, lendingCost: int, contractStatus: ContractStatus)
+   + Administrator(username: String, password: String)
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] LendingContract associate [1] Member
+   + [1] Administrator associate [0..*] LendingContract
+# Final Composition Relationships:
+   + [0..*] Item contain [1] Member
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberId:int,dateCreated:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayRegistered:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [itemId:int,lenderId:int,borrowerId:int,lendingCost:int,contractStatus:ContractStatus]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 LendingContract association 1 Member
+ 1 Administrator association 0..* LendingContract
+ 0..* Item association 1 Member
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Item(class):name' - 'name'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 LendingContract association 1 Member' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          19                  10                  15                  
+Associations        5                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: uniqueID, date_created: date)
+2. Item(category: string, name: string, description: string, day_registered: date)
+3. LendingContract(contract_id: uniqueID, lending_cost: integer, status: string)
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: uniqueID, date_created: date)
+Item(category: string, name: string, description: string, day_registered: date)
+LendingContract(contract_id: uniqueID, lending_cost: integer, status: string)
+Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: uniqueID, dateCreated: Date)
+   + Item(category: String, name: String, description: String, dayRegistered: Date)
+   + LendingContract(contractId: uniqueID, lendingCost: int, status: String)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Intermediate reasoning results:
+   + [1..*] Member associate [0..*] Item because a member can have multiple items and an item can be associated with multiple members.
+   + [1] Member contain [0..*] LendingContract because a member can have multiple lending contracts.
+   + [1] Member associate [0..*] LendingContract because a member can be associated with multiple lending contracts.
+   + [1] Item associate [0..*] LendingContract because an item can be associated with multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because an administrator can manage multiple members.
+   + [1] Administrator associate [0..*] Item because an administrator can track multiple items.
+   + [1] Administrator associate [0..*] LendingContract because an administrator can oversee multiple lending contracts.
+
+Final Association Relationships:
+   + [1..*] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Item associate [0..*] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] LendingContract
+
+Final Composition Relationships:
+   None
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermediate reasoning results:
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because Item is not a kind of Member.
+   + LendingContract does not extend Member because LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is a kind of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, Administrator)
+
+Classes:
+   + User(username: String, password: String)
+   + Member extends User(email: String, phoneNumber: String, memberId: uniqueID, dateCreated: Date)
+   + Item(category: String, name: String, description: String, dayRegistered: Date)
+   + LendingContract(contractId: uniqueID, lendingCost: int, status: String)
+   + Administrator extends User
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+# Final Association Relationships:
+   + [1..*] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Item associate [0..*] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] LendingContract
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayRegistered:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:uniqueID,lendingCost:int,status:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1..* Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Item association 0..* LendingContract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* LendingContract
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1..* Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Item association 0..* LendingContract' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          11                  3                   15                  
+Associations        6                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_ID: int, date_of_creation: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(item: Item, lender: Member, borrower: Member, lending_cost: int)
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_ID: int, date_of_creation: date)
+Item(category: string, name: string, description: string, registration_date: date)
+LendingContract(item: Item, lender: Member, borrower: Member, lending_cost: int)
+Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(lendingCost: int)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Intermediate reasoning results:
+   + [1..*] Member associate [0..*] Item because a Member can have multiple Items and an Item can belong to multiple Members.
+   + [1] Member associate [0..*] LendingContract because a Member can have multiple LendingContracts.
+   + [1] Item associate [1] LendingContract because an Item is involved in one LendingContract.
+   + [1] Administrator contain [0..*] Member because an Administrator manages multiple Members.
+   + [1] Administrator contain [0..*] Item because an Administrator tracks multiple Items.
+   + [1] Administrator contain [0..*] LendingContract because an Administrator oversees multiple LendingContracts.
+
+Final Association Relationships:
+   + [1..*] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Item associate [1] LendingContract
+
+Final Composition Relationships:
+   + [1] Administrator contain [0..*] Member
+   + [1] Administrator contain [0..*] Item
+   + [1] Administrator contain [0..*] LendingContract
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermdiate reasoning results:
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because an Item is not a kind of Member.
+   + LendingContract does not extend Member because a LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is a kind of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+
+Classes:
+   + User(username: String, password: String)
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(lendingCost: int)
+   + Administrator(username: String, password: String)
+
+Relationships:
+# Final Association Relationships:
+   + [1..*] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Item associate [1] LendingContract
+   + [1] Administrator contain [0..*] Member
+   + [1] Administrator contain [0..*] Item
+   + [1] Administrator contain [0..*] LendingContract
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberID:int,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [lendingCost:int]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Relationships:
+ 1..* Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Item association 1 LendingContract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* LendingContract
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberID' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' 1..* Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Item association 1 LendingContract' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          17                  11                  15                  
+Associations        6                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Enumerations:
+- UserRoles(Member, System Administrator)
+
+Classes:
+- Member
+- Item
+- LendingContract
+- Administrator
+
+Attributes:
+- Member(name: string, password: string, email: string, phone_number: string, member_id: unique identifier, date_created: date)
+- Item(category: string, name: string, description: string, registration_date: date)
+- LendingContract(lender: Member, borrower: Member, item: Item, lending_cost: integer, contract_status: string)
+- Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRoles(Member, SystemAdministrator)
+Classes:
+   + Member(name: String, password: String, email: String, phoneNumber: String, memberId: UUID, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(lender: Member, borrower: Member, item: Item, lendingCost: Integer, contractStatus: String)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Intermediate reasoning results:
+   + [1] Member associate [1..*] Item because a Member can have multiple items listed.
+   + [1] Member associate [0..*] LendingContract because a Member can have multiple lending contracts.
+   + [1] Member associate [1] Administrator because a Member can have only one Administrator role.
+   + [1] Administrator associate [0..*] Member because an Administrator can manage multiple members.
+   + [1] Administrator associate [0..*] Item because an Administrator can track multiple items.
+
+Final Association Relationships:
+   + [1] Member associate [1..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Member associate [1] Administrator
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermediate reasoning results:
+   + Item extends Object because all classes in Java extend the Object class by default.
+   + Member extends Object because all classes in Java extend the Object class by default.
+   + LendingContract does not extend Object because it is not a default class in Java, delete this inheritance.
+   + Administrator extends Object because all classes in Java extend the Object class by default.
+
+```
+Final Inheritance Relationships:
+   + Item extends Object
+   + Member extends Object
+   + Administrator extends Object
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRoles(Member, SystemAdministrator)
+
+Classes:
+   + Member(name: String, password: String, email: String, phoneNumber: String, memberId: UUID, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(lender: Member, borrower: Member, item: Item, lendingCost: Integer, contractStatus: String)
+   + Administrator(username: String, password: String)
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [1..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Member associate [1] Administrator
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRoles (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [name:String,password:String,email:String,phoneNumber:String,memberId:UUID,dateCreated:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [lender:Member,borrower:Member,item:Item,lendingCost:Integer,contractStatus:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Relationships:
+ 1 Member association 1..* Item
+ 1 Member association 0..* LendingContract
+ 1 Member association 1 Administrator
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Item(class):name' - 'name'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 1..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          19                  7                   15                  
+Associations        5                   2                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+2. Item(category: string, name: string, description: string, day_of_registration: date)
+3. LendingContract(contract_id: string, lending_cost: integer, status: string)
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+- Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_of_creation: date)
+- Item(category: string, name: string, description: string, day_of_registration: date)
+- LendingContract(contract_id: string, lending_cost: integer, status: string)
+- Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(contractId: String, lendingCost: Integer, status: String)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Member associate [0..*] Notification because Members receive notifications.
+   + [1] Item associate [0..*] LendingContract because Items can be involved in multiple lending contracts.
+   + [1] Administrator associate [0..*] Item because Administrator manages item listings.
+
+Final Composition Relationships:
+   + [1] Member contain [1..*] Notification because Member owns notifications.
+   + [1] Item contain [1] LendingContract because Item is related to a specific lending contract.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermdiate reasoning results:
+   + No inheritances found.
+
+```
+Final Inheritance Relationships:
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(contractId: String, lendingCost: Integer, status: String)
+   + Administrator(username: String, password: String)
+   + Notification(message: String)
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Member associate [0..*] Notification because Members receive notifications.
+   + [1] Item associate [0..*] LendingContract because Items can be involved in multiple lending contracts.
+   + [1] Administrator associate [0..*] Item because Administrator manages item listings.
+   + [1] Member associate [1..*] Notification because Member owns notifications.
+   + [1] Item associate [1] LendingContract because Item is related to a specific lending contract.
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberId:String,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:String,lendingCost:Integer,status:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Notification (class) - Enum Attributes: [], Class Attributes: [message:String]
+Relationships:
+ 1 Member association 0..* Item
+ 0..* Member association 1 LendingContract
+ 1 Member association 0..* Notification
+ 1 Item association 0..* LendingContract
+ 1 Administrator association 0..* Item
+ 1 Member association 1..* Notification
+ 1 Item association 1 LendingContract
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Notification(class)' - 'Notification(class)'
+-Attributes:
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 0..* Member association 1 LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* Notification' - ' 1 Member association * Notification'
+ ' 1 Item association 0..* LendingContract' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          18                  10                  15                  
+Associations        7                   4                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: unique, date_created: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(contract_id: unique, lending_cost: int)
+4. Administrator(username: string, password: string, email: string, phone_number: string, admin_id: unique)
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+- Member(username: string, password: string, email: string, phone_number: string, member_id: unique, date_created: date)
+- Item(category: string, name: string, description: string, registration_date: date)
+- LendingContract(contract_id: unique, lending_cost: int)
+- Administrator(username: string, password: string, email: string, phone_number: string, admin_id: unique)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: unique, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: unique, lendingCost: int)
+   + Administrator(username: String, password: String, email: String, phoneNumber: String, adminId: unique)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [0..*] Administrator associate [1] LendingContract because Administrator can view and trigger lending contracts.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member owns multiple items.
+   + [1] Member contain [0..*] LendingContract because Member can have multiple lending contracts.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermidiate reasoning results
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because an Item is not a kind of Member.
+   + LendingContract does not extend Member because a LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is a kind of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member(memberId: unique, dateCreated: Date) 
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: unique, lendingCost: int)
+   + Administrator(adminId: unique)
+   
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [0..*] Member associate [1] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [0..*] Administrator associate [1] LendingContract
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] LendingContract
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [memberId:unique,dateCreated:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:unique,lendingCost:int]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [adminId:unique]
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 0..* Member association 1 LendingContract
+ 1 Administrator association 0..* Member
+ 0..* Administrator association 1 LendingContract
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 0..* Member association 1 LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          15                  6                   15                  
+Associations        6                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member
+2. Item
+3. Contract
+4. SystemAdministrator
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+- Member(username: string, password: string, email: string, phoneNumber: string, memberID: int, dateOfCreation: date)
+- Item(category: string, name: string, description: string, dayOfRegistration: date)
+- Contract(creditTransfer: int, lendingCost: int, contractStatus: string)
+- SystemAdministrator(username: string, password: string, adminID: int)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + Contract(creditTransfer: int, lendingCost: int, contractStatus: String)
+   + SystemAdministrator(username: String, password: String, adminID: int)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions to the system and earn credits for every listing.
+   + [1] Member associate [0..*] Contract because Member can lend items from other members using credits and are responsible for returning the items within the agreed time.
+   + [1] Item associate [0..1] Member because Item is registered to a specific Member's account.
+   + [1] Contract associate [1..*] Member because Contract involves both the borrowing and lending Member.
+   + [1] SystemAdministrator associate [0..*] Member because Administrator can view Member details and remove members from the system.
+
+Final Composition Relationships:
+   + [1] SystemAdministrator contain [0..*] Member because Administrator manages membership records.
+   + [1] SystemAdministrator contain [0..*] Item because Administrator tracks item listings.
+   + [1] SystemAdministrator contain [0..*] Contract because Administrator oversees lending contracts.
+   + [1] Member contain [0..*] Item because Member can register multiple possessions.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+**Intermediate reasoning results:**
+  
++ `Member` does not extend `Item` because a Member is not a kind of Item.
++ `SystemAdministrator` does not extend `Member` because a SystemAdministrator is not a kind of Member.
+
+```
+Final Inheritance Relationships:
+   No valid inheritance relationships found.
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + Contract(creditTransfer: int, lendingCost: int, contractStatus: String)
+   + SystemAdministrator(username: String, password: String, adminID: int)
+   
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] Contract
+   + [1] Item associate [0..1] Member
+   + [1] Contract associate [1..*] Member
+   + [1] SystemAdministrator associate [0..*] Member
+
+# Final Composition Relationships:
+   + [1] SystemAdministrator contain [0..*] Member
+   + [1] SystemAdministrator contain [0..*] Item
+   + [1] SystemAdministrator contain [0..*] Contract
+   + [1] Member contain [0..*] Item
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberID:int,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [creditTransfer:int,lendingCost:int,contractStatus:String]
+Class: SystemAdministrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,adminID:int]
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Item association 0..1 Member
+ 1 Contract association 1..* Member
+ 1 SystemAdministrator association 0..* Member
+ 1 SystemAdministrator association 0..* Member
+ 1 SystemAdministrator association 0..* Item
+ 1 SystemAdministrator association 0..* Contract
+ 1 Member association 0..* Item
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+ 'SystemAdministrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberID' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+ 'SystemAdministrator(class):username' - 'username'
+ 'SystemAdministrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+ ' 1 Contract association 1..* Member' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   8                   
+Attributes          18                  10                  15                  
+Associations        9                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(item: Item, lender: Member, borrower: Member, lending_cost: int, contract_status: enum(Active, Completed, Denied))
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, Administrator)
+2. ContractStatus(Active, Completed, Denied)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+Item(category: string, name: string, description: string, registration_date: date)
+LendingContract(item: Item, lender: Member, borrower: Member, lending_cost: int, contract_status: enum(Active, Completed, Denied))
+Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+   + ContractStatus(Active, Completed, Denied)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(item: Item, lender: Member, borrower: Member, lendingCost: int, contractStatus: ContractStatus)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [0..*] Administrator associate [1] LendingContract because Administrator can view and manage lending contracts.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member can own multiple items.
+   + [1] LendingContract contain [1] Item because a lending contract involves a specific item.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermediate reasoning results
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because an Item is not a kind of Member.
+   + LendingContract does not extend Member because a LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is a kind of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+   + ContractStatus(Active, Completed, Denied)
+
+Classes:
+   + User(username: String, password: String)
+   + Member extends User
+   + Administrator extends User
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(item: Item, lender: Member, borrower: Member, lendingCost: int, contractStatus: ContractStatus)
+   + MemberProfile(email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [0..*] Administrator associate [1] LendingContract because Administrator can view and manage lending contracts.
+# Final Composition Relationships:
+   + [1] Member contain [1] MemberProfile to store personal details.
+   + [1] Member contain [0..*] Item because Member can own multiple items.
+   + [1] LendingContract contain [1] Item because a lending contract involves a specific item.
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: ContractStatus (enum) - Enum Attributes: [Active, Completed, Denied], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [item:Item,lender:Member,borrower:Member,lendingCost:int,contractStatus:ContractStatus]
+Class: MemberProfile (class) - Enum Attributes: [], Class Attributes: [email:String,phoneNumber:String,memberId:int,dateCreated:Date]
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 0..* Member association 1 LendingContract
+ 1 Administrator association 0..* Member
+ 0..* Administrator association 1 LendingContract
+ 1 Member association 1 MemberProfile
+ 1 Member association 0..* Item
+ 1 LendingContract association 1 Item
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 0..* Member association 1 LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 LendingContract association 1 Item' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   8                   
+Attributes          18                  3                   15                  
+Associations        7                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Enumerations:
+- Role(Member, System Administrator)
+
+Classes:
+- Member
+- Item
+- Contract
+- Administrator
+
+Attributes:
+- Member(name: string, password: string, email: string, phone_number: string, member_id: string, date_created: date, credits: int)
+- Item(category: string, name: string, description: string, registration_date: date)
+- Contract(lender: Member, borrower: Member, lending_cost: int, contract_status: string)
+- Administrator(name: string, role: Role)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+Classes:
+   + Member(name: String, password: String, email: String, phoneNumber: String, memberId: String, dateCreated: Date, credits: int)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(lender: Member, borrower: Member, lendingCost: int, contractStatus: String)
+   + Administrator(name: String, role: Role)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register possessions and lend items.
+   + [1] Member associate [0..*] Contract because Member can initiate lending requests and view existing contract details.
+   + [1] Administrator associate [0..*] Item because Administrator can view item details.
+   + [1] Administrator associate [0..*] Member because Administrator can view membership records.
+   + [0..*] Contract associate [1] Item because Contract is established between members for lending items.
+   + [1] Contract associate [1] Member because Contract involves borrowing and lending members.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member owns and registers items.
+   + [1] Member contain [0..*] Contract because Member can have multiple lending contracts.
+   + [1] Administrator contain [0..*] Item because Administrator manages item listings.
+   + [1] Administrator contain [0..*] Member because Administrator manages membership records.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+## Intermediate reasoning results:
+
+### Potential inheritances:
+   + Member extends Person because a Member is a kind of person (based on the attributes shared by both classes such as name, password, email, phoneNumber).
+   + Administrator extends Person because an Administrator is a kind of person (based on the attributes shared by both classes such as name).
+   + Item does not extend Member because an Item is not a kind of Member, delete this inheritance.
+   + Contract does not extend Member because a Contract is not a kind of Member, delete this inheritance.
+
+```
+Final Inheritance Relationships:
+   + Member extends Person
+   + Administrator extends Person
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + Role(Member, SystemAdministrator)
+
+Classes:
+   + Person(name: String, password: String, email: String, phoneNumber: String)
+   + Member extends Person(memberId: String, dateCreated: Date, credits: int)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(lender: Member, borrower: Member, lendingCost: int, contractStatus: String)
+   + Administrator extends Person(role: Role)
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends Person
+   + Administrator extends Person
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] Contract
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] Member
+   + [0..*] Contract associate [1] Item
+   + [1] Contract associate [1] Member
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] Contract
+   + [1] Administrator contain [0..*] Item
+   + [1] Administrator contain [0..*] Member
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [name:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [lender:Member,borrower:Member,lendingCost:int,contractStatus:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False Person
+ False Administrator inheritance False Person
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* Member
+ 0..* Contract association 1 Item
+ 1 Contract association 1 Member
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* Member
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Person(class)' - 'User(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'Item(class):name' - 'name'
+ 'Person(class):password' - 'password'
+ 'Person(class):email' - 'email'
+ 'Person(class):phoneNumber' - 'phoneNumber'
+-Relationships:
+ ' False Member inheritance False Person' - ' False Member inheritance False User'
+ ' False Administrator inheritance False Person' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+ ' 0..* Contract association 1 Item' - ' 1 LendingContract association 1 Item'
+ ' 1 Contract association 1 Member' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          14                  4                   15                  
+Associations        10                  4                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_created: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(contract_id: string, lending_cost: int)
+4. Administrator
+5. Notification
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: string, date_created: date)
+Item(category: string, name: string, description: string, registration_date: date)
+LendingContract(contract_id: string, lending_cost: int)
+Administrator
+Notification
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: String, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: String, lendingCost: int)
+   + Administrator()
+   + Notification()
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register possessions and lend items from other members.
+   + [1] Member associate [0..*] LendingContract because Member can initiate lending requests and view existing contract details.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details and can remove members from the system.
+   + [1] Administrator associate [0..*] Item because Administrator tracks item listings.
+   + [1] Administrator associate [0..*] LendingContract because Administrator triggers lending contract execution and flags contracts.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Notification because Members receive notifications for credit transfers, item unavailability, etc.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+### Intermdiate reasoning results:
+   + **Member** extends **User** because a Member is a kind of User, as all members in the system are users with specific functionalities and attributes.
+   + **Item** does not extend **Member** because an Item is not a part of a Member, but rather a separate entity that belongs to a Member.
+   + **LendingContract** does not extend **Item** because a LendingContract is not a part of an Item, but rather a separate entity that connects two members for lending transactions.
+   + **Administrator** does not extend **Member** because an Administrator is not a kind of Member, but rather a distinct role with different functionalities in the system.
+   + **Notification** does not extend any of the existing classes in this context as it serves a separate purpose for sending notifications in the system.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member extends User(memberId: String, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: String, lendingCost: int)
+   + Administrator extends User
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] LendingContract
+
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Notification
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:String,lendingCost:int]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* LendingContract
+ 1 Member association 0..* Notification
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          10                  5                   15                  
+Associations        5                   2                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+# Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+# Classes:
+1. Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date)
+2. Item(category: String, name: String, description: String, registrationDate: Date)
+3. LendingContract(contractID: String, lendingCost: Int, lendingDate: Date, returnDate: Date)
+4. SystemNotification(notificationID: String, notificationType: String, notificationMessage: String)
+5. Administrator(username: String, password: String)
+
+# Attributes:
+- Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date)
+- Item(category: String, name: String, description: String, registrationDate: Date)
+- LendingContract(contractID: String, lendingCost: Int, lendingDate: Date, returnDate: Date)
+- SystemNotification(notificationID: String, notificationType: String, notificationMessage: String)
+- Administrator(username: String, password: String)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractID: String, lendingCost: Int, lendingDate: Date, returnDate: Date)
+   + SystemNotification(notificationID: String, notificationType: String, notificationMessage: String)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member registers possessions and lends items.
+   + [1] Member associate [0..*] LendingContract because Member initiates lending requests.
+   + [1] Member associate [0..*] SystemNotification because Member can receive notifications.
+   + [0..*] Item associate [1] Member because Item belongs to a Member.
+   + [1] LendingContract associate [1] Member because LendingContract involves Members.
+   + [1] LendingContract associate [1] Item because LendingContract is related to Items.
+   + [0..*] SystemNotification associate [1] Member because SystemNotification is sent to Members.
+   + [1] Administrator associate [0..*] Member because Administrator manages Members.
+   + [1] Administrator associate [0..*] Item because Administrator manages Items.
+   + [0..*] LendingContract associate [1] SystemNotification because LendingContract triggers notifications.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member owns multiple Items.
+   + [1] Member contain [0..*] LendingContract because Member is involved in multiple contracts.
+   + [0..*] Item contain [1] LendingContract because Items are part of lending contracts.
+   + [0..*] SystemNotification contain [1] Member because Notifications are directed to specific Members.
+   + [1] Administrator contain [0..*] Member because Administrator has control over multiple Members.
+   + [1] Administrator contain [0..*] Item because Administrator can manage multiple Items.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+# Intermdiate reasoning results
+   + No inheritances found.
+
+```
+Final Inheritance Relationships:
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, SystemAdministrator)
+
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractID: String, lendingCost: Int, lendingDate: Date, returnDate: Date)
+   + SystemNotification(notificationID: String, notificationType: String, notificationMessage: String)
+   + Administrator(username: String, password: String)
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member registers possessions and lends items.
+   + [1] Member associate [0..*] LendingContract because Member initiates lending requests.
+   + [1] Member associate [0..*] SystemNotification because Member can receive notifications.
+   + [0..*] Item associate [1] Member because Item belongs to a Member.
+   + [1] LendingContract associate [1] Member because LendingContract involves Members.
+   + [1] LendingContract associate [1] Item because LendingContract is related to Items.
+   + [0..*] SystemNotification associate [1] Member because SystemNotification is sent to Members.
+   + [1] Administrator associate [0..*] Member because Administrator manages Members.
+   + [1] Administrator associate [0..*] Item because Administrator manages Items.
+   + [0..*] LendingContract associate [1] SystemNotification because LendingContract triggers notifications.
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member owns multiple Items.
+   + [1] Member contain [0..*] LendingContract because Member is involved in multiple contracts.
+   + [0..*] Item contain [1] LendingContract because Items are part of lending contracts.
+   + [0..*] SystemNotification contain [1] Member because Notifications are directed to specific Members.
+   + [1] Administrator contain [0..*] Member because Administrator has control over multiple Members.
+   + [1] Administrator contain [0..*] Item because Administrator can manage multiple Items.
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, SystemAdministrator], Class Attributes: []
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberID:String,dateOfCreation:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractID:String,lendingCost:Int,lendingDate:Date,returnDate:Date]
+Class: SystemNotification (class) - Enum Attributes: [], Class Attributes: [notificationID:String,notificationType:String,notificationMessage:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Member association 0..* SystemNotification
+ 0..* Item association 1 Member
+ 1 LendingContract association 1 Member
+ 1 LendingContract association 1 Item
+ 0..* SystemNotification association 1 Member
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 0..* LendingContract association 1 SystemNotification
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 0..* Item association 1 LendingContract
+ 0..* SystemNotification association 1 Member
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Class:
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberID' - 'memberID'
+ 'Member(class):dateOfCreation' - 'dateOfCreation'
+ 'Item(class):name' - 'name'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 LendingContract association 1 Member' - ' 1 LendingContract association 1 Member'
+ ' 1 LendingContract association 1 Item' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   8                   
+Attributes          21                  9                   15                  
+Associations        16                  4                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: unique, date_of_creation: date)
+2. Item(category: string, name: string, description: string, day_of_registration: date)
+3. LendingContract(contract_id: unique, lending_cost: integer, status: string)
+4. Administrator(username: string, password: string, email: string, phone_number: string)
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: unique, date_of_creation: date)
+Item(category: string, name: string, description: string, day_of_registration: date)
+LendingContract(contract_id: unique, lending_cost: integer, status: string)
+Administrator(username: string, password: string, email: string, phone_number: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: unique, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(contractId: unique, lendingCost: int, status: String)
+   + Administrator(username: String, password: String, email: String, phoneNumber: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [1] Member associate [0..*] LendingContract because Member can initiate lending requests.
+   + [1] Member associate [0..*] Notification because members need to receive notifications.
+   + [1] Item associate [0..*] LendingContract because items can be involved in lending contracts.
+   + [0..*] LendingContract associate [1] Member because a lending contract involves at least one member.
+   + [1] Administrator associate [0..*] Member because Administrator can view, remove, and manage member data.
+   + [0..*] Administrator associate [0..*] Notification because notifications need to be sent to administrators as well.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because members can own multiple items.
+   + [1] Member contain [0..*] Notification because members need to receive multiple notifications.
+   + [1] Item contain [0..*] Notification because items can be related to multiple notifications.
+   + [1] Administrator contain [0..*] Member because administrators manage multiple members.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+# Intermdiate reasoning results:
+   + Member extends User because a Member is-a-kind-of User.
+   + Item does not extend Member because Item is not a kind of Member.
+   + LendingContract does not extend Member because LendingContract is not a kind of Member.
+   + Administrator extends User because an Administrator is-a-kind-of User.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member extends User(memberId: unique, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + LendingContract(contractId: unique, lendingCost: int, status: String)
+   + Administrator extends User
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] LendingContract
+   + [1] Member associate [0..*] Notification
+   + [1] Item associate [0..*] LendingContract
+   + [0..*] LendingContract associate [1] Member
+   + [1] Administrator associate [0..*] Member
+   + [0..*] Administrator associate [0..*] Notification
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] Notification
+   + [1] Item contain [0..*] Notification
+   + [1] Administrator contain [0..*] Member
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:unique,lendingCost:int,status:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Member association 0..* Notification
+ 1 Item association 0..* LendingContract
+ 0..* LendingContract association 1 Member
+ 1 Administrator association 0..* Member
+ 0..* Administrator association 0..* Notification
+ 1 Member association 0..* Item
+ 1 Member association 0..* Notification
+ 1 Item association 0..* Notification
+ 1 Administrator association 0..* Member
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Item association 0..* LendingContract' - ' 1 LendingContract association 1 Item'
+ ' 0..* LendingContract association 1 Member' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          11                  6                   15                  
+Associations        7                   4                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phoneNumber: string, memberID: string, dateOfCreation: date)
+2. Item(category: string, name: string, description: string, dayOfRegistration: date)
+3. Contract
+4. Administrator
+
+Enumerations:
+1. UserRole(Member, SystemAdministrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phoneNumber: string, memberID: string, dateOfCreation: date)
+Item(category: string, name: string, description: string, dayOfRegistration: date)
+Contract
+Administrator
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: String, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + Contract()
+   + Administrator()
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [1] Member associate [0..*] Contract because Member can create lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator can manage member records.
+   + [1] Administrator associate [0..*] Item because Administrator can track item listings.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member can own multiple items.
+   + [1] Member contain [0..*] Contract because Member can have multiple lending contracts.
+   + [1] Administrator contain [0..*] Member because Administrator manages member records.
+```
+
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+# Intermidiate reasoning results
+   + Member extends User because a Member is a kind of User.
+   + Item does not extend Member because Item is not a kind of Member, delete this inheritance.
+   + Contract does not extend Member because Contract is not a kind of Member, delete this inheritance.
+   + Administrator does not extend Member because Administrator is not a kind of Member, delete this inheritance.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member extends User
+   + Item(category: String, name: String, description: String, dayOfRegistration: Date)
+   + Contract()
+   + Administrator()
+
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items.
+   + [1] Member associate [0..*] Contract because Member can create lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator can manage member records.
+   + [1] Administrator associate [0..*] Item because Administrator can track item listings.
+
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member can own multiple items.
+   + [1] Member contain [0..*] Contract because Member can have multiple lending contracts.
+   + [1] Administrator contain [0..*] Member because Administrator manages member records.
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,dayOfRegistration:Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False User
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Member
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Item(class):name' - 'name'
+ 'Item(class):dayOfRegistration' - 'dateOfRegistration'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          8                   6                   15                  
+Associations        7                   3                   9                   
+Inheritances        1                   1                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(contract_id: int, lending_cost: int, status: enum(PENDING, COMPLETED, DENIED))
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(MEMBER, SYSTEM_ADMINISTRATOR)
+2. ContractStatus(PENDING, COMPLETED, DENIED)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+Item(category: string, name: string, description: string, registration_date: date)
+LendingContract(contract_id: int, lending_cost: int, status: enum(PENDING, COMPLETED, DENIED))
+Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole(MEMBER, SYSTEM_ADMINISTRATOR)
+   + ContractStatus(PENDING, COMPLETED, DENIED)
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: int, lendingCost: int, status: ContractStatus)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can have multiple items listed.
+   + [1] Member associate [0..*] LendingContract because Member can initiate multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator can manage multiple members.
+   + [1] Administrator associate [0..*] Item because Administrator can track multiple items.
+
+Final Composition Relationships:
+   + [1] LendingContract contain [1] Item because a lending contract involves a specific item.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+**Intermediate reasoning results:**
+  
+  + `Member` extends `User` because a `Member` is a type of `User`, inheriting attributes like `username`, `password`, `email`, and `phoneNumber`.
+  + `Administrator` extends `User` because an `Administrator` is a type of `User`, inheriting attributes like `username` and `password`.
+  + `Item` does not extend `Member` because an `Item` is not a type of `Member`, they have a different purpose and attributes, delete this inheritance.
+  + `LendingContract` does not extend `Item` because a `LendingContract` is not a type of `Item`, they represent different concepts and functionalities, delete this inheritance.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(MEMBER, SYSTEM_ADMINISTRATOR)
+   + ContractStatus(PENDING, COMPLETED, DENIED)
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: int, lendingCost: int, status: ContractStatus)
+   + Administrator(username: String, password: String)
+   
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item 
+   + [1] Member associate [0..*] LendingContract 
+   + [1] Administrator associate [0..*] Member 
+   + [1] Administrator associate [0..*] Item 
+# Final Composition Relationships:
+   + [1] LendingContract contain [1] Item 
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [MEMBER, SYSTEM_ADMINISTRATOR], Class Attributes: []
+Class: ContractStatus (enum) - Enum Attributes: [PENDING, COMPLETED, DENIED], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String,memberId:int,dateCreated:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:int,lendingCost:int,status:ContractStatus]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 LendingContract association 1 Item
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):username' - 'username'
+ 'Member(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Item(class):name' - 'name'
+ 'Administrator(class):username' - 'username'
+ 'Administrator(class):password' - 'password'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 LendingContract association 1 Item' - ' 1 LendingContract association 1 Item'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   8                   
+Attributes          24                  12                  15                  
+Associations        5                   3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_ID: int, date_of_creation: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. Contract(contract_ID: int, lending_cost: int)
+4. Administrator
+
+Enumerations:
+1. UserRole(Member, Administrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_ID: int, date_of_creation: date)
+Item(category: string, name: string, description: string, registration_date: date)
+Contract(contract_ID: int, lending_cost: int)
+Administrator
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberID: int, dateOfCreation: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(contractID: int, lendingCost: int)
+   + Administrator()
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register their possessions and lend items from other members.
+   + [1] Member associate [0..*] Contract because Member can have lending contracts.
+   + [1] Member associate [0..*] Notification because Members need to receive notifications.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [1] Administrator associate [0..*] Item because Administrator tracks item listings.
+   + [1] Administrator associate [0..*] Contract because Administrator oversees lending contracts.
+   + [1] Administrator associate [0..*] Notification because Administrator needs to send notifications.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member owns items.
+   + [1] Member contain [0..*] Contract because Member has lending contracts.
+   + [1] Member contain [0..*] Notification because Member receives notifications.
+   + [1] Administrator contain [0..*] Member because Administrator manages members.
+   + [1] Administrator contain [0..*] Item because Administrator tracks items.
+   + [1] Administrator contain [0..*] Contract because Administrator oversees contracts.
+   + [1] Administrator contain [0..*] Notification because Administrator sends notifications.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+
+**Intermediate reasoning results:**
++ Member extends User because a Member is a kind of User, as a Member is a specific type of user with additional attributes and functionalities.
++ Item does not extend Member because an Item is not a kind of Member, they are two separate entities with different purposes and attributes.
++ Contract does not extend Member because a Contract is not a kind of Member, they are distinct entities representing different concepts.
++ Administrator does not extend Member because an Administrator is not a kind of Member, they have different roles and responsibilities within the system.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole()
+
+Classes:
+   + User(username: String, password: String, email: String, phoneNumber: String)
+   + Member extends User(memberID: int, dateOfCreation: Date, credits: int)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + Contract(contractID: int, lendingCost: int)
+   + Administrator extends User
+
+Relationships:
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [1] Member associate [0..*] Contract
+   + [1] Administrator associate [0..*] Member
+   + [1] Administrator associate [0..*] Item
+   + [1] Administrator associate [0..*] Contract
+   + [1] Member associate [0..*] Notification
+   + [1] Administrator associate [0..*] Notification
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] Contract
+   + [1] Member contain [0..*] Notification
+   + [1] Administrator contain [0..*] Member
+   + [1] Administrator contain [0..*] Item
+   + [1] Administrator contain [0..*] Contract
+   + [1] Administrator contain [0..*] Notification
+```  
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String,email:String,phoneNumber:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: Contract (class) - Enum Attributes: [], Class Attributes: [contractID:int,lendingCost:int]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* Contract
+ 1 Member association 0..* Notification
+ 1 Administrator association 0..* Notification
+ 1 Member association 0..* Item
+ 1 Member association 0..* Contract
+ 1 Member association 0..* Notification
+ 1 Administrator association 0..* Member
+ 1 Administrator association 0..* Item
+ 1 Administrator association 0..* Contract
+ 1 Administrator association 0..* Notification
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+ 'Contract(class)' - 'LendingContract(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'User(class):email' - 'email'
+ 'User(class):phoneNumber' - 'phoneNumber'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* Contract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          10                  5                   15                  
+Associations        10                  3                   9                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------StuffLendingSystem:
+------------------------------------------------------------
+1st conversation AI:
+Classes:
+1. Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+2. Item(category: string, name: string, description: string, registration_date: date)
+3. LendingContract(contract_id: int, lending_cost: int, status: string)
+4. Administrator(username: string, password: string)
+
+Enumerations:
+1. UserRole(Member, Administrator)
+
+Attributes:
+Member(username: string, password: string, email: string, phone_number: string, member_id: int, date_created: date)
+Item(category: string, name: string, description: string, registration_date: date)
+LendingContract(contract_id: int, lending_cost: int, status: string)
+Administrator(username: string, password: string)
+--------------------------------------------------------------------------------
+2nd conversation AI:
+```
+Enumerations:
+   + UserRole()
+Classes:
+   + Member(username: String, password: String, email: String, phoneNumber: String, memberId: int, dateCreated: Date)
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: int, lendingCost: int, status: String)
+   + Administrator(username: String, password: String)
+```
+
+AI_answer(association):
+```
+Final Association Relationships:
+   + [1] Member associate [0..*] Item because Member can register possessions and lend items.
+   + [0..*] Member associate [1] LendingContract because Members can have multiple lending contracts.
+   + [1] Administrator associate [0..*] Member because Administrator manages member details.
+   + [0..*] Administrator associate [1] Item because Administrator tracks item listings.
+   + [0..*] Administrator associate [1] LendingContract because Administrator oversees lending contracts.
+
+Final Composition Relationships:
+   + [1] Member contain [0..*] Item because Member can have multiple items.
+   + [1] Member contain [0..*] LendingContract because Member can have multiple lending contracts.
+```
+--------------------------------------------------------------------------------
+AI_answer(inheritance):
+**Intermediate reasoning results:**
+  
+  + `Member` extends `User` because a `Member` is a kind of `User`.
+  + `Item` does not extend `Member` because an `Item` is not a kind of `Member`.
+  + `LendingContract` does not extend `Item` because a `LendingContract` is not a kind of `Item`.
+  + `Administrator` extends `User` because an `Administrator` is a kind of `User`.
+
+```
+Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+```
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+AI_review:
+```
+Enumerations:
+   + UserRole(Member, System Administrator)
+
+Classes:
+   + User(username: String, password: String)
+   + Member(email: String, phoneNumber: String, memberId: int, dateCreated: Date)   
+   + Item(category: String, name: String, description: String, registrationDate: Date)
+   + LendingContract(contractId: int, lendingCost: int, status: String)
+   + Administrator
+   
+Relationships:
+# Final Inheritance Relationships:
+   + Member extends User
+   + Administrator extends User
+
+# Final Association Relationships:
+   + [1] Member associate [0..*] Item
+   + [0..*] Member associate [1] LendingContract
+   + [1] Administrator associate [0..*] Member
+   + [0..*] Administrator associate [1] Item
+   + [0..*] Administrator associate [1] LendingContract
+
+# Final Composition Relationships:
+   + [1] Member contain [0..*] Item
+   + [1] Member contain [0..*] LendingContract
+```
+--------------------------------------------------------------------------------
+Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Administrator], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [email:String,phoneNumber:String,memberId:int,dateCreated:Date]
+Class: Item (class) - Enum Attributes: [], Class Attributes: [category:String,name:String,description:String,registrationDate:Date]
+Class: LendingContract (class) - Enum Attributes: [], Class Attributes: [contractId:int,lendingCost:int,status:String]
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Member inheritance False User
+ False Administrator inheritance False User
+ 1 Member association 0..* Item
+ 0..* Member association 1 LendingContract
+ 1 Administrator association 0..* Member
+ 0..* Administrator association 1 Item
+ 0..* Administrator association 1 LendingContract
+ 1 Member association 0..* Item
+ 1 Member association 0..* LendingContract
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Class:
+ 'User(class)' - 'User(class)'
+ 'Member(class)' - 'Member(class)'
+ 'Item(class)' - 'Item(class)'
+ 'LendingContract(class)' - 'LendingContract(class)'
+ 'Administrator(class)' - 'Administrator(class)'
+-Attributes:
+ 'User(class):username' - 'username'
+ 'User(class):password' - 'password'
+ 'Member(class):email' - 'email'
+ 'Member(class):phoneNumber' - 'phoneNumber'
+ 'Member(class):memberId' - 'memberID'
+ 'Item(class):name' - 'name'
+-Relationships:
+ ' False Member inheritance False User' - ' False Member inheritance False User'
+ ' False Administrator inheritance False User' - ' False Administrator inheritance False User'
+ ' 1 Member association 0..* Item' - ' 1 Member association * Item'
+ ' 0..* Member association 1 LendingContract' - ' 1 LendingContract association 1 Member'
+ ' 1 Member association 0..* LendingContract' - ' 1 LendingContract association 1 Member'
+--------------------------------------------------------------------------------
+StuffLendingSystem, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   8                   
+Attributes          15                  6                   15                  
+Associations        7                   3                   9                   
+Inheritances        2                   2                   2                   
+--------------------------------------------------------------------------------
+StuffLendingSystem, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.792          0.594          0.679          0.625
+Attributes          0.457          0.227          0.303          0.252
+Associations        0.413          0.344          0.376          0.356
+Inheritances        1.000          0.425          0.596          0.480
+--------------------------------------------------------------------------------

@@ -1,0 +1,2032 @@
+------------------------------------------------------------
+---------------------1/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: String` (values could be "Research Paper" or "Experience Report")
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: String` (values could be "Accept" or "Reject")
+
+4. **Chair**
+   - Attributes:
+     - `name: String` (inherits from User)
+
+### Associations:
+
+1. **User to Paper**
+   - One-to-Many: One User (Author) can submit many Papers.
+   - One-to-Many: One Paper can have multiple Users (Reviewers) assigned for reviews.
+
+2. **Paper to Review**
+   - One-to-Many: One Paper can have multiple Reviews (at least three required).
+
+3. **User to Review**
+   - One-to-Many: One User (Reviewer) can submit multiple Reviews for different Papers.
+
+4. **CoChair to Paper**
+   - One-to-Many: One CoChair makes the final decision on multiple Papers.
+
+### Relationships:
+
+1. **User**
+   - *Author* submits *Paper*
+   - *Reviewer* reviews *Paper*
+   - *CoChair* makes decision on *Paper*
+   - *Reviewer* has multiple *Review* for assigned *Paper*
+
+2. **Paper**
+   - Has multiple *Review* instances.
+   - Assigned to multiple *Reviewer* instances.
+
+3. **Review**
+   - Associated with one *Paper* and one *Reviewer*.
+
+### Diagrammatic Representation:
+
+- **User** (1) ---- (N) **Paper** (1) ---- (N) **Review**
+- **Chair** (1) ---- (N) **Paper**
+- **Reviewer** (1) ---- (N) **Review** (1) ---- (1) **Paper**
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: Chair (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Has association * Review
+ 1 Assigned association * Reviewer
+ 1 Associated association * Paper
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'Chair(class)'	-	'Chair(class)'
+ 'User(class)'	-	'Person(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+
+1. **User**
+   - Attributes:
+     - string name
+   - Subclasses:
+     - **Author**
+     - **Reviewer**
+     - **CoChair**
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper (true for research papers, false for experience report papers)
+   - Relationships:
+     - *Review (1 Paper can have multiple Reviews)*
+     - *Author (1 Paper is written by 1 Author)*
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - string grade (Accept or Reject)
+   - Relationships:
+     - *Reviewer (1 Review is written by 1 Reviewer)*
+     - *Paper (1 Review is for 1 Paper)*
+
+4. **Decision**
+   - Attributes:
+     - string finalDecision (Accept or Reject)
+   - Relationships:
+     - *Paper (1 Decision is made for 1 Paper)*
+     - *CoChair (1 Decision is made by 1 CoChair)*
+
+### Associations:
+
+1. **User Associations:**
+   - 1 User can be an Author, Reviewer, or CoChair.
+   - 1 Author can submit multiple Papers.
+   - 1 Reviewer can review multiple Papers.
+   - 1 CoChair can make decisions on multiple Papers.
+
+2. **Paper Associations:**
+   - 1 Paper must have at least 3 Reviews.
+   - 1 Paper is associated with 1 Author.
+   - 1 Paper can have multiple Reviews.
+
+3. **Review Associations:**
+   - 1 Review is assigned to 1 Reviewer.
+   - 1 Review is associated with 1 Paper.
+
+4. **Decision Associations:**
+   - 1 Decision is made for 1 Paper.
+   - 1 Decision is made by 1 CoChair.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ * Review association 1 Paper
+ * Author association 1 Paper
+ 1 string association 1 Reject
+ * Reviewer association 1 Review
+ * Paper association 1 Review
+ 1 string association 1 Reject
+ * Paper association 1 Decision
+ * CoChair association 1 Decision
+ 1 User association 1 CoChair
+ 1 Author association 1 Papers
+ 1 Reviewer association 1 Papers
+ 1 CoChair association 1 Papers
+ 1 Paper association 3 Reviews
+ 1 Paper association 1 Author
+ 1 Paper association 1 Reviews
+ 1 Review association 1 Reviewer
+ 1 Review association 1 Paper
+ 1 Decision association 1 Paper
+ 1 Decision association 1 CoChair
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+ ' * Author association 1 Paper'	-	' 0..* Author association 0..* Paper'
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   9                   
+Attributes          0                   0                   12                  
+Associations        3                   1                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes: 
+     - `name: String`
+   - Subclasses:
+     - **Author**
+     - **Reviewer**
+     - **CoChair**
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: PaperType` (where `PaperType` can be an Enum with values like RESEARCH_PAPER, EXPERIENCE_REPORT)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: Grade` (where `Grade` can be an Enum with values like ACCEPT, REJECT)
+
+4. **Decision**
+   - Attributes:
+     - `finalDecision: Grade`
+
+### Associations
+
+1. **User** can submit **0..* Papers** (Authors submit papers)
+2. **Paper** is reviewed by **3..* Reviewers** (each paper must have at least three reviews)
+3. **Reviewer** can consult **0..* Papers** assigned for review
+4. **Review** is associated with **1 Paper** (each review corresponds to one paper)
+5. **Review** is submitted by **1 Reviewer** (each review is written by one reviewer)
+6. **CoChair** makes a **1 Decision** for each **1 Paper** (final decision on the paper)
+
+### Relationships Summary
+
+- **User** (Author, Reviewer, CoChair) can have multiple associations with **Papers**.
+- **Papers** must be reviewed by at least three **Reviewers**.
+- Each **Review** contains feedback and a grade for a specific **Paper**.
+- The **CoChair** is responsible for making the final decision on each **Paper**.
+
+This structure allows for a clear organization of users, papers, reviews, and decisions within the computer-assisted review system.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: Decision (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Each association 1 contains
+ 1 The association 1 is
+ 1 This association 1 system
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+ 'Decision(class)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   9                   
+Attributes          0                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+1. **User**
+   - Attributes: `name`
+   - Subclasses:
+     - **Author**
+     - **Reviewer**
+     - **CoChair**
+
+2. **Paper**
+   - Attributes: `title`, `type` (Research or Experience Report)
+   - Relationships: 
+     - **Review** (1 to many)
+
+3. **Review**
+   - Attributes: `feedback`, `grade` (Accept or Reject)
+   - Relationships:
+     - **Reviewer** (many to 1)
+     - **Paper** (many to 1)
+
+4. **Chair**
+   - Responsibilities: Final decision on each paper
+
+### Associations
+1. **User** can be an **Author**, **Reviewer**, or **CoChair**.
+   - 1 User can submit *many* Papers (Author).
+   - 1 User can be assigned *many* Reviews (Reviewer).
+   - 1 Chair makes decisions on *many* Papers.
+
+2. **Paper** is reviewed by *at least three* Reviews.
+   - 1 Paper has *many* Reviews.
+   - 1 Review belongs to *one* Paper.
+
+3. **Review** is submitted by *one* Reviewer.
+   - 1 Review is associated with *one* Reviewer.
+
+### Relationships Summary
+- **1 User (Author)** submits **0..* Papers**
+- **1 Paper** has **3..* Reviews**
+- **1 Review** is submitted by **1 Reviewer**
+- **1 Chair** makes decisions on **1..* Papers** 
+
+This structure ensures that the computer-assisted review system can effectively manage users, papers, reviews, and the decision-making process of the chair.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association * many
+ 1 User association * many
+ 1 Chair association * many
+ 1 Paper association * many
+ 1 Review association * one
+ 1 Review association * one
+ 1 This association 1 chair
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   9                   
+Attributes          0                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits User)
+     - **Reviewer** (inherits User)
+     - **CoChair** (inherits User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: PaperType` (enum: Research, Experience Report)
+   - Relationships:
+     - `reviews: List<Review>` (1 Paper has many Reviews)
+     - `authors: List<Author>` (1 Paper has many Authors)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: ReviewGrade` (enum: Accept, Reject)
+   - Relationships:
+     - `reviewer: Reviewer` (1 Review is assigned to 1 Reviewer)
+     - `paper: Paper` (1 Review is associated with 1 Paper)
+
+4. **Chair**
+   - Relationships:
+     - `decisions: List<Decision>` (1 Chair makes decisions for many Papers)
+
+### Associations:
+
+1. **User - Paper**
+   - 1 User (Author) can submit *many* Papers.
+   - 1 Paper can have *many* Authors.
+
+2. **Reviewer - Review**
+   - 1 Reviewer can submit *many* Reviews (for different Papers).
+   - 1 Review is associated with *one* Reviewer.
+
+3. **Paper - Review**
+   - 1 Paper must have *at least* 3 Reviews.
+   - 1 Review is associated with *one* Paper.
+
+4. **Chair - Paper**
+   - 1 Chair makes decisions for *many* Papers.
+   - 1 Paper has *one* final decision made by the Chair.
+
+5. **Review - Paper**
+   - 1 Review is for *one* Paper.
+   - 1 Paper must be reviewed by *at least* 3 Reviews.
+
+### Enumerations:
+
+- **PaperType**: 
+  - Research 
+  - Experience Report
+
+- **ReviewGrade**:
+  - Accept 
+  - Reject
+
+This structure captures the relationships and functionalities described in the system for managing the review process of papers efficiently.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: PaperType (enum) - Enum Attributes: [], Class Attributes: []
+Class: Research (enum) - Enum Attributes: [], Class Attributes: []
+Class: Experience (enum) - Enum Attributes: [], Class Attributes: []
+Class: ReviewGrade (enum) - Enum Attributes: [], Class Attributes: []
+Class: Accept (enum) - Enum Attributes: [], Class Attributes: []
+Class: Reject (enum) - Enum Attributes: [], Class Attributes: []
+Class: This (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association * many
+ 1 Paper association * many
+ 1 Reviewer association * many
+ 1 Review association * one
+ 1 Paper association * at
+ 1 Review association * one
+ 1 Chair association * many
+ 1 Paper association * one
+ 1 Review association * one
+ 1 Paper association * at
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'PaperType(enum)'	-	'PaperType(enum)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+ 'ReviewGrade(enum)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  7                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+
+1. **User**
+   - Attributes: 
+     - string name
+   - Subclasses: 
+     - Author
+     - Reviewer
+     - CoChair
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper (indicates if the paper is a research paper or an experience report)
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - enum Grade {Accept, Reject}
+   - Associations:
+     - Paper paper (associated with the reviewed paper)
+     - Reviewer reviewer (associated with the reviewer submitting the review)
+
+4. **Chair**
+   - Attributes: 
+     - string name
+   - Associations:
+     - Paper paper (makes the final decision for each paper)
+
+### Associations:
+
+1. **User to Paper**: 
+   - One Author can submit many Papers (1 to many)
+   - One Reviewer can review many Papers (1 to many)
+   - Each Paper must have at least three Reviewers (many to 1)
+
+2. **Reviewer to Review**:
+   - One Reviewer can submit many Reviews (1 to many)
+   - Each Review is associated with one Paper (many to 1)
+
+3. **Chair to Paper**:
+   - One Chair makes decisions on many Papers (1 to many)
+
+### Summary of Relationships:
+
+- **User**
+  - 1 Author → * Paper
+  - 1 Reviewer → * Review
+  - 1 Reviewer → * Paper (assigned for review)
+  
+- **Paper**
+  - * Review → 1 Paper
+  - 1 Chair → 1 Paper (final decision)
+
+- **Review**
+  - 1 Reviewer → 1 Review
+  - 1 Paper → * Review
+
+This structure captures the relationships and attributes as described in the system for the computer-assisted review process.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: enum (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Paper association 1 paper
+ 1 Reviewer association 1 review
+ 1 Paper association 1 paper
+ 1 One association 1 Papers
+ 1 One association 1 Papers
+ 1 Each association 1 1
+ 1 One association 1 Reviews
+ 1 Each association 1 1
+ 1 One association 1 Papers
+ 1 Author association * Paper
+ 1 Reviewer association * Review
+ 1 Reviewer association * Paper
+ * Review association 1 Paper
+ 1 Chair association 1 Paper
+ 1 Reviewer association 1 Review
+ 1 Paper association * Review
+ 1 This association 1 process
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+ ' 1 Author association * Paper'	-	' 0..* Author association 0..* Paper'
+ ' 1 Reviewer association * Paper'	-	' 1 Reviewer association 3..* Paper'
+ ' * Review association 1 Paper'	-	' 1 Paper association 0..* Review'
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  6                   9                   
+Attributes          0                   0                   12                  
+Associations        6                   3                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - `name`: String
+   - Subclasses:
+     - **Author**
+     - **Reviewer**
+     - **CoChair**
+
+2. **Paper**
+   - Attributes:
+     - `title`: String
+     - `paperType`: Enum (ResearchPaper, ExperienceReport)
+   - Relationships:
+     - `author`: User (1)
+     - `reviews`: List<Review> (0..*)
+
+3. **Review**
+   - Attributes:
+     - `feedback`: String
+     - `grade`: Enum (Accept, Reject)
+   - Relationships:
+     - `paper`: Paper (1)
+     - `reviewer`: Reviewer (1)
+
+4. **Decision**
+   - Attributes:
+     - `finalDecision`: Enum (Accept, Reject)
+   - Relationships:
+     - `paper`: Paper (1)
+     - `chair`: CoChair (1)
+
+### Associations
+
+- A **User** can be an **Author**, **Reviewer**, or **CoChair** (1..1 relationship).
+- An **Author** can submit multiple **Papers** (1..* relationship).
+- A **Paper** must be reviewed by at least three **Reviewers** (3..* relationship).
+- A **Reviewer** can submit multiple **Reviews** for assigned **Papers** (1..* relationship).
+- Each **Review** is associated with exactly one **Paper** and one **Reviewer** (1..1 relationship).
+- Each **Paper** has one **Decision** made by the **CoChair** (1..1 relationship).
+
+### Summary of Relationships
+
+1. **User** (1) --- (1) **Author**
+2. **User** (1) --- (1) **Reviewer**
+3. **User** (1) --- (1) **CoChair**
+4. **Author** (1) --- (0..*) **Paper**
+5. **Paper** (3..*) --- (1..*) **Reviewer**
+6. **Paper** (1) --- (0..*) **Review**
+7. **Review** (1) --- (1) **Reviewer**
+8. **Decision** (1) --- (1) **Paper**
+9. **Decision** (1) --- (1) **CoChair**
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 1 association 1 can
+ 1 1 association 1 can
+ 1 1 association 1 must
+ 1 1 association 1 can
+ 1 Each association 1 is
+ 1 Each association 1 has
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   9                   
+Attributes          0                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `isResearchPaper: Boolean` (true if research paper, false if experience report)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: String` (Accept or Reject)
+   - Relationships:
+     - `assignedTo: Reviewer` (the reviewer who assigned the review)
+     - `relatedPaper: Paper` (the paper being reviewed)
+
+4. **Chair**
+   - Attributes:
+     - `name: String`
+   - Relationships:
+     - `finalDecision(Paper paper): String` (Accept or Reject)
+
+### Associations
+
+1. **User to Paper**
+   - One User (Author) can submit multiple Papers (1 to many).
+   - Each Paper is submitted by exactly one User (Author) (many to 1).
+
+2. **Paper to Review**
+   - One Paper can have multiple Reviews (1 to many).
+   - Each Review is associated with exactly one Paper (many to 1).
+
+3. **Reviewer to Review**
+   - One Reviewer can submit multiple Reviews (1 to many).
+   - Each Review is submitted by exactly one Reviewer (many to 1).
+
+4. **Chair to Paper**
+   - One Chair can make final decisions on multiple Papers (1 to many).
+   - Each Paper has one final decision made by one Chair (many to 1).
+
+### Summary of Relationships
+- **User (Author, Reviewer, CoChair)** to **Paper**: 1 to many (Authors submit, Reviewers review, CoChairs oversee)
+- **Paper** to **Review**: 1 to many (Papers can have multiple reviews)
+- **Reviewer** to **Review**: 1 to many (Reviewers can write multiple reviews)
+- **Chair** to **Paper**: 1 to many (Chairs make decisions on multiple papers)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 One association 1 Papers
+ 1 Each association 1 1
+ 1 One association 1 Reviews
+ 1 Each association 1 1
+ 1 One association 1 Reviews
+ 1 Each association 1 1
+ 1 One association 1 Papers
+ 1 Each association 1 1
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   6                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: String` (values: "Research Paper", "Experience Report")
+   - Relationships:
+     - `reviews: List<Review>` (1 Paper has 3..* Reviews)
+     - `authors: List<Author>` (1 Paper has 1..* Authors)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: String` (values: "Accept", "Reject")
+   - Relationships:
+     - `paper: Paper` (1 Review is for 1 Paper)
+     - `reviewer: Reviewer` (1 Review is submitted by 1 Reviewer)
+
+4. **Chair**
+   - Attributes:
+     - `name: String`
+   - Relationships:
+     - `decisions: List<Decision>` (1 Chair makes decisions on 1..* Papers)
+
+5. **Decision**
+   - Attributes:
+     - `finalDecision: String` (values: "Accept", "Reject")
+   - Relationships:
+     - `paper: Paper` (1 Decision is for 1 Paper)
+     - `chair: Chair` (1 Decision is made by 1 Chair)
+
+### Associations
+
+- **User** (Author, Reviewer, CoChair) can submit/assign papers for review.
+- **Paper** is authored by one or more **Author**s.
+- **Paper** is reviewed by at least three **Reviewer**s.
+- **Review** is linked to one **Paper** and one **Reviewer**.
+- **Chair** makes final decisions on each **Paper** based on the reviews received.
+- Each **Review** contains **feedback** and a **grade** assigned by the **Reviewer**. 
+
+### Summary of Relationships
+
+- 1 User (Author) can submit 0..* Papers.
+- 1 Paper can be authored by 1..* Users (Authors).
+- 1 Paper must have 3..* Reviews.
+- 1 Review is assigned to 1 Paper and submitted by 1 Reviewer.
+- 1 Chair makes decisions on 1..* Papers.
+- 1 Paper has 1 Decision made by 1 Chair.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Each association 1 contains
+ 1 User association 0..* Papers
+ 1 Paper association 1..* Users
+ 1 Paper association 3..* Reviews
+ 1 Review association 1 Paper
+ 1 Chair association 1..* Papers
+ 1 Paper association 1 Decision
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes and Associations
+
+#### Classes:
+1. **User**
+   - Attributes: `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes: `title: String`, `type: PaperType` (where PaperType could be an enumeration with values: `RESEARCH`, `EXPERIENCE_REPORT`)
+   
+3. **Review**
+   - Attributes: `feedback: String`, `grade: Grade` (where Grade could be an enumeration with values: `ACCEPT`, `REJECT`)
+
+4. **Decision**
+   - Attributes: `finalDecision: Grade` (where Grade could be an enumeration with values: `ACCEPT`, `REJECT`)
+
+#### Relationships:
+1. **User** "can submit" 0..* **Papers** (Authors can submit multiple papers)
+2. **Reviewer** "can review" 0..* **Papers** (Each reviewer can review multiple papers)
+3. **Paper** "is reviewed by" 3..* **Reviewers** (Each paper must have at least three reviewers)
+4. **Paper** "has" 0..* **Reviews** (Each paper can have multiple reviews)
+5. **CoChair** "makes final decision on" 1..1 **Paper** (Each paper has one final decision made by the chair)
+
+### Enumeration Types:
+- **PaperType**: `RESEARCH`, `EXPERIENCE_REPORT`
+- **Grade**: `ACCEPT`, `REJECT` 
+
+### Summary of Associations:
+- A `User` can be an `Author`, `Reviewer`, or `CoChair`.
+- An `Author` can submit many `Papers`.
+- A `Reviewer` can review many `Papers`.
+- A `Paper` must be reviewed by at least three `Reviewers`.
+- Each `Paper` can have multiple `Reviews`, and a final decision is made by a `CoChair`.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Decision (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: PaperType (enum) - Enum Attributes: [], Class Attributes: []
+Class: Grade (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 1 association 1 or
+ 1 1 association 1 many
+ 1 1 association 1 many
+ 1 1 association 1 three
+ 1 Each association 1 a
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'PaperType(enum)'	-	'PaperType(enum)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+ 'Decision(class)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  8                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - String name
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - String title
+     - Boolean isResearchPaper (true if it's a research paper, false if it's an experience report)
+   - Associations:
+     - List<Review> reviews (to store reviews for the paper)
+
+3. **Review**
+   - Attributes:
+     - String feedback
+     - String grade (can be "Accept" or "Reject")
+   - Associations:
+     - Paper paper (the paper being reviewed)
+     - Reviewer reviewer (the reviewer who submitted the review)
+
+4. **Chair** (a specific role for a user who makes final decisions)
+   - Inherits from User
+
+### Associations
+
+1. **User - Paper**
+   - One-to-Many: A User can submit multiple Papers (Author)
+   - One-to-Many: A User can review multiple Papers (Reviewer)
+
+2. **Review - Paper**
+   - Many-to-One: A Review is associated with exactly one Paper
+   - One-to-Many: A Paper can have multiple Reviews (at least three)
+
+3. **Review - Reviewer**
+   - Many-to-One: A Review is submitted by exactly one Reviewer
+   - One-to-Many: A Reviewer can submit multiple Reviews
+
+4. **Chair - Paper**
+   - One-to-Many: A Chair makes a final decision for multiple Papers
+
+### Summary of Relationships
+
+- **User** (Author, Reviewer, CoChair) can submit **Paper** (0..*).
+- **Paper** has (1..*) **Review**.
+- **Review** is associated with (1) **Paper** and (1) **Reviewer**.
+- **Chair** can make decisions on (0..*) **Paper**. 
+
+This structure provides a clear organization of the roles and entities involved in the computer-assisted review system.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: String (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: String (class) - Enum Attributes: [], Class Attributes: []
+Class: Boolean (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 String association 1 or
+ 1 Paper association 1 reviewed
+ 1 Reviewer association 1 review
+ 1 Inherits association 1 User
+ 1 This association 1 system
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: PaperType` (Enumeration: RESEARCH, EXPERIENCE_REPORT)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: ReviewGrade` (Enumeration: ACCEPT, REJECT)
+   - Relationships:
+     - `paper: Paper` (the paper being reviewed)
+     - `reviewer: Reviewer` (the reviewer who submitted the review)
+
+4. **Decision**
+   - Attributes:
+     - `decision: ReviewGrade` (Enumeration: ACCEPT, REJECT)
+   - Relationships:
+     - `paper: Paper` (the paper for which the decision is made)
+     - `chair: CoChair` (the co-chair who makes the decision)
+
+### Associations
+
+1. **User to Paper**: 
+   - A User (Author) can submit many Papers (1 to many).
+  
+2. **Paper to Review**: 
+   - A Paper must be reviewed by at least three Reviewers (1 to many).
+
+3. **Reviewer to Review**: 
+   - A Reviewer can submit many Reviews (1 to many).
+
+4. **Paper to Decision**: 
+   - A Paper has one Decision made by one CoChair (1 to 1).
+
+5. **CoChair to Paper**: 
+   - A CoChair reviews many Papers and makes decisions on them (1 to many).
+
+### Enumerations
+
+- **PaperType**: 
+  - `RESEARCH`
+  - `EXPERIENCE_REPORT`
+
+- **ReviewGrade**: 
+  - `ACCEPT`
+  - `REJECT`
+
+### Summary of Relationships
+
+- **1 Author** → **0..* Paper**
+- **1 Paper** → **3..* Review**
+- **1 Reviewer** → **0..* Review**
+- **1 Paper** → **1 Decision**
+- **1 CoChair** → **0..* Paper** 
+
+These model classes and associations represent a structure for a computer-assisted review system that allows users to manage the submission and review process of research papers and experience reports.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (enum) - Enum Attributes: [], Class Attributes: []
+Class: PaperType (enum) - Enum Attributes: [], Class Attributes: []
+Class: ReviewGrade (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 Papers
+ 1 Paper association 1 Reviewers
+ 1 Reviewer association 1 Reviews
+ 1 Paper association 1 CoChair
+ 1 CoChair association 1 them
+ 1 These association 1 reports
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(enum)'	-	'Review(class)'
+ 'PaperType(enum)'	-	'PaperType(enum)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+ 'ReviewGrade(enum)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   8                   9                   
+Attributes          3                   0                   12                  
+Associations        1                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes and Associations
+
+**Classes:**
+1. **User**
+   - Attributes: 
+     - string name
+   - Subclasses: 
+     - **Author** (inherits User)
+     - **Reviewer** (inherits User)
+     - **CoChair** (inherits User)
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper (true for research papers, false for experience report papers)
+   - Associations:
+     - *Review* (1 Paper can have many Reviews)
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - string grade (Accept, Reject)
+   - Associations:
+     - *Reviewer* (1 Review is associated with 1 Reviewer)
+     - *Paper* (1 Review is associated with 1 Paper)
+
+4. **Decision**
+   - Attributes:
+     - string finalDecision (Accept, Reject)
+   - Associations:
+     - *Paper* (1 Decision is associated with 1 Paper)
+
+### Relationships:
+1. **User** can be of type **Author**, **Reviewer**, or **CoChair** (1 User can be one of these roles).
+2. **Author** can submit multiple **Papers** (1 Author can submit 0..* Papers).
+3. **Reviewer** can be assigned to multiple **Papers** (1 Reviewer can review 0..* Papers).
+4. **Paper** must have at least 3 **Reviews** (1 Paper has 3..* Reviews).
+5. **Review** is submitted by 1 **Reviewer** (1 Review is associated with 1 Reviewer).
+6. **CoChair** makes a **Decision** on each **Paper** (1 CoChair can make decisions on 0..* Papers).
+
+### Summary of Associations:
+- **User** (0..*) -> **Paper** (0..*) [Authors submit papers]
+- **User** (0..*) -> **Review** (0..*) [Reviewers review papers]
+- **Paper** (1) -> **Review** (3..*) [Each paper must have at least 3 reviews]
+- **Paper** (1) -> **Decision** (1) [Each paper has a final decision made by the CoChair]
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 string association 1 Reject
+ 1 string association 1 Reject
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  5                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Classes:
+1. **User**
+   - Attributes: 
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `paperType: PaperType` (enum: ResearchPaper, ExperienceReport)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: Grade` (enum: Accept, Reject)
+
+4. **Decision**
+   - Attributes:
+     - `finalDecision: Grade` (enum: Accept, Reject)
+
+### Enums:
+1. **PaperType** 
+   - Values: 
+     - `ResearchPaper`
+     - `ExperienceReport`
+
+2. **Grade**
+   - Values:
+     - `Accept`
+     - `Reject`
+
+### Relationships:
+1. **User** can submit **0..* Paper** (Authors can submit multiple papers).
+2. **User** can be assigned **0..* Review** (Reviewers can have multiple reviews assigned).
+3. **Paper** is reviewed by **at least 3 Reviewers**.
+4. **Review** is associated with **1 Paper**.
+5. **CoChair** makes a **final Decision** on **1 Paper**. 
+6. **Paper** has **1 Decision** made by the **CoChair**.
+
+### Summary of Associations:
+- **User** (Author, Reviewer, CoChair) ↔ **Paper** (0..* submits)
+- **User** (Reviewer) ↔ **Review** (0..* assigned)
+- **Paper** ↔ **Review** (1..* has)
+- **Paper** ↔ **Decision** (1 has)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: Decision (class) - Enum Attributes: [], Class Attributes: []
+Class: PaperType (class) - Enum Attributes: [], Class Attributes: []
+Class: Values (class) - Enum Attributes: [], Class Attributes: []
+Class: Grade (class) - Enum Attributes: [], Class Attributes: []
+Class: Values (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'PaperType(class)'	-	'PaperType(enum)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+ 'Decision(class)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  8                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - `name: String`
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: String` (e.g., "Research Paper", "Experience Report")
+   - Relationships:
+     - *Assigned to* at least 3 **Reviewers**
+     - *Written by* 1 or more **Authors**
+     - *Has* 1 **FinalDecision** (made by CoChair)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: String` (values: "Accept", "Reject")
+   - Relationships:
+     - *Written for* 1 **Paper**
+     - *Written by* 1 **Reviewer**
+
+4. **FinalDecision**
+   - Attributes:
+     - `decision: String` (values: "Accept", "Reject")
+   - Relationships:
+     - *Made for* 1 **Paper**
+     - *Made by* 1 **CoChair**
+
+### Associations
+
+1. **User**
+   - 1 User can be an Author, Reviewer, or CoChair
+   - 1 Author can submit *many* Papers
+   - 1 Reviewer can review *many* Papers
+   - 1 CoChair makes a *final decision* on *many* Papers
+
+2. **Paper**
+   - 1 Paper is assigned to *at least 3* Reviewers
+   - 1 Paper can receive *many* Reviews
+   - 1 Paper has *1 FinalDecision*
+
+3. **Review**
+   - 1 Review is associated with *1 Paper*
+   - 1 Review is written by *1 Reviewer*
+
+4. **FinalDecision**
+   - 1 FinalDecision is associated with *1 Paper*
+   - 1 FinalDecision is made by *1 CoChair*
+
+### Summary of Relationships
+- 1 Author -> *many* Papers
+- 1 Reviewer -> *many* Reviews
+- 1 Paper -> *at least 3* Reviews
+- 1 Paper -> 1 FinalDecision
+- 1 CoChair -> *many* FinalDecisions
+
+This structure helps outline the relationships and responsibilities of each class in the context of the computer-assisted review system.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ * Assigned association 1 at
+ * Written association 1 or
+ * Written association 1 1
+ * Written association 1 1
+ * Made association 1 1
+ * Made association 1 1
+ 1 User association 1 CoChair
+ 1 Author association * many
+ 1 Reviewer association * many
+ 1 CoChair association * final
+ 1 Paper association * at
+ 1 Paper association * many
+ 1 Paper association * 1
+ 1 Review association * 1
+ 1 Review association * 1
+ 1 FinalDecision association * 1
+ 1 FinalDecision association * 1
+ 1 Author association * many
+ 1 Reviewer association * many
+ 1 Paper association * at
+ 1 Paper association 1 FinalDecision
+ 1 CoChair association * many
+ 1 This association 1 system
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   9                   
+Attributes          3                   0                   12                  
+Associations        1                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+**Model Classes:**
+
+1. **User**
+   - Attributes: 
+     - `name: String`
+   - Subclasses:
+     - `Author`
+     - `Reviewer`
+     - `CoChair`
+
+2. **Paper**
+   - Attributes:
+     - `title: String`
+     - `type: PaperType` (Enum: ResearchPaper, ExperienceReport)
+
+3. **Review**
+   - Attributes:
+     - `feedback: String`
+     - `grade: ReviewGrade` (Enum: Accept, Reject)
+
+4. **Decision**
+   - Attributes:
+     - `finalDecision: ReviewGrade` (Enum: Accept, Reject)
+
+**Associations:**
+
+1. **User to Paper**
+   - A user (Author) can submit multiple papers.
+   - A paper is submitted by one author.
+
+2. **Paper to Review**
+   - A paper is reviewed by at least three reviewers.
+   - A review is associated with exactly one paper.
+
+3. **Reviewer to Review**
+   - A reviewer can submit multiple reviews.
+   - A review is submitted by one reviewer.
+
+4. **Paper to Decision**
+   - A paper has one final decision made by a CoChair.
+   - A decision is associated with exactly one paper.
+
+5. **User to Review**
+   - A user (Reviewer) can have multiple reviews assigned.
+
+**Summary of Relationships:**
+
+- `1 Author -> * Paper`
+- `1 Paper -> * Review`
+- `* Reviewer -> * Review`
+- `1 Paper -> 1 Decision`
+- `1 CoChair -> * Decision` 
+
+This structure encapsulates the relationships between users, papers, reviews, and decisions in the computer-assisted review system.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: Decision (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 user association 1 papers
+ 1 paper association 1 author
+ 1 paper association 1 reviewers
+ 1 review association 1 paper
+ 1 reviewer association 1 reviews
+ 1 review association 1 reviewer
+ 1 paper association 1 CoChair
+ 1 decision association 1 paper
+ 1 user association 1 assigned
+ 1 This association 1 system
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'User(class)'	-	'Person(class)'
+ 'Decision(class)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   9                   
+Attributes          0                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+Based on the provided description, here are the lists of model classes and associations:
+
+### Model Classes:
+1. **User**
+   - Attributes:
+     - string name
+   - Subclasses:
+     - **Author** (inherits from User)
+     - **Reviewer** (inherits from User)
+     - **CoChair** (inherits from User)
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper (true if research paper, false if experience report)
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - string grade (values: "Accept", "Reject")
+   - Relationships:
+     - Associated with a specific Paper
+     - Associated with a specific Reviewer
+
+4. **Chair**
+   - Attributes:
+     - string name (inherits from User)
+
+### Associations:
+1. **User** can be:
+   - 0..* **Author** (can submit multiple Papers)
+   - 0..* **Reviewer** (can review multiple Papers)
+   - 1 **CoChair** (may assist with decisions)
+
+2. **Paper** is:
+   - 1..* **Review** (each Paper must have at least three Reviews)
+
+3. **Review** is:
+   - 1 **Reviewer** (each Review is submitted by one Reviewer)
+   - 1 **Paper** (each Review is for one specific Paper)
+
+4. **Chair** makes:
+   - 1 **final decision** on each Paper (i.e., Accept or Reject based on reviews)
+
+### Summary of Relationships:
+- A **User** can be an **Author**, **Reviewer**, or **CoChair**.
+- An **Author** can submit multiple **Papers**.
+- A **Paper** must have at least three **Reviews**.
+- Each **Review** is linked to one **Reviewer** and one **Paper**.
+- A **Chair** makes the final decision on each **Paper** based on the submitted **Reviews**.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Based (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [from:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Associated association 1 Paper
+ 1 Associated association 1 Reviewer
+ 1 string association 1 User
+ 1 1 association 1 assist
+ 1 1 association 1 Review
+ 1 1 association 1 Review
+ 1 1 association 1 decision
+ 1 1 association 1 can
+ 1 1 association 1 can
+ 1 1 association 1 must
+ 1 Each association 1 is
+ 1 1 association 1 makes
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  6                   9                   
+Attributes          3                   0                   12                  
+Associations        1                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+1. **User**
+   - Attributes:
+     - string name
+   - Subclasses:
+     - **Author** (inherits User)
+     - **Reviewer** (inherits User)
+     - **CoChair** (inherits User)
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper (true for research papers, false for experience reports)
+   - Relationships:
+     - 1 Paper has *Review
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - Grade grade (Accept, Reject)
+   - Relationships:
+     - 1 Review is assigned to *Reviewer
+     - 1 Review is associated with 1 *Paper
+
+4. **Decision**
+   - Attributes:
+     - DecisionType decision (Accept, Reject)
+   - Relationships:
+     - 1 Decision is made for 1 *Paper by 1 *CoChair
+
+### Associations:
+- A **User** can be an **Author**, **Reviewer**, or **CoChair**.
+- An **Author** can submit multiple **Papers**.
+- A **Paper** is reviewed by at least three **Reviewers**.
+- Each **Reviewer** can consult the list of **Papers** assigned to her.
+- Each **Review** is associated with one **Paper** and can be submitted by one **Reviewer**.
+- A **CoChair** makes a final **Decision** for each **Paper**.
+
+### Relationships Summary:
+1. **User** (1) ----> (0..*) **Paper** (1)
+   - An author can submit multiple papers.
+   
+2. **Paper** (1) ----> (3..*) **Review** (1)
+   - Each paper must have at least three reviews.
+
+3. **Reviewer** (1) ----> (0..*) **Review** (1)
+   - Each reviewer can submit multiple reviews.
+
+4. **CoChair** (1) ----> (0..*) **Decision** (1)
+   - Each co-chair can make decisions on multiple papers.
+  
+5. **Review** (1) ----> (1) **Paper**
+   - Each review is for one specific paper. 
+
+6. **Decision** (1) ----> (1) **Paper**
+   - Each decision is made for one specific paper.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Paper association * Review
+ 1 Grade association 1 Reject
+ 1 Review association * Reviewer
+ 1 Review association 1 1
+ 1 DecisionType association 1 Reject
+ 1 Decision association 1 1
+ 1 1 association 1 can
+ 1 1 association 1 can
+ 1 1 association 1 is
+ 1 Each association 1 can
+ 1 Each association 1 is
+ 1 1 association 1 makes
+ 1 author association 1 papers
+ 1 Each association 1 reviews
+ 1 Each association 1 reviews
+ 1 Each association 1 papers
+ 1 Each association 1 paper
+ 1 Each association 1 paper
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes
+
+1. **User**
+   - Attributes:
+     - string name
+   - Subclasses:
+     - **Author** (inherits User)
+     - **Reviewer** (inherits User)
+     - **CoChair** (inherits User)
+
+2. **Paper**
+   - Attributes:
+     - string title
+     - boolean isResearchPaper  (true for research papers, false for experience reports)
+   - Relationships:
+     - List<Reviewer> reviewers
+     - List<Review> reviews
+
+3. **Review**
+   - Attributes:
+     - string feedback
+     - enum Grade { Accept, Reject }
+   - Relationships:
+     - Paper paper
+     - Reviewer reviewer
+
+4. **Decision**
+   - Attributes:
+     - enum FinalDecision { Accept, Reject }
+   - Relationships:
+     - Paper paper
+     - CoChair coChair
+
+### Associations
+
+- **User** can submit *Paper* (1 to many)
+- **Paper** can be reviewed by *Reviewer* (3 or more)
+- **Reviewer** can submit *Review* for *Paper* (1 to many)
+- **Review** is associated with one *Paper* and one *Reviewer*
+- **CoChair** makes a *Decision* on a *Paper* (1 to 1)
+
+### Summary of Relationships
+
+1. **User** (Author, Reviewer, CoChair) can submit 0..* **Paper**
+2. **Paper** is reviewed by 3..* **Reviewer**
+3. Each **Reviewer** submits 0..* **Review** for a **Paper**
+4. Each **Review** is linked to exactly one **Paper** and one **Reviewer**
+5. Each **CoChair** makes 1 **Decision** for each **Paper**
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: [User:inherits]
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: string (class) - Enum Attributes: [], Class Attributes: []
+Class: boolean (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 enum association 1 Reject
+ 1 enum association 1 Reject
+ 1 Each association 1 submits
+ 1 Each association 1 is
+ 1 Each association 1 makes
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'User(class)'	-	'Person(class)'
+ 'CoChair(class)'	-	'Chair(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   9                   
+Attributes          3                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Online Paper Review System (OPRS):
+------------------------------------------------------------
+AI:
+### Model Classes:
+1. **User**
+   - Attributes: 
+     - name: String
+   - Subclasses: 
+     - Author
+     - Reviewer
+     - CoChair
+
+2. **Paper**
+   - Attributes:
+     - title: String
+     - type: PaperType (Enum: RESEARCH, EXPERIENCE_REPORT)
+
+3. **Review**
+   - Attributes:
+     - feedback: String
+     - grade: ReviewGrade (Enum: ACCEPT, REJECT)
+
+4. **Chair**
+   - Attributes:
+     - name: String
+
+### Associations:
+1. **User to Paper**
+   - A User (Author) can submit multiple Papers (1 to many).
+   - A Paper can have multiple Users (Reviewers) assigned to it (many to many).
+
+2. **Paper to Review**
+   - A Paper can have multiple Reviews (1 to many).
+   - Each Review is associated with exactly one Paper (many to 1).
+
+3. **Reviewer to Review**
+   - A Reviewer can submit multiple Reviews (1 to many).
+   - Each Review is submitted by one Reviewer (many to 1).
+
+4. **Chair to Paper**
+   - A Chair makes a final decision on multiple Papers (1 to many).
+   - Each Paper has one final decision made by one Chair (many to 1).
+
+### Enumeration:
+- **PaperType**: 
+  - RESEARCH
+  - EXPERIENCE_REPORT
+
+- **ReviewGrade**: 
+  - ACCEPT
+  - REJECT
+
+### Summary of Relationships:
+- **Author** (User) **submits** **Paper** (1 to many)
+- **Reviewer** (User) **reviews** **Paper** (many to many)
+- **Paper** **has** **Review** (1 to many)
+- **Reviewer** **provides** **Review** (1 to many)
+- **Chair** **makes decision on** **Paper** (1 to many)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: name (class) - Enum Attributes: [], Class Attributes: []
+Class: Author (class) - Enum Attributes: [], Class Attributes: []
+Class: Reviewer (class) - Enum Attributes: [], Class Attributes: []
+Class: CoChair (class) - Enum Attributes: [], Class Attributes: []
+Class: Paper (class) - Enum Attributes: [], Class Attributes: []
+Class: Attributes (class) - Enum Attributes: [], Class Attributes: []
+Class: title (class) - Enum Attributes: [], Class Attributes: []
+Class: type (class) - Enum Attributes: [], Class Attributes: []
+Class: Review (class) - Enum Attributes: [], Class Attributes: []
+Class: feedback (class) - Enum Attributes: [], Class Attributes: []
+Class: grade (class) - Enum Attributes: [], Class Attributes: []
+Class: Chair (class) - Enum Attributes: [], Class Attributes: []
+Class: PaperType (enum) - Enum Attributes: [], Class Attributes: []
+Class: RESEARCH (enum) - Enum Attributes: [], Class Attributes: []
+Class: EXPERIENCE_REPORT (enum) - Enum Attributes: [], Class Attributes: []
+Class: ReviewGrade (enum) - Enum Attributes: [], Class Attributes: []
+Class: ACCEPT (enum) - Enum Attributes: [], Class Attributes: []
+Class: REJECT (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 User association 1 Papers
+ 1 Paper association 1 many
+ 1 Paper association 1 Reviews
+ 1 Each association 1 1
+ 1 Reviewer association 1 Reviews
+ 1 Each association 1 1
+ 1 Chair association 1 Papers
+ 1 Each association 1 1
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Author(class)'	-	'Author(class)'
+ 'Reviewer(class)'	-	'Reviewer(class)'
+ 'Paper(class)'	-	'Paper(class)'
+ 'Review(class)'	-	'Review(class)'
+ 'Chair(class)'	-	'Chair(class)'
+ 'PaperType(enum)'	-	'PaperType(enum)'
+ 'User(class)'	-	'Person(class)'
+ 'grade(class)'	-	'DecisionKind(enum)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             20                  8                   9                   
+Attributes          0                   0                   12                  
+Associations        0                   0                   4                   
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+Online Paper Review System (OPRS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.610          0.661          0.635          0.650
+Attributes          0.000          0.000          0.000          0.000
+Associations        0.333          0.050          0.087          0.060
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

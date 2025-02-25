@@ -1,0 +1,1288 @@
+------------------------------------------------------------
+---------------------1/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(morning, afternoon, night)
+
+Class:
+1. Driver(driverName: string, driverId: int, isOnSickLeave: bool)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, isUnderRepair: bool)
+4. Assignment(date: date)
+5. Shift(shiftType: ShiftType)
+
+Relationships:
+1..* Driver assign 1..* Assignment
+1..* BusRoute assign 1..* Assignment
+1..* Bus schedule 1..* Assignment
+1..* Driver schedule 1..* Assignment
+1..* BusRoute contain 1..* Bus
+1..* Assignment contain 1..* Shift
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [morning, afternoon, night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [driverName, driverId, isOnSickLeave], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate, isUnderRepair], Class Attributes: []
+Class: Assignment (enum) - Enum Attributes: [date], Class Attributes: []
+Class: Shift (enum) - Enum Attributes: [shiftType], Class Attributes: []
+Relationships:
+ 1..* Driver association 1..* Assignment
+ 1..* BusRoute association 1..* Assignment
+ 1..* Bus association 1..* Assignment
+ 1..* Driver association 1..* Assignment
+ 1..* BusRoute aggregation 1..* Bus
+ 1..* Assignment aggregation 1..* Shift
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'Shift(enum)'	-	'Shift(enum)'
+ 'Assignment(enum)'	-	'RouteAssignment(class)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+-Attributes:
+ 'Driver(enum):isOnSickLeave'	-	'onSickLeave'
+ 'Assignment(enum):date'	-	'date'
+ 'Bus(enum):licencePlate'	-	'licencePlate'
+-Relationships:
+ ' 1..* BusRoute association 1..* Assignment'	-	' * RouteAssignment association 1 Route'
+ ' 1..* Bus association 1..* Assignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          11                  3                   11                  
+Associations        6                   2                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. BusDriver(driverName: String, driverID: String, onSickLeave: Boolean)
+2. BusRoute(routeNumber: Int)
+3. Bus(licencePlate: String, inRepairShop: Boolean)
+4. BusAssignment(date: Date, bus: Bus, route: BusRoute)
+5. DriverAssignment(date: Date, driver: BusDriver, bus: Bus, route: BusRoute)
+
+Relationships:
+1..* BusDriver associates 1..* DriverAssignment
+1..* BusRoute associates 1..* BusAssignment
+1 BusAssignment contains 1 Bus
+1 DriverAssignment contains 1 BusDriver
+1 DriverAssignment contains 1 BusRoute
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: BusDriver (enum) - Enum Attributes: [driverName, driverID, onSickLeave], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate, inRepairShop], Class Attributes: []
+Class: BusAssignment (enum) - Enum Attributes: [date, bus, route], Class Attributes: []
+Class: DriverAssignment (enum) - Enum Attributes: [date, driver, bus, route], Class Attributes: []
+Relationships:
+ 1..* BusDriver association 1..* DriverAssignment
+ 1..* BusRoute association 1..* BusAssignment
+ 1 BusAssignment association 1 Bus
+ 1 DriverAssignment association 1 BusDriver
+ 1 DriverAssignment association 1 BusRoute
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'BusDriver(enum)'	-	'Driver(class)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'BusAssignment(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(enum):licencePlate'	-	'licencePlate'
+ 'Bus(enum):inRepairShop'	-	'inRepairShop'
+ 'BusDriver(enum):onSickLeave'	-	'onSickLeave'
+ 'BusAssignment(enum):date'	-	'date'
+-Relationships:
+ ' 1..* BusRoute association 1..* BusAssignment'	-	' * RouteAssignment association 1 Route'
+ ' 1 BusAssignment association 1 Bus'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          16                  7                   11                  
+Associations        5                   2                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverID: int, name: string, onSickLeave: boolean)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, inRepairShop: boolean)
+4. Assignment(date: date, bus: Bus, route: BusRoute, driver: Driver, shift: ShiftType)
+
+Relationships:
+- BusRoute contains 1..* Bus
+- BusRoute has 1..* Assignment
+- Driver has 1..* Assignment
+- Bus has 1..* Assignment
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverID:int,name:string,onSickLeave:boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:string,inRepairShop:boolean]
+Class: Assignment (class) - Enum Attributes: [], Class Attributes: [date:date,bus:Bus,route:BusRoute,driver:Driver,shift:ShiftType]
+Relationships:
+ 1 BusRoute association 1..* Bus
+ 1 BusRoute association 1..* Assignment
+ 1 Driver association 1..* Assignment
+ 1 Bus association 1..* Assignment
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Assignment(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(class):name'	-	'name'
+ 'Driver(class):onSickLeave'	-	'onSickLeave'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+ 'Bus(class):inRepairShop'	-	'inRepairShop'
+ 'Assignment(class):date'	-	'date'
+-Relationships:
+ ' 1 BusRoute association 1..* Assignment'	-	' * RouteAssignment association 1 Route'
+ ' 1 Bus association 1..* Assignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          14                  8                   11                  
+Associations        4                   2                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. BusDriver(driverID : int, name : string, isOnSickLeave : boolean)
+2. BusRoute(routeNumber : int)
+3. Bus(licencePlate : string, isInRepairShop : boolean)
+4. Schedule(routeNumber : int, licencePlate : string, driverID : int, shiftType : ShiftType)
+
+Relationships:
+- One BusDriver can be assigned to multiple Schedules (0..*)
+- One BusRoute can have multiple Schedules (0..*)
+- One Bus can be assigned to multiple Schedules (0..*)
+- One Schedule is associated with one BusDriver (1)
+- One Schedule is associated with one BusRoute (1)
+- One Schedule is associated with one Bus (1)
+- One BusDriver can be on multiple Schedules for different shifts on the same day (0..*)
+- One Bus can be assigned to different BusRoutes on different days (0..*)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: BusDriver (class) - Enum Attributes: [], Class Attributes: [driverID :int,name :string,isOnSickLeave :boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber :int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate :string,isInRepairShop :boolean]
+Class: Schedule (class) - Enum Attributes: [], Class Attributes: [routeNumber :int,licencePlate :string,driverID :int,shiftType :ShiftType]
+Relationships:
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 is
+ 1 One association 1 is
+ 1 One association 1 is
+ 1 One association 1 can
+ 1 One association 1 can
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusDriver(class)'	-	'Driver(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Schedule(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate '	-	'licencePlate'
+ 'Bus(class):isInRepairShop '	-	'inRepairShop'
+ 'BusDriver(class):name '	-	'name'
+ 'BusDriver(class):isOnSickLeave '	-	'onSickLeave'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          13                  7                   11                  
+Associations        0                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(name: String, driverID: String)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: String)
+4. Assignment(routeNumber: int, licencePlate: String, driverID: String, shift: ShiftType)
+
+Relationships:
+1. 1 Driver associate * Assignment
+2. 1 BusRoute associate * Assignment
+3. 1 Bus associate 1 Assignment
+4. 1 Driver inherit 1 Assignment
+5. 1 Bus inherit 1 Assignment
+6. 1 Driver contain * Assignment
+7. 1 Bus contain * Assignment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [name, driverID], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate], Class Attributes: []
+Class: Assignment (enum) - Enum Attributes: [routeNumber, licencePlate, driverID, shift], Class Attributes: []
+Relationships:
+ 1 Driver association * Assignment
+ 1 BusRoute association * Assignment
+ 1 Bus association 1 Assignment
+ False Driver inheritance False Assignment
+ False Bus inheritance False Assignment
+ 1 Driver aggregation * Assignment
+ 1 Bus aggregation * Assignment
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'Assignment(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(enum):name'	-	'name'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(enum):licencePlate'	-	'licencePlate'
+-Relationships:
+ ' 1 BusRoute association * Assignment'	-	' * RouteAssignment association 1 Route'
+ ' 1 Bus association 1 Assignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          11                  5                   11                  
+Associations        5                   2                   9                   
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Class:
+Driver(driverID : int, name : string, onSickLeave : boolean)
+BusRoute(routeNumber : int)
+Bus(licencePlate : string, inRepairShop : boolean)
+Shift(shiftType : string)
+Assignment(date : date)
+Overview
+
+Relationships:
+1 BusRoute contain 1..* Bus
+1 BusRoute contain 1 Assignment
+1 BusRoute inherit Shift
+1 Bus inherit 1 Assignment
+1 Driver inherit Shift
+1 Assignment associate 1..* Driver
+1 Assignment associate 1..* Bus
+1 Assignment associate 1 Shift
+1 Overview associate 1..* BusRoute
+1 Overview associate 1..* Assignment
+```  
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverID :int,name :string,onSickLeave :boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber :int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate :string,inRepairShop :boolean]
+Class: Shift (class) - Enum Attributes: [], Class Attributes: [shiftType :string]
+Class: Assignment (class) - Enum Attributes: [], Class Attributes: [date :date]
+Relationships:
+ 1 BusRoute aggregation 1..* Bus
+ 1 BusRoute aggregation 1 Assignment
+ False BusRoute inheritance False Shift
+ False Bus inheritance False Assignment
+ False Driver inheritance False Shift
+ 1 Assignment association 1..* Driver
+ 1 Assignment association 1..* Bus
+ 1 Assignment association 1 Shift
+ 1 Overview association 1..* BusRoute
+ 1 Overview association 1..* Assignment
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'Shift(class)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'Assignment(class)'	-	'RouteAssignment(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+-Attributes:
+ 'Driver(class):name '	-	'name'
+ 'Driver(class):onSickLeave '	-	'onSickLeave'
+ 'Bus(class):licencePlate '	-	'licencePlate'
+ 'Bus(class):inRepairShop '	-	'inRepairShop'
+ 'Assignment(class):date '	-	'date'
+-Relationships:
+ ' 1 Assignment association 1..* Bus'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          8                   5                   11                  
+Associations        5                   1                   9                   
+Inheritances        3                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(driverName: String, driverID: String)
+2. BusRoute(routeNumber: int)
+3. Bus(licensePlate: String)
+4. Assignment(driverID: String, busLicensePlate: String, routeNumber: int, shiftType: ShiftType, date: Date)
+5. BusStatus(busLicensePlate: String, isOnSickLeave: boolean, isInRepairShop: boolean)
+
+Relationships:
+1. 0..* Driver assigned 1 Assignment
+2. 0..* Bus assigned 1 Assignment
+3. 1 BusRoute contain 0..* Assignment
+4. 1 Assignment associate 1 ShiftType
+5. 0..1 BusStatus associate 1 Bus
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [driverName, driverID], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licensePlate], Class Attributes: []
+Class: Assignment (enum) - Enum Attributes: [driverID, busLicensePlate, routeNumber, shiftType, date], Class Attributes: []
+Class: BusStatus (enum) - Enum Attributes: [busLicensePlate, isOnSickLeave, isInRepairShop], Class Attributes: []
+Relationships:
+ 0..* Driver association 1 Assignment
+ 0..* Bus association 1 Assignment
+ 1 BusRoute aggregation 0..* Assignment
+ 1 Assignment association 1 ShiftType
+ 0..1 BusStatus association 1 Bus
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'Assignment(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(enum):licensePlate'	-	'licencePlate'
+ 'Assignment(enum):date'	-	'date'
+-Relationships:
+ ' 0..* Bus association 1 Assignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          15                  5                   11                  
+Associations        5                   1                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(name : String, id : String)
+2. BusRoute(number : int)
+3. Bus(licencePlate : String)
+4. BusAssignment
+5. Schedule
+6. Overview
+
+Relationships:
+1..* Driver assigned 1..* BusAssignment
+1..* Bus assigned 1..* BusAssignment
+1..* Bus assigned 1..* BusRoute
+1..* Driver assigned 1..* Schedule
+1..* BusAssignment contained 1..* Schedule
+1 Overview associate 1..* BusRoute
+1 Overview associate 1..* BusAssignment
+1 Overview associate 1..* Driver
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [name , id ], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [number ], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate ], Class Attributes: []
+Class: BusAssignment (enum) - Enum Attributes: [], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Overview (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Driver association 1..* BusAssignment
+ 1..* Bus association 1..* BusAssignment
+ 1..* Bus association 1..* BusRoute
+ 1..* Driver association 1..* Schedule
+ 1..* BusAssignment association 1..* Schedule
+ 1 Overview association 1..* BusRoute
+ 1 Overview association 1..* BusAssignment
+ 1 Overview association 1..* Driver
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'BusAssignment(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(enum):name '	-	'name'
+ 'Driver(enum):id '	-	'id'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'BusRoute(enum):number '	-	'number'
+ 'Bus(enum):licencePlate '	-	'licencePlate'
+-Relationships:
+ ' 1..* Bus association 1..* BusAssignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   7                   
+Attributes          7                   7                   11                  
+Associations        8                   1                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(driverID : int, name : string)
+2. BusRoute(routeNumber : int)
+3. Bus(licencePlate : string, onSickLeave : boolean, inRepairShop : boolean)
+4. Schedule(routeNumber : int, licencePlate : string, driverID : int, shift : ShiftType)
+
+Relationships:
+1..* Driver associate 1..* Schedule
+1..* BusRoute contain 0..* Bus
+0..* Bus associate 1..* Schedule
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [driverID , name ], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber ], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate , onSickLeave , inRepairShop ], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [routeNumber , licencePlate , driverID , shift ], Class Attributes: []
+Relationships:
+ 1..* Driver association 1..* Schedule
+ 1..* BusRoute aggregation 0..* Bus
+ 0..* Bus association 1..* Schedule
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Schedule(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(enum):name '	-	'name'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(enum):licencePlate '	-	'licencePlate'
+ 'Bus(enum):inRepairShop '	-	'inRepairShop'
+-Relationships:
+ ' 0..* Bus association 1..* Schedule'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          13                  6                   11                  
+Associations        3                   1                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+- ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverName: string, driverID: int, onSickLeave: boolean)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, inRepairShop: boolean)
+4. Schedule(routeNumber: int, busLicencePlate: string, shift: ShiftType, driverID: int, driverName: string)
+
+Relationships:
+- Driver is assigned 0..* Schedule
+- BusRoute is assigned 0..* Bus
+- Bus is assigned 0..* Schedule
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverName:string,driverID:int,onSickLeave:boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:string,inRepairShop:boolean]
+Class: Schedule (class) - Enum Attributes: [], Class Attributes: [routeNumber:int,busLicencePlate:string,shift:ShiftType,driverID:int,driverName:string]
+Relationships:
+ 1 Driver association 1 assigned
+ 1 BusRoute association 1 assigned
+ 1 Bus association 1 assigned
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Schedule(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(class):onSickLeave'	-	'onSickLeave'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+ 'Bus(class):inRepairShop'	-	'inRepairShop'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          14                  6                   11                  
+Associations        0                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(driverName: String, driverID: String)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: String)
+4. Schedule(date: Date)
+5. Shift(shiftType: ShiftType)
+
+Relationships:
+1..* Driver is assigned 1..* Shift
+1..* Bus is assigned 1..* BusRoute
+1..* Bus is assigned 1..* Schedule
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [driverName, driverID], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [date], Class Attributes: []
+Class: Shift (enum) - Enum Attributes: [shiftType], Class Attributes: []
+Relationships:
+ 1..* Driver association 1 assigned
+ 1..* Bus association 1 assigned
+ 1..* Bus association 1 assigned
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'Shift(enum)'	-	'Shift(enum)'
+ 'Schedule(enum)'	-	'RouteAssignment(class)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+-Attributes:
+ 'Schedule(enum):date'	-	'date'
+ 'Bus(enum):licencePlate'	-	'licencePlate'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          9                   2                   11                  
+Associations        0                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverName: string, driverID: int)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string)
+4. Schedule
+5. Overview
+
+Relationships:
+1..* Driver assigned 1..* Schedule
+1 Schedule contains 1..* BusAssignment
+1 BusAssignment associates 1 Bus and 1 BusRoute
+1 Schedule contains 1..* DriverAssignment
+1 DriverAssignment associates 1 Driver and 1 ShiftType
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverName:string,driverID:int]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:string]
+Class: Schedule (class) - Enum Attributes: [], Class Attributes: []
+Class: Overview (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Driver association 1..* Schedule
+ 1 Schedule association 1..* BusAssignment
+ 1 BusAssignment association 1 Bus
+ 1 Schedule association 1..* DriverAssignment
+ 1 DriverAssignment association 1 Driver
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'Schedule(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          7                   4                   11                  
+Associations        1                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverName : String, driverID : int, onSickLeave : boolean)
+2. BusRoute(routeNumber : int)
+3. Bus(licencePlate : String, inRepairShop : boolean)
+4. BusAssignment(date : Date, busID : int, routeNumber : int)
+5. DriverAssignment(date : Date, driverID : int, busID : int, shift : ShiftType)
+
+Relationships:
+1. 1 Driver is assigned to 0..* DriverAssignments
+2. 1 BusRoute has 1..* BusAssignments
+3. 1 Bus is assigned to 0..* BusAssignments
+4. 1 BusAssignment contains 1 Bus and 1 BusRoute
+5. 1 DriverAssignment contains 1 Driver and 1 BusAssignment
+6. 1 DriverAssignment contains 1 ShiftType
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverName :String,driverID :int,onSickLeave :boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber :int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate :String,inRepairShop :boolean]
+Class: BusAssignment (class) - Enum Attributes: [], Class Attributes: [date :Date,busID :int,routeNumber :int]
+Class: DriverAssignment (class) - Enum Attributes: [], Class Attributes: [date :Date,driverID :int,busID :int,shift :ShiftType]
+Relationships:
+ 1 1 association 1 is
+ 2 1 association 1 has
+ 3 1 association 1 is
+ 4 1 association 1 contains
+ 5 1 association 1 contains
+ 6 1 association 1 contains
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'BusAssignment(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(class):onSickLeave '	-	'onSickLeave'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate '	-	'licencePlate'
+ 'Bus(class):inRepairShop '	-	'inRepairShop'
+ 'BusAssignment(class):date '	-	'date'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          16                  7                   11                  
+Associations        0                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(driverId: int, name: string)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, isSick: bool, isInRepairShop: bool)
+4. Assignment(date: date, busId: int, routeId: int, driverId: int, shift: ShiftType)
+
+Relationships:
+- Driver has 0..* assignments
+- BusRoute has 1..* buses
+- Bus has 0..* assignments
+- Driver can be assigned to 0..* shifts
+- Bus can be assigned to 0..* routes
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [driverId, name], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [routeNumber], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate, isSick, isInRepairShop], Class Attributes: []
+Class: Assignment (enum) - Enum Attributes: [date, busId, routeId, driverId, shift], Class Attributes: []
+Relationships:
+ 1 Driver association 0..* assignments
+ 1 BusRoute association 1..* buses
+ 1 Bus association 0..* assignments
+ 1 Driver association 1 be
+ 1 Bus association 1 be
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Assignment(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(enum):name'	-	'name'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(enum):licencePlate'	-	'licencePlate'
+ 'Bus(enum):isInRepairShop'	-	'inRepairShop'
+ 'Assignment(enum):date'	-	'date'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          14                  7                   11                  
+Associations        0                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. BusDriver(driverID: int, name: string, onSickLeave: boolean)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, inRepairShop: boolean)
+4. BusAssignment(date: date, bus: Bus, route: BusRoute)
+5. DriverAssignment(date: date, driver: BusDriver, shift: ShiftType, bus: Bus)
+
+Relationships:
+- BusDriver and Bus have a one-to-many association where a BusDriver can be associated with multiple Buses.
+- BusRoute and BusAssignment have a one-to-many association where a BusRoute can have multiple BusAssignments.
+- Bus and BusAssignment have a one-to-many association where a Bus can have multiple BusAssignments.
+- BusRoute and DriverAssignment have a one-to-many association where a BusRoute can have multiple DriverAssignments.
+- BusDriver and DriverAssignment have a one-to-many association where a BusDriver can have multiple DriverAssignments.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: BusDriver (class) - Enum Attributes: [], Class Attributes: [driverID:int,name:string,onSickLeave:boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:string,inRepairShop:boolean]
+Class: BusAssignment (class) - Enum Attributes: [], Class Attributes: [date:date,bus:Bus,route:BusRoute]
+Class: DriverAssignment (class) - Enum Attributes: [], Class Attributes: [date:date,driver:BusDriver,shift:ShiftType,bus:Bus]
+Relationships:
+ 1 BusDriver association 1 Bus
+ 1 BusRoute association 1 BusAssignment
+ 1 Bus association 1 BusAssignment
+ 1 BusRoute association 1 DriverAssignment
+ 1 BusDriver association 1 DriverAssignment
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusDriver(class)'	-	'Driver(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'BusAssignment(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+ 'Bus(class):inRepairShop'	-	'inRepairShop'
+ 'BusDriver(class):name'	-	'name'
+ 'BusDriver(class):onSickLeave'	-	'onSickLeave'
+ 'BusAssignment(class):date'	-	'date'
+-Relationships:
+ ' 1 BusRoute association 1 BusAssignment'	-	' * RouteAssignment association 1 Route'
+ ' 1 Bus association 1 BusAssignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          16                  8                   11                  
+Associations        5                   2                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Shift (MORNING, AFTERNOON, NIGHT)
+
+Classes:
+1. Driver(driverID: int, name: string, onSickLeave: boolean)
+2. BusRoute(routeNumber: int)
+3. Bus(licencePlate: string, inRepairShop: boolean)
+4. Schedule(date: date)
+
+Relationships:
+- 1 BusRoute contain 0..* Bus
+- 1 BusRoute associate 0..* Schedule
+- 1 Bus associate 1 Driver
+- 1 Schedule associate 1 Driver
+- Driver inherit Schedule
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Shift (enum) - Enum Attributes: [MORNING, AFTERNOON, NIGHT], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverID:int,name:string,onSickLeave:boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:string,inRepairShop:boolean]
+Class: Schedule (class) - Enum Attributes: [], Class Attributes: [date:date]
+Relationships:
+ 1 BusRoute aggregation 0..* Bus
+ 1 BusRoute association 0..* Schedule
+ 1 Bus association 1 Driver
+ 1 Schedule association 1 Driver
+ False Driver inheritance False Schedule
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Shift(enum)'	-	'Shift(enum)'
+ 'Driver(class)'	-	'Driver(class)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'Schedule(class)'	-	'RouteAssignment(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+-Attributes:
+ 'Shift(enum):MORNING'	-	'morning'
+ 'Shift(enum):AFTERNOON'	-	'afternoon'
+ 'Shift(enum):NIGHT'	-	'night'
+ 'Driver(class):name'	-	'name'
+ 'Driver(class):onSickLeave'	-	'onSickLeave'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+ 'Bus(class):inRepairShop'	-	'inRepairShop'
+ 'Schedule(class):date'	-	'date'
+-Relationships:
+ ' 1 BusRoute association 0..* Schedule'	-	' * RouteAssignment association 1 Route'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          10                  8                   11                  
+Associations        4                   1                   9                   
+Inheritances        1                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Class:
+1. Driver(name : String, id : String)
+2. BusRoute(number : int)
+3. Bus(licencePlate : String)
+4. Schedule
+5. Overview
+
+Relationships:
+1 BusRoute contain * Bus
+1 BusRoute contain * Schedule
+1 Schedule associate 1 Driver
+1 Schedule associate 1 Bus
+1 Driver inherit Bus
+1 Bus inherit BusRoute
+1 Overview associate * BusRoute
+1 Overview associate * Schedule
+1 Overview associate * Driver
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (enum) - Enum Attributes: [name , id ], Class Attributes: []
+Class: BusRoute (enum) - Enum Attributes: [number ], Class Attributes: []
+Class: Bus (enum) - Enum Attributes: [licencePlate ], Class Attributes: []
+Class: Schedule (enum) - Enum Attributes: [], Class Attributes: []
+Class: Overview (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 BusRoute aggregation * Bus
+ 1 BusRoute aggregation * Schedule
+ 1 Schedule association 1 Driver
+ 1 Schedule association 1 Bus
+ False Driver inheritance False Bus
+ False Bus inheritance False BusRoute
+ 1 Overview association * BusRoute
+ 1 Overview association * Schedule
+ 1 Overview association * Driver
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(enum)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'BusRoute(enum)'	-	'Route(class)'
+ 'Bus(enum)'	-	'BusVehicle(class)'
+ 'Schedule(enum)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(enum):name '	-	'name'
+ 'Driver(enum):id '	-	'id'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'BusRoute(enum):number '	-	'number'
+ 'Bus(enum):licencePlate '	-	'licencePlate'
+-Relationships:
+ ' 1 Schedule association 1 Bus'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   7                   
+Attributes          7                   7                   11                  
+Associations        7                   1                   9                   
+Inheritances        2                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+- ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverName: String, driverID: String, sickLeave: Boolean)
+2. BusRoute(routeNumber: Integer)
+3. Bus(licencePlate: String, inRepairShop: Boolean)
+4. Schedule(day: Date, bus: Bus, route: BusRoute, driver: Driver, shift: ShiftType)
+
+Relationships:
+- Driver is assigned to multiple Schedules (0..*)
+- BusRoute has multiple Buses assigned (0..*)
+- Bus is assigned to multiple Schedules (0..*)
+- Driver may be assigned to multiple Shifts in a day (0..*)
+- Bus may be assigned to multiple Routes on different days (0..*)
+- Bus may have multiple Shifts in a day (0..*)
+- Schedule highlights Driver or Bus if on sick leave or in repair shop
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverName:String,driverID:String,sickLeave:Boolean]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber:Integer]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate:String,inRepairShop:Boolean]
+Class: Schedule (class) - Enum Attributes: [], Class Attributes: [day:Date,bus:Bus,route:BusRoute,driver:Driver,shift:ShiftType]
+Relationships:
+ 1 Driver association 1 assigned
+ 1 BusRoute association 1 multiple
+ 1 Bus association 1 assigned
+ 1 Driver association 1 be
+ 1 Bus association 1 be
+ 1 Bus association 1 have
+ 1 Schedule association 1 Driver
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Schedule(class)'	-	'RouteAssignment(class)'
+-Attributes:
+ 'Driver(class):sickLeave'	-	'onSickLeave'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'Bus(class):licencePlate'	-	'licencePlate'
+ 'Bus(class):inRepairShop'	-	'inRepairShop'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          14                  6                   11                  
+Associations        1                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------BTMS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. ShiftType(Morning, Afternoon, Night)
+
+Classes:
+1. Driver(driverID : int, name : string)
+2. BusRoute(routeNumber : int)
+3. Bus(licencePlate : string, onRepair : boolean)
+4. ScheduleAssignment(date : date)
+
+Relationships:
+1..* Driver assigned 1..* ScheduleAssignment
+1..* Bus assigned 1..* ScheduleAssignment
+1 Bus assigned 1 BusRoute
+1 BusRoute contains 1..* Bus
+1 ScheduleAssignment has 1 ShiftType
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverID :int,name :string]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber :int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate :string,onRepair :boolean]
+Class: ScheduleAssignment (class) - Enum Attributes: [], Class Attributes: [date :date]
+Relationships:
+ 1..* Driver association 1..* ScheduleAssignment
+ 1..* Bus association 1..* ScheduleAssignment
+ 1 Bus association 1 BusRoute
+ 1 BusRoute association 1..* Bus
+ 1 ScheduleAssignment association 1 ShiftType
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'ShiftType(enum)'	-	'Shift(enum)'
+ 'ScheduleAssignment(class)'	-	'RouteAssignment(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+-Attributes:
+ 'Driver(class):name '	-	'name'
+ 'ShiftType(enum):Morning'	-	'morning'
+ 'ShiftType(enum):Afternoon'	-	'afternoon'
+ 'ShiftType(enum):Night'	-	'night'
+ 'ScheduleAssignment(class):date '	-	'date'
+ 'Bus(class):licencePlate '	-	'licencePlate'
+-Relationships:
+ ' 1..* Bus association 1..* ScheduleAssignment'	-	' * RouteAssignment association 1 BusVehicle'
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   5                   7                   
+Attributes          9                   6                   11                  
+Associations        5                   1                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------BTMS:
+------------------------------------------------------------
+AI:
+```
+Class:
+Driver(driverID : int, name : string)
+BusRoute(routeNumber : int)
+Bus(licencePlate : string)
+Shift(shiftType : string)
+Assignment(date : date)
+BusDriverAssignment(driverID : int, busID : string, routeNumber : int, date : date)
+
+Enumeration:
+ShiftType(Morning, Afternoon, Night)
+
+Relationships:
+Driver 1..* BusDriverAssignment
+BusRoute 1..* BusDriverAssignment
+Bus 0..* BusDriverAssignment
+Shift 1..* BusDriverAssignment
+Assignment 0..* BusDriverAssignment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Driver (class) - Enum Attributes: [], Class Attributes: [driverID :int,name :string]
+Class: BusRoute (class) - Enum Attributes: [], Class Attributes: [routeNumber :int]
+Class: Bus (class) - Enum Attributes: [], Class Attributes: [licencePlate :string]
+Class: Shift (class) - Enum Attributes: [], Class Attributes: [shiftType :string]
+Class: Assignment (class) - Enum Attributes: [], Class Attributes: [date :date]
+Class: BusDriverAssignment (class) - Enum Attributes: [], Class Attributes: [driverID :int,busID :string,routeNumber :int,date :date]
+Class: ShiftType (enum) - Enum Attributes: [Morning, Afternoon, Night], Class Attributes: []
+Relationships:
+ 1 Driver association 1 BusDriverAssignment
+ 1 BusRoute association 1 BusDriverAssignment
+ 1 Bus association 1 BusDriverAssignment
+ 1 Shift association 1 BusDriverAssignment
+ 1 Assignment association 1 BusDriverAssignment
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'Driver(class)'	-	'Driver(class)'
+ 'Shift(class)'	-	'Shift(enum)'
+ 'Assignment(class)'	-	'RouteAssignment(class)'
+ 'BusRoute(class)'	-	'Route(class)'
+ 'Bus(class)'	-	'BusVehicle(class)'
+-Attributes:
+ 'Driver(class):name '	-	'name'
+ 'Assignment(class):date '	-	'date'
+ 'Bus(class):licencePlate '	-	'licencePlate'
+-Relationships:
+--------------------------------------------------------------------------------
+BTMS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   7                   
+Attributes          13                  3                   11                  
+Associations        5                   0                   9                   
+Inheritances        0                   0                   0                   
+--------------------------------------------------------------------------------
+BTMS, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.893          0.714          0.794          0.744
+Attributes          0.494          0.532          0.512          0.524
+Associations        0.246          0.094          0.137          0.108
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

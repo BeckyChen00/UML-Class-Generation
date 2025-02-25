@@ -1,0 +1,1385 @@
+------------------------------------------------------------
+---------------------1/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumarations:
+1. UserType (ordinary, administrator)
+2. LeaveType (annual, maternity, satisfactory, without pay, local)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+
+Relationships:
+1..1 UserLoginManagement contain 0..* User
+1..1 UserLoginManagement contain 1 Administrator
+1..1 EmployeeInformationManagement contain 1 Employee
+1..* EmployeeLeavesManagement associate 1 Employee
+1..* EmployeeDisciplineManagement associate 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (class) - Enum Attributes: [], Class Attributes: [ordinary:,administrator:]
+Class: LeaveType (class) - Enum Attributes: [], Class Attributes: [annual:,maternity:,satisfactory:,pay:without,local:]
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..1 UserLoginManagement aggregation 0..* User
+ 1..1 UserLoginManagement aggregation 1 Administrator
+ 1..1 EmployeeInformationManagement aggregation 1 Employee
+ 1..* EmployeeLeavesManagement association 1 Employee
+ 1..* EmployeeDisciplineManagement association 1 Employee
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(class)'	-	'LeaveType(enum)'
+ 'User(class)'	-	'User(class)'
+ 'Employee(class)'	-	'Employee(class)'
+-Attributes:
+ 'LeaveType(class):annual'	-	'annual'
+ 'LeaveType(class):maternity'	-	'maternity'
+ 'LeaveType(class):satisfactory'	-	'satisfactory'
+ 'LeaveType(class):local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   3                   9                   
+Attributes          7                   4                   26                  
+Associations        4                   0                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(ORDINARY, ADMINISTRATOR)
+2. LeaveType(ANNUAL, MATERNITY, SATISFACTORY, WITHOUT_PAY, LOCAL)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+7. Leave
+8. Punishment
+
+Relationships:
+1..* UserLoginManagement contain 1 User
+1 UserLoginManagement contain 1 UserLogin(ordinaryUser : UserRole, administratorUser : UserRole)
+1 UserLoginManagement associate 1 UserLogin(ordinaryUser : UserRole) 
+1 UserLoginManagement associate 1 UserLogin(administratorUser : UserRole)
+
+1 EmployeeInformationManagement contain 1 Employee
+1 EmployeeInformationManagement associate 1 Employee
+1 Employee contain 1 User
+1 Employee associate 1 User
+
+1 EmployeeLeavesManagement contain 1 Leave
+1 EmployeeLeavesManagement associate * Leave
+1 Leave associate 1 Employee
+
+1 EmployeeDisciplineManagement contain 1 Punishment
+1 EmployeeDisciplineManagement associate * Punishment
+1 Punishment associate 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [ORDINARY, ADMINISTRATOR], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [ANNUAL, MATERNITY, SATISFACTORY, WITHOUT_PAY, LOCAL], Class Attributes: []
+Class: UserLoginManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [], Class Attributes: []
+Class: Leave (enum) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* UserLoginManagement aggregation 1 User
+ 1 UserLoginManagement aggregation 1 UserLogin
+ 1 UserLoginManagement association 1 UserLogin
+ 1 UserLoginManagement association 1 UserLogin
+ 1 EmployeeInformationManagement aggregation 1 Employee
+ 1 EmployeeInformationManagement association 1 Employee
+ 1 Employee aggregation 1 User
+ 1 Employee association 1 User
+ 1 EmployeeLeavesManagement aggregation 1 Leave
+ 1 EmployeeLeavesManagement association * Leave
+ 1 Leave association 1 Employee
+ 1 EmployeeDisciplineManagement aggregation 1 Punishment
+ 1 EmployeeDisciplineManagement association * Punishment
+ 1 Punishment association 1 Employee
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'User(enum)'	-	'User(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Leave(enum)'	-	'LeaveRequest(class)'
+ 'Punishment(enum)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):ANNUAL'	-	'annual'
+ 'LeaveType(enum):MATERNITY'	-	'maternity'
+ 'LeaveType(enum):SATISFACTORY'	-	'satisfactory'
+ 'LeaveType(enum):WITHOUT_PAY'	-	'withoutPay'
+ 'LeaveType(enum):LOCAL'	-	'local'
+-Relationships:
+ ' 1 Leave association 1 Employee'	-	' 1 LeaveRequest association 1 Employee'
+ ' 1 Punishment association 1 Employee'	-	' 1 DisciplineRecord association 1 Employee'
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  5                   9                   
+Attributes          7                   5                   26                  
+Associations        11                  2                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserType(OrdinaryUser, Administrator)
+2. LeaveType(Annual, Maternity, Satisfactory, WithoutPay, Local)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. Employee
+6. Leave
+7. Punishment
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement inherit User
+3. User inherit UserType
+4. UserLoginManagement inherit Administrator
+5. EmployeeInformationManagement contain 1..* Employee
+6. EmployeeInformationManagement inherit Employee
+7. EmployeeLeavesManagement contain 1..* Leave
+8. Leave inherit LeaveType
+9. EmployeeDisciplineManagement contain 1..* Punishment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [OrdinaryUser, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLoginManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [], Class Attributes: []
+Class: Leave (enum) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ False UserLoginManagement inheritance False User
+ False User inheritance False UserType
+ False UserLoginManagement inheritance False Administrator
+ 5 EmployeeInformationManagement aggregation 1..* Employee
+ False EmployeeInformationManagement inheritance False Employee
+ 7 EmployeeLeavesManagement aggregation 1..* Leave
+ False Leave inheritance False LeaveType
+ 9 EmployeeDisciplineManagement aggregation 1..* Punishment
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Leave(enum)'	-	'LeaveRequest(class)'
+ 'Punishment(enum)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   4                   9                   
+Attributes          7                   5                   26                  
+Associations        3                   0                   2                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserType (Ordinary, Administrator)
+2. LeaveType (Annual, Maternity, Without Pay, Local)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. Employee
+6. Leave
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement inherit UserType
+3. EmployeeInformationManagement contain 1 Employee
+4. EmployeeInformationManagement inherit UserLoginManagement
+5. EmployeeLeavesManagement contain 1..* Leave
+6. EmployeeLeavesManagement inherit Employee
+7. EmployeeDisciplineManagement contain 1 Employee
+8. EmployeeDisciplineManagement inherit Employee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Pay, Local], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Leave (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ False UserLoginManagement inheritance False UserType
+ 3 EmployeeInformationManagement aggregation 1 Employee
+ False EmployeeInformationManagement inheritance False UserLoginManagement
+ 5 EmployeeLeavesManagement aggregation 1..* Leave
+ False EmployeeLeavesManagement inheritance False Employee
+ 7 EmployeeDisciplineManagement aggregation 1 Employee
+ False EmployeeDisciplineManagement inheritance False Employee
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Leave(class)'	-	'LeaveRequest(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   3                   9                   
+Attributes          6                   3                   26                  
+Associations        3                   0                   2                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Ordinary, Administrator)
+2. LeaveType(Annual, Maternity, Satisfactory, WithoutPay, Local)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+
+Relationships:
+1 UserLoginManagement contain * UserRole
+2. UserLoginManagement contain * UserRole
+3. EmployeeInformationManagement inherit UserLoginManagement
+4. EmployeeLeavesManagement inherit UserLoginManagement
+5. EmployeeDisciplineManagement inherit UserLoginManagement
+6. EmployeeInformationManagement associate 1 EmployeeLeavesManagement
+7. EmployeeInformationManagement associate 1 EmployeeDisciplineManagement
+8. EmployeeLeavesManagement associate * LeaveType
+
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLoginManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation * UserRole
+ 2 UserLoginManagement aggregation * UserRole
+ False EmployeeInformationManagement inheritance False UserLoginManagement
+ False EmployeeLeavesManagement inheritance False UserLoginManagement
+ False EmployeeDisciplineManagement inheritance False UserLoginManagement
+ 6 EmployeeInformationManagement association 1 EmployeeLeavesManagement
+ 7 EmployeeInformationManagement association 1 EmployeeDisciplineManagement
+ 8 EmployeeLeavesManagement association * LeaveType
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   1                   9                   
+Attributes          7                   5                   26                  
+Associations        5                   0                   2                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. LeaveType(Normal, Maternity, Satisfactory, WithoutPay, Local)
+
+Classes:
+1. UserLogin
+2. Employee
+3. Leave
+4. Punishment
+
+Relationships:
+1..* UserLogin contains 1 User
+1 UserLogin inherit 1 Employee
+1..* Employee has 1..* Leave
+1..* Employee is punished with 1..* Punishment
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: LeaveType (enum) - Enum Attributes: [Normal, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLogin (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Leave (class) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* UserLogin association 1 User
+ False UserLogin inheritance False Employee
+ 1..* Employee association 1..* Leave
+ 1..* Employee association 1 punished
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Leave(class)'	-	'LeaveRequest(class)'
+ 'Punishment(class)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+ ' 1..* Employee association 1..* Leave'	-	' 1 LeaveRequest association 1 Employee'
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             5                   4                   9                   
+Attributes          5                   4                   26                  
+Associations        1                   1                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserType(Ordinary, Administrator)
+2. LeaveType(Annual, Maternity, Satisfactory, WithoutPay, Local)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. Employee
+6. PersonalInformation
+7. LeaveInformation
+
+Relationships:
+1 UserLoginManagement contain 0..* UserLogin
+2 UserLoginManagement contain 0..* UserType
+3 UserLoginManagement inherit UserType
+4 EmployeeInformationManagement contain 1 Employee
+5 EmployeeInformationManagement contain 1 PersonalInformation
+6 EmployeeLeavesManagement contain 1 Employee
+7 EmployeeLeavesManagement contain 0..* LeaveInformation
+8 EmployeeDisciplineManagement contain 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLoginManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [], Class Attributes: []
+Class: PersonalInformation (enum) - Enum Attributes: [], Class Attributes: []
+Class: LeaveInformation (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* UserLogin
+ 2 UserLoginManagement aggregation 0..* UserType
+ False UserLoginManagement inheritance False UserType
+ 4 EmployeeInformationManagement aggregation 1 Employee
+ 5 EmployeeInformationManagement aggregation 1 PersonalInformation
+ 6 EmployeeLeavesManagement aggregation 1 Employee
+ 7 EmployeeLeavesManagement aggregation 0..* LeaveInformation
+ 8 EmployeeDisciplineManagement aggregation 1 Employee
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'LeaveInformation(enum)'	-	'LeaveRequest(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   3                   9                   
+Attributes          7                   5                   26                  
+Associations        6                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserType (ORDINARY, ADMINISTRATOR)
+2. LeaveType (ANNUAL, MATERNITY, SATISFACTORY, WITHOUT_PAY)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. Employee
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement inherit UserType
+3. UserLoginManagement inherit UserLogin
+4. EmployeeInformationManagement contain 1..* Employee
+5. EmployeeLeavesManagement contain 1..* Leave
+6. EmployeeDisciplineManagement contain 1..* Discipline
+7. EmployeeLeavesManagement associate * Employee
+8. EmployeeDisciplineManagement associate * Employee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [ORDINARY, ADMINISTRATOR], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [ANNUAL, MATERNITY, SATISFACTORY, WITHOUT_PAY], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ False UserLoginManagement inheritance False UserType
+ False UserLoginManagement inheritance False UserLogin
+ 4 EmployeeInformationManagement aggregation 1..* Employee
+ 5 EmployeeLeavesManagement aggregation 1..* Leave
+ 6 EmployeeDisciplineManagement aggregation 1..* Discipline
+ 7 EmployeeLeavesManagement association * Employee
+ 8 EmployeeDisciplineManagement association * Employee
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(class)'	-	'Employee(class)'
+-Attributes:
+ 'LeaveType(enum):ANNUAL'	-	'annual'
+ 'LeaveType(enum):MATERNITY'	-	'maternity'
+ 'LeaveType(enum):SATISFACTORY'	-	'satisfactory'
+ 'LeaveType(enum):WITHOUT_PAY'	-	'withoutPay'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   2                   9                   
+Attributes          6                   4                   26                  
+Associations        3                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. OrdinaryUser
+6. Administrator
+7. Employee
+
+Relationships:
+1. UserLoginManagement contain 1..* OrdinaryUser
+2. UserLoginManagement contain 1 Administrator
+3. EmployeeInformationManagement inherit Employee
+4. EmployeeLeavesManagement associate 1 Employee
+5. EmployeeDisciplineManagement associate 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: OrdinaryUser (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* OrdinaryUser
+ 2 UserLoginManagement aggregation 1 Administrator
+ False EmployeeInformationManagement inheritance False Employee
+ 4 EmployeeLeavesManagement association 1 Employee
+ 5 EmployeeDisciplineManagement association 1 Employee
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   2                   9                   
+Attributes          0                   0                   26                  
+Associations        4                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserType(Ordinary, Administrator)
+2. LeaveType(Annual, Maternity, Satisfactory, WithoutPay, Local)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Administrator
+7. Employee
+8. LeaveRequest
+9. DisciplineIncident
+
+Relationships:
+1 UserLoginManagement contain 0..* User
+2. UserLoginManagement contain 0..* Administrator
+3. UserLoginManagement inherit UserLoginManagement
+4. UserLoginManagement inherit AdministratorLogin
+5. EmployeeInformationManagement contain 1 Employee
+6. EmployeeInformationManagement inherit EmployeeInformationManagement
+7. EmployeeLeavesManagement contain 0..* LeaveRequest
+8. EmployeeLeavesManagement inherit EmployeeLeavesManagement
+9. EmployeeDisciplineManagement contain 0..* DisciplineIncident
+10. EmployeeDisciplineManagement inherit EmployeeDisciplineManagement
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: LeaveRequest (class) - Enum Attributes: [], Class Attributes: []
+Class: DisciplineIncident (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* User
+ 2 UserLoginManagement aggregation 0..* Administrator
+ False UserLoginManagement inheritance False UserLoginManagement
+ False UserLoginManagement inheritance False AdministratorLogin
+ 5 EmployeeInformationManagement aggregation 1 Employee
+ False EmployeeInformationManagement inheritance False EmployeeInformationManagement
+ 7 EmployeeLeavesManagement aggregation 0..* LeaveRequest
+ False EmployeeLeavesManagement inheritance False EmployeeLeavesManagement
+ 9 EmployeeDisciplineManagement aggregation 0..* DisciplineIncident
+ False EmployeeDisciplineManagement inheritance False EmployeeDisciplineManagement
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'User(class)'	-	'User(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'LeaveRequest(class)'	-	'LeaveRequest(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  5                   9                   
+Attributes          7                   5                   26                  
+Associations        5                   0                   2                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. OrdinaryUser
+6. Administrator
+7. Employee
+
+Relationships:
+1. UserLoginManagement contain 1..* OrdinaryUser
+2. UserLoginManagement contain 1 Administrator
+3. EmployeeInformationManagement contain 1..* Employee
+4. EmployeeLeavesManagement contain 1..* Employee
+5. EmployeeDisciplineManagement contain 1..* Employee
+6. EmployeeLeavesManagement associate 1 Administrator
+7. EmployeeDisciplineManagement associate 1 Administrator
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: OrdinaryUser (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* OrdinaryUser
+ 2 UserLoginManagement aggregation 1 Administrator
+ 3 EmployeeInformationManagement aggregation 1..* Employee
+ 4 EmployeeLeavesManagement aggregation 1..* Employee
+ 5 EmployeeDisciplineManagement aggregation 1..* Employee
+ 6 EmployeeLeavesManagement association 1 Administrator
+ 7 EmployeeDisciplineManagement association 1 Administrator
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   2                   9                   
+Attributes          0                   0                   26                  
+Associations        7                   0                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Administrator
+7. Employee
+
+Enumerations:
+1. LeaveType(Maternity, Satisfactory, WithoutPay, Local)
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement contain 1 Administrator
+3. User inherit UserLoginManagement
+4. Administrator inherit UserLoginManagement
+5. EmployeeInformationManagement contain 1 Employee
+6. EmployeeInformationManagement inherit UserLoginManagement
+7. EmployeeLeavesManagement contain 1 Employee
+8. EmployeeLeavesManagement inherit UserLoginManagement
+9. EmployeeLeavesManagement associate 0..* LeaveType
+10. EmployeeDisciplineManagement contain 1 Employee
+11. EmployeeDisciplineManagement inherit UserLoginManagement
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ 2 UserLoginManagement aggregation 1 Administrator
+ False User inheritance False UserLoginManagement
+ False Administrator inheritance False UserLoginManagement
+ 5 EmployeeInformationManagement aggregation 1 Employee
+ False EmployeeInformationManagement inheritance False UserLoginManagement
+ 7 EmployeeLeavesManagement aggregation 1 Employee
+ False EmployeeLeavesManagement inheritance False UserLoginManagement
+ 9 EmployeeLeavesManagement association 0..* LeaveType
+ 10 EmployeeDisciplineManagement aggregation 1 Employee
+ False EmployeeDisciplineManagement inheritance False UserLoginManagement
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+-Attributes:
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   4                   9                   
+Attributes          4                   4                   26                  
+Associations        6                   0                   2                   
+Inheritances        5                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Ordinary, Administrator)
+2. LeaveType(Annual, Maternity, Satisfactory, WithoutPay, Local)
+
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+
+Relationships:
+1. UserLoginManagement contain 0..* User
+2. UserLoginManagement contain 0..* Employee
+3. User inherit Employee
+4. UserLoginManagement associate 1 UserRole
+5. EmployeeInformationManagement associate 1..* Employee
+6. EmployeeInformationManagement contain 0..* Employee
+7. EmployeeInformationManagement contain 0..* User
+8. EmployeeLeavesManagement contain 0..* Employee
+9. EmployeeLeavesManagement associate 1 Leave
+10. EmployeeDisciplineManagement contain 0..* Employee
+11. EmployeeDisciplineManagement associate 1 Discipline
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, WithoutPay, Local], Class Attributes: []
+Class: UserLoginManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* User
+ 2 UserLoginManagement aggregation 0..* Employee
+ False User inheritance False Employee
+ 4 UserLoginManagement association 1 UserRole
+ 5 EmployeeInformationManagement association 1..* Employee
+ 6 EmployeeInformationManagement aggregation 0..* Employee
+ 7 EmployeeInformationManagement aggregation 0..* User
+ 8 EmployeeLeavesManagement aggregation 0..* Employee
+ 9 EmployeeLeavesManagement association 1 Leave
+ 10 EmployeeDisciplineManagement aggregation 0..* Employee
+ 11 EmployeeDisciplineManagement association 1 Discipline
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'User(enum)'	-	'User(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   3                   9                   
+Attributes          7                   5                   26                  
+Associations        8                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+7. Administrator
+
+Relationships:
+1. UserLoginManagement contain 0..* User
+2. UserLoginManagement contain 1 Administrator
+3. EmployeeInformationManagement contain 1 Employee
+4. EmployeeLeavesManagement contain 1 Employee
+5. EmployeeDisciplineManagement contain 1 Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* User
+ 2 UserLoginManagement aggregation 1 Administrator
+ 3 EmployeeInformationManagement aggregation 1 Employee
+ 4 EmployeeLeavesManagement aggregation 1 Employee
+ 5 EmployeeDisciplineManagement aggregation 1 Employee
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'User(class)'	-	'User(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   3                   9                   
+Attributes          0                   0                   26                  
+Associations        5                   0                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserType (Ordinary, Administrator)
+2. LeaveType (Annual, Maternity, Satisfactory, Without Pay, Local)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+7. Administrator
+8. Leave
+9. Punishment
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement contain 1 Administrator
+3. EmployeeInformationManagement contain 1..* Employee
+4. EmployeeInformationManagement inherit User
+5. EmployeeInformationManagement contain 1 Administrator
+6. EmployeeLeavesManagement contain 1..* Leave
+7. EmployeeDisciplineManagement contain 1..* Punishment
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, Pay, Local], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Leave (class) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ 2 UserLoginManagement aggregation 1 Administrator
+ 3 EmployeeInformationManagement aggregation 1..* Employee
+ False EmployeeInformationManagement inheritance False User
+ 5 EmployeeInformationManagement aggregation 1 Administrator
+ 6 EmployeeLeavesManagement aggregation 1..* Leave
+ 7 EmployeeDisciplineManagement aggregation 1..* Punishment
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'User(class)'	-	'User(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Leave(class)'	-	'LeaveRequest(class)'
+ 'Punishment(class)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  6                   9                   
+Attributes          7                   4                   26                  
+Associations        6                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. OrdinaryUser
+6. Administrator
+7. Employee
+
+Relationships:
+1. UserLoginManagement contain * OrdinaryUser
+2. UserLoginManagement contain * Administrator
+3. EmployeeInformationManagement contain * Employee
+4. EmployeeLeavesManagement associate * Employee
+5. EmployeeDisciplineManagement associate * Employee
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: OrdinaryUser (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation * OrdinaryUser
+ 2 UserLoginManagement aggregation * Administrator
+ 3 EmployeeInformationManagement aggregation * Employee
+ 4 EmployeeLeavesManagement association * Employee
+ 5 EmployeeDisciplineManagement association * Employee
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   2                   9                   
+Attributes          0                   0                   26                  
+Associations        5                   0                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserType (Ordinary, Administrator)
+2. LeaveType (Annual, Maternity, Satisfactory, Without Pay, Local)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. Employee
+6. Leave
+7. Punishment
+
+Relationships:
+1. UserLoginManagement contain 1..* User
+2. UserLoginManagement inherit UserType
+3. UserLoginManagement associate 1..* EmployeeInformationManagement
+4. EmployeeInformationManagement contain 1..* Employee
+5. EmployeeInformationManagement associate 1..* Leave
+6. EmployeeLeavesManagement contain 1..* Leave
+7. EmployeeLeavesManagement associate 1..* Employee
+8. EmployeeLeavesManagement associate 1 EmployeeInformationManagement
+9. EmployeeDisciplineManagement contain 1..* Punishment
+10. EmployeeDisciplineManagement associate 1..* Employee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, Pay, Local], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Leave (class) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* User
+ False UserLoginManagement inheritance False UserType
+ 3 UserLoginManagement association 1..* EmployeeInformationManagement
+ 4 EmployeeInformationManagement aggregation 1..* Employee
+ 5 EmployeeInformationManagement association 1..* Leave
+ 6 EmployeeLeavesManagement aggregation 1..* Leave
+ 7 EmployeeLeavesManagement association 1..* Employee
+ 8 EmployeeLeavesManagement association 1 EmployeeInformationManagement
+ 9 EmployeeDisciplineManagement aggregation 1..* Punishment
+ 10 EmployeeDisciplineManagement association 1..* Employee
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Leave(class)'	-	'LeaveRequest(class)'
+ 'Punishment(class)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   4                   9                   
+Attributes          7                   4                   26                  
+Associations        8                   0                   2                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------HRIS:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. UserType (Ordinary, Administrator)
+2. LeaveType (Annual, Maternity, Satisfactory, Without Pay, Local)
+
+Classes:
+1. UserLoginManagement
+2. EmployeeInformationManagement
+3. EmployeeLeavesManagement
+4. EmployeeDisciplineManagement
+5. User
+6. Employee
+7. Leave
+8. Punishment
+
+Relationships:
+1. UserLoginManagement contain 0..* User
+2. UserLoginManagement inherit User
+3. UserLoginManagement contain 0..* Employee
+4. UserLoginManagement inherit Employee
+5. EmployeeInformationManagement inherit Employee
+6. EmployeeInformationManagement associate 0..* User
+7. EmployeeLeavesManagement inherit Leave
+8. EmployeeLeavesManagement contain 0..* Leave
+9. EmployeeLeavesManagement associate 0..* Employee
+10. EmployeeDisciplineManagement contain 0..* Punishment
+11. EmployeeDisciplineManagement associate 0..* Employee
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserType (enum) - Enum Attributes: [Ordinary, Administrator], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Annual, Maternity, Satisfactory, Pay, Local], Class Attributes: []
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: User (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: Leave (class) - Enum Attributes: [], Class Attributes: []
+Class: Punishment (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* User
+ False UserLoginManagement inheritance False User
+ 3 UserLoginManagement aggregation 0..* Employee
+ False UserLoginManagement inheritance False Employee
+ False EmployeeInformationManagement inheritance False Employee
+ 6 EmployeeInformationManagement association 0..* User
+ False EmployeeLeavesManagement inheritance False Leave
+ 8 EmployeeLeavesManagement aggregation 0..* Leave
+ 9 EmployeeLeavesManagement association 0..* Employee
+ 10 EmployeeDisciplineManagement aggregation 0..* Punishment
+ 11 EmployeeDisciplineManagement association 0..* Employee
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'User(class)'	-	'User(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'Leave(class)'	-	'LeaveRequest(class)'
+ 'Punishment(class)'	-	'DisciplineRecord(class)'
+-Attributes:
+ 'LeaveType(enum):Annual'	-	'annual'
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):Satisfactory'	-	'satisfactory'
+ 'LeaveType(enum):Local'	-	'local'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  5                   9                   
+Attributes          7                   4                   26                  
+Associations        7                   0                   2                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.UserLoginManagement
+2.EmployeeInformationManagement
+3.EmployeeLeavesManagement
+4.EmployeeDisciplineManagement
+5.OrdinaryUser
+6.Administrator
+7.Employee
+
+Enumerations:
+1.LeaveType(Normal, Maternity, WithoutPay, Local)
+2.PunishmentType(Dismissal, WrittenReprimand)
+
+Relationships:
+1.UserLoginManagement contain 0..* OrdinaryUser
+2.UserLoginManagement contain 1 Administrator
+3.EmployeeInformationManagement contain 1 Employee
+4.EmployeeLeavesManagement contain 1 Employee
+5.EmployeeLeavesManagement associate 0..* LeaveType
+6.EmployeeDisciplineManagement contain 1 Employee
+7.EmployeeDisciplineManagement associate 1 PunishmentType
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: OrdinaryUser (class) - Enum Attributes: [], Class Attributes: []
+Class: Administrator (class) - Enum Attributes: [], Class Attributes: []
+Class: Employee (class) - Enum Attributes: [], Class Attributes: []
+Class: LeaveType (enum) - Enum Attributes: [Normal, Maternity, WithoutPay, Local], Class Attributes: []
+Class: PunishmentType (enum) - Enum Attributes: [Dismissal, WrittenReprimand], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 0..* OrdinaryUser
+ 2 UserLoginManagement aggregation 1 Administrator
+ 3 EmployeeInformationManagement aggregation 1 Employee
+ 4 EmployeeLeavesManagement aggregation 1 Employee
+ 5 EmployeeLeavesManagement association 0..* LeaveType
+ 6 EmployeeDisciplineManagement aggregation 1 Employee
+ 7 EmployeeDisciplineManagement association 1 PunishmentType
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'Administrator(class)'	-	'Administrator(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'LeaveType(enum)'	-	'LeaveType(enum)'
+ 'PunishmentType(enum)'	-	'PunishmentType(enum)'
+-Attributes:
+ 'LeaveType(enum):Maternity'	-	'maternity'
+ 'LeaveType(enum):WithoutPay'	-	'withoutPay'
+ 'LeaveType(enum):Local'	-	'local'
+ 'PunishmentType(enum):Dismissal'	-	'dismissal'
+ 'PunishmentType(enum):WrittenReprimand'	-	'writtenReprimand'
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   4                   9                   
+Attributes          6                   5                   26                  
+Associations        7                   0                   2                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------HRIS:
+------------------------------------------------------------
+AI:
+```
+Class:
+1.UserLoginManagement
+2.OrdinaryUserLogin
+3.AdministratorLogin
+4.EmployeeInformationManagement
+5.EmployeeLeavesManagement
+6.EmployeeDisciplineManagement
+
+Relationships:
+1.UserLoginManagement contain 1..* OrdinaryUserLogin
+2.UserLoginManagement contain 1 AdministratorLogin
+3.EmployeeInformationManagement inherit UserLoginManagement
+4.EmployeeLeavesManagement inherit UserLoginManagement
+5.EmployeeDisciplineManagement inherit UserLoginManagement
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserLoginManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: OrdinaryUserLogin (class) - Enum Attributes: [], Class Attributes: []
+Class: AdministratorLogin (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeInformationManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeLeavesManagement (class) - Enum Attributes: [], Class Attributes: []
+Class: EmployeeDisciplineManagement (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 UserLoginManagement aggregation 1..* OrdinaryUserLogin
+ 2 UserLoginManagement aggregation 1 AdministratorLogin
+ False EmployeeInformationManagement inheritance False UserLoginManagement
+ False EmployeeLeavesManagement inheritance False UserLoginManagement
+ False EmployeeDisciplineManagement inheritance False UserLoginManagement
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+-Attributes:
+-Relationships:
+--------------------------------------------------------------------------------
+HRIS, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   0                   9                   
+Attributes          0                   0                   26                  
+Associations        2                   0                   2                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+HRIS, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.401          0.361          0.380          0.368
+Attributes          0.680          0.127          0.214          0.152
+Associations        0.028          0.075          0.041          0.056
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

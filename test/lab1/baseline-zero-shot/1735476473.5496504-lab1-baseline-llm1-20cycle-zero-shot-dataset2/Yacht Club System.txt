@@ -1,0 +1,1650 @@
+------------------------------------------------------------
+---------------------1/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Person(username: String, password: String)
+2. Member
+3. Treasurer
+4. Secretary
+5. Boat(boatDetails: String, size: String, type: String, image: String)
+6. CalendarEvent(title: String, startDate: Date)
+7. Payment(transactionId: String, total: Double)
+8. Berth(booked: Boolean, boat: Boat, member: Member)
+9. ClubCalendar(events: List<CalendarEvent>)
+10. Invoice(reminderFee: Double, paid: Boolean)
+11. ThirdPartyCreditCardPaymentSystem
+12. Municipality
+13. TaxAuthority
+
+Relationships:
+1. Person inherit Member
+2. Person inherit Treasurer
+3. Person inherit Secretary
+4. Secretary contain Berth
+5. Secretary contain ClubCalendar
+6. Treasurer contain Payment
+7. Treasurer contain Invoice
+8. BoatClub aggregate Boat
+9. BoatClub aggregate Person
+10. BoatClub contain CalendarEvent
+11. Member aggregate Boat
+12. Member contain Payment
+13. Member contain Invoice
+14. Member associate Berth
+15. Member associate ClubCalendar
+16. ThirdPartyCreditCardPaymentSystem associate Payment
+17. Municipality associate Berth
+18. TaxAuthority associate ClubCalendar
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Treasurer (class) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (class) - Enum Attributes: [], Class Attributes: []
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [boatDetails:String,size:String,type:String,image:String]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:String,startDate:Date]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [transactionId:String,total:Double]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [booked:Boolean,boat:Boat,member:Member]
+Class: ClubCalendar (class) - Enum Attributes: [], Class Attributes: [events:List<CalendarEvent>]
+Class: Invoice (class) - Enum Attributes: [], Class Attributes: [reminderFee:Double,paid:Boolean]
+Class: ThirdPartyCreditCardPaymentSystem (class) - Enum Attributes: [], Class Attributes: []
+Class: Municipality (class) - Enum Attributes: [], Class Attributes: []
+Class: TaxAuthority (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ False Person inheritance False Member
+ False Person inheritance False Treasurer
+ False Person inheritance False Secretary
+ 4 Secretary aggregation 1 Berth
+ 5 Secretary aggregation 1 ClubCalendar
+ 6 Treasurer aggregation 1 Payment
+ 7 Treasurer aggregation 1 Invoice
+ 8 BoatClub association 1 Boat
+ 9 BoatClub association 1 Person
+ 10 BoatClub aggregation 1 CalendarEvent
+ 11 Member association 1 Boat
+ 12 Member aggregation 1 Payment
+ 13 Member aggregation 1 Invoice
+ 14 Member association 1 Berth
+ 15 Member association 1 ClubCalendar
+ 16 ThirdPartyCreditCardPaymentSystem association 1 Payment
+ 17 Municipality association 1 Berth
+ 18 TaxAuthority association 1 ClubCalendar
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Treasurer(class)'	-	'Treasurer(class)'
+ 'Secretary(class)'	-	'Secretary(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+-Relationships:
+ ' 11 Member association 1 Boat'	-	' 1 Member aggregation * Boat'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  6                   12                  
+Attributes          16                  4                   21                  
+Associations        12                  1                   11                  
+Inheritances        3                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Role (Member, Treasurer, Secretary)
+2. BoatType (Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Classes:
+1. Person(username: string, password: string)
+2. Boat(owner: Person, type: BoatType, size: string, image: string)
+3. Membership(member: Person, boats: List<Boat>, paymentHistory: List<Payment>)
+4. Berth(boat: Boat, member: Person, booked: boolean)
+5. CalendarEvent(title: string, startDate: date, endDate: date)
+
+Relationships:
+- Person inherit Role
+- Secretary contain List<Boat>
+- Secretary contain List<CalendarEvent>
+- Treasurer contain List<Membership>
+- Member contain List<Boat>
+- Member contain List<CalendarEvent>
+- Municipality associate 1..* Berth
+- TaxAuthority associate 1..* Membership
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [owner:Person,type:BoatType,size:string,image:string]
+Class: Membership (class) - Enum Attributes: [], Class Attributes: [member:Person,boats:List<Boat>,paymentHistory:List<Payment>]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [boat:Boat,member:Person,booked:boolean]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date,endDate:date]
+Relationships:
+ False Person inheritance False Role
+ 1 Secretary aggregation 1 List
+ 1 Secretary aggregation 1 List
+ 1 Treasurer aggregation 1 List
+ 1 Member aggregation 1 List
+ 1 Member aggregation 1 List
+ 1 Municipality association 1..* Berth
+ 1 TaxAuthority association 1..* Membership
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):image'	-	'image'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+ 'CalendarEvent(class):endDate'	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   12                  
+Attributes          23                  9                   21                  
+Associations        0                   0                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Role (Member, Treasurer, Secretary)
+2. BoatType (Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Classes:
+1. Person(username: string, password: string)
+2. Boat(size: string, type: BoatType, image: string)
+3. MemberPaymentHistory(paymentStatus: string, transactionId: string, total: decimal)
+4. CalendarEvent(title: string, startDate: date, endDate: date)
+5. Berth(booked: boolean, boat: Boat, member: Person)
+
+Relationships:
+- Person has a Role (1 Person associate 1 Role)
+- Secretary manages Berths (1 Secretary contain 0..* Berth)
+- Secretary manages CalendarEvents (1 Secretary contain 0..* CalendarEvent)
+- Treasurer manages MemberPaymentHistory (1 Treasurer contain 1..* MemberPaymentHistory)
+- Member has Boat(s) (1 Member contain 0..* Boat)
+- Member has MembershipData (1 Member contain 1 MemberPaymentHistory)
+- Member can register CalendarEvents (1 Member contain 0..* CalendarEvent)
+- Municipality knows Berths (1 Municipality contain 0..* Berth)
+- TaxAuthority ensures Tax Compliance (1 TaxAuthority contain 0..* AssociationIncome)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [size:string,type:BoatType,image:string]
+Class: MemberPaymentHistory (class) - Enum Attributes: [], Class Attributes: [paymentStatus:string,transactionId:string,total:decimal]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date,endDate:date]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [booked:boolean,boat:Boat,member:Person]
+Relationships:
+ 1 Person association 1 a
+ 1 Secretary association 1 Berths
+ 1 Secretary association 1 CalendarEvents
+ 1 Treasurer association 1 MemberPaymentHistory
+ 1 Member association 1 Boat
+ 1 Member association 1 MembershipData
+ 1 Member association 1 register
+ 1 Municipality association 1 Berths
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+ 'CalendarEvent(class):endDate'	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   12                  
+Attributes          22                  9                   21                  
+Associations        0                   0                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Classes:
+1. Person(username: string, password: string)
+2. Boat(size: int, type: BoatType, image: string)
+3. Member(paymentStatus: boolean, boats: list<Boat>, calendarEvents: list<CalendarEvent>)
+4. Treasurer
+5. Secretary
+6. CalendarEvent(title: string, startDate: date)
+7. Berth(booked: boolean, boat: Boat, member: Member)
+8. CreditCardPayment(transactionId: string, total: decimal)
+
+Relationships:
+1..* Person associate 1 UserRole
+1 Secretary inherit from Person
+1 Treasurer inherit from Person
+1 Treasurer contain 0..* Member
+1 Secretary contain 0..* Berth
+1 Secretary contain 0..* CalendarEvent
+1 Member contain 0..* Boat
+1 Member associate 1 CreditCardPayment
+1 Member associate 0..* CalendarEvent
+1 Member inherit from Person
+1 Member inherit from Berth
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [size:int,type:BoatType,image:string]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [paymentStatus:boolean,boats:list<Boat>,calendarEvents:list<CalendarEvent>]
+Class: Treasurer (class) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (class) - Enum Attributes: [], Class Attributes: []
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [booked:boolean,boat:Boat,member:Member]
+Class: CreditCardPayment (class) - Enum Attributes: [], Class Attributes: [transactionId:string,total:decimal]
+Relationships:
+ 1..* Person association 1 UserRole
+ False Secretary inheritance False from
+ False Treasurer inheritance False from
+ 1 Treasurer aggregation 0..* Member
+ 1 Secretary aggregation 0..* Berth
+ 1 Secretary aggregation 0..* CalendarEvent
+ 1 Member aggregation 0..* Boat
+ 1 Member association 1 CreditCardPayment
+ 1 Member association 0..* CalendarEvent
+ False Member inheritance False from
+ False Member inheritance False from
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Member(class)'	-	'Member(class)'
+ 'Treasurer(class)'	-	'Treasurer(class)'
+ 'Secretary(class)'	-	'Secretary(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'Member(class):paymentStatus'	-	'paymentStatus'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+-Relationships:
+ ' 1 Member aggregation 0..* Boat'	-	' 1 Member aggregation * Boat'
+ ' 1 Member association 0..* CalendarEvent'	-	' 1 Member association * Event'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   12                  
+Attributes          23                  9                   21                  
+Associations        7                   2                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Classes:
+1. Person(username: String, password: String)
+2. Member(name: String, boats: List<Boat>, paymentHistory: List<Payment>)
+3. Boat(size: String, type: BoatType, image: Image)
+4. Berth(number: int, isBooked: boolean, boat: Boat, member: Member)
+5. CalendarEvent(title: String, startDate: Date)
+6. Payment(amount: double, status: String)
+7. Transaction(transactionId: String, total: double)
+
+Relationships:
+1. Person contains 1..* UserRole
+2. Person inherit Member
+3. Secretary inherit Member
+4. Treasurer inherit Member
+5. Secretary contain 0..* Berth
+6. Secretary contain 0..* CalendarEvent
+7. Treasurer contain 0..* Payment
+8. Member associate 1..* Boat
+9. Member associate 0..* Payment
+10. Member associate 0..* CalendarEvent
+11. Member associate 0..* Berth
+12. Member associate 0..* Transaction
+13. Boat inherit CalendarEvent
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: [name:String,boats:List<Boat>,paymentHistory:List<Payment>]
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [size:String,type:BoatType,image:Image]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [number:int,isBooked:boolean,boat:Boat,member:Member]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:String,startDate:Date]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [amount:double,status:String]
+Class: Transaction (class) - Enum Attributes: [], Class Attributes: [transactionId:String,total:double]
+Relationships:
+ 1 Person association 1..* UserRole
+ False Person inheritance False Member
+ False Secretary inheritance False Member
+ False Treasurer inheritance False Member
+ 5 Secretary aggregation 0..* Berth
+ 6 Secretary aggregation 0..* CalendarEvent
+ 7 Treasurer aggregation 0..* Payment
+ 8 Member association 1..* Boat
+ 9 Member association 0..* Payment
+ 10 Member association 0..* CalendarEvent
+ 11 Member association 0..* Berth
+ 12 Member association 0..* Transaction
+ False Boat inheritance False CalendarEvent
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Member(class)'	-	'Member(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Member(class):name'	-	'name'
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'Berth(class):isBooked'	-	'isBooked'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+-Relationships:
+ ' 8 Member association 1..* Boat'	-	' 1 Member aggregation * Boat'
+ ' 10 Member association 0..* CalendarEvent'	-	' 1 Member association * Event'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   12                  
+Attributes          26                  10                  21                  
+Associations        6                   2                   11                  
+Inheritances        2                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Person(username: String, password: String)
+2. Member
+3. Treasurer
+4. Secretary
+5. BoatBerth
+6. MembershipFee
+7. Boat
+8. CalendarEvent
+9. Payment
+10. CreditCardPayment
+11. Transaction
+12. Municipality
+13. TaxAuthority
+
+Relationships:
+1. Person associate 1..* Member
+2. Person associate 1 Treasurer
+3. Person associate 1 Secretary
+4. Secretary contain 0..* BoatBerth
+5. Secretary contain 0..* CalendarEvent
+6. Treasurer contain 0..* Payment
+7. Member contain 1..* Boat
+8. Member contain 0..* CalendarEvent
+9. Member associate 1 MembershipFee
+10. Member associate 1..* Payment
+11. Payment associate 1 CreditCardPayment
+12. CreditCardPayment associate 1 Transaction
+13. Municipality associate 1..* Boat
+14. TaxAuthority associate 1 Municipality
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:String,password:String]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Treasurer (class) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (class) - Enum Attributes: [], Class Attributes: []
+Class: BoatBerth (class) - Enum Attributes: [], Class Attributes: []
+Class: MembershipFee (class) - Enum Attributes: [], Class Attributes: []
+Class: Boat (class) - Enum Attributes: [], Class Attributes: []
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: []
+Class: Payment (class) - Enum Attributes: [], Class Attributes: []
+Class: CreditCardPayment (class) - Enum Attributes: [], Class Attributes: []
+Class: Transaction (class) - Enum Attributes: [], Class Attributes: []
+Class: Municipality (class) - Enum Attributes: [], Class Attributes: []
+Class: TaxAuthority (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Person association 1..* Member
+ 2 Person association 1 Treasurer
+ 3 Person association 1 Secretary
+ 4 Secretary aggregation 0..* BoatBerth
+ 5 Secretary aggregation 0..* CalendarEvent
+ 6 Treasurer aggregation 0..* Payment
+ 7 Member aggregation 1..* Boat
+ 8 Member aggregation 0..* CalendarEvent
+ 9 Member association 1 MembershipFee
+ 10 Member association 1..* Payment
+ 11 Payment association 1 CreditCardPayment
+ 12 CreditCardPayment association 1 Transaction
+ 13 Municipality association 1..* Boat
+ 14 TaxAuthority association 1 Municipality
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Treasurer(class)'	-	'Treasurer(class)'
+ 'Secretary(class)'	-	'Secretary(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+-Relationships:
+ ' 7 Member aggregation 1..* Boat'	-	' 1 Member aggregation * Boat'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  5                   12                  
+Attributes          2                   0                   21                  
+Associations        14                  1                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Class:
+1. Person(username: string, password: string)
+2. Boat(size: string, type: BoatType, image: string)
+3. Member(paymentHistory: string, boats: list<Boat>)
+4. Treasurer(paymentStatus: string)
+5. Secretary
+
+Relationships:
+1..* Person associate 1..* Member
+1..* Person associate 1 Treasurer
+1..* Person associate 1 Secretary
+Secretary contain 1..* Boat
+Secretary contain 0..* CalendarEvent
+Treasurer inherit Member
+```  
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size, type, image], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [paymentHistory, boats], Class Attributes: []
+Class: Treasurer (enum) - Enum Attributes: [paymentStatus], Class Attributes: []
+Class: Secretary (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Person association 1..* Member
+ 1..* Person association 1 Treasurer
+ 1..* Person association 1 Secretary
+ 1 Secretary aggregation 1..* Boat
+ 1 Secretary aggregation 0..* CalendarEvent
+ False Treasurer inheritance False Member
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Treasurer(enum)'	-	'Treasurer(class)'
+ 'Secretary(enum)'	-	'Secretary(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Boat(enum):size'	-	'size'
+ 'Boat(enum):type'	-	'type'
+ 'Boat(enum):image'	-	'image'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   5                   12                  
+Attributes          13                  7                   21                  
+Associations        4                   0                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(username : String, password : String)
+2. Boat(size : String, type : BoatType, image : String)
+3. Membership(membershipFee : Double, paymentStatus : String)
+4. CalendarEvent(title : String, startDate : Date, endDate : Date)
+
+Relationships:
+1..* Person associate 0..* Boat
+1..* Person associate 1 UserRole
+Secretary contain 0..* Boat
+Secretary contain 0..* CalendarEvent
+Treasurer inherit Secretary
+```
+
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username , password ], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size , type , image ], Class Attributes: []
+Class: Membership (enum) - Enum Attributes: [membershipFee , paymentStatus ], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title , startDate , endDate ], Class Attributes: []
+Relationships:
+ 1..* Person association 0..* Boat
+ 1..* Person association 1 UserRole
+ 1 Secretary aggregation 0..* Boat
+ 1 Secretary aggregation 0..* CalendarEvent
+ False Treasurer inheritance False Secretary
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Membership(enum)'	-	'Member(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(enum):size '	-	'size'
+ 'Boat(enum):type '	-	'type'
+ 'Boat(enum):image '	-	'image'
+ 'Membership(enum):membershipFee '	-	'membershipFee'
+ 'Membership(enum):paymentStatus '	-	'paymentStatus'
+ 'CalendarEvent(enum):startDate '	-	'startDate'
+ 'CalendarEvent(enum):endDate '	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   12                  
+Attributes          18                  11                  21                  
+Associations        2                   0                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Person(username: string, password: string)
+2. Member
+3. Treasurer
+4. Secretary
+5. Boat(boatDetails: string, size: string, type: string, image: string)
+6. Berth(booked: boolean, boatOwnerId: int)
+7. CalendarEvent(title: string, startDate: date, endDate: date)
+8. Payment(transactionId: string, total: float, status: string)
+
+Relationships:
+1. Person inherit Member
+2. Person inherit Treasurer
+3. Person inherit Secretary
+4. Secretary contain Boat (1..*)
+5. Secretary contain Berth (1..*)
+6. Secretary contain CalendarEvent (1..*)
+7. Treasurer contain Payment (1..*)
+8. Member contain Boat (1..*)
+9. Member contain CalendarEvent (1..*)
+10. BoatClubSystem associate ThirdPartyCreditCardPaymentSystem
+```  
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Treasurer (class) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (class) - Enum Attributes: [], Class Attributes: []
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [boatDetails:string,size:string,type:string,image:string]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [booked:boolean,boatOwnerId:int]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date,endDate:date]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [transactionId:string,total:float,status:string]
+Relationships:
+ False Person inheritance False Member
+ False Person inheritance False Treasurer
+ False Person inheritance False Secretary
+ 4 Secretary aggregation 1 Boat
+ 5 Secretary aggregation 1 Berth
+ 6 Secretary aggregation 1 CalendarEvent
+ 7 Treasurer aggregation 1 Payment
+ 8 Member aggregation 1 Boat
+ 9 Member aggregation 1 CalendarEvent
+ 10 BoatClubSystem association 1 ThirdPartyCreditCardPaymentSystem
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Treasurer(class)'	-	'Treasurer(class)'
+ 'Secretary(class)'	-	'Secretary(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+ 'CalendarEvent(class):endDate'	-	'endDate'
+-Relationships:
+ ' 8 Member aggregation 1 Boat'	-	' 1 Member aggregation * Boat'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   12                  
+Attributes          14                  5                   21                  
+Associations        6                   1                   11                  
+Inheritances        3                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Class:
+1. Person(username: string, password: string)
+2. Member
+3. Treasurer
+4. Secretary
+5. Boat(owner: Member, registrationDate: date, size: string, type: string, image: string)
+6. Berth(booked: boolean, boat: Boat, member: Member)
+7. CalendarEvent(title: string, startDate: date)
+8. Payment(transactionId: int, total: float, status: string)
+
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Relationships:
+1. Person inherit Member
+2. Person inherit Treasurer
+3. Person inherit Secretary
+4. Secretary contain Berth
+5. Secretary contain CalendarEvent
+6. Treasurer contain Payment
+7. Member associate Boat
+8. Member associate Payment
+9. Member contain CalendarEvent
+10. Boat associate Berth
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Treasurer (class) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (class) - Enum Attributes: [], Class Attributes: []
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [owner:Member,registrationDate:date,size:string,type:string,image:string]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: [booked:boolean,boat:Boat,member:Member]
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [transactionId:int,total:float,status:string]
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Relationships:
+ False Person inheritance False Member
+ False Person inheritance False Treasurer
+ False Person inheritance False Secretary
+ 4 Secretary aggregation 1 Berth
+ 5 Secretary aggregation 1 CalendarEvent
+ 6 Treasurer aggregation 1 Payment
+ 7 Member association 1 Boat
+ 8 Member association 1 Payment
+ 9 Member aggregation 1 CalendarEvent
+ 10 Boat association 1 Berth
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'Member(class)'	-	'Member(class)'
+ 'Treasurer(class)'	-	'Treasurer(class)'
+ 'Secretary(class)'	-	'Secretary(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'Boat(class):size'	-	'size'
+ 'Boat(class):type'	-	'type'
+ 'Boat(class):image'	-	'image'
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+-Relationships:
+ ' 7 Member association 1 Boat'	-	' 1 Member aggregation * Boat'
+ ' 10 Boat association 1 Berth'	-	' 1 Boat association 1 Berth'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  7                   12                  
+Attributes          23                  8                   21                  
+Associations        7                   2                   11                  
+Inheritances        3                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole (Member, Treasurer, Secretary)
+2. BoatType (Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(userName : String, password : String)
+2. Member(name : String, boats : List<Boat>, paymentHistory : List<Payment>, calendarEvents : List<CalendarEvent>)
+3. Treasurer
+4. Secretary
+
+Relationships:
+1..* Person associate 0..1 UserRole
+Secretary inherit Person
+Treasurer inherit Person
+
+1..* Member contain 1..* Boat
+1..* Member contain 0..* Payment
+1..* Member contain 0..* CalendarEvent
+
+Secretary inherit Member
+Secretary contain 0..* CalendarEvent
+
+Treasurer inherit Member
+Treasurer contain 0..* Payment
+
+1..* Member associate 1..* Boat
+1..* Boat associate 0..1 Berth
+
+1..* Boat associate 0..* CalendarEvent
+
+1..* Municipality associate 1..* Berth
+1..* TaxAuthority associate 1..* Member
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [userName , password ], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [name , boats , paymentHistory , calendarEvents ], Class Attributes: []
+Class: Treasurer (enum) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Person association 0..1 UserRole
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ 1..* Member aggregation 1..* Boat
+ 1..* Member aggregation 0..* Payment
+ 1..* Member aggregation 0..* CalendarEvent
+ False Secretary inheritance False Member
+ 1 Secretary aggregation 0..* CalendarEvent
+ False Treasurer inheritance False Member
+ 1 Treasurer aggregation 0..* Payment
+ 1..* Member association 1..* Boat
+ 1..* Boat association 0..1 Berth
+ 1..* Boat association 0..* CalendarEvent
+ 1..* Municipality association 1..* Berth
+ 1..* TaxAuthority association 1..* Member
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Treasurer(enum)'	-	'Treasurer(class)'
+ 'Secretary(enum)'	-	'Secretary(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Member(enum):name '	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   4                   12                  
+Attributes          14                  5                   21                  
+Associations        1                   0                   11                  
+Inheritances        4                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Role (Member, Treasurer, Secretary)
+2. BoatType (Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(username: String, password: String)
+2. Boat(size: Double, type: BoatType, image: String)
+3. Membership(paymentStatus: String, paymentHistory: List<String>)
+4. Berth(boat: Boat, member: Person, isBooked: Boolean)
+5. CalendarEvent(title: String, startDate: Date)
+6. Invoice(member: Person, amount: Double, dueDate: Date)
+
+Relationships:
+1..* Person associate 1 Role
+Secretary inherit Person
+Treasurer inherit Person
+1 Secretary contain 0..* Berth
+1 Secretary contain 0..* CalendarEvent
+1 Treasurer contain 0..* Invoice
+1 Member contain 1..* Boat
+1 Member contain 1 Membership
+1 Member associate 0..* CalendarEvent
+1 Municipality associate 0..* Berth
+1 TaxAuthority associate 0..* Membership
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size, type, image], Class Attributes: []
+Class: Membership (enum) - Enum Attributes: [paymentStatus, paymentHistory], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [boat, member, isBooked], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title, startDate], Class Attributes: []
+Class: Invoice (enum) - Enum Attributes: [member, amount, dueDate], Class Attributes: []
+Relationships:
+ 1..* Person association 1 Role
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ 1 Secretary aggregation 0..* Berth
+ 1 Secretary aggregation 0..* CalendarEvent
+ 1 Treasurer aggregation 0..* Invoice
+ 1 Member aggregation 1..* Boat
+ 1 Member aggregation 1 Membership
+ 1 Member association 0..* CalendarEvent
+ 1 Municipality association 0..* Berth
+ 1 TaxAuthority association 0..* Membership
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'Membership(enum)'	-	'Member(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(enum):size'	-	'size'
+ 'Boat(enum):type'	-	'type'
+ 'Boat(enum):image'	-	'image'
+ 'Berth(enum):isBooked'	-	'isBooked'
+ 'Membership(enum):paymentStatus'	-	'paymentStatus'
+ 'CalendarEvent(enum):startDate'	-	'startDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   12                  
+Attributes          23                  10                  21                  
+Associations        1                   0                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Class:
+1. Person(username: string, password: string)
+2. Boat(size: int, type: BoatType, image: string)
+3. MemberPaymentHistory(year: int, paid: boolean)
+4. CalendarEvent(title: string, startDate: date)
+5. Berth(isBooked: boolean)
+
+Relationships:
+1..* Person associate 1 UserRole
+1 Secretary inherit Person
+1 Treasurer inherit Person
+1..* Boat associate 1 Member
+1 Secretary contain 1..* Berth
+1 Secretary contain 1..* CalendarEvent
+1 Treasurer contain 1..* MemberPaymentHistory
+1 Member contain 1..* Boat
+Municipality contain 1..* Berth
+TaxAuthority contain 1..* UserRole
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size, type, image], Class Attributes: []
+Class: MemberPaymentHistory (enum) - Enum Attributes: [year, paid], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title, startDate], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [isBooked], Class Attributes: []
+Relationships:
+ 1..* Person association 1 UserRole
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ 1..* Boat association 1 Member
+ 1 Secretary aggregation 1..* Berth
+ 1 Secretary aggregation 1..* CalendarEvent
+ 1 Treasurer aggregation 1..* MemberPaymentHistory
+ 1 Member aggregation 1..* Boat
+ 1 Municipality aggregation 1..* Berth
+ 1 TaxAuthority aggregation 1..* UserRole
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Boat(enum):size'	-	'size'
+ 'Boat(enum):type'	-	'type'
+ 'Boat(enum):image'	-	'image'
+ 'Berth(enum):isBooked'	-	'isBooked'
+ 'CalendarEvent(enum):startDate'	-	'startDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   4                   12                  
+Attributes          18                  9                   21                  
+Associations        1                   0                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Class:
+1. Person(username : string, password : string)
+2. Boat(size : string, type : BoatType, image : string)
+3. Member(paymentHistory : string, boats : list<Boat>)
+4. Treasurer(invoice : string, paymentStatus : boolean)
+5. Secretary(calendarEvents : list<CalendarEvent>, bookedBerths : list<Berth>)
+6. CalendarEvent(title : string, startDate : date)
+7. Berth(boat : Boat, member : Member)
+
+Relationships:
+1..* Person associate 1 UserRole
+1 Secretary inherit Person
+1 Treasurer inherit Person
+1 Member inherit Person
+1..* Secretary contain 1..* Berth
+1 Secretary contain 1..* CalendarEvent
+1 Treasurer contain 1..* Member
+1 Member contain 1..* Boat
+1..* Member associate 1..* CalendarEvent
+1..* Municipality associate 1..* Berth
+1..* TaxAuthority associate 1..* Member
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username , password ], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size , type , image ], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [paymentHistory , boats ], Class Attributes: []
+Class: Treasurer (enum) - Enum Attributes: [invoice , paymentStatus ], Class Attributes: []
+Class: Secretary (enum) - Enum Attributes: [calendarEvents , bookedBerths ], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title , startDate ], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [boat , member ], Class Attributes: []
+Relationships:
+ 1..* Person association 1 UserRole
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ False Member inheritance False Person
+ 1..* Secretary aggregation 1..* Berth
+ 1 Secretary aggregation 1..* CalendarEvent
+ 1 Treasurer aggregation 1..* Member
+ 1 Member aggregation 1..* Boat
+ 1..* Member association 1..* CalendarEvent
+ 1..* Municipality association 1..* Berth
+ 1..* TaxAuthority association 1..* Member
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Treasurer(enum)'	-	'Treasurer(class)'
+ 'Secretary(enum)'	-	'Secretary(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Boat(enum):size '	-	'size'
+ 'Boat(enum):type '	-	'type'
+ 'Boat(enum):image '	-	'image'
+ 'CalendarEvent(enum):startDate '	-	'startDate'
+-Relationships:
+ ' 1 Member aggregation 1..* Boat'	-	' 1 Member aggregation * Boat'
+ ' 1..* Member association 1..* CalendarEvent'	-	' 1 Member association * Event'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   7                   12                  
+Attributes          23                  8                   21                  
+Associations        6                   2                   11                  
+Inheritances        3                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(username : string, password : string)
+2. Boat(name : string, type : BoatType, size : string, image : byte[])
+3. Member(paymentHistory : string, boatsOwned : list<Boat>)
+4. Berth(number : int, booked : boolean, boat : Boat, member : Member)
+5. Event(title : string, startDate : date, endDate : date)
+6. Transaction(id : int, total : float)
+7. CalendarEvent(shortTitle : string, startDate : date, details : string)
+8. Municipality
+9. TaxAuthority
+
+Relationships:
+1..* Person associate 1 UserRole
+1 Secretary inherit Person
+1 Treasurer inherit Person
+1 Member inherit Person
+1 Secretary contain 1..* Berth
+1 Secretary contain 1 Calendar
+1 Treasurer contain 1 Transaction
+1 Treasurer contain 1..* Invoice
+1 Member contain 1..* Boat
+1 Member contain 1 Payment
+1 Boat associate 1..* Member
+1 Boat associate 1 Berth
+1..* Member associate 1 Transaction
+1 Calendar associate 1..* Event
+1 Municipality associate 1..* Berth
+1 TaxAuthority associate 1..* Member
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username , password ], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [name , type , size , image ], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [paymentHistory , boatsOwned ], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [number , booked , boat , member ], Class Attributes: []
+Class: Event (enum) - Enum Attributes: [title , startDate , endDate ], Class Attributes: []
+Class: Transaction (enum) - Enum Attributes: [id , total ], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [shortTitle , startDate , details ], Class Attributes: []
+Class: Municipality (enum) - Enum Attributes: [], Class Attributes: []
+Class: TaxAuthority (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Person association 1 UserRole
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ False Member inheritance False Person
+ 1 Secretary aggregation 1..* Berth
+ 1 Secretary aggregation 1 Calendar
+ 1 Treasurer aggregation 1 Transaction
+ 1 Treasurer aggregation 1..* Invoice
+ 1 Member aggregation 1..* Boat
+ 1 Member aggregation 1 Payment
+ 1 Boat association 1..* Member
+ 1 Boat association 1 Berth
+ 1..* Member association 1 Transaction
+ 1 Calendar association 1..* Event
+ 1 Municipality association 1..* Berth
+ 1 TaxAuthority association 1..* Member
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'Event(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(enum):type '	-	'type'
+ 'Boat(enum):size '	-	'size'
+ 'Boat(enum):image '	-	'image'
+ 'Event(enum):startDate '	-	'startDate'
+ 'Event(enum):endDate '	-	'endDate'
+-Relationships:
+ ' 1 Member aggregation 1..* Boat'	-	' 1 Member aggregation * Boat'
+ ' 1 Boat association 1 Berth'	-	' 1 Boat association 1 Berth'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  5                   12                  
+Attributes          28                  9                   21                  
+Associations        7                   2                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Class:
+1. Person(username: string, password: string)
+2. Boat(owner: Person, type: BoatType, size: int, image: string)
+3. Membership(member: Person, duesPaid: bool, paymentHistory: string)
+4. Berth(boat: Boat, member: Person, booked: bool)
+5. CalendarEvent(title: string, startDate: date, endDate: date)
+
+Relationships:
+1. 1 Person inherit 0..1 Membership
+2. 0..* Boat associate 1 Person
+3. 0..* Berth contain 1 Boat
+4. 0..* CalendarEvent associate 0..* Person
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [owner, type, size, image], Class Attributes: []
+Class: Membership (enum) - Enum Attributes: [member, duesPaid, paymentHistory], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [boat, member, booked], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title, startDate, endDate], Class Attributes: []
+Relationships:
+ False Person inheritance False Membership
+ 0..* Boat association 1 Person
+ 0..* Berth aggregation 1 Boat
+ 0..* CalendarEvent association 0..* Person
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'Membership(enum)'	-	'Member(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Boat(enum):type'	-	'type'
+ 'Boat(enum):size'	-	'size'
+ 'Boat(enum):image'	-	'image'
+ 'CalendarEvent(enum):startDate'	-	'startDate'
+ 'CalendarEvent(enum):endDate'	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             7                   5                   12                  
+Attributes          23                  9                   21                  
+Associations        3                   0                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+Enumerations:
+1. Role(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Classes:
+1. Person(username: string, password: string)
+2. Member
+3. Boat(boatDetails: string, boatType: BoatType, image: string)
+4. Berth
+5. CalendarEvent(title: string, startDate: date, endDate: date)
+6. Payment(transactionId: string, total: decimal)
+7. Invoice(reminderFee: decimal, paymentStatus: string)
+
+Relationships:
+- Person has a Role (1 Person associate 1 Role)
+- Secretary is a Person
+- Treasurer is a Person
+- Member is a Person
+- Secretary contains multiple Berths (1 Secretary contain 0..* Berths)
+- Secretary manages multiple CalendarEvents (1 Secretary contain 0..* CalendarEvents)
+- Treasurer manages multiple Payments (1 Treasurer contain 0..* Payments)
+- Treasurer sends multiple Invoices (1 Treasurer contain 0..* Invoices)
+- Member owns multiple Boats (1 Member contain 0..* Boats)
+- Member makes multiple Payments (1 Member contain 0..* Payments)
+- Member registers multiple CalendarEvents (1 Member contain 0..* CalendarEvents)
+- Municipality has information on multiple Berths (1 Municipality contain 0..* Berths)
+- TaxAuthority ensures compliance with regulations (1 TaxAuthority contain 0..* Associations)
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (class) - Enum Attributes: [], Class Attributes: [username:string,password:string]
+Class: Member (class) - Enum Attributes: [], Class Attributes: []
+Class: Boat (class) - Enum Attributes: [], Class Attributes: [boatDetails:string,boatType:BoatType,image:string]
+Class: Berth (class) - Enum Attributes: [], Class Attributes: []
+Class: CalendarEvent (class) - Enum Attributes: [], Class Attributes: [title:string,startDate:date,endDate:date]
+Class: Payment (class) - Enum Attributes: [], Class Attributes: [transactionId:string,total:decimal]
+Class: Invoice (class) - Enum Attributes: [], Class Attributes: [reminderFee:decimal,paymentStatus:string]
+Relationships:
+ 1 Person association 1 a
+ 1 Secretary association 1 a
+ 1 Treasurer association 1 a
+ 1 Member association 1 a
+ 1 Secretary association 1 multiple
+ 1 Secretary association 1 multiple
+ 1 Treasurer association 1 multiple
+ 1 Treasurer association 1 multiple
+ 1 Member association 1 multiple
+ 1 Member association 1 multiple
+ 1 Member association 1 multiple
+ 1 Municipality association 1 information
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Member(class)'	-	'Member(class)'
+ 'Boat(class)'	-	'Boat(class)'
+ 'Berth(class)'	-	'Berth(class)'
+ 'CalendarEvent(class)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'Boat(class):image'	-	'image'
+ 'CalendarEvent(class):startDate'	-	'startDate'
+ 'CalendarEvent(class):endDate'	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   5                   12                  
+Attributes          20                  7                   21                  
+Associations        0                   0                   11                  
+Inheritances        0                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. Role(Member, Treasurer, Secretary)
+2. BoatType(Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(username : String, password : String)
+2. Boat(boatDetails : String, type : BoatType, image : String)
+3. Member(paymentHistory : String)
+4. CalendarEvent(title : String, startDate : Date, endDate : Date)
+5. Berth(booked : Boolean, boat : Boat, member : Member)
+6. Payment(status : String, amount : Double)
+
+Relationships:
+1..* Person associate 0..1 Role
+Secretary inherit Person
+Treasurer inherit Person
+Member inherit Person
+
+Secretary contain 1..* Berth
+Secretary contain 1..* CalendarEvent
+Treasurer contain 1..* Payment
+Member contain 1..* Boat
+Member contain 1..* Payment
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: Role (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username , password ], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [boatDetails , type , image ], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [paymentHistory ], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title , startDate , endDate ], Class Attributes: []
+Class: Berth (enum) - Enum Attributes: [booked , boat , member ], Class Attributes: []
+Class: Payment (enum) - Enum Attributes: [status , amount ], Class Attributes: []
+Relationships:
+ 1..* Person association 0..1 Role
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ False Member inheritance False Person
+ 1 Secretary aggregation 1..* Berth
+ 1 Secretary aggregation 1..* CalendarEvent
+ 1 Treasurer aggregation 1..* Payment
+ 1 Member aggregation 1..* Boat
+ 1 Member aggregation 1..* Payment
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Berth(enum)'	-	'Berth(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(enum):type '	-	'type'
+ 'Boat(enum):image '	-	'image'
+ 'CalendarEvent(enum):startDate '	-	'startDate'
+ 'CalendarEvent(enum):endDate '	-	'endDate'
+-Relationships:
+ ' 1 Member aggregation 1..* Boat'	-	' 1 Member aggregation * Boat'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   5                   12                  
+Attributes          22                  8                   21                  
+Associations        3                   1                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other)
+
+Class:
+1. Person(username : String, password : String)
+2. Member
+3. Treasurer
+4. Secretary
+5. Boat(size : String, type : BoatType, image : String)
+6. CalendarEvent(title : String, startDate : Date)
+
+Relationships:
+1..* Person associate 1 UserRole
+Secretary inherit Person
+Treasurer inherit Person
+Member inherit Person
+Secretary contain 1..* Boat
+Secretary contain 1..* CalendarEvent
+Treasurer contain 1..* Member
+Member contain 1..* Boat
+Member contain 1..* CalendarEvent
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [Sailboat, Motorsailer, Powerboat, Kayak/Canoe, Other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username , password ], Class Attributes: []
+Class: Member (enum) - Enum Attributes: [], Class Attributes: []
+Class: Treasurer (enum) - Enum Attributes: [], Class Attributes: []
+Class: Secretary (enum) - Enum Attributes: [], Class Attributes: []
+Class: Boat (enum) - Enum Attributes: [size , type , image ], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title , startDate ], Class Attributes: []
+Relationships:
+ 1..* Person association 1 UserRole
+ False Secretary inheritance False Person
+ False Treasurer inheritance False Person
+ False Member inheritance False Person
+ 1 Secretary aggregation 1..* Boat
+ 1 Secretary aggregation 1..* CalendarEvent
+ 1 Treasurer aggregation 1..* Member
+ 1 Member aggregation 1..* Boat
+ 1 Member aggregation 1..* CalendarEvent
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'Member(enum)'	-	'Member(class)'
+ 'Treasurer(enum)'	-	'Treasurer(class)'
+ 'Secretary(enum)'	-	'Secretary(class)'
+ 'Boat(enum)'	-	'Boat(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):Sailboat'	-	'sailboat'
+ 'BoatType(enum):Motorsailer'	-	'motosailer'
+ 'BoatType(enum):Powerboat'	-	'powerboat'
+ 'BoatType(enum):Other'	-	'other'
+ 'Boat(enum):size '	-	'size'
+ 'Boat(enum):type '	-	'type'
+ 'Boat(enum):image '	-	'image'
+ 'CalendarEvent(enum):startDate '	-	'startDate'
+-Relationships:
+ ' 1 Member aggregation 1..* Boat'	-	' 1 Member aggregation * Boat'
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             8                   6                   12                  
+Attributes          15                  8                   21                  
+Associations        6                   1                   11                  
+Inheritances        3                   0                   3                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Yacht Club System:
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. UserRole(Member, Treasurer, Secretary)
+2. BoatType(sailboat, motorsailer, powerboat, kayak/canoe, other)
+
+Class:
+1. Person(username: string, password: string)
+2. BoatRegistration(size: string, type: BoatType, image: string)
+3. MembershipData(memberId: int, boats: list<BoatRegistration>, paymentHistory: list<string>)
+4. CalendarEvent(title: string, startDate: date, endDate: date)
+
+Relationships:
+1. Person inherit UserRole
+2. Secretary contain BoatRegistration
+3. Secretary contain CalendarEvent
+4. Treasurer associate 1..* MembershipData
+5. Member associate 1..* BoatRegistration
+6. Member associate 1..* CalendarEvent
+7. Municipality associate 1..* BoatRegistration
+8. TaxAuthority associate 1..* MembershipData
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: UserRole (enum) - Enum Attributes: [Member, Treasurer, Secretary], Class Attributes: []
+Class: BoatType (enum) - Enum Attributes: [sailboat, motorsailer, powerboat, kayak/canoe, other], Class Attributes: []
+Class: Person (enum) - Enum Attributes: [username, password], Class Attributes: []
+Class: BoatRegistration (enum) - Enum Attributes: [size, type, image], Class Attributes: []
+Class: MembershipData (enum) - Enum Attributes: [memberId, boats, paymentHistory], Class Attributes: []
+Class: CalendarEvent (enum) - Enum Attributes: [title, startDate, endDate], Class Attributes: []
+Relationships:
+ False Person inheritance False UserRole
+ 2 Secretary aggregation 1 BoatRegistration
+ 3 Secretary aggregation 1 CalendarEvent
+ 4 Treasurer association 1..* MembershipData
+ 5 Member association 1..* BoatRegistration
+ 6 Member association 1..* CalendarEvent
+ 7 Municipality association 1..* BoatRegistration
+ 8 TaxAuthority association 1..* MembershipData
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'BoatType(enum)'	-	'BoatType(enum)'
+ 'BoatRegistration(enum)'	-	'Boat(class)'
+ 'CalendarEvent(enum)'	-	'Event(class)'
+-Attributes:
+ 'BoatType(enum):sailboat'	-	'sailboat'
+ 'BoatType(enum):motorsailer'	-	'motosailer'
+ 'BoatType(enum):powerboat'	-	'powerboat'
+ 'BoatType(enum):other'	-	'other'
+ 'BoatRegistration(enum):size'	-	'size'
+ 'BoatRegistration(enum):type'	-	'type'
+ 'BoatRegistration(enum):image'	-	'image'
+ 'CalendarEvent(enum):startDate'	-	'startDate'
+ 'CalendarEvent(enum):endDate'	-	'endDate'
+-Relationships:
+--------------------------------------------------------------------------------
+Yacht Club System, matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   3                   12                  
+Attributes          19                  9                   21                  
+Associations        0                   0                   11                  
+Inheritances        1                   0                   3                   
+--------------------------------------------------------------------------------
+Yacht Club System, avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.607          0.425          0.500          0.452
+Attributes          0.400          0.362          0.380          0.369
+Associations        0.174          0.068          0.098          0.078
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------

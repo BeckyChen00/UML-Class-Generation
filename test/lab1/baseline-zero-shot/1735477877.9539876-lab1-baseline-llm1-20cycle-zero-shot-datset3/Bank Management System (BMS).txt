@@ -1,0 +1,1826 @@
+------------------------------------------------------------
+---------------------1/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType (Public, Private)
+2. ServiceCategory (National, International)
+
+Class:
+1. Bank(name: String, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: String, type: String)
+3. Address(type: String)
+4. User(name: String)
+5. Customer(type: String)
+6. Account(accountNumber: String, type: String)
+7. Employee(name: String, role: String)
+
+Relationships:
+- One Bank can have multiple Branches: 1..*
+- One Branch can have multiple Addresses: 0..*
+- One Branch is the main branch of One Bank: 0..1
+- One Branch can be an express branch of One Bank: 0..1
+- One User can be associated with One Bank as a Customer: 1
+- One Customer can have multiple Accounts: 0..*
+- One Account can be a joint account: 0..1
+- One Customer is assigned to One Employee as a personal banker: 1
+- One Employee can work in multiple Branches: 0..*
+- One Employee can have one of the roles (teller, manager, loan officer): 1
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Relationships:
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 is
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 can
+ 1 One association 1 is
+ 1 One association 1 can
+ 1 One association 1 can
+--------------------------------------------------------------------------------
+--1/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          16                  9                   25                  
+Associations        0                   0                   7                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------2/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(type : BankType, serviceCategory : ServiceCategory)
+2. Branch
+3. Address(type : String)
+4. User(name : String)
+5. Customer
+6. Employee(title : String)
+7. Account(accountNumber : String, type : String)
+8. PersonalBanker
+
+Relationships:
+1..* Bank contain * Branch
+1 Branch contain * Address
+1 Bank inherit Branch
+1 User inherit Customer
+1 User inherit Employee
+1 Customer associate 0..* Account
+1 Account associate 0..* User
+1 Customer associate 0..1 PersonalBanker
+1 Employee associate * Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , serviceCategory ], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title ], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber , type ], Class Attributes: []
+Class: PersonalBanker (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False Bank inheritance False Branch
+ False User inheritance False Customer
+ False User inheritance False Employee
+ 1 Customer association 0..* Account
+ 1 Account association 0..* User
+ 1 Customer association 0..1 PersonalBanker
+ 1 Employee association * Branch
+--------------------------------------------------------------------------------
+--2/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type '	-	'type'
+ 'Address(enum):type '	-	'type'
+ 'Account(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+-Relationships:
+ ' 1..* Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 0..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   15                  
+Attributes          11                  8                   25                  
+Associations        6                   3                   7                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------3/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(street: string, city: string, state: string, zipCode: string)
+4. User(name: string)
+5. Customer(isVIP: boolean)
+6. Account(accountNumber: string, type: string)
+7. Employee(name: string, role: string)
+
+Relationships:
+1. Bank contain 1..* Branch
+2. Branch contain 1..* Address
+3. Branch inherit 0..1 Branch
+4. User inherit 0..1 User
+5. Customer inherit User
+6. Customer associate 1..* Account
+7. Account associate 0..* User
+8. Account associate 0..* Account
+9. Customer associate 0..1 Employee
+10. Employee inherit User
+11. Employee inherit Bank
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [street, city, state, zipCode], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Relationships:
+ 1 Bank aggregation 1..* Branch
+ 2 Branch aggregation 1..* Address
+ False Branch inheritance False Branch
+ False User inheritance False User
+ False Customer inheritance False User
+ 6 Customer association 1..* Account
+ 7 Account association 0..* User
+ 8 Account association 0..* Account
+ 9 Customer association 0..1 Employee
+ False Employee inheritance False User
+ False Employee inheritance False Bank
+--------------------------------------------------------------------------------
+--3/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation 1..* Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 6 Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 9 Customer association 0..1 Employee'	-	' 0..* Customer association 1 Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          19                  8                   25                  
+Associations        6                   3                   7                   
+Inheritances        5                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------4/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+BankType(public, private)
+ServiceCategory(national, international)
+AccountType(checking, savings)
+
+Class:
+Bank(type : BankType, serviceCategory : ServiceCategory)
+Branch
+Address(type : String)
+User(name : String)
+Customer(isVIP : boolean)
+Account(number : String, type : AccountType)
+Employee(title : String)
+
+Relationships:
+1 Bank contain * Branch
+Branch contain * Address
+Branch inherit Branch (main branch, express branch)
+User inherit User (customer, employee)
+Branch associate 1 Bank
+Customer associate * Account
+Account associate 1 User
+Customer associate 1 Employee
+Employee associate * Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: AccountType (enum) - Enum Attributes: [checking, savings], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , serviceCategory ], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP ], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number , type ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title ], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False Branch inheritance False Branch
+ False User inheritance False User
+ 1 Branch association 1 Bank
+ 1 Customer association * Account
+ 1 Account association 1 User
+ 1 Customer association 1 Employee
+ 1 Employee association * Branch
+--------------------------------------------------------------------------------
+--4/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'AccountType(enum)'	-	'AccountType(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'AccountType(enum):savings'	-	'savings'
+ 'Bank(enum):type '	-	'type'
+ 'Address(enum):type '	-	'type'
+ 'Account(enum):number '	-	'number'
+ 'Account(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+-Relationships:
+ ' 1 Customer association * Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          14                  10                  25                  
+Associations        3                   2                   7                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------5/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(type: BankType, serviceCategory: ServiceCategory)
+2. Branch
+3. Address(type: String)
+4. User(name: String)
+5. Customer(isVIP: Boolean)
+6. Account(accountNumber: String, type: String)
+7. Employee(title: String)
+8. PersonalBanker
+9. Teller
+10. Manager
+11. LoanOfficer
+
+Relationships:
+1..* Bank contain * Branch
+1..* Branch contain * Address
+1 Bank inherit BankType
+1 Bank inherit ServiceCategory
+1 User inherit Customer
+1 Customer associate 1..* Account
+1 Account inherit AccountType
+1 Account associate 0..* User as JointAccountHolder
+1 Customer associate 1 Employee as PersonalBanker
+1 Employee inherit PersonalBanker
+1 Employee inherit Teller
+1 Employee inherit Manager
+1 Employee inherit LoanOfficer
+1 Employee work for 1..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Class: PersonalBanker (enum) - Enum Attributes: [], Class Attributes: []
+Class: Teller (enum) - Enum Attributes: [], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [], Class Attributes: []
+Class: LoanOfficer (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Bank aggregation * Branch
+ 1..* Branch aggregation * Address
+ False Bank inheritance False BankType
+ False Bank inheritance False ServiceCategory
+ False User inheritance False Customer
+ 1 Customer association 1..* Account
+ False Account inheritance False AccountType
+ 1 Account association 0..* User
+ 1 Customer association 1 Employee
+ False Employee inheritance False PersonalBanker
+ False Employee inheritance False Teller
+ False Employee inheritance False Manager
+ False Employee inheritance False LoanOfficer
+ 1 Employee association 1 for
+--------------------------------------------------------------------------------
+--5/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1..* Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             13                  9                   15                  
+Attributes          12                  8                   25                  
+Associations        5                   3                   7                   
+Inheritances        7                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------6/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+BankType(Public, Private)
+ServiceCategory(National, International)
+AccountType(Checking, Savings)
+
+Class:
+Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+Branch(mainBranch: boolean)
+Address(street: string, city: string, country: string)
+User(name: string)
+Customer(customerType: string)
+Account(number: string, type: AccountType)
+Employee(title: string)
+
+Relationships:
+1 Bank contain * Branch
+1 Branch contain * Address
+1 User inherit Customer
+1 User inherit Employee
+1 Customer associate 1 Branch
+1 Customer associate 1 Employee
+1 Account associate * User
+1 Account associate * Account
+1 Employee associate * Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: AccountType (enum) - Enum Attributes: [Checking, Savings], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [mainBranch], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [street, city, country], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerType], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False User inheritance False Customer
+ False User inheritance False Employee
+ 1 Customer association 1 Branch
+ 1 Customer association 1 Employee
+ 1 Account association * User
+ 1 Account association * Account
+ 1 Employee association * Branch
+--------------------------------------------------------------------------------
+--6/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'AccountType(enum)'	-	'AccountType(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'AccountType(enum):Savings'	-	'savings'
+ 'Bank(enum):type'	-	'type'
+ 'Account(enum):number'	-	'number'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 1 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  10                  15                  
+Attributes          18                  9                   25                  
+Associations        7                   3                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------7/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType (Public, Private)
+2. ServiceCategory (National, International)
+
+Classes:
+1. Bank(name: string, type: BankType, category: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(type: string)
+4. User(name: string)
+5. Customer(type: string)
+6. Account(number: int, type: string)
+7. Employee(type: string)
+8. PersonalBanker
+
+Relationships:
+- Bank contain * Branch
+- Branch contain * Address
+- Branch inherit PersonalBanker
+- User inherit Customer
+- Customer open * Account
+- User has 1 Employee
+- Employee workFor * Branch
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (class) - Enum Attributes: [], Class Attributes: [name:string,type:BankType,category:ServiceCategory]
+Class: Branch (class) - Enum Attributes: [], Class Attributes: [name:string,type:string]
+Class: Address (class) - Enum Attributes: [], Class Attributes: [type:string]
+Class: User (class) - Enum Attributes: [], Class Attributes: [name:string]
+Class: Customer (class) - Enum Attributes: [], Class Attributes: [type:string]
+Class: Account (class) - Enum Attributes: [], Class Attributes: [number:int,type:string]
+Class: Employee (class) - Enum Attributes: [], Class Attributes: [type:string]
+Class: PersonalBanker (class) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False Branch inheritance False PersonalBanker
+ False User inheritance False Customer
+ 1 Customer association * Account
+ 1 User association 1 Employee
+ 1 Employee association * Branch
+--------------------------------------------------------------------------------
+--7/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(class)'	-	'Bank(class)'
+ 'Branch(class)'	-	'Branch(class)'
+ 'Address(class)'	-	'Address(class)'
+ 'Customer(class)'	-	'Customer(class)'
+ 'Account(class)'	-	'Account(class)'
+ 'Employee(class)'	-	'Employee(class)'
+ 'User(class)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(class):type'	-	'type'
+ 'Bank(class):category'	-	'category'
+ 'Branch(class):type'	-	'type'
+ 'Address(class):type'	-	'type'
+ 'Account(class):number'	-	'number'
+ 'Account(class):type'	-	'type'
+ 'User(class):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association * Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   15                  
+Attributes          15                  11                  25                  
+Associations        5                   3                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------8/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(type: BankType, serviceCategory: ServiceCategory)
+2. Branch
+3. Address(type: AddressType)
+4. User(name: String)
+5. Account(accountNumber: String, type: AccountType)
+6. Customer(customerType: CustomerType)
+7. Employee(employeeType: EmployeeType)
+
+Relationships:
+1. Bank contain * Branch
+2. Branch contain * Address
+3. Branch associate * User
+4. Customer inherit User
+5. Customer associate 1 Account
+6. Account contain 0..* Customer
+7. Customer associate 1 Employee
+8. Employee inherit User
+9. Employee associate 0..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerType], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeType], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ 3 Branch association * User
+ False Customer inheritance False User
+ 5 Customer association 1 Account
+ 6 Account aggregation 0..* Customer
+ 7 Customer association 1 Employee
+ False Employee inheritance False User
+ 9 Employee association 0..* Branch
+--------------------------------------------------------------------------------
+--8/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 5 Customer association 1 Account'	-	' 0..* Account association 1..2 Customer'
+ ' 7 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 9 Employee association 0..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          12                  8                   25                  
+Associations        7                   4                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------9/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(type: string)
+4. User(name: string)
+5. Customer(type: string)
+6. Account(number: string, type: string)
+7. Employee(name: string, role: string)
+
+Relationships:
+- Bank contain * Branch
+- Branch contain * Address
+- Branch inherit Bank
+- User inherit Employee
+- User associate 0..1 Employee
+- Customer associate 0..1 Branch
+- Customer inherit User
+- Account associate 1 Customer
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False Branch inheritance False Bank
+ False User inheritance False Employee
+ 1 User association 0..1 Employee
+ 1 Customer association 0..1 Branch
+ False Customer inheritance False User
+ 1 Account association 1 Customer
+--------------------------------------------------------------------------------
+--9/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):number'	-	'number'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Account association 1 Customer'	-	' 0..* Account association 1..2 Customer'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          16                  10                  25                  
+Associations        5                   2                   7                   
+Inheritances        3                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------10/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(name: String, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: String, type: String)
+3. Address(type: String, streetAddress: String, city: String, state: String, zipCode: String)
+4. User(name: String)
+5. Customer(customerType: String)
+6. Account(accountNumber: String, accountType: String, isJoint: Boolean)
+7. Employee(employeeType: String)
+
+Relationships:
+- Bank contain 1..* Branch
+- Branch contain 0..* Address
+- Customer open 1..* Account
+- Customer have 1 Employee as personal banker
+- Employee work 1..* Branch
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type, streetAddress, city, state, zipCode], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerType], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, accountType, isJoint], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [employeeType], Class Attributes: []
+Relationships:
+ 1 Bank aggregation 1..* Branch
+ 1 Branch aggregation 0..* Address
+ 1 Customer association 1..* Account
+ 1 Customer association 1 Employee
+ 1 Employee association 1..* Branch
+--------------------------------------------------------------------------------
+--10/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation 1..* Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 1 Employee association 1..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          20                  8                   25                  
+Associations        5                   4                   7                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------11/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(street: string, city: string, state: string, zip: string)
+4. User(name: string)
+5. Customer(type: string)
+6. Account(accountNumber: string, type: string)
+7. Employee(title: string)
+
+Relationships:
+1. Bank contain * Branch
+2. Branch contain * Address
+3. Branch inherit Bank
+4. User inherit Bank
+5. User inherit Employee
+6. Customer inherit User
+7. Customer associate 0..* Account
+8. Account associate 0..* Customer
+9. Account associate 0..* Account
+10. Customer associate 0..1 Employee
+11. Employee associate 0..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [street, city, state, zip], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [type], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False Branch inheritance False Bank
+ False User inheritance False Bank
+ False User inheritance False Employee
+ False Customer inheritance False User
+ 7 Customer association 0..* Account
+ 8 Account association 0..* Customer
+ 9 Account association 0..* Account
+ 10 Customer association 0..1 Employee
+ 11 Employee association 0..* Branch
+--------------------------------------------------------------------------------
+--11/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 7 Customer association 0..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 10 Customer association 0..1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 11 Employee association 0..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          18                  8                   25                  
+Associations        7                   4                   7                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------12/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(type : BankType, serviceCategory : ServiceCategory)
+2. Branch
+3. Address(type : String)
+4. User(name : String)
+5. Customer(accountType : String)
+6. Account(accountNumber : String, accountType : String)
+7. Employee(title : String)
+
+Relationships:
+1..* Bank contain 1..* Branch
+1 Branch contain 0..* Address
+1 User inherit 1 Customer
+1 Customer associate 1 Account
+1 Customer associate 1 Employee
+1 Account contain 0..* User
+1 Account associate 1 Bank
+1 Employee associate 1 Bank
+1 Employee associate 0..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , serviceCategory ], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [accountType ], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber , accountType ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title ], Class Attributes: []
+Relationships:
+ 1..* Bank aggregation 1..* Branch
+ 1 Branch aggregation 0..* Address
+ False User inheritance False Customer
+ 1 Customer association 1 Account
+ 1 Customer association 1 Employee
+ 1 Account aggregation 0..* User
+ 1 Account association 1 Bank
+ 1 Employee association 1 Bank
+ 1 Employee association 0..* Branch
+--------------------------------------------------------------------------------
+--12/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type '	-	'type'
+ 'Address(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+-Relationships:
+ ' 1..* Bank aggregation 1..* Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 1 Account'	-	' 0..* Account association 1..2 Customer'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 1 Employee association 0..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          12                  7                   25                  
+Associations        8                   4                   7                   
+Inheritances        1                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------13/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1.BankType(public, private)
+2.ServiceCategory(national, international)
+3.AddressType(temporary, permanent)
+4.UserType(customer, employee)
+5.AccountType(checking, savings)
+
+Class:
+1.Bank(type: BankType, serviceCategory: ServiceCategory)
+2.Branch
+3.Address(type: AddressType)
+4.User(type: UserType, name: String)
+5.Customer(accountNumber: String, customerType: String)
+6.Account(accountNumber: String, accountType: AccountType)
+7.Employee(title: String)
+8.PersonalBanker
+9.Teller
+10.Manager
+11.LoanOfficer
+
+Relationships:
+1 Bank contain * Branch (1..*)
+2 Branch contain * Address (0..*)
+3 Branch inherit Branch (main branch) 
+4 Branch inherit Branch (express branch)
+5 User inherit Customer (general customer)
+6 User inherit Customer (VIP customer)
+7 Customer associate 1 Account (1)
+8 Account associate * User (0..*)
+9 Customer associate 1 PersonalBanker (1)
+10 Employee inherit Teller
+11 Employee inherit Manager
+12 Employee inherit LoanOfficer
+13 Employee associate * Branch (1..*)
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: AddressType (enum) - Enum Attributes: [temporary, permanent], Class Attributes: []
+Class: UserType (enum) - Enum Attributes: [customer, employee], Class Attributes: []
+Class: AccountType (enum) - Enum Attributes: [checking, savings], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [type, name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [accountNumber, customerType], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, accountType], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Class: PersonalBanker (enum) - Enum Attributes: [], Class Attributes: []
+Class: Teller (enum) - Enum Attributes: [], Class Attributes: []
+Class: Manager (enum) - Enum Attributes: [], Class Attributes: []
+Class: LoanOfficer (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False Branch inheritance False Branch
+ False Branch inheritance False Branch
+ False User inheritance False Customer
+ False User inheritance False Customer
+ 7 Customer association 1 Account
+ 8 Account association * User
+ 9 Customer association 1 PersonalBanker
+ False Employee inheritance False Teller
+ False Employee inheritance False Manager
+ False Employee inheritance False LoanOfficer
+ 13 Employee association * Branch
+--------------------------------------------------------------------------------
+--13/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'AddressType(enum)'	-	'AddressType(enum)'
+ 'AccountType(enum)'	-	'AccountType(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'AddressType(enum):temporary'	-	'temporary'
+ 'AddressType(enum):permanent'	-	'permanent'
+ 'AccountType(enum):savings'	-	'savings'
+ 'Bank(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 7 Customer association 1 Account'	-	' 0..* Account association 1..2 Customer'
+ ' 13 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             16                  11                  15                  
+Attributes          20                  10                  25                  
+Associations        6                   3                   7                   
+Inheritances        7                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------14/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(type : BankType, serviceCategory : ServiceCategory)
+2. Branch
+3. Address(type : String)
+4. User(name : String)
+5. Customer
+6. Account(accountNumber : String, type : String)
+7. Employee(title : String)
+8. PersonalBanker
+
+Relationships:
+1..* Bank contain 1..* Branch
+1 Bank associate 1 ServiceCategory
+1..* Branch contain 1..* Address
+1..* User inherit 1..* Customer
+1..* Customer associate 1..* Account
+1 Customer associate 1 PersonalBanker
+1..* Employee inherit 1..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , serviceCategory ], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber , type ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title ], Class Attributes: []
+Class: PersonalBanker (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1..* Bank aggregation 1..* Branch
+ 1 Bank association 1 ServiceCategory
+ 1..* Branch aggregation 1..* Address
+ False User inheritance False Customer
+ 1..* Customer association 1..* Account
+ 1 Customer association 1 PersonalBanker
+ False Employee inheritance False Branch
+--------------------------------------------------------------------------------
+--14/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type '	-	'type'
+ 'Address(enum):type '	-	'type'
+ 'Account(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+-Relationships:
+ ' 1..* Bank aggregation 1..* Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1..* Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   15                  
+Attributes          11                  8                   25                  
+Associations        5                   2                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------15/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+3. AddressType(Temporary, Permanent)
+4. UserType(Customer, Employee)
+5. AccountType(Checking, Savings)
+
+Class:
+1. Bank(name: string, type: BankType, category: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(type: AddressType, street: string, city: string, country: string)
+4. User(name: string, type: UserType)
+5. Account(number: string, type: AccountType)
+6. Employee(name: string, role: string)
+
+Relationships:
+1. Bank contain * Branch
+2. Branch contain * Address
+3. User inherit User
+4. Customer inherit User
+5. Employee inherit User
+6. Customer open * Account
+7. Account associate 1 User
+8. Branch associate 1 Employee
+9. Employee work for * Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: AddressType (enum) - Enum Attributes: [Temporary, Permanent], Class Attributes: []
+Class: UserType (enum) - Enum Attributes: [Customer, Employee], Class Attributes: []
+Class: AccountType (enum) - Enum Attributes: [Checking, Savings], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, category], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type, street, city, country], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number, type], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [name, role], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False User inheritance False User
+ False Customer inheritance False User
+ False Employee inheritance False User
+ 6 Customer association * Account
+ 7 Account association 1 User
+ 8 Branch association 1 Employee
+ 9 Employee association 1 for
+--------------------------------------------------------------------------------
+--15/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'AddressType(enum)'	-	'AddressType(enum)'
+ 'AccountType(enum)'	-	'AccountType(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'AddressType(enum):Temporary'	-	'temporary'
+ 'AddressType(enum):Permanent'	-	'permanent'
+ 'AccountType(enum):Savings'	-	'savings'
+ 'Bank(enum):type'	-	'type'
+ 'Bank(enum):category'	-	'category'
+ 'Branch(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):number'	-	'number'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 8 Branch association 1 Employee'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  10                  15                  
+Attributes          25                  14                  25                  
+Associations        4                   2                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------16/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(type: BankType, serviceCategory: ServiceCategory)
+2. Branch
+3. Address(type: String)
+4. User(name: String)
+5. Customer(isVIP: Boolean)
+6. Account(accountNumber: String, type: String, isJoint: Boolean)
+7. Employee(title: String)
+
+Relationships:
+1. Bank contain * Branch
+2. Branch contain * Address
+3. Branch inherit Bank
+4. User inherit Bank
+5. User inherit Employee
+6. Customer inherit User
+7. Customer associate 1..* Account
+8. Account associate 1 User
+9. Account contain * User
+10. Employee associate 1 Bank
+11. Employee associate 1..* Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type, isJoint], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False Branch inheritance False Bank
+ False User inheritance False Bank
+ False User inheritance False Employee
+ False Customer inheritance False User
+ 7 Customer association 1..* Account
+ 8 Account association 1 User
+ 9 Account aggregation * User
+ 10 Employee association 1 Bank
+ 11 Employee association 1..* Branch
+--------------------------------------------------------------------------------
+--16/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 7 Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 11 Employee association 1..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          13                  8                   25                  
+Associations        7                   3                   7                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------17/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+3. AccountType(Checking, Savings)
+4. EmployeeType(Teller, Manager, Loan Officer)
+
+Class:
+1. Bank(type : BankType, category : ServiceCategory)
+2. Branch
+3. Address
+4. User(name : String)
+5. Customer(isVIP : Boolean)
+6. Account(number : String, type : AccountType, isJoint : Boolean)
+7. Employee(type : EmployeeType)
+
+Relationships:
+1. Bank contain * Branch
+2. Branch contain * Address
+3. Branch inherit Bank
+4. User inherit Bank
+5. User inherit Employee
+6. Customer associate 1..* Account
+7. Customer associate 1 Employee
+8. Account inherit Bank
+9. Account associate * User
+10. Employee associate * Branch
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: AccountType (enum) - Enum Attributes: [Checking, Savings], Class Attributes: []
+Class: EmployeeType (enum) - Enum Attributes: [Teller, Manager, Officer], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , category ], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP ], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number , type , isJoint ], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [type ], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False Branch inheritance False Bank
+ False User inheritance False Bank
+ False User inheritance False Employee
+ 6 Customer association 1..* Account
+ 7 Customer association 1 Employee
+ False Account inheritance False Bank
+ 9 Account association * User
+ 10 Employee association * Branch
+--------------------------------------------------------------------------------
+--17/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'AccountType(enum)'	-	'AccountType(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+ 'EmployeeType(enum)'	-	'EmpPosition(enum)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'AccountType(enum):Savings'	-	'savings'
+ 'Bank(enum):type '	-	'type'
+ 'Bank(enum):category '	-	'category'
+ 'Account(enum):number '	-	'number'
+ 'Account(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+ 'EmployeeType(enum):Teller'	-	'teller'
+ 'EmployeeType(enum):Manager'	-	'manager'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 6 Customer association 1..* Account'	-	' 0..* Account association 1..2 Customer'
+ ' 7 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 10 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             11                  11                  15                  
+Attributes          17                  12                  25                  
+Associations        6                   4                   7                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------18/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+```
+Enumerations:
+BankType(public, private)
+ServiceCategory(national, international)
+
+Class:
+Bank(type : BankType, serviceCategory : ServiceCategory)
+Branch
+Address(type : String)
+User(name : String)
+Customer
+Employee
+Account(accountNumber : String, type : String)
+PersonalBanker
+
+Relationships:
+1 Bank contain * Branch
+Branch contain * Address
+Branch inherit Address
+User inherit Customer
+User inherit Employee
+Customer associate 1..* Account
+Customer inherit User
+Account associate 0..* User
+Account inherit JointAccount
+Customer associate 1 PersonalBanker
+Employee associate 0..* Account
+Employee associate * Branch
+Employee inherit User
+Employee inherit Teller
+Employee inherit Manager
+Employee inherit LoanOfficer
+```
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [type , serviceCategory ], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type ], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name ], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber , type ], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 1 Branch aggregation * Address
+ False Branch inheritance False Address
+ False User inheritance False Customer
+ False User inheritance False Employee
+ 1 Customer association 1..* Account
+ False Customer inheritance False User
+ 1 Account association 0..* User
+ False Account inheritance False JointAccount
+ 1 Customer association 1 PersonalBanker
+ 1 Employee association 0..* Account
+ 1 Employee association * Branch
+ False Employee inheritance False User
+ False Employee inheritance False Teller
+ False Employee inheritance False Manager
+ False Employee inheritance False LoanOfficer
+--------------------------------------------------------------------------------
+--18/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type '	-	'type'
+ 'Address(enum):type '	-	'type'
+ 'Account(enum):type '	-	'type'
+ 'User(enum):name '	-	'name'
+-Relationships:
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             6                   6                   15                  
+Attributes          10                  8                   25                  
+Associations        1                   0                   7                   
+Inheritances        0                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------19/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType(public, private)
+2. ServiceCategory(national, international)
+
+Class:
+1. Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: string, type: string)
+3. Address(street: string, city: string, state: string, country: string)
+4. User(name: string)
+5. Account(number: string, type: string)
+6. Customer(isVIP: boolean)
+7. Employee(title: string)
+8. PersonalBanker
+
+Relationships:
+1. Bank contain * Branch (0..*)
+2. Branch contain * Address (0..*)
+3. User inherit Customer
+4. User inherit Employee
+5. Customer associate 1 Bank
+6. Customer associate 1 PersonalBanker
+7. Account associate 1 Branch
+8. Account contain * User (0..*)
+9. Employee associate * Branch (1..*)
+
+Please note that the relationships provided are based on the given description.
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [public, private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [national, international], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, type], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [street, city, state, country], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [number, type], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [isVIP], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Class: PersonalBanker (enum) - Enum Attributes: [], Class Attributes: []
+Relationships:
+ 1 Bank aggregation * Branch
+ 2 Branch aggregation * Address
+ False User inheritance False Customer
+ False User inheritance False Employee
+ 5 Customer association 1 Bank
+ 6 Customer association 1 PersonalBanker
+ 7 Account association 1 Branch
+ 8 Account aggregation * User
+ 9 Employee association * Branch
+ 1 Please association 1 that
+--------------------------------------------------------------------------------
+--19/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):public'	-	'public'
+ 'BankType(enum):private'	-	'private'
+ 'ServiceCategory(enum):national'	-	'national'
+ 'ServiceCategory(enum):international'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Branch(enum):type'	-	'type'
+ 'Account(enum):number'	-	'number'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation * Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 7 Account association 1 Branch'	-	' 0..1 Branch association 0..* Account'
+ ' 9 Employee association * Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             10                  9                   15                  
+Attributes          18                  9                   25                  
+Associations        7                   3                   7                   
+Inheritances        2                   0                   2                   
+--------------------------------------------------------------------------------
+------------------------------------------------------------
+---------------------20/20------Bank Management System (BMS):
+------------------------------------------------------------
+AI:
+Enumerations:
+1. BankType(Public, Private)
+2. ServiceCategory(National, International)
+
+Class:
+1. Bank(name: string, type: BankType, serviceCategory: ServiceCategory)
+2. Branch(name: string, mainBranch: boolean)
+3. Address(type: string)
+4. User(name: string)
+5. Account(accountNumber: string, type: string)
+6. Customer(customerType: string)
+7. Employee(title: string)
+
+Relationships:
+- Bank contain 1..* Branch
+- Branch contain 1..* Address
+- Branch inherit User
+- Branch inherit Customer
+- Customer inherit User
+- Account inherit User
+- Customer associate 1 Employee
+- Employee associate 1..* Branch
+
+------------------------------------------------------------
+(Baseline) Structure Model_Gen:
+ Classes:
+Class: BankType (enum) - Enum Attributes: [Public, Private], Class Attributes: []
+Class: ServiceCategory (enum) - Enum Attributes: [National, International], Class Attributes: []
+Class: Bank (enum) - Enum Attributes: [name, type, serviceCategory], Class Attributes: []
+Class: Branch (enum) - Enum Attributes: [name, mainBranch], Class Attributes: []
+Class: Address (enum) - Enum Attributes: [type], Class Attributes: []
+Class: User (enum) - Enum Attributes: [name], Class Attributes: []
+Class: Account (enum) - Enum Attributes: [accountNumber, type], Class Attributes: []
+Class: Customer (enum) - Enum Attributes: [customerType], Class Attributes: []
+Class: Employee (enum) - Enum Attributes: [title], Class Attributes: []
+Relationships:
+ 1 Bank aggregation 1..* Branch
+ 1 Branch aggregation 1..* Address
+ False Branch inheritance False User
+ False Branch inheritance False Customer
+ False Customer inheritance False User
+ False Account inheritance False User
+ 1 Customer association 1 Employee
+ 1 Employee association 1..* Branch
+--------------------------------------------------------------------------------
+--20/20--Classes and attributes matching process:
+-Classes:
+ 'BankType(enum)'	-	'BankType(enum)'
+ 'ServiceCategory(enum)'	-	'ServiceCategory(enum)'
+ 'Bank(enum)'	-	'Bank(class)'
+ 'Branch(enum)'	-	'Branch(class)'
+ 'Address(enum)'	-	'Address(class)'
+ 'Account(enum)'	-	'Account(class)'
+ 'Customer(enum)'	-	'Customer(class)'
+ 'Employee(enum)'	-	'Employee(class)'
+ 'User(enum)'	-	'Person(class)'
+-Attributes:
+ 'BankType(enum):Public'	-	'public'
+ 'BankType(enum):Private'	-	'private'
+ 'ServiceCategory(enum):National'	-	'national'
+ 'ServiceCategory(enum):International'	-	'international'
+ 'Bank(enum):type'	-	'type'
+ 'Address(enum):type'	-	'type'
+ 'Account(enum):type'	-	'type'
+ 'User(enum):name'	-	'name'
+-Relationships:
+ ' 1 Bank aggregation 1..* Branch'	-	' 1 Bank aggregation 1..* Branch'
+ ' 1 Customer association 1 Employee'	-	' 0..* Customer association 1 Employee'
+ ' 1 Employee association 1..* Branch'	-	' 0..* Branch association 0..* Employee'
+--------------------------------------------------------------------------------
+Bank Management System (BMS), matching result
+--------------------------------------------------------------------------------
+Metric              Generate            Match               Oracle              
+--------------------------------------------------------------------------------
+Classes             9                   9                   15                  
+Attributes          15                  8                   25                  
+Associations        4                   3                   7                   
+Inheritances        4                   0                   2                   
+--------------------------------------------------------------------------------
+Bank Management System (BMS), avg-method2
+--------------------------------------------------------------------------------
+Metric              Precision      Recall         F1             F2             
+--------------------------------------------------------------------------------
+Classes             0.929          0.610          0.736          0.655
+Attributes          0.580          0.402          0.475          0.428
+Associations        0.529          0.393          0.451          0.414
+Inheritances        0.000          0.000          0.000          0.000
+--------------------------------------------------------------------------------
