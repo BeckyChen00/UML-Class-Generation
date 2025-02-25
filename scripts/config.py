@@ -42,7 +42,7 @@ Generate lists of enumerations, classes and attributes based on <Description>. F
 2. Identify <key objects/entities> from <relevant nouns>. You need to output them (e.g., <key object1/entity1>)
 3. Define <enumerations> based on the identified <key objects/entities>. You need to output them (e.g., <enum_name>(literal1, literal2)). Avoid creating enumerations like "DayOfTheWeek(monday, tuesday, wednesday, thursday, friday)", "PickupTimeRange(8AM, 9AM, 10AM, 11AM, 12PM, 1PM, 2PM)". 
 4. Define <classes> based on the identified <key objects/entities>, ensuring appropriate abstraction levels. You need to output them (e.g., <class_name1>, <class_name2>).
-5. Define <attributes> for each class in <classes>. You need to output them(e.g., <class_name>(attribute1: attributeType1, attribute2: attributeType2)). If the class has no attribute, you need to output them (e.g., <class_name>()).
+5. Define <attributes> for each class in <classes>. You need to output them (e.g., <class_name>(attribute1: attributeType1, attribute2: attributeType2)). If the class has no attribute, you need to output them (e.g., <class_name>()).
 6. Use clear and consistent naming conventions that reflect the role or function of the class within the system. Ensure that keep the class names consistent with the words mentioned in the system description.
 
 # Description:
@@ -56,7 +56,7 @@ Review all the enumerations, classes and attributes based on <Guidelines> step b
 # Guidelines:
 1. All structural components (enumerations, classes, literals, and attributes) MUST USE CamelCase naming convention. However, for components that require only a single word as their name, CamelCase is not necessary (e.g., 'User', 'Employee', 'Role', 'Client').
 2. If an enumeration literal contains 'e.g.', 'etc.' or '...', MUST REMOVE these terms only.
-3. Remove enumerations such as "DayOfTheWeek(monday, tuesday, wednesday, thursday, friday)", "PickupTimeRange(8AM, 9AM, 10AM, 11AM, 12PM, 1PM, 2PM)", "Season(Summer, Spring, Autumn)". 
+3. Remove enumerations such as "DayOfTheWeek(monday, tuesday, wednesday, thursday, friday)", "PickupTimeRange(8AM, 9AM, 10AM, 11AM, 12PM, 1PM, 2PM)", and "Season(Summer, Spring, Autumn)". 
 4. Ensure that enumeration names and class names are unique to prevent conflicts or redundancy.
 5. If an enum or class has no attributes, output it in the format `ClassName()` or `EnumName()`.
 6. An attribute type MUST BE a primitive type (i.e., int, boolean, String, Date), an enum type, or a list of a primitive type (e.g., int[] and String[]).
@@ -168,12 +168,12 @@ Final Composition Relationships:
 
 PROMPT_MODEL_INHERIT_RELATION="""
 # Task:
-To create a class model based on <Description> and given <Classes>, list all the inheritances among <Classes> following all steps of <Guidelines> step by step and output each step's reasoning. Note that the parent class and child class MUST include in given <Classes>.
+To create a class model based on <Description> and given <Classes>, list all the inheritances among <Classes> following by all steps of <Guidelines> step by step and output each step's reasoning. Note that the parent class and child class MUST include in given <Classes>.
 
 # Guidelines:
 1. RECALL the meaning of inheritance (i.e., "is-a-kind-of").
-2. MUST DEFINE inheritances conforming to general knowledge of taxonomy and classification. Inheritances should reflect real-word hierachical structures where appropriate (e.g., a Mammal is a kind of Animal).
-3. DO NOT mistake inheritance for association/aggregation/message. Inheritance is not about "is-a-part-of", "has-a", "is-associated-with" or "calls". Inheritance is strickly "is-a-kind-of".
+2. MUST DEFINE inheritances conforming to general knowledge of taxonomy and classification. Inheritances should reflect real-world hierachical structures, where appropriate (e.g., a Mammal is a kind of Animal).
+3. DO NOT mistake inheritance for association/aggregation/message. Inheritance does not mean "is-a-part-of", "has-a", "is-associated-with", or "calls". Inheritance is strickly "is-a-kind-of".
 4. Consider the classes in (<Classes>) ONLY. Do not generate new classes.
 5. List all potential inheritances.
 6. CHECK your answer, DELETE incorrect inheritances.
